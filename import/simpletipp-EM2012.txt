@@ -1,0 +1,41 @@
+# EM 2012
+# Kommentarzeilen beginnen mit einem #
+# Die erste Zeile muss mit einem # beginnen
+# Der Inhalt der ersten Zeile legt den Namen der Liga fest
+# Die Import-Zeilen müssen folgendermaßen aufgebaut sein
+# DATUM ; NAME_DES_SPIELS ; GRUPPE ; ERGEBNIS
+# 
+# DATUM: UNIX-Timestamp oder YYYY-MM-DD HH:II:SS
+# ERGEBNIS: Natürlich optional
+#
+1339171200	;	Polen - Griechenland			;	Gruppe A
+1339181100	;	Russland - Tschechien			;	Gruppe A
+1339516800	;	Griechenland - Tschechien		;	Gruppe A
+1339526700	;	Polen - Russland				;	Gruppe A
+1339872300	;	Tschechien - Polen				;	Gruppe A
+1339872300	;	Griechenland - Russland			;	Gruppe A
+1339257600	;	Niederlande - Dänemark			;	Gruppe B
+1339267500	;	Deutschland - Portugal			;	Gruppe B
+1339603200	;	Dänemark - Portugal				;	Gruppe B
+1339613100	;	Niederlande - Deutschland		;	Gruppe B
+1339958700	;	Portugal - Niederlande			;	Gruppe B
+1339958700	;	Dänemark - Deutschland			;	Gruppe B
+1339430400	;	Frankreich - England			;	Gruppe D
+1339440300	;	Ukraine - Schweden				;	Gruppe D
+1339776000	;	Ukraine - Frankreich			;	Gruppe D
+1339785900	;	Schweden - England				;	Gruppe D
+1340131500	;	England - Ukraine				;	Gruppe D
+1340131500	;	Schweden - Frankreich			;	Gruppe D
+1339344000	;	Spanien - Italien				;	Gruppe C
+1339353900	;	Irland - Kroatien				;	Gruppe C
+1339689600	;	Italien - Kroatien				;	Gruppe C
+1339699500	;	Spanien - Irland				;	Gruppe C
+1340045100	;	Kroatien - Spanien				;	Gruppe C
+1340045100	;	Italien - Irland				;	Gruppe C
+1340304300	;	Sieger Gr. A - Zweiter Gr. B	;	Viertelfinale
+1340390700	;	Sieger Gr. B - Zweiter Gr. A	;	Viertelfinale
+1340477100	;	Sieger Gr. C - Zweiter Gr. D	;	Viertelfinale
+1340563500	;	Sieger Gr. D - Zweiter Gr. C	;	Viertelfinale
+1340822700	;	Sieger VF1 - Sieger VF			;	Halbfinale
+1340909100	;	Sieger VF2 - Sieger VF4			;	Halbfinale
+1340909100	;	Sieger HF1 - Sieger HF2			;	Finale

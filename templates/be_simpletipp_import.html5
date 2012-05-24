@@ -1,0 +1,67 @@
+<div>
+<fieldset class="tl_checkbox_container">
+    <legend><?php echo $this->filesLabel; ?></legend>
+
+<?php if (count($this->filesOptions) > 0): ?>
+    <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'files')"> <label for="check_all" style="color:#a6a6a6"><em><?php echo $this->selectAll; ?></em></label><br>
+<?php foreach ($this->filesOptions as $file): ?>
+    <input type="checkbox" name="files[]" id="files_<?php echo $file->id; ?>" class="tl_checkbox" value="<?php echo $file->file; ?>" onfocus="Backend.getScrollOffset()">
+    <label for="files_<?php echo $file->id; ?>">
+
+    <?php echo $file->label; ?>
+    [<?php echo $file->filename; ?>, <?php echo $file->size; ?> Bytes, <?php echo date("Y-m-d H:i:s", $file->date); ?>]
+    
+    </label><br>
+<?php endforeach; ?>
+
+<?php else: ?>
+    <p><?php echo $GLOBALS['TL_LANG']['MSC']['noResult'];?></p>
+<?php endif; ?>
+  </fieldset>
+  <p class="tl_help tl_tip"><?php echo $this->filesHelp; ?></p>
+</div>
+
+<div>
+  <fieldset class="tl_checkbox_container">
+    <legend><?php echo $this->competitionsLabel; ?></legend>
+
+<?php if (count($this->competitionsOptions) > 0): ?>
+    <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'competitions')"> <label for="check_all" style="color:#a6a6a6"><em><?php echo $this->selectAll; ?></em></label><br>
+<?php foreach ($this->competitionsOptions as $competition): ?>
+    <input type="checkbox" name="competitions[]" id="competitions_<?php echo base64_encode($competition); ?>" class="tl_checkbox" value="<?php echo $competition; ?>" onfocus="Backend.getScrollOffset()">
+    <label for="competitions_<?php echo base64_encode($competition); ?>"><?php echo $competition; ?></label><br>
+<?php endforeach; ?>
+
+<?php else: ?>
+    <p><?php echo $GLOBALS['TL_LANG']['MSC']['noResult'];?></p>
+<?php endif; ?>
+  </fieldset>
+  <p class="tl_help tl_tip"><?php echo $this->competitionsHelp; ?></p>
+</div>
+
+<div style="display:block;height:20px;">&nbsp;</div>
+
+<div id="simpletipp_info">
+<p>Hier hat man die Möglichkeit dem Tippspiel Spiele hinzuzufügen.
+Es werden alle Dateien aufgelistet, die sich in dem Verzeichnis
+<strong>tl_files/simpletipp-import</strong> befinden. Außerdem 
+werden auch einige Dateien bzw. Spiele mitgeliefert.</p>
+<ul>
+	<li>Kommentarzeilen beginnen mit einem #</li>
+	<li>Die erste Zeile muss mit einem # beginnen</li>
+	<li>Der Inhalt der ersten Zeile legt den Namen der Liga fest</li>
+	<li>Die Import-Zeilen müssen folgendermaßen aufgebaut sein: 
+		<strong><code>DATUM;NAME_DES_SPIELS;GRUPPE;ERGEBNIS</code></strong></li>
+	<li>DATUM: UNIX-Timestamp oder YYYY-MM-DD HH:ii:ss</li>
+	<li>ERGEBNIS: Natürlich optional (Formatbeispiele: 2:1, 12:0, 78:49)</li>
+</ul>
+
+<strong>Beispiel:</strong>
+<pre><code># EM 2012
+# Spiele der EM 2012
+1339171200 ; Polen - Griechenland  ; Gruppe A
+1339181100 ; Russland - Tschechien ; Gruppe A
+# usw.
+</code></pre>
+</div>
+

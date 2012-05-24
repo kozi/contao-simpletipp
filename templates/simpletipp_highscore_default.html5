@@ -1,0 +1,54 @@
+<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/html/fe_style.css|screen|static"; ?>
+
+<div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+<?php if ($this->headline): ?>
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+
+<table>
+	<thead><tr>
+		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['position'][0]; ?></th>
+		
+		<?php if($this->showAvatar): ?>
+			<th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
+		<?php else: ?>
+			<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
+		<?php endif; ?>
+		
+		<th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
+	</tr></thead>
+	<tbody>	
+
+<?php $i = 1; foreach($this->table as $row): ?>
+	<tr class="<?php echo $row->cssClass; ?>">
+		<td class="position"><?php echo $i++; ?>. </td>
+
+		<?php if($this->showAvatar): ?>
+			<td class="avatar"><a href="<?php echo $row->memberLink; ?>">{{image::<?php echo $row->avatar;?>?width=24&height=24&mode=crop}}</a></td>
+		<?php endif; ?>
+		
+		<td class="name"><a href="<?php echo $row->memberLink; ?>"><?php echo $row->firstname.' '.$row->lastname; ?></a></td>
+		<td class="details" title="TODO explain details">
+			<?php echo $row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency; ?>
+		</td>
+		<td class="points"><?php echo $row->points; ?></td>	
+	</tr>
+<?php endforeach; ?>
+	</tbody>
+	<tfoot><tr>
+
+		<?php if($this->showAvatar): ?>
+			<td colspan="3">&nbsp;</td>
+		<?php else: ?>
+			<td colspan="2">&nbsp;</td>
+		<?php endif; ?>
+
+		<td class="details">
+			<?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
+		</td>
+		<td class="points"><?php echo $this->summary->points; ?></td>
+	</tr></tfoot>	
+</table>
+
+</div>

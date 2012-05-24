@@ -1,0 +1,50 @@
+<!DOCTYPE project>
+<project name="simpletipp" default="build" basedir=".">
+	<description>Simpletipp</description>
+	<property name="pluginname" value="simpletipp"/>
+	<property name="dist" location="dist"/>
+
+	<target name="build" description="build" depends="clean, copy, templates, zip "/>
+
+	<target name="clean" description="clean">
+		<delete includeemptydirs="true" verbose="true" failonerror="false">
+			<fileset dir="${dist}" />
+		</delete>
+		<delete file="${pluginname}.zip" verbose="true" failonerror="false"/>
+	</target>
+
+	<target name="copy" description="copy">
+		<mkdir dir="${dist}/${pluginname}" />
+		<copy todir="${dist}/${pluginname}" verbose="true">
+			<fileset dir=".">
+				<include name="*.php"/>
+				<include name="config/**"/>
+				<include name="import/**"/>
+				<include name="dca/**"/>
+				<include name="languages/**"/>
+				<include name="html/**"/>
+				<include name="templates/**"/>
+			</fileset>
+			</copy>
+	</target>
+
+	<target name="templates" description="templates">
+		<mkdir dir="${dist}/${pluginname}/templates" />
+		<copy todir="${dist}/${pluginname}/templates" verbose="true">
+		    <fileset dir="./templates">
+		    	<include name="*.html5"/>  
+		    </fileset>
+			<mapper type="glob" from="*.html5" to="*.xhtml"/>
+		</copy>
+	 </target>
+	
+	
+
+	<target name="zip" description="generate zip file">
+		<zip destfile="${pluginname}.zip" basedir="${dist}" />		
+	</target>
+
+</project>
+
+
+

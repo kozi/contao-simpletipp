@@ -1,0 +1,100 @@
+.mod_simpletipp .buttons,
+.simpletipp_userselect {
+	display:block;
+	padding:10px 0;
+}
+
+.mod_simpletipp {
+	font: 11px "Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
+	color: #444;
+}
+
+.mod_simpletipp table {
+	width:530px;
+}
+
+
+.mod_simpletipp .groupinfo {
+	display:block;
+	padding:0;	
+	margin:2px;
+	width:426px;
+	height:96px;
+	float:left;
+}
+
+.mod_simpletipp .avatar_big {
+	display:block;
+	padding:0;	
+	margin:2px;
+	width:96px;
+	height:96px;
+	float:left;
+}
+	
+.mod_simpletipp a { color: #444; }
+.mod_simpletipp a:hover { color: #000; }
+
+.mod_simpletipp td,
+.mod_simpletipp th {
+	height:28px;
+	white-space: nowrap;
+	padding:3px 5px;	
+}
+
+.mod_simpletipp tfoot,
+.mod_simpletipp thead {
+	margin:0;
+	padding:0;
+}
+
+.mod_simpletipp tfoot tr,
+.mod_simpletipp thead tr {
+	background:#333 url('/system/modules/simpletipp/html/bg-grass.png') repeat-x 0 0;
+	font-weight:bold;
+	color:#fff;
+}
+
+.mod_simpletipp tr.odd  { background-color:#eee; }
+.mod_simpletipp tr.even { background-color:#ccc; }
+
+		
+.mod_simpletipp td.tipp { font-weight:bold; }		
+
+.mod_simpletipp td.position {
+	text-align:right;
+}
+
+.mod_simpletipp td.tipp,
+.mod_simpletipp td.details,
+.mod_simpletipp td.points,
+.mod_simpletipp td.result,
+.mod_simpletipp th.result {
+	text-align:right;
+	font-family:monospace;
+}
+
+.mod_simpletipp td.avatar {
+	text-align:center;
+}
+
+.mod_simpletipp td.tipp input {
+	height:14px;
+	width:44px;
+	font-family:monospace;
+}
+
+.mod_simpletipp th.matchtitle {
+	background:darkgreen url('/system/modules/simpletipp/html/bg-grass.png') repeat-x 0 0;
+	font-size:14px;
+}
+
+.mod_simpletipp th.matchtitle span { float:right; }
+.mod_simpletipp th.matchtitle em { font-size:11px; font-weight:normal; }
+
+/* TODO :: pointsClass
+.perfect {}
+.difference {}
+.tendency {}
+.wrong {}
+*/

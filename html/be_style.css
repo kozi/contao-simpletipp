@@ -1,0 +1,62 @@
+table.simpletipp_results {
+	padding:10px 0;
+	margin:0;
+	border-collapse: separate;
+    border-spacing: 1px;
+}
+
+table.simpletipp_results tr.odd {
+	background-color: #eee;
+}
+table.simpletipp_results tr.even {
+	background-color: #ddd;
+}
+
+table.simpletipp_results td {
+	padding:2px 5px;
+}
+
+
+table.simpletipp_results input {
+	font-family:monospace;
+	text-align:right;
+}
+
+.header_simpletipp_import,
+.header_simpletipp_settings {
+	padding: 2px 0 3px 20px;
+}
+
+.header_simpletipp_import {
+	background: url("/system/modules/simpletipp/html/database-import.png") no-repeat scroll left center transparent;
+}
+
+.header_simpletipp_settings {
+    background: url("/system/themes/default/images/settings.gif") no-repeat scroll left center transparent;
+}
+
+.tl_box {
+	border-top:none;
+}
+
+#simpletipp_info {
+	background-color:#f6f6f6;
+	margin-bottom:30px;
+	padding:10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+
+#simpletipp_info pre {
+	margin:5px 0;
+	padding:5px;
+	border:1px dashed #333;
+}
+
+span.tablecell   { display:inline-block; }
+span.competition { width:160px; }
+span.matchgroup  { width:110px; }
+span.deadline    { width:120px; }
+

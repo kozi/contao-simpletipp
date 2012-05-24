@@ -1,0 +1,71 @@
+<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/html/fe_style.css|screen|static"; ?>
+
+<div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+<?php if ($this->headline): ?>
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+		
+<h2><?php echo $this->match; ?></h2>
+		
+<table>
+	<thead>
+	<tr>
+		<?php if($this->showAvatar): ?>
+			<th colspan="4" class="matchtitle">
+		<?php else: ?>
+			<th colspan="3" class="matchtitle">
+		<?php endif; ?>
+			<span class="result"><?php echo $this->result;?></span>
+			<?php echo $this->match; ?>
+			<em>(<?php echo $this->competition;?>, <?php echo $this->matchgroup;?>)</em>
+			
+		</th>
+	</tr>
+	<tr>
+
+		<?php if($this->showAvatar): ?>
+			<th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
+		<?php else: ?>
+			<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
+		<?php endif; ?>
+
+		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?></th>
+		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
+	</tr>
+	</thead>
+<?php if ($this->tipps): ?>	
+	<tbody>
+<?php foreach($this->tipps as $tipp): ?>
+	<tr class="<?php echo $tipp->cssClass; ?>">
+
+		<?php if($this->showAvatar): ?>
+			<td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
+		<?php endif; ?>
+	
+		<td class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname; ?></a></td>
+		<td class="tipp"><?php echo $tipp->tipp; ?></td>
+		<td class="points"><?php echo str_repeat($this->imgtag_soccerball.' ', $tipp->points); ?></td>
+	</tr>
+<?php endforeach; ?>
+	</tbody>
+<?php endif; ?>
+
+	<tfoot><tr>
+		
+		<?php if($this->showAvatar): ?>	
+			<td colspan="2">&nbsp;</td>
+		<?php else: ?>
+			<td>&nbsp;</td>
+		<?php endif; ?>
+		
+		
+		<td class="details">
+			<?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
+		</td>
+		<td class="points"><?php echo $this->summary->points; ?></td>
+	</tr></tfoot>	
+</table>
+
+
+</div>

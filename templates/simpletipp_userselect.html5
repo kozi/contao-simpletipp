@@ -1,0 +1,10 @@
+<div class="simpletipp_userselect">
+	<select onchange="location.href=this.value">
+	<option value="<?php echo $this->resetOption->value;?>"><?php echo $this->resetOption->label;?></option>
+	<?php foreach($this->arr as $user):
+		$sel = ($user->id == $this->selectedUser) ? ' selected="selected"':''; 
+		?>
+		<option<?php echo $sel;?> value="<?php echo $user->link; ?>"><?php echo $user->firstname.' '.$user->lastname; ?></option>
+	<?php endforeach; ?>
+	</select>
+</div>

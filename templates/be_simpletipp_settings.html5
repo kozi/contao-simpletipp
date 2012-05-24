@@ -1,0 +1,19 @@
+<div class="tl_box">
+	<div>
+		<h3><label for="ctrl_perfect"><?php echo $this->perfectLabel; ?></label></h3>
+		<input name="perfect" id="ctrl_perfect" class="tl_text" type="text" onfocus="Backend.getScrollOffset()" maxlength="255" value="<?php echo $this->perfectValue; ?>">
+		<p class="tl_help tl_tip"><?php echo $this->perfectHelp; ?></p>
+	</div>
+	
+	<div>
+		<h3><label for="ctrl_difference"><?php echo $this->differenceLabel; ?></label></h3>
+		<input name="difference" id="ctrl_perfect" class="tl_text" type="text" onfocus="Backend.getScrollOffset()" maxlength="255" value="<?php echo $this->differenceValue; ?>">
+		<p class="tl_help tl_tip"><?php echo $this->differenceHelp; ?></p>
+	</div>
+	
+	<div>
+		<h3><label for="ctrl_tendency"><?php echo $this->tendencyLabel; ?></label></h3>
+		<input name="tendency" id="ctrl_tendency" class="tl_text" type="text" onfocus="Backend.getScrollOffset()" maxlength="255" value="<?php echo $this->tendencyValue; ?>">
+		<p class="tl_help tl_tip"><?php echo $this->tendencyHelp; ?></p>
+	</div>
+</div>
