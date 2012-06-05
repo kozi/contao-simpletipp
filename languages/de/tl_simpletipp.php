@@ -16,12 +16,15 @@
  */
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend']  = 'Wettbewerb';
+$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend_questions']  = 'Extrafragen';
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_matches'] = 'Spiele';
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['settings']     = array('Einstellungen', 'Einstellungen');
 $GLOBALS['TL_LANG']['tl_simpletipp']['import']       = array('Spiele importieren', 'Spiele importieren');
 $GLOBALS['TL_LANG']['tl_simpletipp']['settings_btn'] = 'Speichern';
 $GLOBALS['TL_LANG']['tl_simpletipp']['import_btn']   = 'Ausführen';
+
+
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup']   = array("Gruppe", "Gruppe/Spieltag an dem die Spiele stattfinden.");
 $GLOBALS['TL_LANG']['tl_simpletipp']['competition']  = array("Wettbewerb", "Wettbewerb");
@@ -33,9 +36,14 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['results']      = array('Ergebnisse', 'Erge
 $GLOBALS['TL_LANG']['tl_simpletipp']['result']       = array("Ergebnis", "Ergebnis");
 $GLOBALS['TL_LANG']['tl_simpletipp']['deadline']     = array("Deadline", "Deadline");
 
+$GLOBALS['TL_LANG']['tl_simpletipp']['manage_questions'] = array('Fragen verwalten', 'Fragen verwalten');
+
+$GLOBALS['TL_LANG']['tl_simpletipp']['new']      = array('Neue Tipprunde', 'Eine neue Tipprunde erstellen');
 $GLOBALS['TL_LANG']['tl_simpletipp']['edit']     = array("Bearbeiten", "Bearbeiten");
 $GLOBALS['TL_LANG']['tl_simpletipp']['delete']   = array("Löschen", "Löschen");
 
-$GLOBALS['TL_LANG']['tl_simpletipp']['edit']   = array('Tipprunde bearbeiten', 'Tipprunde ID %s bearbeiten');
-$GLOBALS['TL_LANG']['tl_simpletipp']['delete'] = array('Tipprunde löschen', 'Tipprunde ID %s löschen');
-$GLOBALS['TL_LANG']['tl_simpletipp']['toggle'] = array('Tipprunde veröffentlichen/unveröffentlichen', 'Tipprunde ID %s veröffentlichen/unveröffentlichen');
+
+
+$GLOBALS['TL_LANG']['tl_simpletipp']['edit']       = array('Tipprunde bearbeiten', 'Tipprunde ID %s bearbeiten');
+$GLOBALS['TL_LANG']['tl_simpletipp']['delete']     = array('Tipprunde löschen', 'Tipprunde ID %s löschen');
+$GLOBALS['TL_LANG']['tl_simpletipp']['toggle']     = array('Tipprunde veröffentlichen/unveröffentlichen', 'Tipprunde ID %s veröffentlichen/unveröffentlichen');

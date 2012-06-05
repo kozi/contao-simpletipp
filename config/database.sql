@@ -4,9 +4,9 @@ CREATE TABLE `tl_simpletipp` (
   `competition` varchar(64) NOT NULL default '',
   `matchgroup` varchar(64) NOT NULL default '',
   `deadline` int(10) unsigned NOT NULL default '0',
-  `matches` text NULL,
-  `teaser` text NULL, 
-  `participants` text NULL,
+  `teaser` text NULL,
+  `matches` blob NULL, 
+  `participants` blob NULL,
   `published` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -36,6 +36,27 @@ CREATE TABLE `tl_simpletipp_matches` (
   PRIMARY KEY  (`id`)  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `tl_simpletipp_questions` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `points` int(10) unsigned NOT NULL default '0',  
+  `question` text NULL,
+  `answers` blob NULL,
+  `published` char(1) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tl_simpletipp_answers` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `member_id` int(10) unsigned NOT NULL default '0',
+  `answer` varchar(128) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tl_module` (
   `simpletipp_groups` text NULL,

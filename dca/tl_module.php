@@ -44,6 +44,12 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_match'] =
 .'{simpletipp_legend},simpletipp_matches_page,simpletipp_factor,simpletipp_template;'
 .'{expert_legend:hide},guests,cssID,space';
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_questions'] =
+'{title_legend},name,headline,type;'
+.'{simpletipp_legend},simpletipp_groups,simpletipp_template;'
+.'{expert_legend:hide},guests,cssID,space';
+
+
 
 /**
  * Add fields to tl_module

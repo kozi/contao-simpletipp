@@ -1,0 +1,28 @@
+<hr style="height:20px; width:600px;" />
+<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/html/fe_style.css|screen|static"; ?>
+
+<div class="<?php echo $this->class; ?> block mod_simpletipp_questions"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+<?php if ($this->headline): ?>
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+
+<?php foreach($this->questions as $q): ?>
+<fieldset class="question" id="<?php echo $q->key; ?>">
+	<legend><?php echo $q->points; ?> Punkt(e)</legend>
+	<label for="<?php echo $q->key; ?>"><?php echo $q->question; ?></legend>
+	<select name="<?php echo $q->key; ?>">
+		<option value="-">Bitte wählen...</option>
+		<?php foreach($q->answers as $a): ?>
+		<option value="<?php echo $a; ?>"><?php echo $a; ?></option>
+		<?php endforeach; ?>
+	</select>
+</fieldset>
+
+<?php endforeach; ?>
+
+
+
+</div>
+
+<hr style="height:20px; width:600px;" />

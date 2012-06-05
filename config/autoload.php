@@ -36,7 +36,9 @@ ClassLoader::addClasses(array(
 	'SimpletippHighscore'  => 'system/modules/simpletipp/SimpletippHighscore.php',
 	'SimpletippMatches'    => 'system/modules/simpletipp/SimpletippMatches.php',
 	'SimpletippMatch'      => 'system/modules/simpletipp/SimpletippMatch.php',
+	'SimpletippQuestions'  => 'system/modules/simpletipp/SimpletippQuestions.php',
 	'SimpletippSettings'   => 'system/modules/simpletipp/SimpletippSettings.php',
+	
 	'SimpletippCallbacks'  => 'system/modules/simpletipp/SimpletippCallbacks.php'
 ));
 
@@ -47,6 +49,7 @@ TemplateLoader::addFiles(array(
 	'simpletipp_highscore_default'	=> 'system/modules/simpletipp/templates',
 	'simpletipp_match_default' 		=> 'system/modules/simpletipp/templates',
 	'simpletipp_matches_default' 	=> 'system/modules/simpletipp/templates',
+	'simpletipp_questions_default' 	=> 'system/modules/simpletipp/templates',
 	'simpletipp_userselect' 		=> 'system/modules/simpletipp/templates'
 ));
 

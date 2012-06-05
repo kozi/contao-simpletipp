@@ -36,6 +36,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
+		'ctable'                      => array('tl_simpletipp_questions'),
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
 		'onload_callback' => array
@@ -98,6 +99,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 					'href'                => 'act=edit&type=results',
 					'icon'                => 'tablewizard.gif'
 			),
+			'questions' => array
+			(
+					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
+					'href'                => 'table=tl_simpletipp_questions',
+					'icon'                => 'system/modules/simpletipp/html/question-balloon.png'
+			),
 			'member' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
@@ -126,6 +133,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		'default'                     => '{simpletipp_legend}, competition, matchgroup, teaser;{simpletipp_legend_spiele}, matches;',
 		'participants'                => '{simpletipp_legend}, participants;',
 		'results'                     => '{simpletipp_legend}, results;',
+		
 	),
 
 	// Fields
@@ -176,8 +184,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'options_callback'        => array('tl_simpletipp', 'getMatches'),
 				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr',
 						'multiple' => true)
-				),
-		
+		),
 		'results' => array
 		(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['results'],
@@ -186,7 +193,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'sql'                     => 'blob NULL',
 				'input_field_callback'    => array('tl_simpletipp', 'getMatchResultInputs')
 		),
-
 		'participants' => array
 		(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
@@ -195,7 +201,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'options_callback'        => array('tl_simpletipp', 'getParticipants'),
 				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr', 'multiple' => true)
 		),
-		
 		'published' => array
 		(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['published'],
@@ -203,7 +208,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'inputType'               => 'checkbox',
 				'eval'                    => array('doNotCopy'=>true)
 		)
-		
 		
 	)
 );
@@ -235,33 +239,32 @@ class tl_simpletipp extends Backend {
 
 	public function getMatches(DataContainer $dc) {
 		$matches = array();
-		
+	
 		$competition = $dc->activeRecord->competition;
 		$matchgroup = $dc->activeRecord->matchgroup;
-		$result = null;		
-		
+		$result = null;
+	
 		if (!$competition) {
 			// Kein(e) Liga/Wettbewerb gewählt
 			return $matches;
 		}
 		else if ($matchgroup){
 			$result = $this->Database->prepare("SELECT * FROM tl_simpletipp_matches WHERE matchgroup = ? AND competition = ? ORDER BY deadline ASC")
-						->execute($matchgroup, $competition);
+			->execute($matchgroup, $competition);
 		}
 		else {
 			$result = $this->Database->prepare("SELECT * FROM tl_simpletipp_matches WHERE competition = ? ORDER BY deadline ASC")
-						->execute($competition);
+			->execute($competition);
 		}
-		
+	
 		while ($result->next()) {
 			$dl = date($GLOBALS['TL_CONFIG']['datimFormat'],$result->deadline);
 			$matches[$result->id] = '<span  class="dline">'.$dl.'</span> '
-									.'<span class="title">'.$result->title.'</span>';
+			.'<span class="title">'.$result->title.'</span>';
 		}
 		return $matches;
 	}
-	
-	
+
 	public function getParticipants(DataContainer $dc) {
 		$member = array();
 
@@ -364,7 +367,7 @@ class tl_simpletipp extends Backend {
 	
 	public function getMatchResultInputs(DataContainer $dc) {
 		$matches = unserialize($dc->activeRecord->matches);
-		$legend = "Ergebnisse";
+		$legend = $GLOBALS['TL_LANG']['tl_simpletipp']['results'][0];
 		if (!$matches) {
 			$content = $GLOBALS['TL_LANG']['MSC']['noResult'];
 		}
@@ -426,7 +429,6 @@ class tl_simpletipp extends Backend {
 		$this->updateTipps($updatedIds);
 	}
 	
-	
 	private function updateTipps($ids) {
 		if (count($ids) === 0) {
 			//  Nothing to do
@@ -463,7 +465,7 @@ class tl_simpletipp extends Backend {
 		}
 
 		$type = $this->Input->get('type');
-		if ($type === 'participants' || $type === 'results') {
+		if ($type === 'participants' || $type === 'results' || $type === 'questions') {
 			$GLOBALS['TL_DCA']['tl_simpletipp']['palettes']['default'] =
 				$GLOBALS['TL_DCA']['tl_simpletipp']['palettes'][$type];
 		} 

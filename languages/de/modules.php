@@ -18,6 +18,7 @@
 $GLOBALS['TL_LANG']['MOD']['simpletipp'] = array("Tippspiel", "Einfaches Tippspiel");
  
 $GLOBALS['TL_LANG']['FMD']['simpletipp']           = 'Simpletipp';
+$GLOBALS['TL_LANG']['FMD']['simpletipp_questions'] = array("Simpletipp Fragen", "Simpletipp Fragen");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_matches']   = array("Simpletipp Spiele", "Simpletipp Spiele");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_match']     = array("Simpletipp Einzelnes Spiel", "Simpletipp Einzelnes Spiel");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_highscore'] = array("Simpletipp Rangliste", "Simpletipp Rangliste");
