@@ -4,7 +4,7 @@
 	<?php foreach($this->arr as $user):
 		$sel = ($user->id == $this->selectedUser) ? ' selected="selected"':''; 
 		?>
-		<option<?php echo $sel;?> value="<?php echo $user->link; ?>"><?php echo $user->firstname.' '.$user->lastname; ?></option>
+		<option<?php echo $sel;?> value="<?php echo $user->link; ?>"><?php echo $user->firstname.' '.$user->lastname.' ('.$user->username.')'; ?></option>
 	<?php endforeach; ?>
 	</select>
 </div>

@@ -67,17 +67,23 @@ class SimpletippHighscore extends Simpletipp {
 			$sql_where = " AND id in (".implode(',', $this->groups).")";
 		}
 		
-		$result = $this->Database->execute("SELECT matches, participants FROM tl_simpletipp"
+		$result = $this->Database->execute("SELECT matches, participants, all_members FROM tl_simpletipp"
 					." WHERE published = '1'".$sql_where);
 		
 		$matches      = array();
 		$participants = array();
+		$all_members  = false; 
 		while($result->next()) {
+			  
 			$matches = array_merge($matches, unserialize($result->matches));
-			$participants = array_merge($participants, unserialize($result->participants));
+			
+			$all_members = ($all_members || ($result->all_members == '1'));
+			if ($result->all_members != '1') {
+				$participants = array_merge($participants, unserialize($result->participants));
+			}
 		}
+		
 		$matches      = array_unique($matches);
-		$participants = array_unique($participants);
 
 		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id,"
 		.$this->avatarSql
@@ -103,9 +109,14 @@ class SimpletippHighscore extends Simpletipp {
 		}
 
 		// Jetzt noch die member, die noch nichts getippt haben hinzufügen
+		$where = "";
+		if (!$all_members) {
+			$participants = array_unique($participants);
+			$where = " WHERE tl_member.id in (".implode(',', $participants).")";
+		}
+		
 		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id"
-			." FROM tl_member"
-			." WHERE tl_member.id in (".implode(',', $participants).")");
+			." FROM tl_member".$where);
 		while($result->next()) {
 			$row = (Object) $result->row();
 			if (!array_key_exists($row->member_id, $table)) {

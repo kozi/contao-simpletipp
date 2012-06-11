@@ -99,12 +99,20 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 					'href'                => 'act=edit&type=results',
 					'icon'                => 'tablewizard.gif'
 			),
+			
+			/******************************************************
+			 ******************************************************
+			 ******************************************************
 			'questions' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
 					'href'                => 'table=tl_simpletipp_questions',
 					'icon'                => 'system/modules/simpletipp/html/question-balloon.png'
 			),
+			******************************************************
+			******************************************************
+			******************************************************/
+			
 			'member' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
@@ -131,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	'palettes' => array
 	(
 		'default'                     => '{simpletipp_legend}, competition, matchgroup, teaser;{simpletipp_legend_spiele}, matches;',
-		'participants'                => '{simpletipp_legend}, participants;',
+		'participants'                => '{simpletipp_legend}, all_members, participants;',
 		'results'                     => '{simpletipp_legend}, results;',
 		
 	),
@@ -193,6 +201,15 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'sql'                     => 'blob NULL',
 				'input_field_callback'    => array('tl_simpletipp', 'getMatchResultInputs')
 		),
+		
+		'all_members' => array
+		(
+				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['all_members'],
+				'exclude'                 => true,
+				'inputType'               => 'checkbox',
+				'eval'                    => array('doNotCopy'=>true, 'isBoolean'=>true)
+		),
+		
 		'participants' => array
 		(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
@@ -328,9 +345,13 @@ class tl_simpletipp extends Backend {
 			$lbl .= ' / ';
 		}
 		
-		if (is_array($participants)) {
-		$lbl .= '<span class="participants">'.count($participants)
-			.' '.$GLOBALS['TL_LANG']['tl_simpletipp']['participants'][0].'</span> ';
+		
+		if ($row['all_members'] == '1'){
+			$lbl .= '<span class="participants">Alle</span>';
+		}
+		elseif (is_array($participants)) {
+			$lbl .= '<span class="participants">'.count($participants)
+				.' '.$GLOBALS['TL_LANG']['tl_simpletipp']['participants'][0].'</span> ';
 		}
 		
 		if ($args === null) {

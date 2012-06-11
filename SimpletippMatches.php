@@ -72,8 +72,9 @@ class SimpletippMatches extends Simpletipp {
 		$result = $this->Database->execute("SELECT * FROM tl_simpletipp WHERE published = '1'");
 		$competitions = array();
 		while ($result->next()) {
-			$participants = unserialize($result->participants);
-			if (in_array($this->memberId, $participants) || $this->memberId == null) {
+			$all_members = ($result->all_members == '1');
+
+			if ($all_members || in_array($this->memberId, $participants) || $this->memberId == null) {
 
 				$competition = (Object) $result->row();
 				
@@ -84,7 +85,7 @@ class SimpletippMatches extends Simpletipp {
 					$competition->matches = false;
 				}
 
-				$participants              = $this->getParticipants(unserialize($competition->participants));
+				$participants              = $this->getParticipants($all_members, $competition->participants);
 				$competition->userselect   = $this->getUserSelect($participants, $this->memberId);
 				$competitions[]            = $competition;
 			}
@@ -104,10 +105,17 @@ class SimpletippMatches extends Simpletipp {
 
 	}
 
-	private function getParticipants($mIds) {
+	private function getParticipants($all_members, $strIdArray) {
+
+		$where = "";
+		if (!$all_members) {
+			$mIds = unserialize($strIdArray);
+			$where = " WHERE id in (".implode(',', $mIds).")";
+		}
+		
 		$result = $this->Database->execute(
-				"SELECT id, username, firstname, lastname"
-				." FROM tl_member WHERE id in (".implode(',', $mIds).")"
+				"SELECT id, username, firstname, lastname FROM tl_member"
+				.$where
 				." ORDER BY lastname ASC, firstname ASC");
 		
 		$members = array();

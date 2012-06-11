@@ -45,6 +45,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 				(
 						'tables'     => array('tl_simpletipp', 'tl_simpletipp_questions'),
 						'icon'       => 'system/modules/simpletipp/html/soccer.png',
+						'javascript' => 'system/modules/simpletipp/html/be_script.js',
 						'stylesheet' => 'system/modules/simpletipp/html/be_style.css',
 						'settings'   => array('SimpletippSettings', 'settings'),
 						'import'     => array('SimpletippSettings', 'importMatches'),

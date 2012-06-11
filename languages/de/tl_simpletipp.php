@@ -36,6 +36,8 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['results']      = array('Ergebnisse', 'Erge
 $GLOBALS['TL_LANG']['tl_simpletipp']['result']       = array("Ergebnis", "Ergebnis");
 $GLOBALS['TL_LANG']['tl_simpletipp']['deadline']     = array("Deadline", "Deadline");
 
+$GLOBALS['TL_LANG']['tl_simpletipp']['all_members']  = array("Alle Mitglieder", "Alle registrierten Mitglieder können teilnehmen.");
+
 $GLOBALS['TL_LANG']['tl_simpletipp']['manage_questions'] = array('Fragen verwalten', 'Fragen verwalten');
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['new']      = array('Neue Tipprunde', 'Eine neue Tipprunde erstellen');

@@ -43,7 +43,7 @@
 			<td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
 		<?php endif; ?>
 	
-		<td class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname; ?></a></td>
+		<td class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname.' ('.$tipp->username.')'; ?></a></td>
 		<td class="tipp"><?php echo $tipp->tipp; ?></td>
 		<td class="points"><?php echo str_repeat($this->imgtag_soccerball.' ', $tipp->points); ?></td>
 	</tr>

@@ -6,6 +6,7 @@ CREATE TABLE `tl_simpletipp` (
   `deadline` int(10) unsigned NOT NULL default '0',
   `teaser` text NULL,
   `matches` blob NULL, 
+  `all_members` char(1) NOT NULL default '',
   `participants` blob NULL,
   `published` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
