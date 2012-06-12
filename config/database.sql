@@ -46,6 +46,7 @@ CREATE TABLE `tl_simpletipp_questions` (
   `points` int(10) unsigned NOT NULL default '0',  
   `question` text NULL,
   `answers` blob NULL,
+  `importer` char(1) NOT NULL default '',
   `published` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

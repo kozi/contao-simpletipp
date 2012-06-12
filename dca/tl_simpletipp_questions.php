@@ -37,9 +37,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_questions'] = array(
 	(
 		'dataContainer'               => 'Table',
 		'ptable'                      => 'tl_simpletipp',
-		'enableVersioning'            => false,
-		'onload_callback'			  => array(),
-		'onsubmit_callback'			  => array()
+		'enableVersioning'            => false
 	),
 
 	// List
@@ -97,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_questions'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'					=> '{simpletipp_questions_legend}, question, points, answers;',
+		'default'					=> '{legend}, question, points, answers;{legend_importer}, importer;',
 	),
 
 	// Fields
@@ -126,12 +124,26 @@ $GLOBALS['TL_DCA']['tl_simpletipp_questions'] = array(
 				'inputType'               => 'checkbox',
 				'eval'                    => array('doNotCopy'=>true, 'tl_class' => 'w50')
 		),
+		'importer' => array
+		(
+				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_questions']['importer'],
+				'inputType'               => 'textarea',
+				'exclude'                 => true,
+				'eval'                    => array('doNotShow'=>true, 'decodeEntities' => true),
+				'load_callback'           => array(
+						array('tl_simpletipp_questions', 'clearImporter')
+				),
+				'save_callback'           => array(
+						array('tl_simpletipp_questions', 'importAnswers')
+				),
+				
+		),
 		'answers' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_questions']['answers'],
 			'exclude'                 => true,
 			'inputType'               => 'listWizard',
-			'eval'					  => array('tl_class' => 'long clr' , 'mandatory'=>true)
+			'eval'					  => array('tl_class' => 'long clr' , 'mandatory' => false)
 		)
 		
 		
@@ -153,52 +165,6 @@ class tl_simpletipp_questions extends Backend {
 	public function __construct() {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
-	}
-
-	public function saveQuestionInputs(DataContainer $dc) {
-		
-		$pid = $this->Input->post('simpletipp_questions_pid');
-		
-		$ids       = $this->Input->post('id');
-		$delete    = $this->Input->post('delete');
-		$points    = $this->Input->post('points');
-		$questions = $this->Input->post('question');
-		$answers   = $this->Input->post('answers');
-
-		if (!$pid) {
-			return false;
-		}
-		
-		$i = 0;
-		
-		for ($i=0;$i < count($ids);$i++) {
-			$id = $ids[$i];
-			$q  = $questions[$i];
-			$p  = $points[$i];
-			$a  = $answers[$i];
-			
-			// convert answers to array and serialize
-			$a = array_map('trim', explode("\n", $a));
-			if (is_array($delete) && in_array($id, $delete)) {
-				// delete entry
-				$result = $this->Database->prepare("DELETE FROM tl_simpletipp_questions"
-						." WHERE id = ?")->execute($id);				
-			}
-			else if ($id == '-1') {
-				// new entry
-				if (strlen($q) && count($a) > 0) {
-					$result = $this->Database->prepare("INSERT INTO tl_simpletipp_questions"
-						." (pid,tstamp,question,answers, points) VALUES (?, ?, ?, ?, ?)")
-						->execute($pid,time(),$q, serialize($a), $p);
-				}
-			}
-			else {
-				// update entry
-				$result = $this->Database->prepare("UPDATE tl_simpletipp_questions"
-						." SET tstamp=?, question=?, answers=?, points=? WHERE id=?")
-						->execute(time(), $q, serialize($a), $p, $id);
-			}
-		} 
 	}
 
 	public function toggleIcon($row, $href, $label, $title, $icon, $attributes) {
@@ -242,10 +208,39 @@ class tl_simpletipp_questions extends Backend {
 		$this->createNewVersion('tl_simpletipp_questions', $intId);
 	}
 	
+	public function clearImporter($varValue, DataContainer $dc) {
+		return '';
+	}
+	
+	public function importAnswers($varValue, DataContainer $dc) {
+		if (strlen($varValue) === 0) {
+			return '';
+		}
+		
+		$arr = explode("\n", $varValue);
+		if (count($arr) <= 2) {
+			// values seperated by , or ;
+			$arr = explode(",", $varValue);
+			if (count($arr) <= 2) {
+				$arr = explode(";", $varValue);
+			}
+		}
+		$arr = array_filter(array_map('trim', $arr));
+
+		$result = $this->Database->prepare("UPDATE tl_simpletipp_questions"
+				." SET tstamp = ?, answers = ? WHERE id = ?")
+				->execute(time(), serialize($arr), $dc->id);
+		return '';
+	}
+	
 	public function addQuestions($arrRow) {
-		$a = unserialize($arrRow['answers']);
-		$a = substr(implode(", ", $a), 0, 60);
-		return sprintf('<strong>%s</strong> (%s Punkte) <em class="answers">%s</em>',
+		$a = implode(", ", unserialize($arrRow['answers']));
+		
+		if (strlen($a) > 30) {
+			$a = substr($a, 0, 30).'...';
+		}
+			
+		return sprintf('<strong>%s</strong> <span class="points">%s Punkt(e)</span> <em class="answers">%s</em>',
 			$arrRow['question'],
 			$arrRow['points'],
 			$a);

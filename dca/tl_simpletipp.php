@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		'enableVersioning'            => true,
 		'onload_callback' => array
 		(
-				array('tl_simpletipp', 'switchPalette')
+		array('tl_simpletipp', 'switchPalette')
 		),
 		'onsubmit_callback' => array
 		(
@@ -99,20 +99,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 					'href'                => 'act=edit&type=results',
 					'icon'                => 'tablewizard.gif'
 			),
-			
-			/******************************************************
-			 ******************************************************
-			 ******************************************************
 			'questions' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
 					'href'                => 'table=tl_simpletipp_questions',
 					'icon'                => 'system/modules/simpletipp/html/question-balloon.png'
 			),
-			******************************************************
-			******************************************************
-			******************************************************/
-			
 			'member' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
