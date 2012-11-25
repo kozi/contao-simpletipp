@@ -6,6 +6,14 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
+<div class="simpletipp_filter">
+<ul>
+<?php foreach($this->filter->options as $filter): ?>
+	<li<?php echo $filter['cssClass'];?>><a href="<?php echo $filter['href']; ?>"><?php echo $filter['title']; ?></a></li>
+<?php endforeach; ?>
+</ul>
+</div>
+
 <table>
 	<thead><tr>
 		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['position'][0]; ?></th>

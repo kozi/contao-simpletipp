@@ -6,21 +6,26 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 		
-<h2><?php echo $this->match; ?></h2>
-		
+<h2><?php echo $this->match; ?> <span class="result"><?php echo $this->result;?></span></h2>
+
+<div class="match">
+	<span class="<?php echo $this->team_h; ?>"></span>
+	<span class="<?php echo $this->team_a; ?>"></span>
+</div>
+
 <table>
 	<thead>
 	<tr>
 		<?php if($this->showAvatar): ?>
-			<th colspan="4" class="matchtitle">
+			<th colspan="2" class="matchtitle">
 		<?php else: ?>
-			<th colspan="3" class="matchtitle">
+			<th class="matchtitle">
 		<?php endif; ?>
-			<span class="result"><?php echo $this->result;?></span>
 			<?php echo $this->match; ?>
-			<em>(<?php echo $this->competition;?>, <?php echo $this->matchgroup;?>)</em>
-			
 		</th>
+		<th class="result"><?php echo $this->result;?></th>
+		<th></th>
+		
 	</tr>
 	<tr>
 

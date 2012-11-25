@@ -2,29 +2,17 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright	Copyright Martin Kozianka 2011-2012
- * @author		Martin Kozianka
- * @package		simpletipp
+ * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
+ * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @package    simpletipp
+ * @license    LGPL
+ * @filesource
  */
+
 
 /**
  * Class SimpletippHighscore
@@ -34,9 +22,14 @@
  * @package    Controller
  */
  
+
+// HallOfFame
+
 class SimpletippHighscore extends Simpletipp {
-	private $i = 0;
-	private $groups; 
+	private $participants  = null;
+	private $filter        = null;
+	private $i             = 0;
+	
 	protected $strTemplate = 'simpletipp_highscore_default';
 
 	public function generate() {
@@ -55,49 +48,31 @@ class SimpletippHighscore extends Simpletipp {
 	}
 	
 	protected function compile() {
-		parent::compile();
-
-		$this->groups = array_map('intval', unserialize($this->simpletipp_groups));
-
-		if (in_array(0, $this->groups)){
-			// 0 means all groups
-			$sql_where = "";
-		}
-		else {
-			$sql_where = " AND id in (".implode(',', $this->groups).")";
-		}
+		$this->initSimpletipp();
 		
-		$result = $this->Database->execute("SELECT matches, participants, all_members FROM tl_simpletipp"
-					." WHERE published = '1'".$sql_where);
-		
-		$matches      = array();
-		$participants = array();
-		$all_members  = false; 
-		while($result->next()) {
-			  
-			$matches = array_merge($matches, unserialize($result->matches));
-			
-			$all_members = ($all_members || ($result->all_members == '1'));
-			if ($result->all_members != '1') {
-				$participants = array_merge($participants, unserialize($result->participants));
-			}
-		}
-		
-		$matches      = array_unique($matches);
+		$result = $this->Database->prepare("SELECT * FROM tl_simpletipp"
+			." WHERE id = ? AND published = ?")->execute($this->simpletipp_group, '1');
 
+		if ($result->numRows == 0) {
+			return;
+		}
+
+		$this->getParticipants();
+		$this->getFilter();
+		
 		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id,"
 		.$this->avatarSql
 		." SUM(tendency) AS sum_tendency,"
 		." SUM(difference) AS sum_difference,"
 		." SUM(perfect) AS sum_perfect,"
 		." SUM(wrong) AS sum_wrong,"
-		." SUM(perfect*".$this->factorPerfect
-				." + difference*".$this->factorDifference
-				." + tendency*".$this->factorTendency
+		." SUM(perfect*".$this->pointFactors->perfect
+				." + difference*".$this->pointFactors->difference
+				." + tendency*".$this->pointFactors->tendency
 				.") AS points"
 		." FROM tl_simpletipp_tipps AS tipps, tl_member"
 		." WHERE tipps.member_id = tl_member.id"
-		." AND tipps.match_id in (".implode(',', $matches).")"
+		." AND tipps.match_id in (".implode(',', $this->group->matches).")"
 		." GROUP BY tl_member.id"
 		." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
 		
@@ -105,30 +80,111 @@ class SimpletippHighscore extends Simpletipp {
 
 		while($result->next()) {
 			$row = (Object) $result->row();
+			$row->avatar = ($row->avatar != '') ? $row->avatar : $GLOBALS['TL_CONFIG']['uploadPath'].'/avatars/default128.png';
 			$table[$row->member_id] = $this->getRow($row);
 		}
 
 		// Jetzt noch die member, die noch nichts getippt haben hinzufügen
-		$where = "";
-		if (!$all_members) {
-			$participants = array_unique($participants);
-			$where = " WHERE tl_member.id in (".implode(',', $participants).")";
-		}
-		
-		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id"
-			." FROM tl_member".$where);
+		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
+			." WHERE tl_member.id in (".implode(',', $this->participants).")");
 		while($result->next()) {
 			$row = (Object) $result->row();
+			$row->avatar = ($row->avatar != '') ? $row->avatar : $GLOBALS['TL_CONFIG']['uploadPath'].'/avatars/default128.png';
 			if (!array_key_exists($row->member_id, $table)) {
 				$table[$row->member_id] = $this->getRow($row);
 			}
 		}
 
 		$this->Template->summary    = $this->summary;
+		$this->Template->filter     = $this->filter;
 		$this->Template->table      = $table;
 		 
 	}
+	
+	private function getFilter() {
+		$this->filter = new stdClass;
+		$this->type   = null;
+		
+		$show = $this->Input->get('show');
 
+		$this->filter->options = array();
+		$this->filter->options[] = array('title' => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][0],
+				'desc' => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][1],
+				'href' => $this->addToUrl('show='),
+				'cssClass' => (!$show) ? ' class="all active"': ' class="all"');
+		
+		$this->filter->options[] = array('title' => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][0],
+				'desc' => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][1],
+				'href' => $this->addToUrl('show=bestof'),
+				'cssClass' => ($show == 'bestof') ? ' class="bestof active"': ' class="bestof"');
+		
+		$this->filter->options[] = array('title' => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][0],
+				'desc' => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][1],
+				'href' => $this->addToUrl('show=current'),
+				'cssClass' => ($show == 'current') ? ' class="current active"': ' class="current"');
+
+		foreach($this->group->matchgroups as $mg) {
+			$this->filter->options[] = array('title' => $mg->short,
+					'desc' => $mg->title,
+					'href' => $this->addToUrl('show='.$mg->title),
+					'cssClass' => ($show == $mg->title) ? ' class="matchgroup active"': ' class="matchgroup"');
+		}
+		
+		
+		
+		
+		if ('bestof' == $show) {
+			$this->type     = 'bestof';
+			return;
+		} elseif ('current' == $show) {
+			$this->type     = 'current';
+		
+			// set $show to current matchgroup
+			$result = $this->Database->prepare("SELECT matchgroup FROM tl_simpletipp_matches"
+					." WHERE id IN (".implode(',', $this->group->matches).")"
+					." AND result != ''"
+					." ORDER BY deadline")->limit(1)->execute();
+			
+			if ($result->numRows == 0) {
+				$result = $this->Database->prepare("SELECT matchgroup FROM tl_simpletipp_matches"
+						." WHERE id IN (".implode(',', $this->group->matches).")"
+						." ORDER BY deadline")->limit(1)->execute();
+			}
+
+			if ($result->numRows == 1) {
+				$show = $result->matchgroup;
+			}
+			
+		
+		}			
+
+		if ($show) {
+			$this->type = ($this->type == null) ? $show : $this->type;
+			$result = $this->Database->prepare("SELECT id FROM tl_simpletipp_matches"
+					." WHERE id IN (".implode(',', $this->group->matches).")"
+					." AND matchgroup = ?")->execute($show);
+				
+			$this->group->matches = array();
+			while($result->next()) {
+				$this->group->matches[] = $result->id;
+			}
+		}
+
+		
+	}
+	
+	private function getParticipants() {
+		$participants = array();
+		$result = $this->Database->execute("SELECT id, groups FROM tl_member");
+
+		while($result->next()) {
+			$groups = unserialize($result->groups);
+			if (is_array($groups) && in_array($this->group->participant_group, $groups)) {
+				$participants[] = $result->id;
+			}
+		}
+		$this->participants = $participants; 
+	}
 	
 	private function getRow($r) {
 		$r->memberLink = $this->frontendUrlById($this->simpletipp_matches_page,
@@ -141,5 +197,11 @@ class SimpletippHighscore extends Simpletipp {
 		
 		return $r;
 	}
+	
+	
+	private function getBestOf() {
+	
+	}
+	
 } // END class SimpletippHighscore
 

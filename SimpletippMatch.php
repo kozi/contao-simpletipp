@@ -2,29 +2,17 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright	Copyright Martin Kozianka 2011-2012
- * @author		Martin Kozianka
- * @package		simpletipp
+ * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
+ * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @package    simpletipp
+ * @license    LGPL
+ * @filesource
  */
+
 
 /**
  * Class SimpletippMatch
@@ -54,7 +42,7 @@ class SimpletippMatch extends Simpletipp {
 	}
 	
 	protected function compile() {
-		parent::compile();
+		$this->initSimpletipp();
 		
 		$this->matchId = intval($this->Input->get('match'));
 
@@ -68,6 +56,11 @@ class SimpletippMatch extends Simpletipp {
 		if ($result->numRows) {
 			$match = (Object) $result->row();
 			$match->isStarted = (time() > $match->deadline);
+
+			$teams = explode("-", $match->title_short);
+			$match->team_h = standardize($teams[0]);
+			$match->team_a = standardize($teams[1]);
+				
 		}	
 
 		$result = $this->Database->prepare(
@@ -83,9 +76,9 @@ class SimpletippMatch extends Simpletipp {
 		while ($result->next()) {
 			$tipp = (Object) $result->row(); 
 
-			$tipp->points = $tipp->perfect * $this->factorPerfect
-					+ $tipp->difference * $this->factorDifference
-					+ $tipp->tendency   * $this->factorTendency;
+			$tipp->points = $tipp->perfect * $this->pointFactors->perfect
+					+ $tipp->difference * $this->pointFactors->difference
+					+ $tipp->tendency   * $this->pointFactors->tendency;
 			 
 			
 			$tipp->cssClass = ($i++ % 2 === 0 ) ? 'odd':'even';
@@ -102,12 +95,18 @@ class SimpletippMatch extends Simpletipp {
 			if (!$match->isStarted) {
 				$tipp->tipp = "?:?";
 			}
-				
+			
+			$tipp->avatar = ($tipp->avatar != '') ? $tipp->avatar : $GLOBALS['TL_CONFIG']['uploadPath'].'/avatars/default128.png';
+			
 			$tipps[] = $tipp;
 		}
-
+		
 		// Match
 		$this->Template->match       = $match->title;
+		
+		$this->Template->team_h       = $match->team_h;
+		$this->Template->team_a       = $match->team_a;
+		
 		$this->Template->result      = $match->result;
 		$this->Template->competition = $match->competition;
 		$this->Template->matchgroup  = $match->matchgroup;

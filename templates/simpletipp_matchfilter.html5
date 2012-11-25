@@ -1,0 +1,15 @@
+<div class="block simpletipp_filter" style="clear:both;">
+<ul>
+<?php foreach($this->date_filter as $link): ?>
+	<li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li>
+<?php endforeach; ?>
+</ul>
+
+<ul>
+<?php foreach($this->group_filter as $link): ?>
+	<li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li>
+<?php endforeach; ?>
+</ul>
+
+
+</div>

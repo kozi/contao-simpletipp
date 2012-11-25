@@ -4,39 +4,25 @@
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005-2012
- * @author     Leo Feyer <http://www.contao.org>
+ * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
+ * @author     Martin Kozianka <http://kozianka-online.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
 
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_matches'] =
 '{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_match_page,simpletipp_factor,simpletipp_template;'
+.'{simpletipp_legend},simpletipp_group,simpletipp_factor,simpletipp_template,simpletipp_match_page;'
 .'{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_highscore'] =
 '{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_groups,simpletipp_matches_page,simpletipp_factor,simpletipp_template;'
+.'{simpletipp_legend},simpletipp_group,simpletipp_matches_page,simpletipp_factor,simpletipp_template;'
 .'{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_match'] =
@@ -46,21 +32,29 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_match'] =
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_questions'] =
 '{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_groups,simpletipp_template;'
+.'{simpletipp_legend},simpletipp_group,simpletipp_template;'
+.'{expert_legend:hide},guests,cssID,space';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_userselect'] =
+'{title_legend},name,headline,type;'
+.'{simpletipp_legend},simpletipp_group;'
 .'{expert_legend:hide},guests,cssID,space';
 
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_calendar'] =
+'{title_legend},name,type;'
+.'{simpletipp_legend},simpletipp_factor,simpletipp_matches_page;';
 
 /**
  * Add fields to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_groups'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_group'] = array
 (
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_groups'],
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_group'],
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options_callback'        => array('tl_module_simpletipp', 'getSimpletippGroups'),
-		'eval'                    => array('multiple' => true, 'mandatory' => true, 'tl_class'=>'long')
+		'eval'                    => array('multiple' => false, 'mandatory' => true, 'tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_match_page'] = array
@@ -68,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_match_page'] = array
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_match_page'],
 		'exclude'                 => true,
 		'inputType'               => 'pageTree',
-		'eval'                    => array('fieldType'=>'radio')
+		'eval'                    => array('fieldType'=>'radio', 'tl_class' => 'long')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_matches_page'] = array
@@ -76,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_matches_page'] = array
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_matches_page'],
 		'exclude'                 => true,
 		'inputType'               => 'pageTree',
-		'eval'                    => array('fieldType'=>'radio')
+		'eval'                    => array('fieldType'=>'radio', 'tl_class' => 'long')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_factor'] = array
@@ -90,13 +84,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_factor'] = array
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_template'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options_callback'        => array('tl_module_simpletipp', 'getSimpletippTemplates'),
-	'eval'                    => array('tl_class'=>'w50')
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_template'],
+		'exclude'                 => true,
+		'inputType'               => 'select',
+		'options_callback'        => array('tl_module_simpletipp', 'getSimpletippTemplates'),
+		'eval'                    => array('tl_class'=>'w50')
 );
-
 
 /**
  * Class tl_module
@@ -124,11 +117,10 @@ class tl_module_simpletipp extends Backend {
 		
 		return $this->getTemplateGroup($prefix, $intPid);
 	}
-	
+		
 	public function getSimpletippGroups() {
 		$groups = array();
-		$groups[0] = 'All Simpletipp groups';
-		
+
 		$result = $this->Database->execute(
 			"SELECT id, competition, matchgroup FROM tl_simpletipp ORDER BY competition DESC, matchgroup DESC");
 		

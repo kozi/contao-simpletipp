@@ -1,0 +1,311 @@
+# 1. Bundesliga 2012/2013
+# Spiele der 1. Bundesliga 2012/2013
+2012-08-24 20:30:00 ; Borussia Dortmund - Werder Bremen ; 01. Spieltag ; Dortmund - Bremen
+2012-08-25 15:30:00 ; SpVgg Greuther Fürth - Bayern München ; 01. Spieltag ; Fürth - Bayern
+2012-08-25 15:30:00 ; Eintracht Frankfurt - Bayer Leverkusen ; 01. Spieltag ; Frankfurt - Leverkusen
+2012-08-25 15:30:00 ; Hamburger SV - 1. FC Nürnberg ; 01. Spieltag ; Hamburg - Nürnberg
+2012-08-25 15:30:00 ; FC Augsburg - Fortuna Düsseldorf ; 01. Spieltag ; Augsburg - Düsseldorf
+2012-08-25 15:30:00 ; SC Freiburg - 1. FSV Mainz 05 ; 01. Spieltag ; Freiburg - Mainz
+2012-08-25 15:30:00 ; VfB Stuttgart - VfL Wolfsburg ; 01. Spieltag ; Stuttgart - Wolfsburg
+2012-08-25 15:30:00 ; Bor. Mönchengladbach - 1899 Hoffenheim ; 01. Spieltag ; Gladbach - Hoffenheim
+2012-08-25 15:30:00 ; Hannover 96 - FC Schalke 04 ; 01. Spieltag ; Hannover - Schalke
+2012-09-01 15:30:00 ; Fortuna Düsseldorf - Bor. Mönchengladbach ; 02. Spieltag ; Düsseldorf - Gladbach
+2012-09-01 15:30:00 ; 1. FSV Mainz 05 - SpVgg Greuther Fürth ; 02. Spieltag ; Mainz - Fürth
+2012-09-01 15:30:00 ; 1899 Hoffenheim - Eintracht Frankfurt ; 02. Spieltag ; Hoffenheim - Frankfurt
+2012-09-01 15:30:00 ; 1. FC Nürnberg - Borussia Dortmund ; 02. Spieltag ; Nürnberg - Dortmund
+2012-09-01 15:30:00 ; Werder Bremen - Hamburger SV ; 02. Spieltag ; Bremen - Hamburg
+2012-09-01 15:30:00 ; VfL Wolfsburg - Hannover 96 ; 02. Spieltag ; Wolfsburg - Hannover
+2012-09-01 15:30:00 ; Bayer Leverkusen - SC Freiburg ; 02. Spieltag ; Leverkusen - Freiburg
+2012-09-01 15:30:00 ; FC Schalke 04 - FC Augsburg ; 02. Spieltag ; Schalke - Augsburg
+2012-09-01 15:30:00 ; Bayern München - VfB Stuttgart ; 02. Spieltag ; Bayern - Stuttgart
+2012-09-15 15:30:00 ; Eintracht Frankfurt - Hamburger SV ; 03. Spieltag ; Frankfurt - Hamburg
+2012-09-15 15:30:00 ; SpVgg Greuther Fürth - FC Schalke 04 ; 03. Spieltag ; Fürth - Schalke
+2012-09-15 15:30:00 ; FC Augsburg - VfL Wolfsburg ; 03. Spieltag ; Augsburg - Wolfsburg
+2012-09-15 15:30:00 ; SC Freiburg - 1899 Hoffenheim ; 03. Spieltag ; Freiburg - Hoffenheim
+2012-09-15 15:30:00 ; Hannover 96 - Werder Bremen ; 03. Spieltag ; Hannover - Bremen
+2012-09-15 15:30:00 ; VfB Stuttgart - Fortuna Düsseldorf ; 03. Spieltag ; Stuttgart - Düsseldorf
+2012-09-15 15:30:00 ; Bor. Mönchengladbach - 1. FC Nürnberg ; 03. Spieltag ; Gladbach - Nürnberg
+2012-09-15 15:30:00 ; Bayern München - 1. FSV Mainz 05 ; 03. Spieltag ; Bayern - Mainz
+2012-09-15 15:30:00 ; Borussia Dortmund - Bayer Leverkusen ; 03. Spieltag ; Dortmund - Leverkusen
+2012-09-22 15:30:00 ; Fortuna Düsseldorf - SC Freiburg ; 04. Spieltag ; Düsseldorf - Freiburg
+2012-09-22 15:30:00 ; Hamburger SV - Borussia Dortmund ; 04. Spieltag ; Hamburg - Dortmund
+2012-09-22 15:30:00 ; 1. FSV Mainz 05 - FC Augsburg ; 04. Spieltag ; Mainz - Augsburg
+2012-09-22 15:30:00 ; 1899 Hoffenheim - Hannover 96 ; 04. Spieltag ; Hoffenheim - Hannover
+2012-09-22 15:30:00 ; 1. FC Nürnberg - Eintracht Frankfurt ; 04. Spieltag ; Nürnberg - Frankfurt
+2012-09-22 15:30:00 ; Werder Bremen - VfB Stuttgart ; 04. Spieltag ; Bremen - Stuttgart
+2012-09-22 15:30:00 ; VfL Wolfsburg - SpVgg Greuther Fürth ; 04. Spieltag ; Wolfsburg - Fürth
+2012-09-22 15:30:00 ; Bayer Leverkusen - Bor. Mönchengladbach ; 04. Spieltag ; Leverkusen - Gladbach
+2012-09-22 15:30:00 ; FC Schalke 04 - Bayern München ; 04. Spieltag ; Schalke - Bayern
+2012-09-25 15:30:00 ; Eintracht Frankfurt - Borussia Dortmund ; 05. Spieltag ; Frankfurt - Dortmund
+2012-09-25 15:30:00 ; SpVgg Greuther Fürth - Fortuna Düsseldorf ; 05. Spieltag ; Fürth - Düsseldorf
+2012-09-25 15:30:00 ; FC Augsburg - Bayer Leverkusen ; 05. Spieltag ; Augsburg - Leverkusen
+2012-09-25 15:30:00 ; SC Freiburg - Werder Bremen ; 05. Spieltag ; Freiburg - Bremen
+2012-09-25 15:30:00 ; Hannover 96 - 1. FC Nürnberg ; 05. Spieltag ; Hannover - Nürnberg
+2012-09-25 15:30:00 ; VfB Stuttgart - 1899 Hoffenheim ; 05. Spieltag ; Stuttgart - Hoffenheim
+2012-09-25 15:30:00 ; Bor. Mönchengladbach - Hamburger SV ; 05. Spieltag ; Gladbach - Hamburg
+2012-09-25 15:30:00 ; FC Schalke 04 - 1. FSV Mainz 05 ; 05. Spieltag ; Schalke - Mainz
+2012-09-25 15:30:00 ; Bayern München - VfL Wolfsburg ; 05. Spieltag ; Bayern - Wolfsburg
+2012-09-29 15:30:00 ; Fortuna Düsseldorf - FC Schalke 04 ; 06. Spieltag ; Düsseldorf - Schalke
+2012-09-29 15:30:00 ; Eintracht Frankfurt - SC Freiburg ; 06. Spieltag ; Frankfurt - Freiburg
+2012-09-29 15:30:00 ; Hamburger SV - Hannover 96 ; 06. Spieltag ; Hamburg - Hannover
+2012-09-29 15:30:00 ; 1899 Hoffenheim - FC Augsburg ; 06. Spieltag ; Hoffenheim - Augsburg
+2012-09-29 15:30:00 ; 1. FC Nürnberg - VfB Stuttgart ; 06. Spieltag ; Nürnberg - Stuttgart
+2012-09-29 15:30:00 ; Werder Bremen - Bayern München ; 06. Spieltag ; Bremen - Bayern
+2012-09-29 15:30:00 ; VfL Wolfsburg - 1. FSV Mainz 05 ; 06. Spieltag ; Wolfsburg - Mainz
+2012-09-29 15:30:00 ; Bayer Leverkusen - SpVgg Greuther Fürth ; 06. Spieltag ; Leverkusen - Fürth
+2012-09-29 15:30:00 ; Borussia Dortmund - Bor. Mönchengladbach ; 06. Spieltag ; Dortmund - Gladbach
+2012-10-06 15:30:00 ; SpVgg Greuther Fürth - Hamburger SV ; 07. Spieltag ; Fürth - Hamburg
+2012-10-06 15:30:00 ; FC Augsburg - Werder Bremen ; 07. Spieltag ; Augsburg - Bremen
+2012-10-06 15:30:00 ; 1. FSV Mainz 05 - Fortuna Düsseldorf ; 07. Spieltag ; Mainz - Düsseldorf
+2012-10-06 15:30:00 ; SC Freiburg - 1. FC Nürnberg ; 07. Spieltag ; Freiburg - Nürnberg
+2012-10-06 15:30:00 ; Hannover 96 - Borussia Dortmund ; 07. Spieltag ; Hannover - Dortmund
+2012-10-06 15:30:00 ; VfB Stuttgart - Bayer Leverkusen ; 07. Spieltag ; Stuttgart - Leverkusen
+2012-10-06 15:30:00 ; Bor. Mönchengladbach - Eintracht Frankfurt ; 07. Spieltag ; Gladbach - Frankfurt
+2012-10-06 15:30:00 ; FC Schalke 04 - VfL Wolfsburg ; 07. Spieltag ; Schalke - Wolfsburg
+2012-10-06 15:30:00 ; Bayern München - 1899 Hoffenheim ; 07. Spieltag ; Bayern - Hoffenheim
+2012-10-20 15:30:00 ; Fortuna Düsseldorf - Bayern München ; 08. Spieltag ; Düsseldorf - Bayern
+2012-10-20 15:30:00 ; Eintracht Frankfurt - Hannover 96 ; 08. Spieltag ; Frankfurt - Hannover
+2012-10-20 15:30:00 ; Hamburger SV - VfB Stuttgart ; 08. Spieltag ; Hamburg - Stuttgart
+2012-10-20 15:30:00 ; 1899 Hoffenheim - SpVgg Greuther Fürth ; 08. Spieltag ; Hoffenheim - Fürth
+2012-10-20 15:30:00 ; 1. FC Nürnberg - FC Augsburg ; 08. Spieltag ; Nürnberg - Augsburg
+2012-10-20 15:30:00 ; Werder Bremen - Bor. Mönchengladbach ; 08. Spieltag ; Bremen - Gladbach
+2012-10-20 15:30:00 ; VfL Wolfsburg - SC Freiburg ; 08. Spieltag ; Wolfsburg - Freiburg
+2012-10-20 15:30:00 ; Bayer Leverkusen - 1. FSV Mainz 05 ; 08. Spieltag ; Leverkusen - Mainz
+2012-10-20 15:30:00 ; Borussia Dortmund - FC Schalke 04 ; 08. Spieltag ; Dortmund - Schalke
+2012-10-27 15:30:00 ; Fortuna Düsseldorf - VfL Wolfsburg ; 09. Spieltag ; Düsseldorf - Wolfsburg
+2012-10-27 15:30:00 ; SpVgg Greuther Fürth - Werder Bremen ; 09. Spieltag ; Fürth - Bremen
+2012-10-27 15:30:00 ; FC Augsburg - Hamburger SV ; 09. Spieltag ; Augsburg - Hamburg
+2012-10-27 15:30:00 ; 1. FSV Mainz 05 - 1899 Hoffenheim ; 09. Spieltag ; Mainz - Hoffenheim
+2012-10-27 15:30:00 ; SC Freiburg - Borussia Dortmund ; 09. Spieltag ; Freiburg - Dortmund
+2012-10-27 15:30:00 ; Hannover 96 - Bor. Mönchengladbach ; 09. Spieltag ; Hannover - Gladbach
+2012-10-27 15:30:00 ; VfB Stuttgart - Eintracht Frankfurt ; 09. Spieltag ; Stuttgart - Frankfurt
+2012-10-27 15:30:00 ; FC Schalke 04 - 1. FC Nürnberg ; 09. Spieltag ; Schalke - Nürnberg
+2012-10-27 15:30:00 ; Bayern München - Bayer Leverkusen ; 09. Spieltag ; Bayern - Leverkusen
+2012-11-03 15:30:00 ; Eintracht Frankfurt - SpVgg Greuther Fürth ; 10. Spieltag ; Frankfurt - Fürth
+2012-11-03 15:30:00 ; Hamburger SV - Bayern München ; 10. Spieltag ; Hamburg - Bayern
+2012-11-03 15:30:00 ; 1899 Hoffenheim - FC Schalke 04 ; 10. Spieltag ; Hoffenheim - Schalke
+2012-11-03 15:30:00 ; 1. FC Nürnberg - VfL Wolfsburg ; 10. Spieltag ; Nürnberg - Wolfsburg
+2012-11-03 15:30:00 ; Werder Bremen - 1. FSV Mainz 05 ; 10. Spieltag ; Bremen - Mainz
+2012-11-03 15:30:00 ; Hannover 96 - FC Augsburg ; 10. Spieltag ; Hannover - Augsburg
+2012-11-03 15:30:00 ; Bayer Leverkusen - Fortuna Düsseldorf ; 10. Spieltag ; Leverkusen - Düsseldorf
+2012-11-03 15:30:00 ; Bor. Mönchengladbach - SC Freiburg ; 10. Spieltag ; Gladbach - Freiburg
+2012-11-03 15:30:00 ; Borussia Dortmund - VfB Stuttgart ; 10. Spieltag ; Dortmund - Stuttgart
+2012-11-10 15:30:00 ; Fortuna Düsseldorf - 1899 Hoffenheim ; 11. Spieltag ; Düsseldorf - Hoffenheim
+2012-11-10 15:30:00 ; SpVgg Greuther Fürth - Bor. Mönchengladbach ; 11. Spieltag ; Fürth - Gladbach
+2012-11-10 15:30:00 ; FC Augsburg - Borussia Dortmund ; 11. Spieltag ; Augsburg - Dortmund
+2012-11-10 15:30:00 ; 1. FSV Mainz 05 - 1. FC Nürnberg ; 11. Spieltag ; Mainz - Nürnberg
+2012-11-10 15:30:00 ; SC Freiburg - Hamburger SV ; 11. Spieltag ; Freiburg - Hamburg
+2012-11-10 15:30:00 ; VfL Wolfsburg - Bayer Leverkusen ; 11. Spieltag ; Wolfsburg - Leverkusen
+2012-11-10 15:30:00 ; VfB Stuttgart - Hannover 96 ; 11. Spieltag ; Stuttgart - Hannover
+2012-11-10 15:30:00 ; FC Schalke 04 - Werder Bremen ; 11. Spieltag ; Schalke - Bremen
+2012-11-10 15:30:00 ; Bayern München - Eintracht Frankfurt ; 11. Spieltag ; Bayern - Frankfurt
+2012-11-17 15:30:00 ; Eintracht Frankfurt - FC Augsburg ; 12. Spieltag ; Frankfurt - Augsburg
+2012-11-17 15:30:00 ; Hamburger SV - 1. FSV Mainz 05 ; 12. Spieltag ; Hamburg - Mainz
+2012-11-17 15:30:00 ; 1899 Hoffenheim - VfL Wolfsburg ; 12. Spieltag ; Hoffenheim - Wolfsburg
+2012-11-17 15:30:00 ; 1. FC Nürnberg - Bayern München ; 12. Spieltag ; Nürnberg - Bayern
+2012-11-17 15:30:00 ; Werder Bremen - Fortuna Düsseldorf ; 12. Spieltag ; Bremen - Düsseldorf
+2012-11-17 15:30:00 ; Hannover 96 - SC Freiburg ; 12. Spieltag ; Hannover - Freiburg
+2012-11-17 15:30:00 ; Bayer Leverkusen - FC Schalke 04 ; 12. Spieltag ; Leverkusen - Schalke
+2012-11-17 15:30:00 ; Bor. Mönchengladbach - VfB Stuttgart ; 12. Spieltag ; Gladbach - Stuttgart
+2012-11-17 15:30:00 ; Borussia Dortmund - SpVgg Greuther Fürth ; 12. Spieltag ; Dortmund - Fürth
+2012-11-24 15:30:00 ; Bayern München - Hannover 96 ; 13. Spieltag ; Bayern - Hannover
+2012-11-24 15:30:00 ; FC Schalke 04 - Eintracht Frankfurt ; 13. Spieltag ; Schalke - Frankfurt
+2012-11-24 15:30:00 ; VfL Wolfsburg - Werder Bremen ; 13. Spieltag ; Wolfsburg - Bremen
+2012-11-24 15:30:00 ; 1899 Hoffenheim - Bayer Leverkusen ; 13. Spieltag ; Hoffenheim - Leverkusen
+2012-11-24 15:30:00 ; SC Freiburg - VfB Stuttgart ; 13. Spieltag ; Freiburg - Stuttgart
+2012-11-24 15:30:00 ; 1. FSV Mainz 05 - Borussia Dortmund ; 13. Spieltag ; Mainz - Dortmund
+2012-11-24 15:30:00 ; FC Augsburg - Bor. Mönchengladbach ; 13. Spieltag ; Augsburg - Gladbach
+2012-11-24 15:30:00 ; SpVgg Greuther Fürth - 1. FC Nürnberg ; 13. Spieltag ; Fürth - Nürnberg
+2012-11-24 15:30:00 ; Fortuna Düsseldorf - Hamburger SV ; 13. Spieltag ; Düsseldorf - Hamburg
+2012-11-27 15:30:00 ; Eintracht Frankfurt - 1. FSV Mainz 05 ; 14. Spieltag ; Frankfurt - Mainz
+2012-11-27 15:30:00 ; Hamburger SV - FC Schalke 04 ; 14. Spieltag ; Hamburg - Schalke
+2012-11-27 15:30:00 ; SC Freiburg - Bayern München ; 14. Spieltag ; Freiburg - Bayern
+2012-11-27 15:30:00 ; 1. FC Nürnberg - 1899 Hoffenheim ; 14. Spieltag ; Nürnberg - Hoffenheim
+2012-11-27 15:30:00 ; Werder Bremen - Bayer Leverkusen ; 14. Spieltag ; Bremen - Leverkusen
+2012-11-27 15:30:00 ; Hannover 96 - SpVgg Greuther Fürth ; 14. Spieltag ; Hannover - Fürth
+2012-11-27 15:30:00 ; VfB Stuttgart - FC Augsburg ; 14. Spieltag ; Stuttgart - Augsburg
+2012-11-27 15:30:00 ; Bor. Mönchengladbach - VfL Wolfsburg ; 14. Spieltag ; Gladbach - Wolfsburg
+2012-11-27 15:30:00 ; Borussia Dortmund - Fortuna Düsseldorf ; 14. Spieltag ; Dortmund - Düsseldorf
+2012-12-01 15:30:00 ; Fortuna Düsseldorf - Eintracht Frankfurt ; 15. Spieltag ; Düsseldorf - Frankfurt
+2012-12-01 15:30:00 ; SpVgg Greuther Fürth - VfB Stuttgart ; 15. Spieltag ; Fürth - Stuttgart
+2012-12-01 15:30:00 ; FC Augsburg - SC Freiburg ; 15. Spieltag ; Augsburg - Freiburg
+2012-12-01 15:30:00 ; 1. FSV Mainz 05 - Hannover 96 ; 15. Spieltag ; Mainz - Hannover
+2012-12-01 15:30:00 ; 1899 Hoffenheim - Werder Bremen ; 15. Spieltag ; Hoffenheim - Bremen
+2012-12-01 15:30:00 ; VfL Wolfsburg - Hamburger SV ; 15. Spieltag ; Wolfsburg - Hamburg
+2012-12-01 15:30:00 ; Bayer Leverkusen - 1. FC Nürnberg ; 15. Spieltag ; Leverkusen - Nürnberg
+2012-12-01 15:30:00 ; FC Schalke 04 - Bor. Mönchengladbach ; 15. Spieltag ; Schalke - Gladbach
+2012-12-01 15:30:00 ; Bayern München - Borussia Dortmund ; 15. Spieltag ; Bayern - Dortmund
+2012-12-08 15:30:00 ; Eintracht Frankfurt - Werder Bremen ; 16. Spieltag ; Frankfurt - Bremen
+2012-12-08 15:30:00 ; Hamburger SV - 1899 Hoffenheim ; 16. Spieltag ; Hamburg - Hoffenheim
+2012-12-08 15:30:00 ; FC Augsburg - Bayern München ; 16. Spieltag ; Augsburg - Bayern
+2012-12-08 15:30:00 ; SC Freiburg - SpVgg Greuther Fürth ; 16. Spieltag ; Freiburg - Fürth
+2012-12-08 15:30:00 ; 1. FC Nürnberg - Fortuna Düsseldorf ; 16. Spieltag ; Nürnberg - Düsseldorf
+2012-12-08 15:30:00 ; Hannover 96 - Bayer Leverkusen ; 16. Spieltag ; Hannover - Leverkusen
+2012-12-08 15:30:00 ; VfB Stuttgart - FC Schalke 04 ; 16. Spieltag ; Stuttgart - Schalke
+2012-12-08 15:30:00 ; Bor. Mönchengladbach - 1. FSV Mainz 05 ; 16. Spieltag ; Gladbach - Mainz
+2012-12-08 15:30:00 ; Borussia Dortmund - VfL Wolfsburg ; 16. Spieltag ; Dortmund - Wolfsburg
+2012-12-15 15:30:00 ; Fortuna Düsseldorf - Hannover 96 ; 17. Spieltag ; Düsseldorf - Hannover
+2012-12-15 15:30:00 ; SpVgg Greuther Fürth - FC Augsburg ; 17. Spieltag ; Fürth - Augsburg
+2012-12-15 15:30:00 ; 1. FSV Mainz 05 - VfB Stuttgart ; 17. Spieltag ; Mainz - Stuttgart
+2012-12-15 15:30:00 ; 1899 Hoffenheim - Borussia Dortmund ; 17. Spieltag ; Hoffenheim - Dortmund
+2012-12-15 15:30:00 ; Werder Bremen - 1. FC Nürnberg ; 17. Spieltag ; Bremen - Nürnberg
+2012-12-15 15:30:00 ; VfL Wolfsburg - Eintracht Frankfurt ; 17. Spieltag ; Wolfsburg - Frankfurt
+2012-12-15 15:30:00 ; Bayer Leverkusen - Hamburger SV ; 17. Spieltag ; Leverkusen - Hamburg
+2012-12-15 15:30:00 ; FC Schalke 04 - SC Freiburg ; 17. Spieltag ; Schalke - Freiburg
+2012-12-15 15:30:00 ; Bayern München - Bor. Mönchengladbach ; 17. Spieltag ; Bayern - Gladbach
+2013-01-19 15:30:00 ; Bayern München - SpVgg Greuther Fürth ; 18. Spieltag ; Bayern - Fürth
+2013-01-19 15:30:00 ; Bayer Leverkusen - Eintracht Frankfurt ; 18. Spieltag ; Leverkusen - Frankfurt
+2013-01-19 15:30:00 ; 1. FC Nürnberg - Hamburger SV ; 18. Spieltag ; Nürnberg - Hamburg
+2013-01-19 15:30:00 ; Fortuna Düsseldorf - FC Augsburg ; 18. Spieltag ; Düsseldorf - Augsburg
+2013-01-19 15:30:00 ; 1. FSV Mainz 05 - SC Freiburg ; 18. Spieltag ; Mainz - Freiburg
+2013-01-19 15:30:00 ; VfL Wolfsburg - VfB Stuttgart ; 18. Spieltag ; Wolfsburg - Stuttgart
+2013-01-19 15:30:00 ; 1899 Hoffenheim - Bor. Mönchengladbach ; 18. Spieltag ; Hoffenheim - Gladbach
+2013-01-19 15:30:00 ; FC Schalke 04 - Hannover 96 ; 18. Spieltag ; Schalke - Hannover
+2013-01-19 15:30:00 ; Werder Bremen - Borussia Dortmund ; 18. Spieltag ; Bremen - Dortmund
+2013-01-26 15:30:00 ; Bor. Mönchengladbach - Fortuna Düsseldorf ; 19. Spieltag ; Gladbach - Düsseldorf
+2013-01-26 15:30:00 ; SpVgg Greuther Fürth - 1. FSV Mainz 05 ; 19. Spieltag ; Fürth - Mainz
+2013-01-26 15:30:00 ; Eintracht Frankfurt - 1899 Hoffenheim ; 19. Spieltag ; Frankfurt - Hoffenheim
+2013-01-26 15:30:00 ; Borussia Dortmund - 1. FC Nürnberg ; 19. Spieltag ; Dortmund - Nürnberg
+2013-01-26 15:30:00 ; Hamburger SV - Werder Bremen ; 19. Spieltag ; Hamburg - Bremen
+2013-01-26 15:30:00 ; Hannover 96 - VfL Wolfsburg ; 19. Spieltag ; Hannover - Wolfsburg
+2013-01-26 15:30:00 ; SC Freiburg - Bayer Leverkusen ; 19. Spieltag ; Freiburg - Leverkusen
+2013-01-26 15:30:00 ; FC Augsburg - FC Schalke 04 ; 19. Spieltag ; Augsburg - Schalke
+2013-01-26 15:30:00 ; VfB Stuttgart - Bayern München ; 19. Spieltag ; Stuttgart - Bayern
+2013-02-02 15:30:00 ; Hamburger SV - Eintracht Frankfurt ; 20. Spieltag ; Hamburg - Frankfurt
+2013-02-02 15:30:00 ; FC Schalke 04 - SpVgg Greuther Fürth ; 20. Spieltag ; Schalke - Fürth
+2013-02-02 15:30:00 ; VfL Wolfsburg - FC Augsburg ; 20. Spieltag ; Wolfsburg - Augsburg
+2013-02-02 15:30:00 ; 1899 Hoffenheim - SC Freiburg ; 20. Spieltag ; Hoffenheim - Freiburg
+2013-02-02 15:30:00 ; Werder Bremen - Hannover 96 ; 20. Spieltag ; Bremen - Hannover
+2013-02-02 15:30:00 ; Fortuna Düsseldorf - VfB Stuttgart ; 20. Spieltag ; Düsseldorf - Stuttgart
+2013-02-02 15:30:00 ; 1. FC Nürnberg - Bor. Mönchengladbach ; 20. Spieltag ; Nürnberg - Gladbach
+2013-02-02 15:30:00 ; 1. FSV Mainz 05 - Bayern München ; 20. Spieltag ; Mainz - Bayern
+2013-02-02 15:30:00 ; Bayer Leverkusen - Borussia Dortmund ; 20. Spieltag ; Leverkusen - Dortmund
+2013-02-10 15:30:00 ; SC Freiburg - Fortuna Düsseldorf ; 21. Spieltag ; Freiburg - Düsseldorf
+2013-02-10 15:30:00 ; Borussia Dortmund - Hamburger SV ; 21. Spieltag ; Dortmund - Hamburg
+2013-02-10 15:30:00 ; FC Augsburg - 1. FSV Mainz 05 ; 21. Spieltag ; Augsburg - Mainz
+2013-02-10 15:30:00 ; Hannover 96 - 1899 Hoffenheim ; 21. Spieltag ; Hannover - Hoffenheim
+2013-02-10 15:30:00 ; Eintracht Frankfurt - 1. FC Nürnberg ; 21. Spieltag ; Frankfurt - Nürnberg
+2013-02-10 15:30:00 ; VfB Stuttgart - Werder Bremen ; 21. Spieltag ; Stuttgart - Bremen
+2013-02-10 15:30:00 ; SpVgg Greuther Fürth - VfL Wolfsburg ; 21. Spieltag ; Fürth - Wolfsburg
+2013-02-10 15:30:00 ; Bor. Mönchengladbach - Bayer Leverkusen ; 21. Spieltag ; Gladbach - Leverkusen
+2013-02-10 15:30:00 ; Bayern München - FC Schalke 04 ; 21. Spieltag ; Bayern - Schalke
+2013-02-16 15:30:00 ; Borussia Dortmund - Eintracht Frankfurt ; 22. Spieltag ; Dortmund - Frankfurt
+2013-02-16 15:30:00 ; Fortuna Düsseldorf - SpVgg Greuther Fürth ; 22. Spieltag ; Düsseldorf - Fürth
+2013-02-16 15:30:00 ; Bayer Leverkusen - FC Augsburg ; 22. Spieltag ; Leverkusen - Augsburg
+2013-02-16 15:30:00 ; Werder Bremen - SC Freiburg ; 22. Spieltag ; Bremen - Freiburg
+2013-02-16 15:30:00 ; 1. FC Nürnberg - Hannover 96 ; 22. Spieltag ; Nürnberg - Hannover
+2013-02-16 15:30:00 ; 1899 Hoffenheim - VfB Stuttgart ; 22. Spieltag ; Hoffenheim - Stuttgart
+2013-02-16 15:30:00 ; Hamburger SV - Bor. Mönchengladbach ; 22. Spieltag ; Hamburg - Gladbach
+2013-02-16 15:30:00 ; 1. FSV Mainz 05 - FC Schalke 04 ; 22. Spieltag ; Mainz - Schalke
+2013-02-16 15:30:00 ; VfL Wolfsburg - Bayern München ; 22. Spieltag ; Wolfsburg - Bayern
+2013-02-23 15:30:00 ; FC Schalke 04 - Fortuna Düsseldorf ; 23. Spieltag ; Schalke - Düsseldorf
+2013-02-23 15:30:00 ; SC Freiburg - Eintracht Frankfurt ; 23. Spieltag ; Freiburg - Frankfurt
+2013-02-23 15:30:00 ; Hannover 96 - Hamburger SV ; 23. Spieltag ; Hannover - Hamburg
+2013-02-23 15:30:00 ; FC Augsburg - 1899 Hoffenheim ; 23. Spieltag ; Augsburg - Hoffenheim
+2013-02-23 15:30:00 ; VfB Stuttgart - 1. FC Nürnberg ; 23. Spieltag ; Stuttgart - Nürnberg
+2013-02-23 15:30:00 ; Bayern München - Werder Bremen ; 23. Spieltag ; Bayern - Bremen
+2013-02-23 15:30:00 ; 1. FSV Mainz 05 - VfL Wolfsburg ; 23. Spieltag ; Mainz - Wolfsburg
+2013-02-23 15:30:00 ; SpVgg Greuther Fürth - Bayer Leverkusen ; 23. Spieltag ; Fürth - Leverkusen
+2013-02-23 15:30:00 ; Bor. Mönchengladbach - Borussia Dortmund ; 23. Spieltag ; Gladbach - Dortmund
+2013-03-02 15:30:00 ; Hamburger SV - SpVgg Greuther Fürth ; 24. Spieltag ; Hamburg - Fürth
+2013-03-02 15:30:00 ; Werder Bremen - FC Augsburg ; 24. Spieltag ; Bremen - Augsburg
+2013-03-02 15:30:00 ; Fortuna Düsseldorf - 1. FSV Mainz 05 ; 24. Spieltag ; Düsseldorf - Mainz
+2013-03-02 15:30:00 ; 1. FC Nürnberg - SC Freiburg ; 24. Spieltag ; Nürnberg - Freiburg
+2013-03-02 15:30:00 ; Borussia Dortmund - Hannover 96 ; 24. Spieltag ; Dortmund - Hannover
+2013-03-02 15:30:00 ; Bayer Leverkusen - VfB Stuttgart ; 24. Spieltag ; Leverkusen - Stuttgart
+2013-03-02 15:30:00 ; Eintracht Frankfurt - Bor. Mönchengladbach ; 24. Spieltag ; Frankfurt - Gladbach
+2013-03-02 15:30:00 ; VfL Wolfsburg - FC Schalke 04 ; 24. Spieltag ; Wolfsburg - Schalke
+2013-03-02 15:30:00 ; 1899 Hoffenheim - Bayern München ; 24. Spieltag ; Hoffenheim - Bayern
+2013-03-09 15:30:00 ; Bayern München - Fortuna Düsseldorf ; 25. Spieltag ; Bayern - Düsseldorf
+2013-03-09 15:30:00 ; Hannover 96 - Eintracht Frankfurt ; 25. Spieltag ; Hannover - Frankfurt
+2013-03-09 15:30:00 ; VfB Stuttgart - Hamburger SV ; 25. Spieltag ; Stuttgart - Hamburg
+2013-03-09 15:30:00 ; SpVgg Greuther Fürth - 1899 Hoffenheim ; 25. Spieltag ; Fürth - Hoffenheim
+2013-03-09 15:30:00 ; FC Augsburg - 1. FC Nürnberg ; 25. Spieltag ; Augsburg - Nürnberg
+2013-03-09 15:30:00 ; Bor. Mönchengladbach - Werder Bremen ; 25. Spieltag ; Gladbach - Bremen
+2013-03-09 15:30:00 ; SC Freiburg - VfL Wolfsburg ; 25. Spieltag ; Freiburg - Wolfsburg
+2013-03-09 15:30:00 ; 1. FSV Mainz 05 - Bayer Leverkusen ; 25. Spieltag ; Mainz - Leverkusen
+2013-03-09 15:30:00 ; FC Schalke 04 - Borussia Dortmund ; 25. Spieltag ; Schalke - Dortmund
+2013-03-16 15:30:00 ; Bayer Leverkusen - Bayern München ; 26. Spieltag ; Leverkusen - Bayern
+2013-03-16 15:30:00 ; 1. FC Nürnberg - FC Schalke 04 ; 26. Spieltag ; Nürnberg - Schalke
+2013-03-16 15:30:00 ; VfL Wolfsburg - Fortuna Düsseldorf ; 26. Spieltag ; Wolfsburg - Düsseldorf
+2013-03-16 15:30:00 ; Werder Bremen - SpVgg Greuther Fürth ; 26. Spieltag ; Bremen - Fürth
+2013-03-16 15:30:00 ; Hamburger SV - FC Augsburg ; 26. Spieltag ; Hamburg - Augsburg
+2013-03-16 15:30:00 ; 1899 Hoffenheim - 1. FSV Mainz 05 ; 26. Spieltag ; Hoffenheim - Mainz
+2013-03-16 15:30:00 ; Borussia Dortmund - SC Freiburg ; 26. Spieltag ; Dortmund - Freiburg
+2013-03-16 15:30:00 ; Bor. Mönchengladbach - Hannover 96 ; 26. Spieltag ; Gladbach - Hannover
+2013-03-16 15:30:00 ; Eintracht Frankfurt - VfB Stuttgart ; 26. Spieltag ; Frankfurt - Stuttgart
+2013-03-30 15:30:00 ; SpVgg Greuther Fürth - Eintracht Frankfurt ; 27. Spieltag ; Fürth - Frankfurt
+2013-03-30 15:30:00 ; Bayern München - Hamburger SV ; 27. Spieltag ; Bayern - Hamburg
+2013-03-30 15:30:00 ; FC Schalke 04 - 1899 Hoffenheim ; 27. Spieltag ; Schalke - Hoffenheim
+2013-03-30 15:30:00 ; VfL Wolfsburg - 1. FC Nürnberg ; 27. Spieltag ; Wolfsburg - Nürnberg
+2013-03-30 15:30:00 ; 1. FSV Mainz 05 - Werder Bremen ; 27. Spieltag ; Mainz - Bremen
+2013-03-30 15:30:00 ; FC Augsburg - Hannover 96 ; 27. Spieltag ; Augsburg - Hannover
+2013-03-30 15:30:00 ; Fortuna Düsseldorf - Bayer Leverkusen ; 27. Spieltag ; Düsseldorf - Leverkusen
+2013-03-30 15:30:00 ; SC Freiburg - Bor. Mönchengladbach ; 27. Spieltag ; Freiburg - Gladbach
+2013-03-30 15:30:00 ; VfB Stuttgart - Borussia Dortmund ; 27. Spieltag ; Stuttgart - Dortmund
+2013-04-06 15:30:00 ; 1899 Hoffenheim - Fortuna Düsseldorf ; 28. Spieltag ; Hoffenheim - Düsseldorf
+2013-04-06 15:30:00 ; Bor. Mönchengladbach - SpVgg Greuther Fürth ; 28. Spieltag ; Gladbach - Fürth
+2013-04-06 15:30:00 ; Borussia Dortmund - FC Augsburg ; 28. Spieltag ; Dortmund - Augsburg
+2013-04-06 15:30:00 ; 1. FC Nürnberg - 1. FSV Mainz 05 ; 28. Spieltag ; Nürnberg - Mainz
+2013-04-06 15:30:00 ; Hamburger SV - SC Freiburg ; 28. Spieltag ; Hamburg - Freiburg
+2013-04-06 15:30:00 ; Bayer Leverkusen - VfL Wolfsburg ; 28. Spieltag ; Leverkusen - Wolfsburg
+2013-04-06 15:30:00 ; Hannover 96 - VfB Stuttgart ; 28. Spieltag ; Hannover - Stuttgart
+2013-04-06 15:30:00 ; Werder Bremen - FC Schalke 04 ; 28. Spieltag ; Bremen - Schalke
+2013-04-06 15:30:00 ; Eintracht Frankfurt - Bayern München ; 28. Spieltag ; Frankfurt - Bayern
+2013-04-13 15:30:00 ; FC Augsburg - Eintracht Frankfurt ; 29. Spieltag ; Augsburg - Frankfurt
+2013-04-13 15:30:00 ; 1. FSV Mainz 05 - Hamburger SV ; 29. Spieltag ; Mainz - Hamburg
+2013-04-13 15:30:00 ; VfL Wolfsburg - 1899 Hoffenheim ; 29. Spieltag ; Wolfsburg - Hoffenheim
+2013-04-13 15:30:00 ; Bayern München - 1. FC Nürnberg ; 29. Spieltag ; Bayern - Nürnberg
+2013-04-13 15:30:00 ; Fortuna Düsseldorf - Werder Bremen ; 29. Spieltag ; Düsseldorf - Bremen
+2013-04-13 15:30:00 ; SC Freiburg - Hannover 96 ; 29. Spieltag ; Freiburg - Hannover
+2013-04-13 15:30:00 ; FC Schalke 04 - Bayer Leverkusen ; 29. Spieltag ; Schalke - Leverkusen
+2013-04-13 15:30:00 ; VfB Stuttgart - Bor. Mönchengladbach ; 29. Spieltag ; Stuttgart - Gladbach
+2013-04-13 15:30:00 ; SpVgg Greuther Fürth - Borussia Dortmund ; 29. Spieltag ; Fürth - Dortmund
+2013-04-20 15:30:00 ; Hamburger SV - Fortuna Düsseldorf ; 30. Spieltag ; Hamburg - Düsseldorf
+2013-04-20 15:30:00 ; 1. FC Nürnberg - SpVgg Greuther Fürth ; 30. Spieltag ; Nürnberg - Fürth
+2013-04-20 15:30:00 ; Bor. Mönchengladbach - FC Augsburg ; 30. Spieltag ; Gladbach - Augsburg
+2013-04-20 15:30:00 ; Borussia Dortmund - 1. FSV Mainz 05 ; 30. Spieltag ; Dortmund - Mainz
+2013-04-20 15:30:00 ; VfB Stuttgart - SC Freiburg ; 30. Spieltag ; Stuttgart - Freiburg
+2013-04-20 15:30:00 ; Bayer Leverkusen - 1899 Hoffenheim ; 30. Spieltag ; Leverkusen - Hoffenheim
+2013-04-20 15:30:00 ; Werder Bremen - VfL Wolfsburg ; 30. Spieltag ; Bremen - Wolfsburg
+2013-04-20 15:30:00 ; Eintracht Frankfurt - FC Schalke 04 ; 30. Spieltag ; Frankfurt - Schalke
+2013-04-20 15:30:00 ; Hannover 96 - Bayern München ; 30. Spieltag ; Hannover - Bayern
+2013-04-27 15:30:00 ; 1. FSV Mainz 05 - Eintracht Frankfurt ; 31. Spieltag ; Mainz - Frankfurt
+2013-04-27 15:30:00 ; FC Schalke 04 - Hamburger SV ; 31. Spieltag ; Schalke - Hamburg
+2013-04-27 15:30:00 ; Bayern München - SC Freiburg ; 31. Spieltag ; Bayern - Freiburg
+2013-04-27 15:30:00 ; 1899 Hoffenheim - 1. FC Nürnberg ; 31. Spieltag ; Hoffenheim - Nürnberg
+2013-04-27 15:30:00 ; Bayer Leverkusen - Werder Bremen ; 31. Spieltag ; Leverkusen - Bremen
+2013-04-27 15:30:00 ; SpVgg Greuther Fürth - Hannover 96 ; 31. Spieltag ; Fürth - Hannover
+2013-04-27 15:30:00 ; FC Augsburg - VfB Stuttgart ; 31. Spieltag ; Augsburg - Stuttgart
+2013-04-27 15:30:00 ; VfL Wolfsburg - Bor. Mönchengladbach ; 31. Spieltag ; Wolfsburg - Gladbach
+2013-04-27 15:30:00 ; Fortuna Düsseldorf - Borussia Dortmund ; 31. Spieltag ; Düsseldorf - Dortmund
+2013-05-04 15:30:00 ; Eintracht Frankfurt - Fortuna Düsseldorf ; 32. Spieltag ; Frankfurt - Düsseldorf
+2013-05-04 15:30:00 ; VfB Stuttgart - SpVgg Greuther Fürth ; 32. Spieltag ; Stuttgart - Fürth
+2013-05-04 15:30:00 ; SC Freiburg - FC Augsburg ; 32. Spieltag ; Freiburg - Augsburg
+2013-05-04 15:30:00 ; Hannover 96 - 1. FSV Mainz 05 ; 32. Spieltag ; Hannover - Mainz
+2013-05-04 15:30:00 ; Werder Bremen - 1899 Hoffenheim ; 32. Spieltag ; Bremen - Hoffenheim
+2013-05-04 15:30:00 ; Hamburger SV - VfL Wolfsburg ; 32. Spieltag ; Hamburg - Wolfsburg
+2013-05-04 15:30:00 ; 1. FC Nürnberg - Bayer Leverkusen ; 32. Spieltag ; Nürnberg - Leverkusen
+2013-05-04 15:30:00 ; Bor. Mönchengladbach - FC Schalke 04 ; 32. Spieltag ; Gladbach - Schalke
+2013-05-04 15:30:00 ; Borussia Dortmund - Bayern München ; 32. Spieltag ; Dortmund - Bayern
+2013-05-11 15:30:00 ; Werder Bremen - Eintracht Frankfurt ; 33. Spieltag ; Bremen - Frankfurt
+2013-05-11 15:30:00 ; 1899 Hoffenheim - Hamburger SV ; 33. Spieltag ; Hoffenheim - Hamburg
+2013-05-11 15:30:00 ; Bayern München - FC Augsburg ; 33. Spieltag ; Bayern - Augsburg
+2013-05-11 15:30:00 ; SpVgg Greuther Fürth - SC Freiburg ; 33. Spieltag ; Fürth - Freiburg
+2013-05-11 15:30:00 ; Fortuna Düsseldorf - 1. FC Nürnberg ; 33. Spieltag ; Düsseldorf - Nürnberg
+2013-05-11 15:30:00 ; Bayer Leverkusen - Hannover 96 ; 33. Spieltag ; Leverkusen - Hannover
+2013-05-11 15:30:00 ; FC Schalke 04 - VfB Stuttgart ; 33. Spieltag ; Schalke - Stuttgart
+2013-05-11 15:30:00 ; 1. FSV Mainz 05 - Bor. Mönchengladbach ; 33. Spieltag ; Mainz - Gladbach
+2013-05-11 15:30:00 ; VfL Wolfsburg - Borussia Dortmund ; 33. Spieltag ; Wolfsburg - Dortmund
+2013-05-18 15:30:00 ; FC Augsburg - SpVgg Greuther Fürth ; 34. Spieltag ; Augsburg - Fürth
+2013-05-18 15:30:00 ; VfB Stuttgart - 1. FSV Mainz 05 ; 34. Spieltag ; Stuttgart - Mainz
+2013-05-18 15:30:00 ; Borussia Dortmund - 1899 Hoffenheim ; 34. Spieltag ; Dortmund - Hoffenheim
+2013-05-18 15:30:00 ; 1. FC Nürnberg - Werder Bremen ; 34. Spieltag ; Nürnberg - Bremen
+2013-05-18 15:30:00 ; Eintracht Frankfurt - VfL Wolfsburg ; 34. Spieltag ; Frankfurt - Wolfsburg
+2013-05-18 15:30:00 ; Hamburger SV - Bayer Leverkusen ; 34. Spieltag ; Hamburg - Leverkusen
+2013-05-18 15:30:00 ; SC Freiburg - FC Schalke 04 ; 34. Spieltag ; Freiburg - Schalke
+2013-05-18 15:30:00 ; Bor. Mönchengladbach - Bayern München ; 34. Spieltag ; Gladbach - Bayern
+2013-05-18 15:30:00 ; Hannover 96 - Fortuna Düsseldorf ; 34. Spieltag ; Hannover - Düsseldorf
+
+
+

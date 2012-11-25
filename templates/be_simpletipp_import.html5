@@ -51,16 +51,17 @@ werden auch einige Dateien bzw. Spiele mitgeliefert.</p>
 	<li>Die erste Zeile muss mit einem # beginnen</li>
 	<li>Der Inhalt der ersten Zeile legt den Namen der Liga fest</li>
 	<li>Die Import-Zeilen müssen folgendermaßen aufgebaut sein: 
-		<strong><code>DATUM;NAME_DES_SPIELS;GRUPPE;ERGEBNIS</code></strong></li>
+		<strong><code>DATUM;NAME_DES_SPIELS;GRUPPE;KURZNAME_DES_SPIELS;ERGEBNIS</code></strong></li>
 	<li>DATUM: UNIX-Timestamp oder YYYY-MM-DD HH:ii:ss</li>
 	<li>ERGEBNIS: Natürlich optional (Formatbeispiele: 2:1, 12:0, 78:49)</li>
+	<li>KURZNAME_DES_SPIELS: optional</li>
 </ul>
 
 <strong>Beispiel:</strong>
 <pre><code># EM 2012
 # Spiele der EM 2012
-1339171200 ; Polen - Griechenland  ; Gruppe A
-1339181100 ; Russland - Tschechien ; Gruppe A
+1339171200 ; Polen - Griechenland  ; Gruppe A ; POL - GRE ; 3:1
+1339181100 ; Russland - Tschechien ; Gruppe A ; RUS - TSC
 # usw.
 </code></pre>
 </div>

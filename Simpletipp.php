@@ -2,29 +2,17 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright	Copyright Martin Kozianka 2011-2012
- * @author		Martin Kozianka
- * @package		simpletipp
+ * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
+ * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @package    simpletipp
+ * @license    LGPL
+ * @filesource
  */
+
 
 /**
  * Class Simpletipp
@@ -35,21 +23,26 @@
  */
  
 abstract class Simpletipp extends Module {
+	protected $group;
+	protected $now;
 	protected $summary;
-	protected $factorPerfect;
+	protected $pointFactors;
 	protected $factorDifference;
 	protected $factorTendency;
 	protected $avatarSql;
-	
-	protected function compile() { 
+
+	protected function initSimpletipp() {
 		
 		$this->loadLanguageFile('tl_simpletipp');
 		
-		$factor = explode(',' , $this->simpletipp_factor);
-		$this->factorPerfect    = $factor[0];
-		$this->factorDifference = $factor[1];
-		$this->factorTendency   = $factor[2];
+		$this->now = time();
 		
+		$factor = explode(',' , $this->simpletipp_factor);
+		$this->pointFactors = new stdClass;
+		$this->pointFactors->perfect    = $factor[0];
+		$this->pointFactors->difference = $factor[1];
+		$this->pointFactors->tendency   = $factor[2];
+			
 		$this->summary = (Object) array('points' => 0, 'perfect'  => 0,
 				'difference' => 0, 'tendency' => 0);
 		
@@ -63,7 +56,32 @@ abstract class Simpletipp extends Module {
 			$this->Template->showAvatar = false;
 			$this->avatarSql            = '';
 		}
+		
+		if ($this->simpletipp_group) {
+			// init group
+			$result = $this->Database
+			->prepare('SELECT * FROM tl_simpletipp WHERE id = ? AND published = ?')
+			->execute($this->simpletipp_group, 1);
+			if ($result->numRows > 0) {
+				$this->group           = (Object) $result->row();
+				$this->group->matches  = unserialize($this->group->matches);
+		
+				$result = $this->Database->execute("SELECT DISTINCT matchgroup"
+						." FROM tl_simpletipp_matches WHERE id IN (".implode(',', $this->group->matches).")"
+						." ORDER BY matchgroup");
+		
+				$this->group->matchgroups = array();
+				while($result->next()) {
 
+					// TODO better shortener
+					$mg = explode('. ', $result->matchgroup);
+					
+					$this->group->matchgroups[] = (Object) array(
+							'title' => $result->matchgroup,
+							'short' => $mg[0]);
+				}
+			}
+		}
 	}
 	
 	protected function updateSummary($points, $perfect, $difference, $tendency) {
@@ -117,4 +135,53 @@ abstract class Simpletipp extends Module {
 		$_SESSION['TL_SIMPLETIPP_MESSAGE'][] = $message;
 	}
 
+	
+	public static function getPoints($result, $tipp) {
+		$points = new stdClass;
+		$points->perfect    = 0;
+		$points->difference = 0;
+		$points->tendency   = 0;
+		$points->wrong      = 0;
+		
+		if (strlen($result) === 0 || strlen($tipp) === 0) {
+			return $points;
+		}
+		$tmp = explode(":", $result);
+		$rh = intval($tmp[0], 10); $ra = intval($tmp[1], 10);
+	
+		$tmp = explode(":", $tipp);
+		$th = intval($tmp[0], 10); $ta = intval($tmp[1], 10);
+	
+		if ($rh === $th && $ra === $ta) {
+			$points->perfect = 1;
+			return $points;
+		}
+	
+		if (($rh-$ra) === ($th-$ta)) {
+			$points->difference = 1;
+			return $points;
+		}
+	
+		if (($rh < $ra && $th < $ta) || ($rh > $ra && $th > $ta)) {
+			$points->tendency = 1;
+			return $points;
+		}
+	
+		$points->wrong = 1;
+		return $points;
+	}
+	
+	public static function getPointsString($m, $pointFactors) {
+		$points = self::getPoints($m->result, $m->tipp);
+
+		$points->summe = ($points->perfect    * $pointFactors->perfect)
+					   + ($points->difference * $pointFactors->difference)
+					   + ($points->tendency   * $pointFactors->tendency);
+
+		$points->str .= "Tipp: ".$m->tipp." - " // TODO translation
+			.$points->summe
+			.(($points->summe === 1) ? ' Punkt' : ' Punkte'); // TODO translation
+
+		return $points;
+	}	
 } // END class Simpletipp

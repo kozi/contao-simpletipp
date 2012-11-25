@@ -36,3 +36,5 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['edit']   = array('Simpletipp bearbeiten', 
 $GLOBALS['TL_LANG']['tl_simpletipp']['delete'] = array('Simpletipp löschen', 'Simpletipp ID %s löschen');
 $GLOBALS['TL_LANG']['tl_simpletipp']['toggle'] = array('Simpletipp veröffentlichen/unveröffentlichen', 'Simpletipp ID %s veröffentlichen/unveröffentlichen');
 
+
+

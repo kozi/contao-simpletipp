@@ -23,3 +23,7 @@ $GLOBALS['TL_LANG']['simpletipp']['deadline']   = array("Datum", "Datum");
 
 $GLOBALS['TL_LANG']['simpletipp']['message_inserted']        = 'Die Tipps wurden eingetragen.';
 $GLOBALS['TL_LANG']['simpletipp']['message_inserted_email']  = 'Die Tipps wurden eingetragen und eine Bestätigung an %s gesandt.';
+
+$GLOBALS['TL_LANG']['simpletipp']['email_subject']			 = 'Tippabgabe vom %s von %s';
+$GLOBALS['TL_LANG']['simpletipp']['email_text']		    	 = 'Folgende Tipps wurden eingetragen:'."\n\n";
+

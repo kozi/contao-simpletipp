@@ -4,29 +4,15 @@
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012 
+ * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
  * @author     Martin Kozianka <http://kozianka-online.de/>
- * @package    simpletipp 
- * @license    LGPL 
+ * @package    simpletipp
+ * @license    LGPL
  * @filesource
  */
+
 
 
 /**
@@ -201,23 +187,28 @@ class SimpletippSettings extends Backend {
 			
 			if (substr($r,0,1) !== '#') {
 				$row = array_map('trim', explode(';', $r));
-				if (count($row) === 3 || count($row) === 4) {
+				if (count($row) === 3 || count($row) === 4 || count($row) === 5) {
 					
 					$count++;
 					$date = $row[0];
 					if (strpos($date, '-') !== false){
-						$dt   = new DateTime($timeStr);
-						$date = new Date($dt->format('U'));
+						$dt   = new DateTime($date);
+						$date = $dt->format('U');
 					
 					}
-					if (count($row) === 4) {
+					if (count($row) === 5) {
 						$result = $this->Database->prepare("INSERT INTO tl_simpletipp_matches"
-								." (deadline,title,competition,matchgroup, result) VALUES (?, ?, ?, ?, ?)")
+								." (deadline, title, competition, matchgroup, title_short, result) VALUES (?, ?, ?, ?, ?)")
+								->execute($date,$row[1],$competition,$row[2],$row[3], $row['4']);
+					}
+					else if (count($row) === 4) {
+						$result = $this->Database->prepare("INSERT INTO tl_simpletipp_matches"
+								." (deadline, title, competition, matchgroup, title_short) VALUES (?, ?, ?, ?, ?)")
 								->execute($date,$row[1],$competition,$row[2],$row[3]);
 					}
 					else {
 						$result = $this->Database->prepare("INSERT INTO tl_simpletipp_matches"
-							." (deadline,title,competition,matchgroup) VALUES (?, ?, ?, ?)")
+							." (deadline, title, competition, matchgroup) VALUES (?, ?, ?, ?)")
 							->execute($date,$row[1],$competition,$row[2]);
 					}
 				}

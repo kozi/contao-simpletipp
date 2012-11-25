@@ -4,31 +4,14 @@
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012
- * @author     Martin Kozianka <http://kozianka-online.de>
+ * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
+ * @author     Martin Kozianka <http://kozianka-online.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
-
-
 
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
@@ -36,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_simpletipp_questions'),
+		'ctable'                      => array('tl_simpletipp_questions', 'tl_simpletipp_pokal'),
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
 		'onload_callback' => array
@@ -49,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 			array('tl_simpletipp', 'updateDeadline')
 		)
 	),
-
+		
 	// List
 	'list' => array
 	(
@@ -105,11 +88,11 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 					'href'                => 'table=tl_simpletipp_questions',
 					'icon'                => 'system/modules/simpletipp/html/question-balloon.png'
 			),
-			'member' => array
+			'pokal' => array
 			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
-					'href'                => 'act=edit&type=participants',
-					'icon'                => 'mgroup.gif'
+					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal'],
+					'href'                => 'table=tl_simpletipp_pokal',
+					'icon'                => 'system/modules/simpletipp/html/pokal.png'
 			),
 			'edit' => array
 			(
@@ -130,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, competition, matchgroup, teaser;{simpletipp_legend_spiele}, matches;',
+		'default'                     => '{simpletipp_legend}, competition, matchgroup, teaser, participant_group;{simpletipp_legend_spiele}, matches;',
 		'participants'                => '{simpletipp_legend}, all_members, participants;',
 		'results'                     => '{simpletipp_legend}, results;',
 		
@@ -193,22 +176,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'sql'                     => 'blob NULL',
 				'input_field_callback'    => array('tl_simpletipp', 'getMatchResultInputs')
 		),
-		
-		'all_members' => array
+				
+		'participant_group' => array
 		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['all_members'],
+				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participant_group'],
 				'exclude'                 => true,
-				'inputType'               => 'checkbox',
-				'eval'                    => array('doNotCopy'=>true, 'isBoolean'=>true)
-		),
-		
-		'participants' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participants'],
-				'exclude'                 => true,
-				'inputType'               => 'checkbox',
-				'options_callback'        => array('tl_simpletipp', 'getParticipants'),
-				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr', 'multiple' => true)
+				'inputType'               => 'radio',
+				'foreignKey'              => 'tl_member_group.name',
+				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr')
 		),
 		'published' => array
 		(
@@ -274,20 +249,6 @@ class tl_simpletipp extends Backend {
 		return $matches;
 	}
 
-	public function getParticipants(DataContainer $dc) {
-		$member = array();
-
-		$result = $this->Database->execute("SELECT * FROM tl_member ORDER BY lastname");
-		while ($result->next()) {
-			$member[$result->id] = $result->firstname.' '.$result->lastname.' ['
-					.$result->username.', '
-					.$result->email.']';
-			
-		}
-
-		return $member;
-	}	
-	
 	public function getMatchgroups(DataContainer $dc) {
 		
 		$competition = $dc->activeRecord->competition;
@@ -320,8 +281,11 @@ class tl_simpletipp extends Backend {
 			$teaser = substr($teaser, 0, 40);
 		}
 		
+		// TODO Anzeige mittels Template!!!
+		
 		$matches       = unserialize($row['matches']);
-		$participants  = unserialize($row['participants']);
+
+		// $participants  = unserialize($row['participant_group']);
 		
 		$lbl = "";
 		
@@ -370,7 +334,7 @@ class tl_simpletipp extends Backend {
 				." WHERE id in (".implode(',', $matches).")"
 				." ORDER BY deadline ASC")->limit(1)->execute();
 
-			while ($result->numRows === 1) {
+			if ($result->numRows === 1) {
 				$sql = "UPDATE tl_simpletipp SET deadline = ? WHERE id = ?";
 				$result = $this->Database->prepare($sql)
 							->execute($result->deadline, $match_id);
@@ -461,7 +425,7 @@ class tl_simpletipp extends Backend {
 				"SELECT id, match_id, tipp FROM tl_simpletipp_tipps"
 				." WHERE match_id in (".implode(',', $ids).")");
 		while($result->next()) {
-			$points = $this->getPoints($match_results[$result->match_id], $result->tipp);
+			$points = Simpletipp::getPoints($match_results[$result->match_id], $result->tipp);
 			$update = $this->Database->prepare(
 					"UPDATE tl_simpletipp_tipps"
 					." SET perfect = ?, difference = ?, tendency = ?, wrong = ? WHERE id = ?")
@@ -485,42 +449,9 @@ class tl_simpletipp extends Backend {
 		
 	}
 	
-	private function getPoints($result, $tipp) {
-		$points = new stdClass;
-		$points->perfect    = 0;
-		$points->difference = 0;
-		$points->tendency   = 0;
-		$points->wrong      = 0;
-		
-		if (strlen($result) === 0 || strlen($tipp) === 0) {
-			return $points;
-		}
-		$tmp = explode(":", $result);
-		$rh = intval($tmp[0], 10); $ra = intval($tmp[1], 10);
 	
-		$tmp = explode(":", $tipp);
-		$th = intval($tmp[0], 10); $ta = intval($tmp[1], 10);
 	
-		if ($rh === $th && $ra === $ta) {
-			$points->perfect = 1;
-			return $points;
-		}
 	
-		if (($rh-$ra) === ($th-$ta)) {
-			$points->difference = 1;
-			return $points;
-		}
-	
-		if (($rh < $ra && $th < $ta) || ($rh > $ra && $th > $ta)) {
-			$points->tendency = 1;
-			return $points;
-		}
-		
-		$points->wrong = 1;
-		return $points;
-	}
-	
-
 	public function toggleIcon($row, $href, $label, $title, $icon, $attributes) {
 		
 		if (strlen($this->Input->get('tid'))) {

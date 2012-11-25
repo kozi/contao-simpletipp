@@ -58,10 +58,23 @@ table.simpletipp_results input {
 	border:1px dashed #333;
 }
 
-span.tablecell   { display:inline-block; }
-span.competition { width:160px; }
-span.matchgroup  { width:110px; }
-span.deadline    { width:120px; }
+
+#ctrl_matches span.odd {
+	background-color:#dfdfdf;
+}
+
+#ctrl_matches span.even {
+	background-color:#efefef;
+}
+
+#ctrl_matches span.dline,
+#ctrl_matches span.title {
+	display:inline-block;
+}
+
+#ctrl_matches span.dline { width:120px; }
+#ctrl_matches span.title { width:300px; }
+
 
 
 table.simpletipp_questions th {

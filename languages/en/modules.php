@@ -18,7 +18,8 @@
 $GLOBALS['TL_LANG']['MOD']['simpletipp'] = array("Betting game", "Simple betting game");
  
 $GLOBALS['TL_LANG']['FMD']['simpletipp']           = 'Simpletipp';
-$GLOBALS['TL_LANG']['FMD']['simpletipp_matches']   = array("Simpletipp Matches", "Simpletipp Matche");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_matches']   = array("Simpletipp Matches", "Simpletipp Matches");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_calendar']  = array("Simpletipp Calendar", "Simpletipp Calendar");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_match']     = array("Simpletipp Single Match", "Simpletipp Single Match");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_highscore'] = array("Simpletipp Highscore", "Simpletipp Highscore");
 

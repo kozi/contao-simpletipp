@@ -21,6 +21,16 @@ $GLOBALS['TL_LANG']['simpletipp']['position']   = array('Position', 'Position');
 $GLOBALS['TL_LANG']['simpletipp']['points']     = array('Points', 'Points');
 $GLOBALS['TL_LANG']['simpletipp']['deadline']   = array("Date", "Date");
 
+$GLOBALS['TL_LANG']['simpletipp']['current'] = array('Current', 'The current matches');
+$GLOBALS['TL_LANG']['simpletipp']['all']     = array('All', 'All matches');
+$GLOBALS['TL_LANG']['simpletipp']['next']    = array('+%s', 'The next %s matches');
+$GLOBALS['TL_LANG']['simpletipp']['last']    = array('-%s', 'The last %s matches');
+
+
+$GLOBALS['TL_LANG']['simpletipp']['highscore_current'] = array('911', '911');
+$GLOBALS['TL_LANG']['simpletipp']['highscore_bestof']  = array('911', '911');
+$GLOBALS['TL_LANG']['simpletipp']['highscore_all']     = array('911', '911');
+
 
 $GLOBALS['TL_LANG']['simpletipp']['message_inserted']        = 'Die Tipps wurden eingetragen.';
 $GLOBALS['TL_LANG']['simpletipp']['message_inserted_email']  = 'Die Tipps wurden eingetragen und eine Bestätigung an %s gesandt.';
