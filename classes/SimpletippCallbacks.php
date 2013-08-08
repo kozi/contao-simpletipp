@@ -169,7 +169,7 @@ class SimpletippCallbacks extends Backend {
                     Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
             foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
-                $email->sendTo($u->email);
+                $email->sendTo($u['email']);
                 $user[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
             }
 

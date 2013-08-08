@@ -207,8 +207,8 @@ class SimpletippHighscore extends SimpletippModule {
                 }
             }
         }
-        // TODO sortieren
 
+        // TODO sortieren
         // TODO Ergebnis cachen?!?
         return $bestOf;
 	}

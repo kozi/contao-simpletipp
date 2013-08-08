@@ -30,8 +30,6 @@ class SimpletippMatches extends SimpletippModule {
 	
 
 	public function generate() {
-        $this->import("SimpletippCallbacks");
-        $this->SimpletippCallbacks->tippReminder();
 
 		if (TL_MODE == 'BE') {
 			$this->Template = new BackendTemplate('be_wildcard');
