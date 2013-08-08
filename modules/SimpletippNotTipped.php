@@ -41,24 +41,14 @@ class SimpletippNotTipped extends SimpletippModule {
 	protected function compile() {
         $userArr = array();
 
-        $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
-            WHERE leagueID = ? AND deadline > ?
-            ORDER BY deadline ASC")->limit(1)->execute($this->simpletipp->leagueID, time());
-
-        if ($result->numRows == 0) {
+        $match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
+        if ($match == null) {
             // no next match
             return;
         }
-        $match    = (Object) $result->row();
-        $result   = $this->Database->prepare("SELECT tblu.firstname, tblu.lastname
-             FROM tl_member as tblu
-             LEFT JOIN tl_simpletipp_tipp AS tblt
-             ON ( tblu.id = tblt.member_id AND tblt.match_id = ?)
-             WHERE tblt.id IS NULL
-             ORDER BY tblu.lastname")->execute($match->id);
 
-        while($result->next()) {
-            $userArr[] =  $result->firstname.' '.$result->lastname;
+        foreach(Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
+            $userArr[] =  $u['firstname'].' '.$u['lastname'];
         }
 
         $this->Template->match   = $match;

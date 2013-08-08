@@ -54,6 +54,11 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 			'search'                  => false,
 			'sql'                     => "int(10) unsigned NOT NULL"
 	),
+    'tstamp' => array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp'],
+        'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    ),
 	'deadline' => array
 	(
 			'label'                   => array('DEADLINE'),

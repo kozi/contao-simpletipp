@@ -24,7 +24,7 @@
  */
 class SimpletippCallbacks extends Backend {
 
-	public function updateMatches(DataContainer $dc) {
+    public function updateMatches(DataContainer $dc) {
 		$id = intval(Input::get('id'));
 
 		$result = $this->Database
@@ -99,7 +99,6 @@ class SimpletippCallbacks extends Backend {
 	}
 
     public function createNewsletterChannel() {
-        $now    = time();
         $result = $this->Database->execute("SELECT * FROM tl_simpletipp");
 
         while($result->next()) {
@@ -144,6 +143,53 @@ class SimpletippCallbacks extends Backend {
         }
     }
 
+
+    public function tippReminder() {
+        $simpletippRes = $this->Database->execute("SELECT * FROM tl_simpletipp");
+        $hours         = 24;
+        $now           = time();
+
+        while($simpletippRes->next()) {
+            $match = Simpletipp::getNextMatch($simpletippRes->leagueID);
+
+            if ($match == null
+                || $simpletippRes->lastRemindedMatch == $match->id
+                || ($match->deadline > (($hours*3600)+$now))) {
+                // no next match found or already reminded or more than $hours to start
+                // return false;
+            }
+
+            $pageObj         = PageModel::findByIdOrAlias('spiele');
+            $email           = new Email();
+            $email->from     = $simpletippRes->adminEmail;
+            $email->fromName = $simpletippRes->adminName;
+            $email->subject  = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
+            $email->text     = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
+                    $hours, $match->title, Date::parse('d.m.Y H:i', $match->deadline),
+                    Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
+
+            foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
+                $email->sendTo($u->email);
+                $user[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
+            }
+
+            $email           = new Email();
+            $email->from     = $simpletippRes->adminEmail;
+            $email->fromName = $simpletippRes->adminName;
+            $email->subject  = 'Tipperinnerung verschickt!';
+            $email->text     = sprintf("Tipperinnerung an folgende Tipper verschickt:\n\n%s\n\n",
+                                    implode("\n", $user)
+            );
+            $email->sendTo($simpletippRes->adminEmail);
+
+            // Update lastRemindedMatch witch current match_id
+            $this->Database->prepare("UPDATE tl_simpletipp SET lastRemindedMatch = ? WHERE id = ?")
+                ->execute($match->id, $simpletippRes->id);
+        }
+    }
+
+
+
     public function randomLine($strTag) {
         $arr = explode('::', $strTag);
         if ($arr[0] == 'random_line') {
@@ -180,4 +226,6 @@ class SimpletippCallbacks extends Backend {
         // nicht unser Insert-Tag
         return false;
     }
+
+
 }

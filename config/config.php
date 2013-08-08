@@ -36,6 +36,7 @@ $GLOBALS['simpletipp']['teamShortener'] = array(
     'SpVgg Greuther Fuerth'        => array('Fürth', 'FUE'),
 );
 
+$GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'tippReminder');
 
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]   = array('SimpletippCallbacks', 'addCustomRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('SimpletippCallbacks', 'randomLine');

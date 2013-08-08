@@ -178,6 +178,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr'),
 				'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
+        'lastRemindedMatch' => array
+        (
+            'label'        => array('lastRemindedMatch', 'lastRemindedMatch'),
+            'sql'          => "int(10) unsigned NOT NULL default '0'",
+        ),
+
         'pokal_group' => array
         (
             'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group'],

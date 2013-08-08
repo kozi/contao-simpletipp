@@ -115,6 +115,36 @@ class Simpletipp extends System {
         return $member;
     }
 
+    public static function getNextMatch($leagueID) {
+
+        $result = \Database::getInstance()->prepare("SELECT * FROM tl_simpletipp_match
+            WHERE leagueID = ? AND deadline > ?
+            ORDER BY deadline ASC, id ASC")->limit(1)->execute($leagueID, time());
+
+        if ($result->numRows == 0) {
+            // no next match
+            return null;
+        }
+        return (Object) $result->row();
+    }
+
+    public static function getNotTippedUser($groupID, $match_id) {
+        $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
+
+        $result = \Database::getInstance()->prepare("SELECT tblu.*
+             FROM tl_member as tblu
+             LEFT JOIN tl_simpletipp_tipp AS tblt
+             ON ( tblu.id = tblt.member_id AND tblt.match_id = ? AND tblu.groups LIKE ?)
+             WHERE tblt.id IS NULL
+             ORDER BY tblu.lastname")->execute($match_id, $participantStr);
+
+        $userArr = array();
+        while ($result->next()) {
+            $userArr[] = $result->row();
+        }
+        return $userArr;
+    }
+
 
     public static function getLeagueGroups($leagueID) {
         $groups = array();
