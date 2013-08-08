@@ -156,7 +156,7 @@ class SimpletippCallbacks extends Backend {
                 || $simpletippRes->lastRemindedMatch == $match->id
                 || ($match->deadline > (($hours*3600)+$now))) {
                 // no next match found or already reminded or more than $hours to start
-                // return false;
+                return false;
             }
 
             $pageObj         = PageModel::findByIdOrAlias('spiele');
@@ -165,20 +165,22 @@ class SimpletippCallbacks extends Backend {
             $email->fromName = $simpletippRes->adminName;
             $email->subject  = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
             $email->text     = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
-                    $hours, $match->title, Date::parse('d.m.Y H:i', $match->deadline),
-                    Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
+                $hours, $match->title, Date::parse('d.m.Y H:i', $match->deadline),
+                Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
             foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
-                $email->sendTo($u['email']);
-                $user[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
+                $email->sendBcc($u['email']);
+                $userNames[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
             }
+
+            $email->sendTo($simpletippRes->adminEmail);
 
             $email           = new Email();
             $email->from     = $simpletippRes->adminEmail;
             $email->fromName = $simpletippRes->adminName;
             $email->subject  = 'Tipperinnerung verschickt!';
             $email->text     = sprintf("Tipperinnerung an folgende Tipper verschickt:\n\n%s\n\n",
-                                    implode("\n", $user)
+                                    implode("\n", $userNames)
             );
             $email->sendTo($simpletippRes->adminEmail);
 
