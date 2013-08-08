@@ -1,0 +1,130 @@
+
+#tl_simpletipp .pokal {
+    float: left;
+    height: auto;
+    width: 50%;
+}
+#tl_simpletipp .pokal select {
+    font-size:14px;
+    height: 120px;
+}
+
+#tl_simpletipp .pokal option:disabled {
+    color:red;
+}
+
+table.simpletipp_questions, table.simpletipp_results {
+	width:100%;
+	padding:10px 0;
+	margin:0;
+	border-collapse: separate;
+    border-spacing: 1px;
+}
+
+table.simpletipp_questions tr.odd, 
+table.simpletipp_results tr.odd {
+	background-color: #eee;
+}
+
+table.simpletipp_questions tr.even,
+table.simpletipp_results tr.even {
+	background-color: #ddd;
+}
+
+table.simpletipp_questions td,
+table.simpletipp_results td {
+	padding:2px 5px;
+}
+
+table.simpletipp_results input {
+	font-family:monospace;
+	text-align:right;
+}
+
+.header_simpletipp_import,
+.header_simpletipp_settings {
+	padding: 2px 0 3px 20px;
+}
+
+.header_simpletipp_import {
+	background: url("/system/modules/simpletipp/assets/images/database-import.png") no-repeat scroll left center transparent;
+}
+
+.header_simpletipp_settings {
+    background: url("/system/themes/default/images/settings.gif") no-repeat scroll left center transparent;
+}
+
+.tl_box {
+	border-top:none;
+}
+
+#simpletipp_info {
+	background-color:#f6f6f6;
+	margin-bottom:30px;
+	padding:10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+
+#simpletipp_info pre {
+	margin:5px 0;
+	padding:5px;
+	border:1px dashed #333;
+}
+
+
+#ctrl_matches span.odd {
+	background-color:#dfdfdf;
+}
+
+#ctrl_matches span.even {
+	background-color:#efefef;
+}
+
+#ctrl_matches span.dline,
+#ctrl_matches span.title {
+	display:inline-block;
+}
+
+#ctrl_matches span.dline { width:120px; }
+#ctrl_matches span.title { width:300px; }
+
+
+
+table.simpletipp_questions th {
+	background-color:#333;
+	color:#fff;
+	padding:5px;
+}
+
+table.simpletipp_questions tr.new {
+	background-color:#C5E0AC;
+}
+
+table.simpletipp_questions textarea {
+	width:280px;
+}
+
+table.simpletipp_questions input.points {
+	width:40px;
+}
+
+td.col_points i {
+    font-style: normal;
+    border-radius: 7px;
+    text-align:center;
+    display:inline-block;
+    overflow:hidden;
+    width:12px;
+    height:12px;
+    background-color:#ffffff;
+    color:#ffffff;
+    border:1px solid #cccccc;
+}
+
+td.col_points i.wrong      { background-color: red;}
+td.col_points i.tendency   { background-color: gold;}
+td.col_points i.difference { background-color: skyblue;}
+td.col_points i.perfect    { background-color: green;}

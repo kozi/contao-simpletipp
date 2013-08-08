@@ -1,0 +1,123 @@
+.mod_simpletipp {
+    padding:20px 0 10px 0;
+}
+
+.mod_simpletipp table {
+	width:100%;
+    border-collapse: collapse;
+}
+
+
+.mod_simpletipp tr:hover  { background:#DEFFCF; }
+.mod_simpletipp tr.active { background:#C6EFB3; }
+
+
+.mod_simpletipp tr.last,
+.mod_simpletipp tr.break,
+.mod_simpletipp thead tr {
+    border-bottom:1px solid #333;
+}
+.mod_simpletipp_match th.logos i,
+.mod_simpletipp_matches td.logos i {
+    display:inline-block;
+    text-indent:-99999px;
+    width:26px;
+    height:22px;
+    background-position: center center;
+    border:1px solid #aaa;
+    border-radius:5px;
+}
+
+.mod_simpletipp_highscore tr,
+.mod_simpletipp_match tr,
+.mod_simpletipp_matches tr {
+    border-bottom:1px solid #ddd;
+}
+
+.highscore_bestof tr.pos1,
+.highscore_complete tr.pos1, .highscore_complete tr.pos2,
+.highscore_complete tr.pos3, .highscore_complete tr.pos4,
+.highscore_complete tr.pos5 { font-weight:bold; }
+
+
+.highscore_bestof tr.pos1,
+.highscore_complete tr.pos5 { border-bottom:1px solid #333; }
+
+
+
+
+.mod_simpletipp td,
+.mod_simpletipp th {
+	vertical-align:middle;
+	white-space: nowrap;
+    padding:8px 3px;
+}
+.mod_simpletipp th {
+    text-align:left;
+}
+
+.mod_simpletipp td.tipp { font-weight:bold; }
+
+.mod_simpletipp td.position {
+	text-align:right;
+}
+
+.mod_simpletipp td.tipp,
+.mod_simpletipp td.details,
+.mod_simpletipp td.points,
+.mod_simpletipp td.goals,
+.mod_simpletipp td.result,
+.mod_simpletipp th.result {
+	text-align:right;
+}
+
+.mod_simpletipp td.tipp input {
+    width:36px;
+}
+
+
+.simpletipp_filter {
+    display:block;
+    padding-bottom:10px;
+    font-size:14px;
+}
+
+.mod_simpletipp ul.matchfilter {
+    position:relative;
+    text-align: center;
+    display:block;
+    list-style: none;
+    line-height: normal;
+    margin:0;
+    padding:2px 0;
+}
+
+.mod_simpletipp ul.matchfilter li {
+    display:inline-block;
+    text-align: center;
+    margin:0;
+    padding:0;
+}
+
+.mod_simpletipp ul.matchfilter a {
+    display:block;
+    text-decoration: none;
+    min-width: 20px;
+    margin:0;
+    padding:2px 5px;
+}
+.mod_simpletipp ul.matchfilter li.date_filter a {
+    min-width:110px;
+}
+.mod_simpletipp ul.matchfilter li a           { color:#4F4F4F; }
+.mod_simpletipp ul.matchfilter li a:hover,
+.mod_simpletipp ul.matchfilter li.active a    { font-weight:bold; color:#648F59; }
+
+
+.simpletipp_messages {
+    background-color:#C6EFB3;
+    text-align: center;
+    display:block;
+    margin:10px 0;
+    padding:10px;
+}
