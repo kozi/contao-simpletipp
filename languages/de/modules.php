@@ -15,10 +15,19 @@
  * permanent text corrections which are update-safe.
  */
 
-$GLOBALS['TL_LANG']['MOD']['simpletipp'] = array("Tippspiel", "Einfaches Tippspiel");
- 
-$GLOBALS['TL_LANG']['FMD']['simpletipp']           = 'Simpletipp';
-$GLOBALS['TL_LANG']['FMD']['simpletipp_questions'] = array("Simpletipp Fragen", "Simpletipp Fragen");
-$GLOBALS['TL_LANG']['FMD']['simpletipp_matches']   = array("Simpletipp Spiele", "Simpletipp Spiele");
-$GLOBALS['TL_LANG']['FMD']['simpletipp_match']     = array("Simpletipp Einzelnes Spiel", "Simpletipp Einzelnes Spiel");
-$GLOBALS['TL_LANG']['FMD']['simpletipp_highscore'] = array("Simpletipp Rangliste", "Simpletipp Rangliste");
+$GLOBALS['TL_LANG']['MOD']['simpletipp']            = 'Tippspiel';
+$GLOBALS['TL_LANG']['MOD']['simpletipp_groups']     = array("Tipprunden", "Tipprunden");
+$GLOBALS['TL_LANG']['MOD']['simpletipp_matches']    = array("Spiele", "Spiele");
+$GLOBALS['TL_LANG']['MOD']['simpletipp_tipps']      = array("Tipps", "Tipps");
+
+$GLOBALS['TL_LANG']['FMD']['simpletipp']              = 'Simpletipp';
+$GLOBALS['TL_LANG']['FMD']['simpletipp_matches']      = array("Simpletipp Spiele", "Simpletipp Spiele");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_match']        = array("Simpletipp Einzelnes Spiel", "Simpletipp Einzelnes Spiel");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_highscore']    = array("Simpletipp Rangliste", "Simpletipp Rangliste");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_userselect']   = array("Simpletipp Benutzerauswahl", "Simpletipp Benutzerauswahl");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_questions']    = array("Simpletipp Fragen", "Simpletipp Fragen");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_calendar']     = array("Simpletipp Kalender", "Simpletipp Kalender");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_ranking']      = array("Simpletipp Wettbewerbstabelle", "Simpletipp Wettbewerbstabelle");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_pokal']        = array("Simpletipp Pokal", "Simpletipp Pokal");
+
+$GLOBALS['TL_LANG']['FMD']['simpletipp_calendar_info']     = "Dieses Modul erzeugt eine iCal-Datei. Die URL zu der Seite mit diesem Modul kann in einem Kalenderprogramm als Abonnement-URL genutzt werden.";

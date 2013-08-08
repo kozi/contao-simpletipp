@@ -18,10 +18,3 @@
 
 $GLOBALS['TL_LANG']['tl_simpletipp_pokal']['name']            = array('Runde', 'Runde');
 $GLOBALS['TL_LANG']['tl_simpletipp_pokal']['matches']         = array('Spiele', 'Spiele');
-
-$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['pokal_group']  = 'Gruppenphase';
-$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['pokal_16']     = '1. Runde';
-$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['pokal_8']      = 'Achtelfinale';
-$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['pokal_4']      = 'Viertelfinale';
-$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['pokal_2']      = 'Halbfinale';
-$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['pokal_finale'] = 'Finale';

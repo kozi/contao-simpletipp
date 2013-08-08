@@ -1,40 +1,24 @@
-<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/html/fe_style.css|screen|static"; ?>
+<?php $this->showAvatar =true; $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static"; ?>
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
 <?php if ($this->headline): ?>
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
-		
-<h2><?php echo $this->match; ?> <span class="result"><?php echo $this->result;?></span></h2>
-
-<div class="match">
-	<span class="<?php echo $this->team_h; ?>"></span>
-	<span class="<?php echo $this->team_a; ?>"></span>
-</div>
-
 <table>
 	<thead>
 	<tr>
-		<?php if($this->showAvatar): ?>
-			<th colspan="2" class="matchtitle">
-		<?php else: ?>
-			<th class="matchtitle">
-		<?php endif; ?>
-			<?php echo $this->match; ?>
-		</th>
-		<th class="result"><?php echo $this->result;?></th>
+        <th class="logos">
+            <i class="<?php echo $this->match->alias_h; ?>" style="background-image:url('<?php echo $this->match->icon_h; ?>');"><?php echo $this->match->team_h_three; ?></i>
+            <i class="<?php echo $this->match->alias_a; ?>" style="background-image:url('<?php echo $this->match->icon_a; ?>');"><?php echo $this->match->team_a_three; ?></i>
+        </th>
+
+        <th class="matchtitle"><?php echo $this->match->title; ?></th>
+		<th class="result"><?php echo $this->match->result;?></th>
 		<th></th>
-		
 	</tr>
 	<tr>
-
-		<?php if($this->showAvatar): ?>
-			<th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
-		<?php else: ?>
-			<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
-		<?php endif; ?>
-
+        <th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
 		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?></th>
 		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
 	</tr>
@@ -44,13 +28,14 @@
 <?php foreach($this->tipps as $tipp): ?>
 	<tr class="<?php echo $tipp->cssClass; ?>">
 
-		<?php if($this->showAvatar): ?>
-			<td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
-		<?php endif; ?>
-	
-		<td class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname.' ('.$tipp->username.')'; ?></a></td>
-		<td class="tipp"><?php echo $tipp->tipp; ?></td>
-		<td class="points"><?php echo str_repeat($this->imgtag_soccerball.' ', $tipp->points); ?></td>
+        <?php if($this->showAvatar): ?>
+            <td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
+        <?php endif; ?>
+
+        <td<?php echo (!$this->showAvatar) ? ' colspan="2"':''; ?> class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname.' ('.$tipp->username.')'; ?></a></td>
+
+        <td class="tipp"><?php echo $tipp->tipp; ?></td>
+		<td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $tipp->points); ?></td>
 	</tr>
 <?php endforeach; ?>
 	</tbody>

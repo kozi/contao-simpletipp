@@ -15,9 +15,10 @@
  * permanent text corrections which are update-safe.
  */
 
-$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend']  = 'Wettbewerb';
+$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend']            = 'Wettbewerb';
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend_questions']  = 'Extrafragen';
-$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_matches'] = 'Spiele';
+$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_pokal_legend']      = 'Pokalrunden';
+$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_matches']           = 'Spiele';
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['settings']     = array('Einstellungen', 'Einstellungen');
 $GLOBALS['TL_LANG']['tl_simpletipp']['import']       = array('Spiele importieren', 'Spiele importieren');
@@ -26,18 +27,32 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['import_btn']   = 'Ausführen';
 
 
 
-$GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup']   = array("Gruppe", "Gruppe/Spieltag an dem die Spiele stattfinden.");
-$GLOBALS['TL_LANG']['tl_simpletipp']['competition']  = array("Wettbewerb", "Wettbewerb");
+$GLOBALS['TL_LANG']['tl_simpletipp']['title']        = array("Titel", "Titel für diese Tipprunde");
+$GLOBALS['TL_LANG']['tl_simpletipp']['leagueID']     = array("Liga", "Liga die getippt werden soll.");
+$GLOBALS['TL_LANG']['tl_simpletipp']['leagueObject'] = array("Liga", "Liga die getippt werden soll.");
 $GLOBALS['TL_LANG']['tl_simpletipp']['teaser']       = array("Info", "Info");
 
+
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group']  = array('Gruppenphase', 'Spieltage festlegen.');
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_16']     = array('1. Runde', 'Spieltage festlegen.');
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_8']      = array('Achtelfinale', 'Spieltage festlegen.');
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_4']      = array('Viertelfinale', 'Spieltage festlegen.');
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_2']      = array('Halbfinale', 'Spieltage festlegen.');
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_finale'] = array('Finale', 'Spieltage festlegen.');
+
+
+
+$GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup']   = array("Gruppe", "Gruppe/Spieltag an dem die Spiele stattfinden.");
+$GLOBALS['TL_LANG']['tl_simpletipp']['competition']  = array("Wettbewerb", "Wettbewerb");
+
+$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp']       = array("Geändert am", "Geändert am");
 $GLOBALS['TL_LANG']['tl_simpletipp']['matches']      = array("Spiele", "Spiele");
 $GLOBALS['TL_LANG']['tl_simpletipp']['match']        = array("Spiel", "Spiel");
 $GLOBALS['TL_LANG']['tl_simpletipp']['results']      = array('Ergebnisse', 'Ergebnisse');
 $GLOBALS['TL_LANG']['tl_simpletipp']['result']       = array("Ergebnis", "Ergebnis");
-$GLOBALS['TL_LANG']['tl_simpletipp']['deadline']     = array("Deadline", "Deadline");
 
 
-$GLOBALS['TL_LANG']['tl_simpletipp']['participant_group']  = array("Teilnehmergruppe", "Auswahl einer Mitgliedergruppe.");
+$GLOBALS['TL_LANG']['tl_simpletipp']['participant_group']  = array("Mitgliedergruppe", "Auswahl einer Mitgliedergruppe.");
 $GLOBALS['TL_LANG']['tl_simpletipp']['participants']       = array('Teilnehmer', 'Teilnehmer');
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['manage_questions'] = array('Fragen verwalten', 'Fragen verwalten');

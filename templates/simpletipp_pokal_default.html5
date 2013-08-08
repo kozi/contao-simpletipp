@@ -1,0 +1,9 @@
+<div class="<?php echo $this->class; ?> block mod_simpletipp mod_simpletipp_pokal"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+<ul class="pokal_phases">
+<?php foreach ($this->groups as $group): ?>
+    <li class="<?php echo $group->alias; ?>"><strong><?php echo $group->name; ?>:</strong> <?php echo $group->first; ?> - <?php echo $group->last; ?></li>
+<?php endforeach; ?>
+</ul>
+
+</div>

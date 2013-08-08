@@ -1,13 +1,13 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2013 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
- * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
@@ -19,17 +19,15 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_simpletipp_questions', 'tl_simpletipp_pokal'),
+		'ctable'                      => array('tl_simpletipp_question', 'tl_simpletipp_pokal'),
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
-		'onload_callback' => array
-		(
-		array('tl_simpletipp', 'switchPalette')
+		'onsubmit_callback' => array(
+			array('tl_simpletipp', 'saveLeagueObject'),
+			array('tl_simpletipp', 'updateMatches')
 		),
-		'onsubmit_callback' => array
-		(
-			array('tl_simpletipp', 'saveMatchResultInputs'),
-			array('tl_simpletipp', 'updateDeadline')
+		'sql' => array(
+			'keys' => array('id' => 'primary')
 		)
 	),
 		
@@ -39,26 +37,18 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		'sorting' => array
 		(
 			'mode'                    => 2,
-			'fields'                  => array('deadline DESC'),
+			'fields'                  => array('tstamp DESC'),
 			'flag'                    => 1,
 			'panelLayout'             => 'limit'
 		),
 		'label' => array
 		(
-			'fields'                  => array('competition', 'matchgroup', 'deadline', 'teaser'),
+			'fields'                  => array('title', 'leagueObject', 'participant_group', 'tstamp'),
 			'showColumns'             => true,
 			'label_callback'          => array('tl_simpletipp', 'labelCallback')
 		),
 		'global_operations' => array
 		(
-			'import' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['import'],
-					'href'                => 'key=import',
-					'class'               => 'header_simpletipp_import',
-					'attributes'          => 'onclick="Backend.getScrollOffset()"'
-			),
-			
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -69,31 +59,30 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		),
 		'operations' => array
 		(
-			'toggle' => array
+			'update' => array
 			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['toggle'],
-					'icon'                => 'visible.gif',
-					'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-					'button_callback'     => array('tl_simpletipp', 'toggleIcon')
-			),
-			'results' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['results'],
-					'href'                => 'act=edit&type=results',
-					'icon'                => 'tablewizard.gif'
+					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['update'],
+					'href'                => 'key=update',
+					'icon'                => 'system/themes/default/images/reload.gif',
 			),
 			'questions' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
-					'href'                => 'table=tl_simpletipp_questions',
-					'icon'                => 'system/modules/simpletipp/html/question-balloon.png'
+					'href'                => 'table=tl_simpletipp_question',
+					'icon'                => 'system/modules/simpletipp/assets/images/question-balloon.png'
 			),
+
+			/*----------------------------------------------------------------------
+			 *---------------------------------------------------------------------
 			'pokal' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal'],
 					'href'                => 'table=tl_simpletipp_pokal',
-					'icon'                => 'system/modules/simpletipp/html/pokal.png'
+					'icon'                => 'system/modules/simpletipp/assets/images/pokal.png'
 			),
+			 *----------------------------------------------------------------------
+			 *--------------------------------------------------------------------*/
+				
 			'edit' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['edit'],
@@ -113,86 +102,115 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, competition, matchgroup, teaser, participant_group;{simpletipp_legend_spiele}, matches;',
-		'participants'                => '{simpletipp_legend}, all_members, participants;',
-		'results'                     => '{simpletipp_legend}, results;',
-		
+		'default'                     => '{simpletipp_legend}, title, leagueID, teaser, participant_group;{simpletipp_pokal_legend},pokal_group,pokal_16,pokal_8,pokal_4,pokal_2,pokal_finale',
 	),
+
 
 	// Fields
 	'fields' => array
 	(
-		'competition' => array
+		'id' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['competition'],
-			'exclude'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'select',
-			'options_callback'        => array('tl_simpletipp', 'getCompetitions'),
-			'eval'                    => array('mandatory'=>false, 'tl_class' => 'w50',
-											'includeBlankOption' => true,
-											'submitOnChange' => true)
+				'sql'                     => "int(10) unsigned NOT NULL auto_increment"
 		),
-		'matchgroup' => array
+		'tstamp' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup'],
-			'exclude'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'select',
-			'options_callback'        => array('tl_simpletipp', 'getMatchgroups'),
-			'eval'                    => array('mandatory'=>false, 'tl_class' => 'w50',
-											'includeBlankOption' => true,
-											'submitOnChange' => true)
+				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp'],
+				'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
-		'deadline' => array
+		'title' => array
 		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['deadline'],
+				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['title'],
 				'exclude'                 => true,
+				'flag'                    => 1,
 				'inputType'               => 'text',
-				'flag'					  => 6,
-				'eval'					  => array('rgxp' => 'datim')
+				'options_callback'        => array('tl_simpletipp', 'getLeagues'),
+				'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true, 'maxlength' => 48),
+				'sql'                     => "varchar(64) NOT NULL default ''",
+		),
+		'leagueID' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueID'],
+			'exclude'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'select',
+			'options_callback'        => array('tl_simpletipp', 'getLeagues'),
+			'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
+		),
+		'leagueObject' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueObject'],
+			'sql'                     => "blob NULL"
 		),
 		'teaser' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['teaser'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'		=> array('tl_class' => 'long clr' ,'style' => ' height:28px;', 'mandatory'=>false)
+			'eval'		              => array('tl_class' => 'long clr' ,'style' => ' height:28px;', 'mandatory'=>false),
+			'sql'                     => "text NULL",
 		),
-		'matches' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['matches'],
-				'exclude'                 => true,
-				'inputType'               => 'checkbox',
-				'options_callback'        => array('tl_simpletipp', 'getMatches'),
-				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr',
-						'multiple' => true)
-		),
-		'results' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['results'],
-				'exclude'                 => true,
-				'inputType'               => 'text',
-				'sql'                     => 'blob NULL',
-				'input_field_callback'    => array('tl_simpletipp', 'getMatchResultInputs')
-		),
-				
 		'participant_group' => array
 		(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participant_group'],
 				'exclude'                 => true,
 				'inputType'               => 'radio',
 				'foreignKey'              => 'tl_member_group.name',
-				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr')
+				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr'),
+				'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
-		'published' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['published'],
-				'exclude'                 => true,
-				'inputType'               => 'checkbox',
-				'eval'                    => array('doNotCopy'=>true)
-		)
-		
+        'pokal_group' => array
+        (
+            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group'],
+            'exclude'      => true,
+            'inputType'    => 'select',
+            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
+            'options_callback' => array('tl_simpletipp','getMatchgroups'),
+            'sql'          => "blob NULL",
+        ),
+        'pokal_16' => array(
+            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_16'],
+            'exclude'      => true,
+            'inputType'    => 'select',
+            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
+            'options_callback' => array('tl_simpletipp','getMatchgroups'),
+            'sql'          => "blob NULL",
+        ),
+        'pokal_8' => array(
+            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_8'],
+            'exclude'      => true,
+            'inputType'    => 'select',
+            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
+            'options_callback' => array('tl_simpletipp','getMatchgroups'),
+            'sql'          => "blob NULL",
+
+        ),
+        'pokal_4' => array(
+            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_4'],
+            'exclude'      => true,
+            'inputType'    => 'select',
+            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
+            'options_callback' => array('tl_simpletipp','getMatchgroups'),
+            'sql'          => "blob NULL",
+
+        ),
+        'pokal_2' => array(
+            'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_2'],
+            'exclude'          => true,
+            'inputType'        => 'select',
+            'eval'             => array('multiple' => true, 'tl_class' => 'pokal'),
+            'options_callback' => array('tl_simpletipp','getMatchgroups'),
+            'sql'              => "blob NULL",
+        ),
+        'pokal_finale' => array(
+            'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_finale'],
+            'exclude'          => true,
+            'inputType'        => 'select',
+            'eval'             => array('size' => 10, 'multiple' => true, 'tl_class' => 'pokal'),
+            'options_callback' => array('tl_simpletipp','getMatchgroups'),
+            'sql'              => "blob NULL",
+        ),
 	)
 );
 
@@ -201,297 +219,180 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
  * Class tl_simpletipp
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2011-2012
- * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @copyright  Martin Kozianka 2011-2013
+ * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */
 
 class tl_simpletipp extends Backend {
-
-	private $points;
-	
+    private $memberGroups       = array();
+    private $matchGroupOptions  = array();
 	public function __construct() {
 		parent::__construct();
+		$this->cleanupMatches();
 		$this->import('BackendUser', 'User');
+		$this->import('OpenLigaDB');
 		
-		$this->points = new stdClass;
-		$this->points->perfect  = 3;
-		$this->points->distance = 2;
-		$this->points->tendency = 1;
+		// Mitgliedergruppen holen		
+		$result = $this->Database->execute("SELECT id, name FROM tl_member_group ORDER BY id");
+		while($result->next()) {
+			$this->memberGroups[$result->id] = $result->name;
+		}
+		
+
 		
 	}
 
-	public function getMatches(DataContainer $dc) {
-		$matches = array();
-	
-		$competition = $dc->activeRecord->competition;
-		$matchgroup = $dc->activeRecord->matchgroup;
-		$result = null;
-	
-		if (!$competition) {
-			// Kein(e) Liga/Wettbewerb gewählt
-			return $matches;
+	public function getLeagues(DataContainer $dc) {
+		$leagues = $this->OpenLigaDB->getAvailLeagues();
+		$options = array();
+		foreach ($leagues as $league) {
+            $options[$league->leagueID] = $league->leagueName;
 		}
-		else if ($matchgroup){
-			$result = $this->Database->prepare("SELECT * FROM tl_simpletipp_matches WHERE matchgroup = ? AND competition = ? ORDER BY deadline ASC")
-			->execute($matchgroup, $competition);
-		}
-		else {
-			$result = $this->Database->prepare("SELECT * FROM tl_simpletipp_matches WHERE competition = ? ORDER BY deadline ASC")
-			->execute($competition);
-		}
-	
-		while ($result->next()) {
-			$dl = date($GLOBALS['TL_CONFIG']['datimFormat'],$result->deadline);
-			$matches[$result->id] = '<span  class="dline">'.$dl.'</span> '
-			.'<span class="title">'.$result->title.'</span>';
-		}
-		return $matches;
-	}
-
-	public function getMatchgroups(DataContainer $dc) {
-		
-		$competition = $dc->activeRecord->competition;
-
-		$result = $this->Database->prepare("SELECT DISTINCT matchgroup FROM tl_simpletipp_matches WHERE competition = ? ORDER BY matchgroup")
-			->execute($competition);
-		
-		$matchgroups = array();
-		while ($result->next()) {
-			$matchgroups[$result->matchgroup] = $result->matchgroup;
-		}
-		
-		return $matchgroups;
-	}
-	
-	public function getCompetitions() {
-		$competitions = array();
-
-		$result = $this->Database->prepare("SELECT DISTINCT competition FROM tl_simpletipp_matches")->execute();
-		
-		while ($result->next()) {
-			$competitions[$result->competition] = $result->competition;
-		}
-		return $competitions;
-	}
+		return $options;
+	}	
 
 	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
-		$teaser = strip_tags($row['teaser']);
-		if (strlen($teaser) > 40) {
-			$teaser = substr($teaser, 0, 40);
-		}
-		
-		// TODO Anzeige mittels Template!!!
-		
-		$matches       = unserialize($row['matches']);
-
-		// $participants  = unserialize($row['participant_group']);
-		
-		$lbl = "";
-		
-		if (is_array($matches)) {
-			$sql = 'SELECT id FROM tl_simpletipp_matches WHERE id in ('.implode(',', $matches).')';
-			$result = $this->Database->execute($sql);
-
-			$lbl .= '<span class="matches">'.$result->numRows
-				.' '.$GLOBALS['TL_LANG']['tl_simpletipp']['matches'][0].'</span> ';
-		}
-		
-		if (is_array($matches) && is_array($participants)) {
-			$lbl .= ' / ';
-		}
-		
-		
-		if ($row['all_members'] == '1'){
-			$lbl .= '<span class="participants">Alle</span>';
-		}
-		elseif (is_array($participants)) {
-			$lbl .= '<span class="participants">'.count($participants)
-				.' '.$GLOBALS['TL_LANG']['tl_simpletipp']['participants'][0].'</span> ';
-		}
-		
 		if ($args === null) {
-			$dl = date($GLOBALS['TL_CONFIG']['datimFormat'], $row['deadline']);
-			return '<span class="tablecell competition">'.$row['competition'].'</span>'
-				.'<span class="tablecell matchgroup">'.$row['matchgroup'].'</span>'
-				.'<span class="tablecell deadline">'.$dl.'</span>'
-				.'<span class="tablecell label">'.$lbl.'</span>';
+			return $label;
 		}
+
+		$leagueObject = unserialize($row['leagueObject']);
+
+		$args[1] = sprintf('<span title="%s (%s, %s)">%s</span>',
+				$leagueObject->leagueName,
+				$leagueObject->leagueShortcut, $leagueObject->leagueSaison,
+				$leagueObject->leagueName);
 		
 		
-		$args[3]  = $lbl;
+		$groupId = $args[2];
+		$args[2] = $this->memberGroups[$groupId];
 		
+		$args[3] = date($GLOBALS['TL_CONFIG']['datimFormat'], $args[3]);
+		 
 		return $args;
 	}
-	
-	public function updateDeadline(DataContainer $dc) {
-		$match_id = $dc->activeRecord->id;
-		$matches  = $dc->activeRecord->matches;
 
-		if (is_array($matches) && count($matches) > 0) {
+    public function getMatchgroups(DataContainer $dc) {
+        if (count($this->matchGroupOptions) == 0) {
+            $this->matchGroupOptions[''] = '-';
+            $leagueID = intval($dc->activeRecord->leagueID);
+            $groups   = Simpletipp::getLeagueGroups($leagueID);
+            foreach ($groups as $g) {
+                $this->matchGroupOptions[$g->title] = $g->title;
+            }
+        }
+        return $this->matchGroupOptions;
 
-			$result = $this->Database->prepare("SELECT deadline FROM tl_simpletipp_matches"
-				." WHERE id in (".implode(',', $matches).")"
-				." ORDER BY deadline ASC")->limit(1)->execute();
+    }
 
-			if ($result->numRows === 1) {
-				$sql = "UPDATE tl_simpletipp SET deadline = ? WHERE id = ?";
-				$result = $this->Database->prepare($sql)
-							->execute($result->deadline, $match_id);
+    public function saveLeagueObject(DataContainer $dc) {
+        $leagueID  = intval($dc->activeRecord->leagueID);
+		$leagues   = $this->OpenLigaDB->getAvailLeagues();
+		$leagueObj = null;
+		foreach($leagues as $league) {
+			if ($league->leagueID == $leagueID) {
+				$leagueObj = $league;
+				break;
 			}
+		}
+
+		if ($leagueObj != null) {
+			$this->Database->prepare("UPDATE tl_simpletipp SET leagueObject = ? WHERE id = ?")
+			->execute(serialize($leagueObj), $dc->activeRecord->id);
 		}
 	}
 	
-	public function getMatchResultInputs(DataContainer $dc) {
-		$matches = unserialize($dc->activeRecord->matches);
-		$legend = $GLOBALS['TL_LANG']['tl_simpletipp']['results'][0];
-		if (!$matches) {
-			$content = $GLOBALS['TL_LANG']['MSC']['noResult'];
-		}
-		else {
-			$sql = "SELECT * FROM tl_simpletipp_matches WHERE id in (".implode(',', $matches).")"
-						." ORDER BY deadline ASC";
-
-			$result = $this->Database->execute($sql);
-		
-			$content = '<div class="long"><table class="simpletipp_results"><tbody>';
-			$i=0;
-			$h = 'onmouseout="Theme.hoverRow(this,0)" onmouseover="Theme.hoverRow(this,1)"';
-			while ($result->next()) {
-				$css_class = ($i++ % 2 === 0 ) ? 'odd':'even'; 
-				$dl = date($GLOBALS['TL_CONFIG']['datimFormat'],$result->deadline);
-				$content .= "\n	<tr ".$h." class=\"".$css_class."\"><td>".$dl.'</td>'
-				.'<td>'.$result->title.'</td>'
-				.'<td><input type="hidden" value="'.$result->id.'" name="simpletipp_match_ids[]" />'
-				.'<input style="width:55px;" class="tl_text" type="text" value="'.$result->result.'" name="simpletipp_match_results[]" /></td></tr>';
-			}
-			$content .= "</tbody></table></div>\n";
-
-		} // else END
-		
-		return sprintf('<div class="clr"><fieldset id="ctrl_results" class="tl_checkbox_container"><legend>%s</legend>%s</fieldset></div>', $legend, $content);
-	}
 	
-	public function saveMatchResultInputs(DataContainer $dc) {
-		
-		$ids = $this->Input->post('simpletipp_match_ids');
-		$res = $this->Input->post('simpletipp_match_results');
+	public function updateMatches($dc, $leagueObject = null) {
+		if ($dc->activeRecord->leagueObject === null && $leagueObject === null) {
+			return false;
+		}
+		if ($dc->activeRecord->leagueObject !== null) {
+			$lObj  = unserialize($dc->activeRecord->leagueObject);
+		} else {
+			$lObj  = $leagueObject;
+		}
 
-		if (!is_array($ids) || !is_array($res) || count($ids) === 0 || count($ids) !== count($res)) {
+		if (!is_object($lObj)) {
+			return false;
+		}
+
+		$this->OpenLigaDB->setLeague($lObj);
+		
+		$matches = $this->OpenLigaDB->getMatches();
+		if ($matches === false) {
 			return false;
 		}
 		
-		$results = array();
-		for ($i=0;$i < count($ids);$i++) {
-			$id        = intval($ids[$i]);
-			$ergebnis  = $res[$i];
-			if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $ergebnis)) {
-				$results[$id] = $ergebnis;
+		$matchIDs   = array();
+		$newMatches = array();
+
+		foreach($matches as $match) {
+			$tmp          = get_object_vars($match);
+			$matchIDs[]   = $tmp['matchID'];
+			
+			$results      = $this->parseResults($tmp['matchResults']);  
+			$newMatches[] = array(
+				'id'              => $tmp['matchID'],
+				'leagueID'        => $tmp['leagueID'],
+				'groupID'         => $tmp['groupID'],
+                'groupName'       => $tmp['groupName'],
+                'groupName_short' => trim(str_replace('. Spieltag', '', $tmp['groupName'])),
+				'deadline'        => strtotime($tmp['matchDateTimeUTC']),
+				'title'           => sprintf("%s - %s", $tmp['nameTeam1'], $tmp['nameTeam2']),
+				'title_short'     => sprintf("%s - %s", Simpletipp::teamShortener($tmp['nameTeam1']), Simpletipp::teamShortener($tmp['nameTeam2'])),
+
+                'team_h'       => Simpletipp::teamShortener($tmp['nameTeam1']),
+				'team_a'       => Simpletipp::teamShortener($tmp['nameTeam2']),
+                'team_h_three' => Simpletipp::teamShortener($tmp['nameTeam1'], true),
+                'team_a_three' => Simpletipp::teamShortener($tmp['nameTeam2'], true),
+				'icon_h'       => Simpletipp::iconUrl($tmp['nameTeam1'], '/files/vereinslogos/'),
+				'icon_a'       => Simpletipp::iconUrl($tmp['nameTeam2'], '/files/vereinslogos/'),
+
+				'isFinished'   => $tmp['matchIsFinished'],
+				'lastUpdate'   => strtotime($tmp['lastUpdate']),
+				'resultFirst'  => $results[0],
+				'result'       => $results[1],
+			);
+		}
+
+		$this->Database->execute("DELETE FROM tl_simpletipp_match WHERE id IN ('"
+				.implode("', '", $matchIDs)."')");
+
+		foreach($newMatches as $m) {
+			$this->Database->prepare("INSERT INTO tl_simpletipp_match %s")->set($m)->execute();
+		}
+
+		
+		return $matchIDs;
+	}
+
+	
+	private function parseResults($matchResults) {
+		$rFirst = '';
+		$rFinal = '';
+
+		if ($matchResults->matchResult === null){
+			return array($rFirst, $rFinal);
+		}
+
+		foreach ($matchResults->matchResult as $res) {
+			 if ($res->resultTypeId === 1) {
+				$rFirst = $res->pointsTeam1.':'.$res->pointsTeam2;
 			}
-		} 
-
-		// In der Datenbank speichern
-		$updatedIds = array();
-		$sql = "UPDATE tl_simpletipp_matches SET result = ? WHERE id = ?";
-		foreach($results as $id=>$result) {
-			$db_result = $this->Database->prepare($sql)->execute($result, $id);
-			$updatedIds[] = $id;
-			/*if ($db_result->__get('affectedRows') !== 0) {
-				// Nur die ids der geänderten Ergebnisse speichern
-				$updatedIds[] = $id;
-			}*/
+			if ($res->resultTypeId === 2) {
+				$rFinal = $res->pointsTeam1.':'.$res->pointsTeam2;
+			}
 		}
-		
-		// Punkte aktualisieren
-		$this->updateTipps($updatedIds);
+		return array($rFirst, $rFinal);
 	}
+
 	
-	private function updateTipps($ids) {
-		if (count($ids) === 0) {
-			//  Nothing to do
-			return true;
-		}
-		
-		
-
-		$result = $this->Database->execute(
-				"SELECT id, result FROM tl_simpletipp_matches"
-				." WHERE id in (".implode(',', $ids).")");
-		while($result->next()) {
-			$match_results[$result->id] = $result->result;
-		}
-
-		$result = $this->Database->execute(
-				"SELECT id, match_id, tipp FROM tl_simpletipp_tipps"
-				." WHERE match_id in (".implode(',', $ids).")");
-		while($result->next()) {
-			$points = Simpletipp::getPoints($match_results[$result->match_id], $result->tipp);
-			$update = $this->Database->prepare(
-					"UPDATE tl_simpletipp_tipps"
-					." SET perfect = ?, difference = ?, tendency = ?, wrong = ? WHERE id = ?")
-					->execute($points->perfect, $points->difference, 
-							$points->tendency, $points->wrong, $result->id);
-		}
+	private function cleanupMatches() {
+		$this->Database->execute("DELETE FROM tl_simpletipp_match
+			WHERE leagueID NOT IN (SELECT tl_simpletipp.leagueID FROM tl_simpletipp)");
 	}
-	
-	
-	public function switchPalette(DataContainer $dc) {
-		// Listing mode, return
-		if (!$dc->id) {
-			return;
-		}
-
-		$type = $this->Input->get('type');
-		if ($type === 'participants' || $type === 'results' || $type === 'questions') {
-			$GLOBALS['TL_DCA']['tl_simpletipp']['palettes']['default'] =
-				$GLOBALS['TL_DCA']['tl_simpletipp']['palettes'][$type];
-		} 
-		
-	}
-	
-	
-	
-	
-	public function toggleIcon($row, $href, $label, $title, $icon, $attributes) {
-		
-		if (strlen($this->Input->get('tid'))) {
-			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
-			$this->redirect($this->getReferer());
-		}
-	
-		// Check permissions AFTER checking the tid, so hacking attempts are logged
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_simpletipp::published', 'alexf')) {
-			return '';
-		}
-	
-		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
-	
-		if (!$row['published']) {
-			$icon = 'invisible.gif';
-		}
-		
-		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-	
-	public function toggleVisibility($intId, $blnVisible) {
-
-		// Check permissions to publish
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_simpletipp::published', 'alexf'))
-		{
-			$this->log('Not enough permissions to publish/unpublish simpletipp ID "'.$intId.'"', 'tl_simpletipp toggleVisibility', TL_ERROR);
-			$this->redirect('contao/main.php?act=error');
-		}
-
-		$this->createInitialVersion('tl_simpletipp', $intId);
-
-		// Update the database
-		$this->Database->prepare("UPDATE tl_simpletipp SET tstamp=". time() 
-				.", published='" . ($blnVisible ? 1 : '') . "' WHERE id = ?")
-				->execute($intId);
-		
-		$this->createNewVersion('tl_simpletipp', $intId);
-	}
-	
 }
 
 

@@ -1,5 +1,3 @@
-<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/html/fe_style.css|screen|static"; ?>
-
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
 <?php if ($this->headline): ?>
@@ -7,14 +5,21 @@
 <?php endif; ?>
 
 <div class="simpletipp_filter">
-<ul>
-<?php foreach($this->filter->options as $filter): ?>
-	<li<?php echo $filter['cssClass'];?>><a href="<?php echo $filter['href']; ?>"><?php echo $filter['title']; ?></a></li>
-<?php endforeach; ?>
+
+<ul class="matchfilter">
+    <?php $i=0; foreach($this->filter->options as $filter): ?>
+        <li<?php echo $filter['cssClass'];?>><a href="<?php echo $filter['href']; ?>"><?php echo $filter['title']; ?></a></li>
+    <?php endforeach; ?>
+</ul>
+<ul class="matchfilter">
+    <?php $i=1; foreach($this->filter->group_options as $filter): ?>
+        <li<?php echo $filter['cssClass'];?>><a href="<?php echo $filter['href']; ?>"><?php echo $filter['title']; ?></a></li>
+        <?php if ($i++ == 17) echo '</ul><ul class="matchfilter">' ?>
+    <?php endforeach; ?>
 </ul>
 </div>
 
-<table>
+<table class="<?php echo $this->tableClass; ?>">
 	<thead><tr>
 		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['position'][0]; ?></th>
 		
@@ -44,19 +49,6 @@
 	</tr>
 <?php endforeach; ?>
 	</tbody>
-	<tfoot><tr>
-
-		<?php if($this->showAvatar): ?>
-			<td colspan="3">&nbsp;</td>
-		<?php else: ?>
-			<td colspan="2">&nbsp;</td>
-		<?php endif; ?>
-
-		<td class="details">
-			<?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
-		</td>
-		<td class="points"><?php echo $this->summary->points; ?></td>
-	</tr></tfoot>	
 </table>
 
 </div>

@@ -18,5 +18,4 @@ $GLOBALS['TL_LANG']['tl_module']['simpletipp_legend']       = 'Simpletipp';
 $GLOBALS['TL_LANG']['tl_module']['simpletipp_match_page']   = array('Seitenauswahl Einzelspiel', 'Wähle eine Seite, die das Modul <strong>Simpletipp - Einzelnens Spiel</strong> enthält.');
 $GLOBALS['TL_LANG']['tl_module']['simpletipp_matches_page'] = array('Seitenauswahl Spiele', 'Wähle eine Seite, die das Modul <strong>Simpletipp - Spiele</strong> enthält.');
 $GLOBALS['TL_LANG']['tl_module']['simpletipp_template']     = array('Template', 'Template-Auswahl');
-$GLOBALS['TL_LANG']['tl_module']['simpletipp_groups']       = array('Tipprunde', 'Es werden alle Spiele der selektierten Tipprunde ausgewertet.'
-	.' Spiele die in mehreren Tipprunden vorkommen werden nur einmal gewertet.');
+$GLOBALS['TL_LANG']['tl_module']['simpletipp_group']        = array('Tipprunde', 'Bitte eine Tipprunde auswählen.');

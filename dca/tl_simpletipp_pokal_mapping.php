@@ -1,13 +1,13 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2013 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012 <http://kozianka-online.de/>
- * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
@@ -55,9 +55,29 @@ $GLOBALS['TL_DCA']['tl_simpletipp_pokal_mapping'] = array(
 		'default'					=> '{legend}, name, matches;',
 	),
 
+/*
+    CREATE TABLE `tl_simpletipp_pokal_mapping`
+  `name` varchar(64) NOT NULL default '',
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `member` ,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+*/
+
 	// Fields
 	'fields' => array
 	(
+        'id' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['matches'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'options_callback'        => array('tl_simpletipp_pokal', 'getMatches'),
+            'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr', 'multiple' => true),
+        ),
 		'member' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['name'],
@@ -65,17 +85,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp_pokal_mapping'] = array(
 			'reference'               => &$GLOBALS['TL_LANG']['tl_simpletipp_pokal'],
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'tl_class' => 'long')
+			'eval'                    => array('mandatory'=>true, 'tl_class' => 'long'),
+            'sql'                     => "blob NULL",
 		),
-		'id' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_pokal']['matches'],
-				'exclude'                 => true,
-				'inputType'               => 'checkbox',
-				'options_callback'        => array('tl_simpletipp_pokal', 'getMatches'),
-				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr', 'multiple' => true)
-		)		
-		
+
 	)
 );
 
@@ -84,8 +97,8 @@ $GLOBALS['TL_DCA']['tl_simpletipp_pokal_mapping'] = array(
  * Class tl_simpletipp_pokal_mapping
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2011-2012
- * @author     Martin Kozianka <http://kozianka-online.de/>
+ * @copyright  Martin Kozianka 2011-2013
+ * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */
 
@@ -129,7 +142,7 @@ class tl_simpletipp_pokal_mapping extends Backend {
 
 	public function getMapping($row) {
 		
-		return print_r($row, true);
+		// return print_r($row, true);
 		
 		$n    = $row['name'];
 		$name = $GLOBALS['TL_LANG']['tl_simpletipp_pokal'][$n];
@@ -142,7 +155,7 @@ class tl_simpletipp_pokal_mapping extends Backend {
 		}
 		
 		
-		$result = $this->Database->execute('SELECT DISTINCT matchgroup, deadline FROM tl_simpletipp_matches'
+		$result = $this->Database->execute('SELECT DISTINCT matchgroup, deadline FROM tl_simpletipp_match'
 				.' WHERE id in ('.implode(',', $m).') ORDER BY deadline');
 		
 		if ($result->numRows == 0) {
