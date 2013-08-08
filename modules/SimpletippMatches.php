@@ -354,15 +354,16 @@ class SimpletippMatches extends SimpletippModule {
 		
 		$content = $GLOBALS['TL_LANG']['simpletipp']['email_text'];
 		while($result->next()) {
-			$content .= sprintf("%s %s = %s\n",
+            $content .= sprintf("%s %s = %s\n",
 					date('d.m.Y H:i', $result->deadline),
 					$result->title,
 					$matches[$result->id]
 				); 
 		}
 
-        $subject = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_subject'],
-                      date('d.m.Y H:i:s'), $this->User->firstname.' '.$this->User->lastname);
+        $content .= "\n\n--\n".\Contao\Environment::get("base")."\n".$GLOBALS['TL_ADMIN_EMAIL'];
+        $subject  = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_subject'],
+                       date('d.m.Y H:i:s'), $this->User->firstname.' '.$this->User->lastname);
 
         // Send to user
         $email           = new Email();
