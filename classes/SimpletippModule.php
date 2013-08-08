@@ -86,19 +86,6 @@ abstract class SimpletippModule extends \Module {
 
     }
 
-    protected static function getGroupMember($groupID, $complete = false, $order = '') {
-        $member         = array();
-        $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
-        $keys           = ($complete) ? '*' : 'id';
-
-        $result = \Database::getInstance()->prepare("SELECT ".$keys." FROM tl_member WHERE groups LIKE ? ".$order)
-            ->execute($participantStr);
-        while($result->next()) {
-            $member[$result->id] = ($complete) ? (Object) $result->row() : $result->id;
-        }
-        return $member;
-    }
-
 	protected function initSimpletipp() {
 		if ($this->simpletipp_group) {
 

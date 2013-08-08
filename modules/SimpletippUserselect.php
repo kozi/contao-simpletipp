@@ -42,7 +42,7 @@ class SimpletippUserselect extends SimpletippModule {
 
         $participants = array();
         $order        = "ORDER BY lastname ASC, firstname ASC";
-        foreach ($this->getGroupMember($this->simpletipp->participant_group, true, $order) as $u) {
+        foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group, true, $order) as $u) {
             $u->link              = $this->addToUrl('user='.$u->username);
             $participants[$u->id] = $u;
         }

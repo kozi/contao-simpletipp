@@ -98,6 +98,52 @@ class SimpletippCallbacks extends Backend {
 		return false;
 	}
 
+    public function createNewsletterChannel() {
+        $now    = time();
+        $result = $this->Database->execute("SELECT * FROM tl_simpletipp");
+
+        while($result->next()) {
+            $simpletipp = $result->row();
+            $channelResult = $this->Database->prepare("SELECT * FROM tl_newsletter_channel WHERE simpletipp = ?")
+                        ->execute($simpletipp['id']);
+
+            if ($channelResult->numRows == 0) {
+                $nlc = new NewsletterChannelModel();
+                $nlc->setRow(array(
+                    'simpletipp' => $simpletipp['id'],
+                    'title'      => 'SIMPLETIPP '.$simpletipp['title'],
+                    'jumpTo'     => 1, // TODO
+                    'tstamp'     => time(),
+                ));
+                $nlc->save();
+                $channel_id = $nlc->id;
+            }
+            else {
+                $channel_id = $channelResult->id;
+            }
+            $this->Database->prepare("DELETE FROM tl_newsletter_recipients WHERE pid = ?")
+                ->execute($channel_id);
+
+            $emails     = array();
+            $memberArr  = Simpletipp::getGroupMember($simpletipp['participant_group'], true);
+            foreach($memberArr as $member) {
+                $emails[] = $member->email;
+            }
+
+            $emails = array_unique($emails);
+            foreach($emails as $email) {
+                $this->Database->prepare("INSERT INTO tl_newsletter_recipients %s")->set(array(
+                    'pid'       => $channel_id,
+                    'email'     => $email,
+                    'tstamp'    => $simpletipp['tstamp'],
+                    'addedOn'   => $simpletipp['tstamp'],
+                    'confirmed' => $simpletipp['tstamp'],
+                    'active'    => '1',
+                ))->execute();
+            }
+        }
+    }
+
     public function randomLine($strTag) {
         $arr = explode('::', $strTag);
         if ($arr[0] == 'random_line') {

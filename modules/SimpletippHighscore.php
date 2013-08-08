@@ -48,7 +48,7 @@ class SimpletippHighscore extends SimpletippModule {
 	protected function compile() {
 
         // PointFactor, Participants, Groups,
-        $this->participants = $this->getGroupMember($this->simpletipp->participant_group);
+        $this->participants = Simpletipp::getGroupMember($this->simpletipp->participant_group);
 
         // Filter
         $this->show = (Input::get('show')) ? Input::get('show') : 'all';
