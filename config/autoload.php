@@ -39,6 +39,7 @@ ClassLoader::addClasses(array(
     'SimpletippCalendar'            => 'system/modules/simpletipp/modules/SimpletippCalendar.php',
     'SimpletippRanking'             => 'system/modules/simpletipp/modules/SimpletippRanking.php',
     'SimpletippPokal'               => 'system/modules/simpletipp/modules/SimpletippPokal.php',
+    'SimpletippNotTipped'           => 'system/modules/simpletipp/modules/SimpletippNotTipped.php',
 
 ));
 
@@ -53,6 +54,7 @@ TemplateLoader::addFiles(array(
     'simpletipp_userselect' 		=> 'system/modules/simpletipp/templates',
     'simpletipp_ranking_default'	=> 'system/modules/simpletipp/templates',
     'simpletipp_pokal_default'   	=> 'system/modules/simpletipp/templates',
+    'simpletipp_nottipped_default'  => 'system/modules/simpletipp/templates',
     'rss_podcast'                   => 'system/modules/simpletipp/templates',
 ));
 

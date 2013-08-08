@@ -29,5 +29,6 @@ $GLOBALS['TL_LANG']['FMD']['simpletipp_questions']    = array("Simpletipp Fragen
 $GLOBALS['TL_LANG']['FMD']['simpletipp_calendar']     = array("Simpletipp Kalender", "Simpletipp Kalender");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_ranking']      = array("Simpletipp Wettbewerbstabelle", "Simpletipp Wettbewerbstabelle");
 $GLOBALS['TL_LANG']['FMD']['simpletipp_pokal']        = array("Simpletipp Pokal", "Simpletipp Pokal");
+$GLOBALS['TL_LANG']['FMD']['simpletipp_nottipped']    = array("Simpletipp Nicht getippt", "Simpletipp Nicht getippt");
 
 $GLOBALS['TL_LANG']['FMD']['simpletipp_calendar_info']     = "Dieses Modul erzeugt eine iCal-Datei. Die URL zu der Seite mit diesem Modul kann in einem Kalenderprogramm als Abonnement-URL genutzt werden.";

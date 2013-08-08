@@ -1,6 +1,6 @@
 <?php
     $i       = 1;
-    $pattern = (Environment::get('agent')->os == 'ios') ? ' pattern="[0-9]*"': '';
+    $pattern = (Environment::get('agent')->os == 'ios') ? ' pattern="[0-9]*"': ' onfocus="this.setSelectionRange(0, 9999);"';
 ?>
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
@@ -61,7 +61,7 @@
 	<?php elseif($this->isPersonal): $hasTippableMatch = true; ?>
 		<td class="tipp" colspan="2">
 			<input type="hidden" name="match_ids[]" value="<?php echo $match->id; ?>"/>
-			<input onfocus="this.setSelectionRange(0, 9999);" class="tipp" tabindex="<?php echo $i++;?>" size="5" maxlength="5" type="text"<?php echo $pattern; ?> name="tipps[]" value="<?php echo $match->tipp; ?>"/>
+			<input title="Beispieleingabe: 1:1 oder 1-2 oder 1,2 oder 3;2" class="tipp" tabindex="<?php echo $i++;?>" size="5" maxlength="5" type="text"<?php echo $pattern; ?> name="tipps[]" value="<?php echo $match->tipp; ?>"/>
 		</td>
 	<?php else: ?>
 		<td class="tipp <?php echo $match->pointsClass; ?>">?:?</td>

@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, title, leagueID, teaser, participant_group;{simpletipp_pokal_legend},pokal_group,pokal_16,pokal_8,pokal_4,pokal_2,pokal_finale',
+		'default'                     => '{simpletipp_legend}, title, leagueID, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_group,pokal_16,pokal_8,pokal_4,pokal_2,pokal_finale',
 	),
 
 
@@ -124,10 +124,28 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'exclude'                 => true,
 				'flag'                    => 1,
 				'inputType'               => 'text',
-				'options_callback'        => array('tl_simpletipp', 'getLeagues'),
-				'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true, 'maxlength' => 48),
+				'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'maxlength' => 48),
 				'sql'                     => "varchar(64) NOT NULL default ''",
 		),
+        'adminName' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['adminName'],
+            'exclude'                 => true,
+            'flag'                    => 1,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
+        ),
+        'adminEmail' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['adminEmail'],
+            'exclude'                 => true,
+            'flag'                    => 1,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
+        ),
+
 		'leagueID' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueID'],

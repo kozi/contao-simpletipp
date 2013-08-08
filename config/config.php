@@ -48,7 +48,8 @@ array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
     'simpletipp_questions'  => 'SimpletippQuestions',
     'simpletipp_highscore'  => 'SimpletippHighscore',
     'simpletipp_ranking'    => 'SimpletippRanking',
-    'simpletipp_pokal'      => 'SimpletippPokal'
+    'simpletipp_pokal'      => 'SimpletippPokal',
+    'simpletipp_nottipped'  => 'SimpletippNotTipped'
 ));
 
 array_insert($GLOBALS['BE_MOD'], 1, array(

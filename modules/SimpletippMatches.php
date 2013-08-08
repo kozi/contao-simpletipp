@@ -336,7 +336,11 @@ class SimpletippMatches extends SimpletippModule {
 			}
 		}
 
-		if ($this->sendEmail) {
+        if (count(array_keys($to_db)) == 0) {
+            // TODO translation
+            $message = "Es wurden keine Tipps eingetragen!";
+        }
+        else if ($this->sendEmail) {
 			$this->sendTippEmail($to_db);
 			$message = sprintf($GLOBALS['TL_LANG']['simpletipp']['message_inserted_email'], $this->User->email);
 		}
@@ -348,6 +352,11 @@ class SimpletippMatches extends SimpletippModule {
 	}
 
 	private function sendTippEmail($matches) {
+
+        if (!is_array($matches) || count(array_keys($matches)) == 0){
+            // Nothing to send
+            return false;
+        }
 
 		$result = $this->Database->execute('SELECT * FROM tl_simpletipp_match'
 			.' WHERE id in ('.implode(',', array_keys($matches)).')');
@@ -365,22 +374,26 @@ class SimpletippMatches extends SimpletippModule {
         $subject  = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_subject'],
                        date('d.m.Y H:i:s'), $this->User->firstname.' '.$this->User->lastname);
 
+
         // Send to user
         $email           = new Email();
-		$email->from     = $GLOBALS['TL_ADMIN_EMAIL'];
-        $email->fromName = $GLOBALS['TL_ADMIN_NAME'];
+		$email->from     = $this->simpletipp->adminEmail;
+        $email->fromName = $this->simpletipp->adminName;
 		$email->subject  = $subject;
         $email->text     = $content;
         $email->replyTo($this->User->email);
 		$email->sendTo($this->User->email);
 
 		// Send encoded to admin
-        $email           = new \Contao\Email();
-        $email->from     = $GLOBALS['TL_ADMIN_EMAIL'];
-        $email->fromName = $GLOBALS['TL_ADMIN_NAME'];
+        $email           = new Email();
+        $email->from     = $this->simpletipp->adminEmail;
+        $email->fromName = $this->simpletipp->adminName;
         $email->subject  = $subject;
 		$email->text     = base64_encode($content);
+        $email->replyTo($this->User->email);
 		$email->sendTo($GLOBALS['TL_ADMIN_EMAIL']);
+
+        return true;
 	}
 
 } // END class SimpletippMatches

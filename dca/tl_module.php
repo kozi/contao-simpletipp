@@ -54,6 +54,10 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_pokal'] =
     .'{simpletipp_legend},simpletipp_group,simpletipp_template;'
     .'{expert_legend:hide},guests,cssID,space';
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_nottipped'] =
+    '{title_legend},name,headline,type;'
+    .'{simpletipp_legend},simpletipp_group,simpletipp_template;'
+    .'{expert_legend:hide},guests,cssID,space';
 
 /**
  * Add fields to tl_module

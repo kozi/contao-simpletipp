@@ -28,6 +28,8 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['import_btn']   = 'Ausführen';
 
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['title']        = array("Titel", "Titel für diese Tipprunde");
+$GLOBALS['TL_LANG']['tl_simpletipp']['adminName']    = array("Admin Name","Name des Tipprundenadmins");
+$GLOBALS['TL_LANG']['tl_simpletipp']['adminEmail']   = array("Admin Email","Email des Tipprundenadmins");
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueID']     = array("Liga", "Liga die getippt werden soll.");
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueObject'] = array("Liga", "Liga die getippt werden soll.");
 $GLOBALS['TL_LANG']['tl_simpletipp']['teaser']       = array("Info", "Info");
