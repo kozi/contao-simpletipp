@@ -46,6 +46,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 	),
 ),
 
+// Palettes
+'palettes' => array
+(
+    'default'                     => '{simpletipp_legend}, member_id, match_id, tipp',
+),
+
 // Fields
 'fields' => array
 (
@@ -63,21 +69,25 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 	),
 	'member_id' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['member_id'],
-			'sql'                     => "int(10) unsigned NOT NULL",
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 			'inputType'               => 'select',
 			'foreignKey'              => 'tl_member.username',
 			'filter'                  => true,
 	),
 	'match_id' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['match_id'],
-			'sql'                     => "int(10) unsigned NOT NULL",
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 			'inputType'               => 'select',
 			'foreignKey'              => 'tl_simpletipp_match.title',
+            'options_callback'        => array('tl_simpletipp_tipp','getMatchOptions'),
 			'filter'                  => true,
+            'eval'                    => array('mandatory' => true),
 	),
 	'tipp' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['tipp'],
+            'inputType'               => 'text',
 			'sql'                     => "varchar(9) NOT NULL default ''",
+            'eval'                    => array('mandatory' => true, 'maxlength' => 5),
 	),
 	'perfect' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['perfect'],
@@ -115,17 +125,26 @@ class tl_simpletipp_tipp extends Backend {
 			$this->memberNames[$result->id] = $result->username;
 		}
 
-		$result = $this->Database->execute('SELECT id, title, result FROM tl_simpletipp_match');
+		$result = $this->Database->execute('SELECT id, title, result, groupName FROM tl_simpletipp_match ORDER BY deadline');
 		while($result->next()) {
 			$match = new stdClass;
 			$match->id     = $result->id;
 			$match->title  = $result->title;
-			$match->result = $result->result;
+            $match->result = $result->result;
+            $match->group  = $result->groupName;
 
 			$this->matches[$match->id] = $match;
 		}
 
 	}
+
+    public function getMatchOptions(DataContainer $dc) {
+        $options = array();
+        foreach($this->matches as $match) {
+            $options[$match->id] = '['.intval($match->group).'] '.$match->title;
+        }
+        return $options;
+    }
 
 	public function getLeagues(DataContainer $dc) {
 		//var_dump($dc);
