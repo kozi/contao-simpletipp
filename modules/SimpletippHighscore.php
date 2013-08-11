@@ -78,9 +78,12 @@ class SimpletippHighscore extends SimpletippModule {
             }
         }
         elseif($this->show !== 'all') {
-            $this->Template->tableClass  = 'highscore_complete';
+            $this->Template->tableClass  = 'highscore_matchgroup';
             // show is matchgroupName
             $matchgroupName = $this->show;
+        }
+        else {
+            $this->Template->tableClass  = 'highscore_complete';
         }
 
 		$table  = $this->getHighscore($matchgroupName);
@@ -105,7 +108,7 @@ class SimpletippHighscore extends SimpletippModule {
                 'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][0],
                 'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][1],
                 'href'     => $this->addToUrl('show='),
-                'cssClass' => (!$this->show) ? ' class="all active"': ' class="all"'
+                'cssClass' => (!$this->show || $this->show == 'all') ? ' class="all active"': ' class="all"'
             ),
             array(
                 'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][0],
