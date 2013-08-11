@@ -64,8 +64,8 @@ class SimpletippMatch extends SimpletippModule {
 				->execute($this->match->id);
 
 
-        $objPage = PageModel::findByPk($this->simpletipp_matches_page);
-        $pageRow = ($objPage !== null) ? $objPage->row() : null;
+        $objPage       = PageModel::findByPk($this->simpletipp_matches_page);
+        $pageRow       = ($objPage !== null) ? $objPage->row() : null;
 
         $i     = 0;
         $tipps = array();
@@ -94,9 +94,12 @@ class SimpletippMatch extends SimpletippModule {
 			if (!$this->isStarted) {
 				$tipp->tipp = "?:?";
 			}
-			
-			$tipp->avatar = ($tipp->avatar != '') ? $tipp->avatar : $GLOBALS['TL_CONFIG']['uploadPath'].'/avatars/default128.png';
+
+            $tipp->avatar = ($tipp->avatar != null) ? $tipp->avatar : $this->avatarFallback;
 			$tipps[]      = $tipp;
+
+
+
 		}
 		
 		// Match
@@ -104,10 +107,10 @@ class SimpletippMatch extends SimpletippModule {
         $this->match->alias_h = standardize($teams[0]);
         $this->match->alias_a = standardize($teams[1]);
 
-
-        $this->Template->match   = $this->match;
-		$this->Template->tipps   = $tipps;
-		$this->Template->summary = $this->pointSummary;
+        $this->Template->avatarActive = $this->avatarActive;
+        $this->Template->match        = $this->match;
+		$this->Template->tipps        = $tipps;
+		$this->Template->summary      = $this->pointSummary;
 	}
 
 } // END class SimpletippMatches

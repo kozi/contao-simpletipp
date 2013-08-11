@@ -1,4 +1,4 @@
-<?php $this->showAvatar =true; $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static"; ?>
+<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static"; ?>
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
@@ -28,11 +28,11 @@
 <?php foreach($this->tipps as $tipp): ?>
 	<tr class="<?php echo $tipp->cssClass; ?>">
 
-        <?php if($this->showAvatar): ?>
+        <?php if($this->avatarActive): ?>
             <td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
         <?php endif; ?>
 
-        <td<?php echo (!$this->showAvatar) ? ' colspan="2"':''; ?> class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname.' ('.$tipp->username.')'; ?></a></td>
+        <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname.' ('.$tipp->username.')'; ?></a></td>
 
         <td class="tipp"><?php echo $tipp->tipp; ?></td>
 		<td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $tipp->points); ?></td>
@@ -43,7 +43,7 @@
 
 	<tfoot><tr>
 		
-		<?php if($this->showAvatar): ?>	
+		<?php if($this->avatarActive): ?>
 			<td colspan="2">&nbsp;</td>
 		<?php else: ?>
 			<td>&nbsp;</td>

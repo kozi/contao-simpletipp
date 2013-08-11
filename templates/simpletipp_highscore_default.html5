@@ -23,7 +23,7 @@
 	<thead><tr>
 		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['position'][0]; ?></th>
 		
-		<?php if($this->showAvatar): ?>
+		<?php if($this->avatarActive): ?>
 			<th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
 		<?php else: ?>
 			<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
@@ -37,11 +37,11 @@
 	<tr class="<?php echo $row->cssClass; ?>">
 		<td class="position"><?php echo $i++; ?>. </td>
 
-		<?php if($this->showAvatar): ?>
+		<?php if($this->avatarActive): ?>
 			<td class="avatar"><a href="<?php echo $row->memberLink; ?>">{{image::<?php echo $row->avatar;?>?width=24&height=24&mode=crop}}</a></td>
 		<?php endif; ?>
 		
-		<td class="name"><a href="<?php echo $row->memberLink; ?>"><?php echo $row->firstname.' '.$row->lastname.' ('.$row->username.')'; ?></a></td>
+		<td class="name"><a href="<?php echo $row->memberLink; ?>"><?php echo $row->firstname.' '.$row->lastname; ?><?php echo ($this->isMobile) ? '':' ('.$row->username.')'; ?></a></td>
 		<td class="details" title="TODO explain details">
 			<?php echo $row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency; ?>
 		</td>

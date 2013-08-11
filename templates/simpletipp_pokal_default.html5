@@ -1,9 +1,12 @@
 <div class="<?php echo $this->class; ?> block mod_simpletipp mod_simpletipp_pokal"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
-<ul class="pokal_phases">
-<?php foreach ($this->groups as $group): ?>
-    <li class="<?php echo $group->alias; ?>"><strong><?php echo $group->name; ?>:</strong> <?php echo $group->first; ?> - <?php echo $group->last; ?></li>
-<?php endforeach; ?>
-</ul>
+    <ul class="pokal_phases">
+        <?php foreach ($this->groups as $group): ?>
+            <li class="<?php echo $group->cssClass; ?>"><strong><?php echo $group->name; ?>:</strong> <?php echo $group->first; ?> - <?php echo $group->last; ?> <small>(<?php echo Date::parse("d.m.Y", $group->start); ?> - <?php echo Date::parse("d.m.Y", $group->end); ?>)</small></li>
+        <?php endforeach; ?>
+    </ul>
 
+    <?php foreach (array_reverse($this->groups) as $group): if ($group->pairings != null) : ?>
+        <?php var_dump($group->pairings); ?>
+    <?php endif; endforeach; ?>
 </div>

@@ -65,7 +65,7 @@ class SimpletippMatches extends SimpletippModule {
 
         $this->Template->formId       = $this->formId;
         $this->Template->action       = ampersand(Environment::get('request'));
-		$this->Template->isMobile     = $objPage->isMobile;
+        $this->Template->isMobile     = $objPage->isMobile;
 
 		$this->Template->summary      = $this->pointSummary;
 		$this->Template->messages     = Simpletipp::getSimpletippMessages();

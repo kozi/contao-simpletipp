@@ -1,16 +1,29 @@
 
-#tl_simpletipp .pokal {
+#tl_simpletipp .pokal_ranges {
+    position:relative;
     float: left;
     height: auto;
-    width: 50%;
-}
-#tl_simpletipp .pokal select {
-    font-size:14px;
-    height: 120px;
+    width: 100%;
 }
 
-#tl_simpletipp .pokal option:disabled {
-    color:red;
+#tl_simpletipp #pokal_groups {
+    position:absolute;
+    display:block;
+    top:34px;
+    left:340px;
+}
+
+#tl_simpletipp #pokal_groups td {
+    padding:5px;
+}
+
+.tl_help {
+    width: 50%;
+}
+
+#tl_simpletipp .pokal_ranges select {
+    font-size:11px;
+    height: 500px;
 }
 
 table.simpletipp_questions, table.simpletipp_results {

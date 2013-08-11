@@ -27,28 +27,23 @@ class SimpletippCallbacks extends Backend {
     public function updateMatches(DataContainer $dc) {
 		$id = intval(Input::get('id'));
 
-		$result = $this->Database
-			->prepare("SELECT leagueObject FROM tl_simpletipp WHERE id = ?")
+        $result = $this->Database
+			->prepare("SELECT * FROM tl_simpletipp WHERE id = ?")
 			->execute($id);
-		
+
 		if ($result->numRows > 0) {
-			$leagueObj = unserialize($result->leagueObject);
-			
+            $simpletipp = (Object) $result->row();
+            $leagueObj  = unserialize($result->leagueObject);
+
 			$this->import('tl_simpletipp');
 			
 			$this->import('OpenLigaDB');
 			$this->OpenLigaDB->setLeague($leagueObj);
-			
-			$lastChange = $this->OpenLigaDB->getLastLeagueChange();
 
-            // TODO
-			if(array_key_exists($leagueObj->leagueID, $this->config->leagueUpdates)) {
-				$lastUpdate = $this->config->leagueUpdates[$leagueObj->leagueID];
-			} else {
-				$this->config->leagueUpdates[$leagueObj->leagueID] = $lastChange;
-			}
+            $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
+            $simpletippLastChanged = intval($simpletipp->lastChanged);
 
-			if ($lastChange !== $lastUpdate) {
+			if ($simpletippLastChanged != $openligaLastChanged) {
 				$matchIDs = $this->tl_simpletipp->updateMatches(null, $leagueObj);
 				$this->updateTipps($matchIDs);
 				$message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
@@ -57,6 +52,9 @@ class SimpletippCallbacks extends Backend {
 				$message = sprintf('Keine Änderungen seit der letzen Aktualisierung in Liga <strong>%s</strong>. ', $leagueObj->leagueName);
 			}
             Message::add($message, 'TL_INFO');
+
+            $this->Database->prepare("UPDATE tl_simpletipp SET lastChanged = ? WHERE id = ?")
+                ->execute($openligaLastChanged, $id);
 		}
 		$this->redirect(Environment::get('script').'?do=simpletipp_groups');
 	}

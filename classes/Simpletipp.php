@@ -89,19 +89,6 @@ class Simpletipp extends System {
         return $matches;
     }
 
-    public static function getMatches($leagueID, $matchgroup = null) {
-        $matches = array();
-        $where   = ($matchgroup !== null) ? ' WHERE leagueID = ? AND groupName = ?' : ' WHERE leagueID = ?';
-        $result  = \Database::getInstance()->prepare("SELECT id FROM tl_simpletipp_match".$where)
-            ->execute($leagueID, $matchgroup);
-
-        while($result->next()) {
-            $matches[] = $result->id;
-        }
-        return $matches;
-
-    }
-
     public static function getGroupMember($groupID, $complete = false, $order = '') {
         $member         = array();
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';

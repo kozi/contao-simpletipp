@@ -57,13 +57,11 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 		'simpletipp' => array(
 				'simpletipp_groups' => array
 				(
-						'tables'     => array('tl_simpletipp', 'tl_simpletipp_question', 'tl_simpletipp_pokal', 'tl_simpletipp_pokal_mapping'),
+						'tables'     => array('tl_simpletipp', 'tl_simpletipp_question'),
 						'icon'       => 'system/modules/simpletipp/assets/images/soccer.png',
 						'javascript' => 'system/modules/simpletipp/assets/simpletipp-backend.js',
 						'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-						'settings'   => array('SimpletippSettings', 'settings'),
-						'import'     => array('SimpletippSettings', 'importMatches'),
-						'update'     => array('SimpletippCallbacks', 'updateMatches'),
+                        'update'     => array('SimpletippCallbacks', 'updateMatches'),
 				),
 				'simpletipp_matches' => array
 				(

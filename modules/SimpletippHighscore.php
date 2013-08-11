@@ -26,9 +26,7 @@
 // Idee: HallOfFame
 
 class SimpletippHighscore extends SimpletippModule {
-    private $participants  = null;
-    private $matches       = null;
-	private $filter        = null;
+    private $filter        = null;
 
 	protected $strTemplate = 'simpletipp_highscore_default';
 
@@ -46,19 +44,18 @@ class SimpletippHighscore extends SimpletippModule {
 	}
 	
 	protected function compile() {
-
-        // PointFactor, Participants, Groups,
-        $this->participants = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        global $objPage;
 
         // Filter
         $this->show = (Input::get('show')) ? Input::get('show') : 'all';
         $this->generateFilter();
-        $this->Template->filter = $this->filter;
-
+        $this->Template->filter   = $this->filter;
+        $this->Template->isMobile = $objPage->isMobile;
 
         if ($this->show === 'bestof') {
-            $this->Template->tableClass  = 'highscore_bestof';
-            $this->Template->table = $this->bestOfTable();
+            $this->Template->avatarActive = $this->avatarActive;
+            $this->Template->tableClass   = 'highscore_bestof';
+            $this->Template->table        = $this->bestOfTable();
             return;
         }
 
@@ -86,42 +83,11 @@ class SimpletippHighscore extends SimpletippModule {
             $matchgroupName = $this->show;
         }
 
+		$table  = $this->getHighscore($matchgroupName);
 
-        $this->matches = Simpletipp::getMatches($this->simpletipp->leagueID, $matchgroupName);
-
-		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id,"
-            .$this->avatarSql
-            ." SUM(tendency) AS sum_tendency,"
-            ." SUM(difference) AS sum_difference,"
-            ." SUM(perfect) AS sum_perfect,"
-            ." SUM(wrong) AS sum_wrong,"
-            ." SUM(perfect*".$this->pointFactors->perfect
-                    ." + difference*".$this->pointFactors->difference
-                    ." + tendency*".$this->pointFactors->tendency
-                    .") AS points"
-            ." FROM tl_simpletipp_tipp AS tblTipp, tl_member"
-            ." WHERE tblTipp.member_id = tl_member.id"
-            ." AND tblTipp.match_id in (".implode(',', $this->matches).")"
-            ." GROUP BY tl_member.id"
-            ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
-		
-		$table = array();
-
-		while($result->next()) {
-            $table[$result->member_id] = $this->getRow($result->row());
-		}
-
-        // Jetzt noch die member, die noch nichts getippt haben hinzufügen
-		$result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
-			." WHERE tl_member.id in (".implode(',', $this->participants).")");
-		while($result->next()) {
-			if (!array_key_exists($result->member_id, $table)) {
-				$table[$result->member_id] = $this->getRow($result->row());
-			}
-		}
-
-        $this->Template->filter      = $this->filter;
-        $this->Template->table       = $table;
+        $this->Template->avatarActive = $this->avatarActive;
+        $this->Template->filter       = $this->filter;
+        $this->Template->table        = $table;
 
 	}
 	
@@ -158,18 +124,6 @@ class SimpletippHighscore extends SimpletippModule {
 		}
 	}
 
-	private function getRow($memberRow, $params = '') {
-        $row           = (Object) $memberRow;
-        $row->avatar   = ($row->avatar != '') ? $row->avatar : $GLOBALS['TL_CONFIG']['uploadPath'].'/avatars/default128.png';
-        $row->cssClass = (($this->i++ % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i;
-
-        $pageModel = PageModel::findByPk($this->simpletipp_matches_page);
-        if ($pageModel !== null) {
-            $row->memberLink = self::generateFrontendUrl($pageModel->row(), '/user/'.$row->username.$params);
-        }
-		return $row;
-	}
-
     private function bestOfTable() {
 
         $bestOf = array();
@@ -180,30 +134,15 @@ class SimpletippHighscore extends SimpletippModule {
 
         while($mgResult->next()) {
             $matchgroupName = $mgResult->groupName;
-            $matches        = Simpletipp::getMatches($this->simpletipp->leagueID, $matchgroupName);
 
-            $result = $this->Database->execute("SELECT *, tl_member.id AS member_id,"
-                .$this->avatarSql
-                ." SUM(tendency) AS sum_tendency,"
-                ." SUM(difference) AS sum_difference,"
-                ." SUM(perfect) AS sum_perfect,"
-                ." SUM(wrong) AS sum_wrong,"
-                ." SUM(perfect*".$this->pointFactors->perfect
-                ." + difference*".$this->pointFactors->difference
-                ." + tendency*".$this->pointFactors->tendency
-                .") AS points"
-                ." FROM tl_simpletipp_tipp AS tblTipp, tl_member"
-                ." WHERE tblTipp.member_id = tl_member.id"
-                ." AND tblTipp.match_id in (".implode(',', $matches).")"
-                ." GROUP BY tl_member.id"
-                ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
+            $matchGroupTable = $this->getHighscore($matchgroupName);
 
-            while($result->next()) {
-                $currentRow = $bestOf[$result->member_id];
-                if ($currentRow == null || (intval($currentRow->points) < intval($result->points))) {
-                    $newRow                     = $this->getRow($result->row());
+            foreach($matchGroupTable as $row) {
+                $currentRow = $bestOf[$row->member_id];
+                if ($currentRow == null || (intval($currentRow->points) < intval($row->points))) {
+                    $newRow                     = $row;
                     $newRow->groupName          = $matchgroupName;
-                    $bestOf[$result->member_id] = $newRow;
+                    $bestOf[$row->member_id]    = $newRow;
                 }
             }
         }

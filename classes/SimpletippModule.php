@@ -35,7 +35,11 @@ abstract class SimpletippModule extends \Module {
 
 	protected $factorDifference;
 	protected $factorTendency;
+
+    protected $avatarActive = false;
     protected $avatarSql;
+    protected $avatarFallback;
+
     protected $participant_group;
 
     public function __construct($objModule, $strColumn='main') {
@@ -76,6 +80,12 @@ abstract class SimpletippModule extends \Module {
         $this->avatarActive         = (in_array('avatar', $this->Config->getActiveModules()));
         $this->avatarSql            = ($this->avatarActive) ? ' tl_member.avatar AS avatar,' : '';
 
+        if ($this->avatarActive) {
+            $fileObj = FilesModel::findByPk($GLOBALS['TL_CONFIG']['avatar_fallback_image']);
+            $this->avatarFallback = $fileObj->path;
+        }
+
+
         $factor = explode(',' , $this->simpletipp_factor);
         $this->pointFactors = new stdClass;
         $this->pointFactors->perfect    = $factor[0];
@@ -86,40 +96,82 @@ abstract class SimpletippModule extends \Module {
 
     }
 
-	protected function initSimpletipp() {
-		if ($this->simpletipp_group) {
+    protected function getHighscore($matchgroup = null, $memberArr = null) {
+        $matches = $this->getMatches($matchgroup);
 
-			$result = $this->Database->prepare("SELECT leagueObject, participant_group FROM tl_simpletipp
-				 WHERE id =  ?")->execute($this->simpletipp_group);
+        $restrictToMember = '';
+        if ($memberArr != null) {
+            $restrictToMember = " AND tl_member.id in (".implode(',', $memberArr).")";
+            $participants = $memberArr;
+        } else {
+            $participants = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        }
 
-			if ($result->numRows) {
-				$this->league            = unserialize($result->leagueObject);
-				$this->participant_group = $result->participant_group;
-			} else {
-				return false;
-			}
+        $result  = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
+        .$this->avatarSql
+        ." SUM(tendency) AS sum_tendency,"
+        ." SUM(difference) AS sum_difference,"
+        ." SUM(perfect) AS sum_perfect,"
+        ." SUM(wrong) AS sum_wrong,"
+        ." SUM(perfect*".$this->pointFactors->perfect
+        ." + difference*".$this->pointFactors->difference
+        ." + tendency*".$this->pointFactors->tendency
+        .") AS points"
+        ." FROM tl_simpletipp_tipp AS tblTipp, tl_member"
+        ." WHERE tblTipp.member_id = tl_member.id"
+        ." AND tblTipp.match_id in (".implode(',', $matches).")"
+        .$restrictToMember
+        ." GROUP BY tl_member.id"
+        ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
 
-            $result = $this->Database->prepare("SELECT DISTINCT groupID, groupName
-					FROM tl_simpletipp_match WHERE leagueID = ?
-				    ORDER BY groupID")->execute($this->simpletipp->leagueID);
+        $table = array();
 
-			$this->groups = array();
-            while($result->next()) {
+        while($result->next()) {
+            $table[$result->member_id] = $this->getHighscoreRow($result->row());
+        }
 
-                var_dump($result->groupName);
+        // Jetzt noch die member, die noch nichts getippt haben hinzufügen
+        $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
+        ." WHERE tl_member.id in (".implode(',', $participants).")");
+        while($result->next()) {
+            if (!array_key_exists($result->member_id, $table)) {
+                $table[$result->member_id] = $this->getHighscoreRow($result->row());
+            }
+        }
+        return $table;
+    }
 
-				$short = intval($result->groupName);
-				if ($short == 0) {
-					$mg    = explode(". ", $result->groupName);
-					$short = $mg[0];
-				}
 
-				$this->groups[$result->groupID] = (Object) array(
-						'title' => $result->groupName,
-						'short' => $short);
-			}
-		}
-	}
+    private function getHighscoreRow($memberRow, $params = '') {
+        $row           = (Object) $memberRow;
+
+        $row->avatar   = ($row->avatar != null) ? $row->avatar : $this->avatarFallback;
+        $row->cssClass = (($this->i++ % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i;
+
+        $pageModel = PageModel::findByPk($this->simpletipp_matches_page);
+        if ($pageModel !== null) {
+            $row->memberLink = self::generateFrontendUrl($pageModel->row(), '/user/'.$row->username.$params);
+        }
+        return $row;
+    }
+
+    private function getMatches($matchgroup = null) {
+        $matches = array();
+        $where   = ($matchgroup !== null) ? ' WHERE leagueID = ? AND groupName = ?' : ' WHERE leagueID = ?';
+
+        if (is_array($matchgroup)) {
+            $where   = " WHERE leagueID = ? AND groupName IN ('".implode("','", $matchgroup)."')";;
+        }
+
+        $result  = $this->Database->prepare("SELECT id FROM tl_simpletipp_match".$where)
+            ->execute($this->simpletipp->leagueID, $matchgroup);
+
+        while($result->next()) {
+            $matches[] = $result->id;
+        }
+        return $matches;
+
+    }
 
     protected function updateSummary($pointObj) {
         $this->pointSummary->points     += $pointObj->points;

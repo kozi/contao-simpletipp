@@ -13,13 +13,14 @@
  * @filesource
  */
 
+$GLOBALS['TL_JAVASCRIPT'][]         = "/system/modules/simpletipp/assets/String.sprintf.js";
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
 	// Config
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_simpletipp_question', 'tl_simpletipp_pokal'),
+		'ctable'                      => array('tl_simpletipp_question'),
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
 		'onsubmit_callback' => array(
@@ -71,18 +72,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 					'href'                => 'table=tl_simpletipp_question',
 					'icon'                => 'system/modules/simpletipp/assets/images/question-balloon.png'
 			),
-
-			/*----------------------------------------------------------------------
-			 *---------------------------------------------------------------------
-			'pokal' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal'],
-					'href'                => 'table=tl_simpletipp_pokal',
-					'icon'                => 'system/modules/simpletipp/assets/images/pokal.png'
-			),
-			 *----------------------------------------------------------------------
-			 *--------------------------------------------------------------------*/
-				
 			'edit' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['edit'],
@@ -102,7 +91,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, title, leagueID, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_group,pokal_16,pokal_8,pokal_4,pokal_2,pokal_finale',
+		'default'                     => '{simpletipp_legend}, title, leagueID, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
 	),
 
 
@@ -178,63 +167,34 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr'),
 				'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
+        'lastChanged' => array
+        (
+            'label'        => array('lastChanged', 'lastChanged'),
+            'sql'          => "int(10) unsigned NOT NULL default '0'",
+        ),
         'lastRemindedMatch' => array
         (
             'label'        => array('lastRemindedMatch', 'lastRemindedMatch'),
             'sql'          => "int(10) unsigned NOT NULL default '0'",
         ),
 
-        'pokal_group' => array
+        'pokal_ranges' => array
         (
-            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group'],
+            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'],
             'exclude'      => true,
             'inputType'    => 'select',
-            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
+            'eval'         => array('multiple' => true, 'tl_class' => 'pokal_ranges'),
             'options_callback' => array('tl_simpletipp','getMatchgroups'),
             'sql'          => "blob NULL",
         ),
-        'pokal_16' => array(
-            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_16'],
-            'exclude'      => true,
-            'inputType'    => 'select',
-            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
-            'options_callback' => array('tl_simpletipp','getMatchgroups'),
-            'sql'          => "blob NULL",
-        ),
-        'pokal_8' => array(
-            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_8'],
-            'exclude'      => true,
-            'inputType'    => 'select',
-            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
-            'options_callback' => array('tl_simpletipp','getMatchgroups'),
-            'sql'          => "blob NULL",
 
-        ),
-        'pokal_4' => array(
-            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_4'],
-            'exclude'      => true,
-            'inputType'    => 'select',
-            'eval'         => array('multiple' => true, 'tl_class' => 'pokal'),
-            'options_callback' => array('tl_simpletipp','getMatchgroups'),
-            'sql'          => "blob NULL",
+        'pokal_group'  => array('sql' => "blob NULL"),
+        'pokal_16'     => array('sql' => "blob NULL"),
+        'pokal_8'      => array('sql' => "blob NULL"),
+        'pokal_4'      => array('sql' => "blob NULL"),
+        'pokal_2'      => array('sql' => "blob NULL"),
+        'pokal_finale' => array('sql' => "blob NULL"),
 
-        ),
-        'pokal_2' => array(
-            'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_2'],
-            'exclude'          => true,
-            'inputType'        => 'select',
-            'eval'             => array('multiple' => true, 'tl_class' => 'pokal'),
-            'options_callback' => array('tl_simpletipp','getMatchgroups'),
-            'sql'              => "blob NULL",
-        ),
-        'pokal_finale' => array(
-            'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_finale'],
-            'exclude'          => true,
-            'inputType'        => 'select',
-            'eval'             => array('size' => 10, 'multiple' => true, 'tl_class' => 'pokal'),
-            'options_callback' => array('tl_simpletipp','getMatchgroups'),
-            'sql'              => "blob NULL",
-        ),
 	)
 );
 

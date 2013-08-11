@@ -1,101 +1,106 @@
 <?php
-    $i       = 1;
-    $pattern = (Environment::get('agent')->os == 'ios') ? ' pattern="[0-9]*"': ' onfocus="this.setSelectionRange(0, 9999);"';
+$i       = 1;
+$onfocus = (Environment::get('agent')->os == 'ios') ? '' : ' onfocus="this.setSelectionRange(0, 9999);"';
 ?>
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
-<?php if ($this->headline): ?>
-<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+    <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
 <?php echo $this->messages; ?>
 
 <?php if ($this->isPersonal): ?>
-	<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
-		<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
-		<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
-<?php endif; ?>
-
-<?php echo $this->matchFilter; ?>
-
-<?php if($this->matches): ?>
-
-<br>
-
-<table class="matches" cellspacing="2" cellpadding="2">
-<thead>
-	<tr>
-	<th><?php echo $GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup'][0]; ?></th>
-	<th colspan="2"><?php echo $GLOBALS['TL_LANG']['tl_simpletipp']['match'][0]; ?></th>
-	<th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?>/<abbr title="Ergebnis">Erg.</abbr></th>
-	<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
-</tr>
-</thead>
-
-<tbody>
-<?php $points = 0; foreach($this->matches as $match):?>
-<tr id="match_<?php echo $match->id; ?>" class="<?php echo $match->cssClass; ?>">
-	<td class="matchgroup">
-        <?php echo sprintf('%02s', $match->groupName_short).'. '; ?>
-        <small title="<?php echo $match->date_title; ?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small>
-    </td>
-    <td class="logos">
-        <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo $match->icon_h; ?>');"><?php echo $match->team_h_three; ?></i>
-        <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo $match->icon_a; ?>');"><?php echo $match->team_a_three; ?></i>
-    </td>
-    <td class="title">
-		<?php if (!$match->isStarted && $this->isPersonal): ?>
-            <a href="<?php echo $match->matchLink; ?>">
-                <?php if ($this->isMobile && $match->title_short) { echo $match->title_short; } else { echo $match->title; } ?>
-            </a>
-		<?php else: ?>
-			<a href="<?php echo $match->matchLink; ?>">
-				<?php if ($this->isMobile && $match->title_short) { echo $match->title_short; } else { echo $match->title; } ?>
-			</a>
-		<?php endif; ?>
-	</td>
-
-	<?php if ($match->isStarted): ?>
-		<td class="tipp <?php echo $match->pointsClass; ?>"><?php echo $match->tipp; ?></td>
-	<?php elseif($this->isPersonal): $hasTippableMatch = true; ?>
-		<td class="tipp" colspan="2">
-			<input type="hidden" name="match_ids[]" value="<?php echo $match->id; ?>"/>
-			<input title="Beispieleingabe: 1:1 oder 1-2 oder 1,2 oder 3;2" class="tipp" tabindex="<?php echo $i++;?>" size="5" maxlength="5" type="text"<?php echo $pattern; ?> name="tipps[]" value="<?php echo $match->tipp; ?>"/>
-		</td>
-	<?php else: ?>
-		<td class="tipp <?php echo $match->pointsClass; ?>">?:?</td>
-	<?php endif; ?>
-
-    <?php if ((!$this->isPersonal) || $match->isStarted): ?>
-        <td class="result"><?php echo $match->result; ?></td>
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
+    <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+    <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
     <?php endif; ?>
 
-    <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $match->points); ?></td></tr>
-</tr>
-<?php endforeach; ?>
+    <?php echo $this->matchFilter; ?>
 
-</tbody>
-<tfoot><tr>
-	<td colspan="5">&nbsp;</td>
-	<td class="points">
-        <small><?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?></small>
-    	<?php echo $this->summary->points; ?>
-    </td>
-</tr></tfoot>
-</table>
-<br>
+    <?php if($this->matches): ?>
+
+        <br>
+
+        <table class="matches" cellspacing="2" cellpadding="2">
+            <thead>
+            <tr>
+                <th><?php if ($this->isMobile): ?>
+                        <abbr title="<?php echo $GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup'][0]; ?>">G</abbr>
+                    <?php else: ?>
+                        <?php echo $GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup'][0]; ?>
+                    <?php endif; ?>
+                </th>
+                <th colspan="2"><?php echo $GLOBALS['TL_LANG']['tl_simpletipp']['match'][0]; ?></th>
+                <th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?>/<abbr title="Ergebnis">Erg.</abbr></th>
+                <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <?php $points = 0; foreach($this->matches as $match):?>
+                <tr id="match_<?php echo $match->id; ?>" class="<?php echo $match->cssClass; ?>">
+                    <td class="matchgroup">
+                        <?php echo sprintf('%02s', $match->groupName_short).'. '; ?>
+                        <?php if (!$this->isMobile): ?><small title="<?php echo $match->date_title; ?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small><?php endif; ?>
+                    </td>
+                    <td class="logos">
+                        <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo $match->icon_h; ?>');"><?php echo $match->team_h_three; ?></i>
+                        <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo $match->icon_a; ?>');"><?php echo $match->team_a_three; ?></i>
+                    </td>
+                    <td class="title">
+                        <?php if (!$match->isStarted && $this->isPersonal): ?>
+                            <a href="<?php echo $match->matchLink; ?>">
+                                <?php if ($this->isMobile && $match->title_short) { echo $match->title_short; } else { echo $match->title; } ?>
+                            </a>
+                        <?php else: ?>
+                            <a href="<?php echo $match->matchLink; ?>">
+                                <?php if ($this->isMobile && $match->title_short) { echo $match->title_short; } else { echo $match->title; } ?>
+                            </a>
+                        <?php endif; ?>
+                    </td>
+
+                    <?php if ($match->isStarted): ?>
+                        <td class="tipp <?php echo $match->pointsClass; ?>"><?php echo $match->tipp; ?></td>
+                    <?php elseif($this->isPersonal): $hasTippableMatch = true; ?>
+                        <td class="tipp" colspan="2">
+                            <input type="hidden" name="match_ids[]" value="<?php echo $match->id; ?>"/>
+                            <input title="Beispieleingabe: 1:1 oder 1-2 oder 1,2 oder 3;2" class="tipp" tabindex="<?php echo $i++;?>" size="5" maxlength="5" type="text"<?php echo $onfocus; ?> name="tipps[]" value="<?php echo $match->tipp; ?>"/>
+                        </td>
+                    <?php else: ?>
+                        <td class="tipp <?php echo $match->pointsClass; ?>">?:?</td>
+                    <?php endif; ?>
+
+                    <?php if ((!$this->isPersonal) || $match->isStarted): ?>
+                        <td class="result"><?php echo $match->result; ?></td>
+                    <?php endif; ?>
+
+                    <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $match->points); ?></td></tr>
+                </tr>
+            <?php endforeach; ?>
+
+            </tbody>
+            <tfoot><tr>
+                <td colspan="5">&nbsp;</td>
+                <td class="points">
+                    <small><?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?></small>
+                    <?php echo $this->summary->points; ?>
+                </td>
+            </tr></tfoot>
+        </table>
+        <br>
+    <?php endif; ?>
+
+    <?php if ($this->isPersonal): ?>
+    <?php if ($hasTippableMatch): ?>
+        <div class="submit_container">
+            <input tabindex="<?php echo $i;?>" type="submit" value="Tippen" />
+        </div>
+    <?php endif; ?>
+</form>
 <?php endif; ?>
-	
-<?php if ($this->isPersonal): ?>
-	<?php if ($hasTippableMatch): ?>
-		<div class="submit_container">
-			<input tabindex="<?php echo $i;?>" type="submit" value="Tippen" />
-		</div>
-	<?php endif; ?>
-	</form>
-<?php endif; ?>
-	
+
 
 
 </div>
