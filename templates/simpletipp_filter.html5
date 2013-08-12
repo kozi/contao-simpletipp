@@ -1,10 +1,9 @@
 <div class="block simpletipp_filter">
 
-
-<?php if($this->date_filter): ?>
+<?php if($this->special_filter): ?>
 <ul class="matchfilter date_filter">
 
-    <?php foreach($this->date_filter as $link): ?>
+    <?php foreach($this->special_filter as $link): ?>
 	    <li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li>
     <?php endforeach;?>
 

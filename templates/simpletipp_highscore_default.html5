@@ -4,20 +4,7 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<div class="simpletipp_filter">
-
-<ul class="matchfilter">
-    <?php $i=0; foreach($this->filter->options as $filter): ?>
-        <li<?php echo $filter['cssClass'];?>><a href="<?php echo $filter['href']; ?>"><?php echo $filter['title']; ?></a></li>
-    <?php endforeach; ?>
-</ul>
-<ul class="matchfilter">
-    <?php $i=1; foreach($this->filter->group_options as $filter): ?>
-        <li<?php echo $filter['cssClass'];?>><a href="<?php echo $filter['href']; ?>"><?php echo $filter['title']; ?></a></li>
-        <?php if ($i++ == 17) echo '</ul><ul class="matchfilter">' ?>
-    <?php endforeach; ?>
-</ul>
-</div>
+<?php echo $this->filter; ?>
 
 <table class="<?php echo $this->tableClass; ?>">
 	<thead><tr>

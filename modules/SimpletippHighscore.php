@@ -48,8 +48,8 @@ class SimpletippHighscore extends SimpletippModule {
 
         // Filter
         $this->show = (Input::get('show')) ? Input::get('show') : 'all';
-        $this->generateFilter();
-        $this->Template->filter   = $this->filter;
+
+        $this->Template->filter   = $this->generateFilter();
         $this->Template->isMobile = $objPage->isMobile;
 
         if ($this->show === 'bestof') {
@@ -89,15 +89,14 @@ class SimpletippHighscore extends SimpletippModule {
 		$table  = $this->getHighscore($matchgroupName);
 
         $this->Template->avatarActive = $this->avatarActive;
-        $this->Template->filter       = $this->filter;
         $this->Template->table        = $table;
 
 	}
 	
 	private function generateFilter() {
-		$this->filter = new stdClass;
 
-		$this->filter->options   = array(
+
+        $special_options   = array(
             array(
                 'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][0],
                 'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][1],
@@ -117,14 +116,21 @@ class SimpletippHighscore extends SimpletippModule {
                 'cssClass' => ($this->show == 'bestof') ? ' class="bestof active"': ' class="bestof"'
             )
         );
-        $this->filter->group_options = array();
+        $group_options = array();
 		foreach($this->simpletippGroups as $mg) {
-            $this->filter->group_options[] = array(
+            $group_options[] = array(
                     'title'    => $mg->short,
 					'desc'     => $mg->title,
 					'href'     => $this->addToUrl('show='.$mg->title),
 					'cssClass' => ($this->show == $mg->title) ? ' class="matchgroup active"': ' class="matchgroup"');
 		}
+
+        $tmplStr = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';
+        $tmpl                 = new FrontendTemplate($tmplStr);
+        $tmpl->special_filter = $special_options;
+        $tmpl->group_filter   = $group_options;
+
+        return $tmpl->parse();
 	}
 
     private function bestOfTable() {

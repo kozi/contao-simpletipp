@@ -54,22 +54,21 @@ class SimpletippMatches extends SimpletippModule {
 		// Spiele filtern
 		$this->setMatchFilter();
 
-        $this->Template->simpletipp   = $this->simpletipp;
+        $this->Template->simpletipp = $this->simpletipp;
 
-        $this->Template->member       = \Contao\MemberModel::findByPk($this->simpletippUserId);
-        $this->Template->isPersonal   = $this->isPersonal;
+        $this->Template->member     = \Contao\MemberModel::findByPk($this->simpletippUserId);
+        $this->Template->isPersonal = $this->isPersonal;
 
-        $this->Template->matchFilter  = $this->getMatchFilter();
-        $this->Template->matches      = $this->getMatches();
+        $this->Template->filter     = $this->getMatchFilter();
+        $this->Template->matches    = $this->getMatches();
 
 
-        $this->Template->formId       = $this->formId;
-        $this->Template->action       = ampersand(Environment::get('request'));
-        $this->Template->isMobile     = $objPage->isMobile;
+        $this->Template->formId     = $this->formId;
+        $this->Template->action     = ampersand(Environment::get('request'));
+        $this->Template->isMobile   = $objPage->isMobile;
 
-		$this->Template->summary      = $this->pointSummary;
-		$this->Template->messages     = Simpletipp::getSimpletippMessages();
-
+		$this->Template->summary    = $this->pointSummary;
+		$this->Template->messages   = Simpletipp::getSimpletippMessages();
 	}
 
 	private function getMatches() {
@@ -243,12 +242,14 @@ class SimpletippMatches extends SimpletippModule {
 	}
 
 	private function getMatchFilter() {
-		$tmpl              = new FrontendTemplate('simpletipp_matchfilter');
-		$tmpl->act_filter  = $this->matches_filter;
-        $date_filter       = array();
+        $tmplStr     = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';
+        $tmpl        = new FrontendTemplate($tmplStr);
+        $date_filter = array();
 
-        $last = array(9);
-        foreach ($last as $l) {
+        $lastArr     = array(9);
+        $nextArr     = array(9);
+
+        foreach ($lastArr as $l) {
             $date_filter[] = array(
                     'title'    => sprintf($GLOBALS['TL_LANG']['simpletipp']['last'][0], $l),
                     'cssClass' => ($this->matches_filter->type =='last-'.$l) ? ' class="date_filter active"':' class="date_filter"',
@@ -268,8 +269,7 @@ class SimpletippMatches extends SimpletippModule {
 					'desc'     => $GLOBALS['TL_LANG']['simpletipp']['all'][1],
 					'href'     => $this->addToUrl('matches=all&date=&group='));
 
-        $next = array(9);
-        foreach ($next as $n) {
+        foreach ($nextArr as $n) {
             $date_filter[] = array(
                 'title'    => sprintf($GLOBALS['TL_LANG']['simpletipp']['next'][0], $n),
                 'cssClass' => ($this->matches_filter->type =='next-'.$n) ? ' class="date_filter active"':' class="date_filter"',
@@ -277,7 +277,7 @@ class SimpletippMatches extends SimpletippModule {
                 'href'     => $this->addToUrl('date=next-'.$n.'&group=&matches='));
         }
 
-        $tmpl->date_filter = $date_filter;
+        $tmpl->special_filter = $date_filter;
 
         if ($this->simpletippGroups !== null) {
             foreach($this->simpletippGroups as $mg) {
@@ -288,9 +288,8 @@ class SimpletippMatches extends SimpletippModule {
                     'cssClass' => ($this->matches_filter->type == $mg->title) ? ' class="active"': '',
                 );
 		    }
-		    $tmpl->group_filter = $groups;
+            $tmpl->group_filter = $groups;
         }
-				
 		return $tmpl->parse();
 	}
 

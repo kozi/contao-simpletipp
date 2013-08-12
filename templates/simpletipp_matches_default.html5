@@ -5,7 +5,7 @@ $onfocus = (Environment::get('agent')->os == 'ios') ? '' : ' onfocus="this.setSe
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
-    <?php if ($this->headline): ?>
+<?php if ($this->headline): ?>
     <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
@@ -15,13 +15,13 @@ $onfocus = (Environment::get('agent')->os == 'ios') ? '' : ' onfocus="this.setSe
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
     <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
     <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
-    <?php endif; ?>
+<?php endif; ?>
 
-    <?php echo $this->matchFilter; ?>
+<?php echo $this->filter; ?>
 
-    <?php if($this->matches): ?>
+<?php if($this->matches): ?>
 
-        <br>
+<br>
 
         <table class="matches" cellspacing="2" cellpadding="2">
             <thead>
