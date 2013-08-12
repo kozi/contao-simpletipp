@@ -47,7 +47,7 @@ class SimpletippMatches extends SimpletippModule {
     }
 
     protected function compile() {
-		global $objPage;
+        global $objPage;
 
 		// Die übergebenen Tipps eintragen
 		if ($this->Input->post('FORM_SUBMIT') === $this->formId) {
@@ -69,7 +69,7 @@ class SimpletippMatches extends SimpletippModule {
 
         $this->Template->formId     = $this->formId;
         $this->Template->action     = ampersand(Environment::get('request'));
-        $this->Template->isMobile   = $objPage->isMobile;
+        $this->Template->isMobile   = $this->isMobile;
 
 		$this->Template->summary    = $this->pointSummary;
 		$this->Template->messages   = Simpletipp::getSimpletippMessages();

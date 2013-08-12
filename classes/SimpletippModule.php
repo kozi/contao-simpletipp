@@ -24,8 +24,10 @@
  
 abstract class SimpletippModule extends \Module {
     protected $now;
+    protected $isMobile;
     protected $simpletipp;
     protected $simpletippGroups;
+
 
     protected $simpletippUserId = null;
     protected $isPersonal       = false;
@@ -43,11 +45,16 @@ abstract class SimpletippModule extends \Module {
     protected $participant_group;
 
     public function __construct($objModule, $strColumn='main') {
+        global $objPage;
+
         parent::__construct($objModule, $strColumn);
+
+
         $this->loadLanguageFile('tl_simpletipp');
         $this->import('Database');
         $this->import('FrontendUser', 'User');
         $this->now                  = time();
+        $this->isMobile             = $objPage->isMobile;
         $this->simpletipp           = SimpletippModel::findByPk($this->simpletipp_group);
 
         if (TL_MODE !== 'BE') {
