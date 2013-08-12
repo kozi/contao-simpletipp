@@ -60,6 +60,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		),
 		'operations' => array
 		(
+            'calculate' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['calculate'],
+                'href'                => 'key=calculate',
+                'icon'                => 'system/themes/default/images/modules.gif',
+            ),
+
 			'update' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['update'],

@@ -93,8 +93,6 @@ class SimpletippPokal extends SimpletippModule {
                     }
                 }
                 if ($calculatePairs) {
-
-                    echo "<p>calculatePairs()";
                     $this->calculatePairs();
                 }
         }

@@ -24,42 +24,80 @@
  */
 class SimpletippCallbacks extends Backend {
 
-    public function updateMatches(DataContainer $dc) {
-		$id = intval(Input::get('id'));
+    public function updateMatches() {
+        $this->import('tl_simpletipp');
+        $this->import('OpenLigaDB');
 
-        $result = $this->Database
-			->prepare("SELECT * FROM tl_simpletipp WHERE id = ?")
-			->execute($id);
+        $id = intval(Input::get('id'));
 
-		if ($result->numRows > 0) {
-            $simpletipp = (Object) $result->row();
-            $leagueObj  = unserialize($result->leagueObject);
+        $result = $this->Database->prepare(
+            'SELECT * FROM tl_simpletipp'.(($id != 0) ? ' WHERE id = ?' : '')
+        )->execute($id);
 
-			$this->import('tl_simpletipp');
-			
-			$this->import('OpenLigaDB');
-			$this->OpenLigaDB->setLeague($leagueObj);
-
-            $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
-            $simpletippLastChanged = intval($simpletipp->lastChanged);
-
-			if ($simpletippLastChanged != $openligaLastChanged) {
-				$matchIDs = $this->tl_simpletipp->updateMatches(null, $leagueObj);
-				$this->updateTipps($matchIDs);
-				$message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
-			}
-			else {
-				$message = sprintf('Keine Änderungen seit der letzen Aktualisierung in Liga <strong>%s</strong>. ', $leagueObj->leagueName);
-			}
+        while($result->next()) {
+            $simpletippObj = (Object) $result->row();
+            $message       = $this->updateLeagueMatches($simpletippObj);
             Message::add($message, 'TL_INFO');
+        }
+        $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+    }
 
-            $this->Database->prepare("UPDATE tl_simpletipp SET lastChanged = ? WHERE id = ?")
-                ->execute($openligaLastChanged, $id);
-		}
-		$this->redirect(Environment::get('script').'?do=simpletipp_groups');
+
+    private function updateLeagueMatches($simpletippObj) {
+        $leagueObj  = unserialize($simpletippObj->leagueObject);
+
+        $this->OpenLigaDB->setLeague($leagueObj);
+
+        $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
+        $simpletippLastChanged = intval($simpletippObj->lastChanged);
+
+        if ($simpletippLastChanged != $openligaLastChanged) {
+            $matchIDs = $this->tl_simpletipp->updateMatches(null, $leagueObj);
+            $this->updateTipps($matchIDs);
+            $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
+        }
+        else {
+            $message = sprintf('Keine Änderungen seit der letzen Aktualisierung in Liga <strong>%s</strong>. ', $leagueObj->leagueName);
+        }
+
+        $this->Database->prepare("UPDATE tl_simpletipp SET lastChanged = ? WHERE id = ?")
+            ->execute($openligaLastChanged, $simpletippObj->id);
+
+        return $message;
 	}
-	
-	
+
+    public function calculateTipps() {
+        $id = intval(Input::get('id'));
+        if ($id == 0) {
+            // no id given
+            return true;
+        }
+        $result = $this->Database->prepare(
+            "SELECT tl_simpletipp_match.*, tl_simpletipp.leagueObject
+            FROM tl_simpletipp, tl_simpletipp_match
+            WHERE tl_simpletipp.id = ? AND tl_simpletipp_match.isFinished = ?
+            AND tl_simpletipp_match.leagueID = tl_simpletipp.leagueID"
+
+        )->execute($id, '1');
+
+        $leagueObj = null;
+        $match_ids = array();
+
+        while ($result->next()) {
+
+            if ($leagueObj == null) {
+                $leagueObj = unserialize($result->leagueObject);
+            }
+            $match_ids[] = $result->id;
+        }
+        $this->updateTipps($match_ids);
+
+        $message = sprintf('Tipps für die Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
+        Message::add($message, 'TL_INFO');
+        $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+
+    }
+
 	private function updateTipps($ids) {
 		if (count($ids) === 0) {
 			//  Nothing to do
@@ -72,7 +110,7 @@ class SimpletippCallbacks extends Backend {
 		while($result->next()) {
 			$match_results[$result->id] = $result->result;
 		}
-	
+
 		$result = $this->Database->execute(
 				"SELECT id, match_id, tipp FROM tl_simpletipp_tipp"
 				." WHERE match_id in (".implode(',', $ids).")");
@@ -84,8 +122,7 @@ class SimpletippCallbacks extends Backend {
                 ->execute($points->perfect, $points->difference, $points->tendency, $points->wrong, $result->id);
 		}
 	}	
-	
-	
+
 	public function addCustomRegexp($strRegexp, $varValue, Widget $objWidget) {
 		if ($strRegexp == 'SimpletippFactor') {
 			if (!preg_match('#^[0-9]{1,6},[0-9]{1,6},[0-9]{1,6}$#', $varValue)) {

@@ -44,9 +44,9 @@
 	<tfoot><tr>
 		
 		<?php if($this->avatarActive): ?>
-			<td colspan="2">&nbsp;</td>
+			<td colspan="3">&nbsp;</td>
 		<?php else: ?>
-			<td>&nbsp;</td>
+			<td colspan="2">&nbsp;</td>
 		<?php endif; ?>
 		
 		

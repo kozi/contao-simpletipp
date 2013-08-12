@@ -37,6 +37,7 @@ $GLOBALS['simpletipp']['teamShortener'] = array(
 );
 
 $GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'tippReminder');
+$GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'tippReminder');
 
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]   = array('SimpletippCallbacks', 'addCustomRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('SimpletippCallbacks', 'randomLine');
@@ -62,6 +63,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 						'javascript' => 'system/modules/simpletipp/assets/simpletipp-backend.js',
 						'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
                         'update'     => array('SimpletippCallbacks', 'updateMatches'),
+                        'calculate'  => array('SimpletippCallbacks', 'calculateTipps'),
 				),
 				'simpletipp_matches' => array
 				(
