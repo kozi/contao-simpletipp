@@ -49,6 +49,7 @@ TemplateLoader::addFiles(array(
     'simpletipp_highscore_default'	=> 'system/modules/simpletipp/templates',
     'simpletipp_match_default' 		=> 'system/modules/simpletipp/templates',
     'simpletipp_matches_default' 	=> 'system/modules/simpletipp/templates',
+    'simpletipp_matches_mobile' 	=> 'system/modules/simpletipp/templates',
     'simpletipp_questions_default' 	=> 'system/modules/simpletipp/templates',
     'simpletipp_filter' 		    => 'system/modules/simpletipp/templates',
     'simpletipp_filter_mobile'	    => 'system/modules/simpletipp/templates',

@@ -38,6 +38,10 @@ class SimpletippMatches extends SimpletippModule {
 			return $this->Template->parse();
 		}
 
+        if ($this->isMobile) {
+            $this->strTemplate  = 'simpletipp_matches_mobile';
+        }
+
         $GLOBALS['TL_JAVASCRIPT'][] = "/system/modules/simpletipp/assets/simpletipp.js";
 		return parent::generate();
     }
