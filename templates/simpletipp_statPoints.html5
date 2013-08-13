@@ -1,12 +1,47 @@
-<div class="simpletipp_stat">
-<table>
-<?php foreach($this->table as $row): ?>
-    <tr>
-        <td><?php echo $row->username; ?></td>
-        <td><?php echo $row->firstname.' '.$row->lastname; ?></td>
+<style>
+.simpletipp_stat ul {
+    display:block;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.point_graph li.point_bar {
+    position:relative;
+    display: inline-block;
+    list-style:none;
+    text-align:center;
+    font-size:10px;
+    font-weight:bold;
+    overflow:hidden;
+    color:#ffffff;
+    background-color:#648F59;
+    width:13px;
+    margin:0 1px 0 0;
+    padding:2px 2px 1px 2px;
+}
 
-        <td><?php echo print_r($row, true); ?></td>
-    </tr>
+.point_graph span.desc {
+    display: block;
+    position:absolute;
+    bottom:0;
+    left:0;
+    padding-left:2px;
+}
+<?php for ($i=0;$i<28;$i++): ?>
+    .point_graph .points<?php echo $i; ?> { height:<?php echo (1 + $i*12); ?>px; }
+<?php endfor; ?>
+
+</style>
+
+<div class="simpletipp_stat">
+<ul>
+    <?php foreach($this->table as $row): ?>
+    <li class="user_points" id="user_<?php echo $row->username; ?>">
+        <h4><?php echo $row->firstname.' '.$row->lastname; ?></h4>
+        <ul class="point_graph">
+            <?php foreach($row->pointsArray as $title => $points): ?><li class="point_bar points<?php echo $points; ?>" title="<?php echo $title; ?>"><span><?php echo $points; ?></span><span class="desc"><?php echo explode('. ', $title)[0]; ?></span></li><?php endforeach; ?>
+        </ul>
+    </li>
 <?php endforeach; ?>
-</table>
+</ul>
 </div>

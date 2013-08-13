@@ -1,5 +1,40 @@
+<style>
+    .simpletipp_stat ul {
+        display:block;
+        list-style:none;
+        margin:0;
+        padding:0;
+    }
+    .pos_graph li.position_bar {
+        position:relative;
+        display: inline-block;
+        list-style:none;
+        text-align:center;
+        font-size:10px;
+        font-weight:bold;
+        overflow:hidden;
+        color:#ffffff;
+        background-color:#648F59;
+        width:13px;
+        margin:0 1px 0 0;
+        padding:2px 2px 1px 2px;
+    }
+
+    <?php $maxPos = count($this->table); for ($i = 0;$i < $maxPos;$i++): ?>
+        .pos_graph .pos<?php echo $i; ?> { height:<?php echo (1 + $i*5); ?>px; }
+    <?php endfor; ?>
+
+</style>
+
 <div class="simpletipp_stat">
-    <table>
-        <?php // $this->showTemplateVars(); ?>
-    </table>
+    <ul>
+        <?php foreach($this->table as $row): var_dump($row); ?>
+            <li class="user_pos" id="user_<?php echo $row->username; ?>">
+                <h4><?php echo $row->firstname.' '.$row->lastname; ?></h4>
+                <ul class="pos_graph">
+                    <?php foreach($row->highscorePositions as $pos): ?><li class="position_bar pos<?php echo $pos; ?>"><span><?php echo $pos; ?></span></li><?php endforeach; ?>
+                </ul>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 </div>

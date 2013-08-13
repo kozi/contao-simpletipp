@@ -10,4 +10,5 @@
     <?php echo $this->content; ?>
 </div>
 
+<p style="text-align:right;"><small style="font-size:10px;color:#ccc;"><?php echo $this->duration; ?></small></p>
 </div>

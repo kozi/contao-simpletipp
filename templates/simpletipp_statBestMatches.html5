@@ -13,7 +13,7 @@
                     <i style="background-image:url('<?php echo $match['icon_h']; ?>');"><?php echo $match['team_h_three']; ?></i>
                     <i style="background-image:url('<?php echo $match['icon_a']; ?>');"><?php echo $match['team_a_three']; ?></i>
                 </td>
-                <td class="title"><?php echo ($this->isMobile) ? $team['title_short'] : $team['title']; ?></td>
+                <td class="title"><?php echo ($this->isMobile) ? $match['team_h_three'].' - '.$match['team_a_three'] : $match['title']; ?></td>
                 <td class="points"><?php echo $match['points']->perfect; ?>/<?php echo $match['points']->difference; ?>/<?php echo $match['points']->tendency; ?></td>
                 <td class="points"><?php echo $match['points']->points; ?></td>
             </tr>
