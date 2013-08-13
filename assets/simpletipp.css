@@ -34,6 +34,10 @@
     border-bottom:1px solid #ddd;
 }
 
+.mod_simpletipp_highscore tr.current {
+    background-color:#C6EFB3;
+}
+
 .highscore_bestof tr.pos1,
 .highscore_complete tr.pos1, .highscore_complete tr.pos2,
 .highscore_complete tr.pos3, .highscore_complete tr.pos4,

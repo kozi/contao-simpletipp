@@ -12,8 +12,10 @@
  * @license    LGPL
  * @filesource
  */
+if (TL_MODE !== 'BE') {
+    $GLOBALS['TL_JAVASCRIPT'][]         = "/system/modules/simpletipp/assets/String.sprintf.js";
+}
 
-$GLOBALS['TL_JAVASCRIPT'][]         = "/system/modules/simpletipp/assets/String.sprintf.js";
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
 	// Config

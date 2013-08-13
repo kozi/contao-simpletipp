@@ -59,9 +59,6 @@ abstract class SimpletippModule extends \Module {
 
         if (TL_MODE !== 'BE') {
             $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";
-            if ($this->isMobile) {
-                $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp-mobile.css|screen|static";
-            }
         }
 
         if ($this->simpletipp === null) {
@@ -155,8 +152,9 @@ abstract class SimpletippModule extends \Module {
     private function getHighscoreRow($memberRow, $params = '') {
         $row           = (Object) $memberRow;
 
-        $row->avatar   = ($row->avatar != null) ? $row->avatar : $this->avatarFallback;
-        $row->cssClass = (($this->i++ % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i;
+        $row->avatar    = ($row->avatar != null) ? $row->avatar : $this->avatarFallback;
+        $row->cssClass  = (($this->i++ % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i;
+        $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
 
         $pageModel = PageModel::findByPk($this->simpletipp_matches_page);
         if ($pageModel !== null) {
