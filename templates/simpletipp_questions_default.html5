@@ -1,4 +1,3 @@
-<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static"; ?>
 <hr style="height:20px; width:600px;" />
 <div class="<?php echo $this->class; ?> block mod_simpletipp_questions"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 

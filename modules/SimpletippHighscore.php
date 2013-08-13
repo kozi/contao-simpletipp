@@ -101,19 +101,22 @@ class SimpletippHighscore extends SimpletippModule {
                 'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][0],
                 'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][1],
                 'href'     => $this->addToUrl('show=current'),
-                'cssClass' => ($this->show == 'current') ? ' class="current active"': ' class="current"'
+                'cssClass' => ($this->show == 'current') ? ' class="current active"': ' class="current"',
+                'selected' => ($this->show == 'current') ? ' selected="selected"':''
             ),
             array(
                 'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][0],
                 'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][1],
                 'href'     => $this->addToUrl('show='),
-                'cssClass' => (!$this->show || $this->show == 'all') ? ' class="all active"': ' class="all"'
+                'cssClass' => (!$this->show || $this->show == 'all') ? ' class="all active"': ' class="all"',
+                'selected' => (!$this->show || $this->show == 'all') ? ' selected="selected"':''
             ),
             array(
                 'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][0],
                 'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][1],
                 'href'     => $this->addToUrl('show=bestof'),
-                'cssClass' => ($this->show == 'bestof') ? ' class="bestof active"': ' class="bestof"'
+                'cssClass' => ($this->show == 'bestof') ? ' class="bestof active"': ' class="bestof"',
+                'selected' => ($this->show == 'bestof') ? ' selected="selected"':''
             )
         );
         $group_options = array();
@@ -122,7 +125,8 @@ class SimpletippHighscore extends SimpletippModule {
                     'title'    => $mg->short,
 					'desc'     => $mg->title,
 					'href'     => $this->addToUrl('show='.$mg->title),
-					'cssClass' => ($this->show == $mg->title) ? ' class="matchgroup active"': ' class="matchgroup"');
+					'cssClass' => ($this->show == $mg->title) ? ' class="matchgroup active"': ' class="matchgroup"',
+                    'selected' => ($this->show == $mg->title) ? ' selected="selected"':'');
 		}
 
         $tmplStr = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';

@@ -1,65 +1,63 @@
 <?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static"; ?>
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-
-<?php if ($this->headline): ?>
-<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+    <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 <table>
-	<thead>
-	<tr>
+    <thead>
+    <tr>
+        <th class="matchtitle" colspan="2"><?php echo ($this->isMobile) ? $this->match->title_short : $this->match->title; ?></th>
         <th class="logos">
             <i class="<?php echo $this->match->alias_h; ?>" style="background-image:url('<?php echo $this->match->icon_h; ?>');"><?php echo $this->match->team_h_three; ?></i>
             <i class="<?php echo $this->match->alias_a; ?>" style="background-image:url('<?php echo $this->match->icon_a; ?>');"><?php echo $this->match->team_a_three; ?></i>
         </th>
-
-        <th class="matchtitle"><?php echo ($this->isMobile) ? $this->match->title_short : $this->match->title; ?></th>
-		<th class="result"><?php echo $this->match->result;?></th>
-		<th></th>
-	</tr>
-	<tr>
+        <th class="result"><?php echo $this->match->result;?></th>
+    </tr>
+    <tr>
         <th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
-		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?></th>
-		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
-	</tr>
-	</thead>
-<?php if ($this->tipps): ?>	
-	<tbody>
-<?php foreach($this->tipps as $tipp): ?>
-	<tr class="<?php echo $tipp->cssClass; ?>">
+        <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?></th>
+        <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
+    </tr>
+    </thead>
+    <?php if ($this->tipps): ?>
+        <tbody>
+        <?php foreach($this->tipps as $tipp): ?>
+            <tr class="<?php echo $tipp->cssClass; ?>">
+
+                <?php if($this->avatarActive): ?>
+                    <td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
+                <?php endif; ?>
+
+                <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name">
+                    <a href="<?php echo $tipp->link; ?>">
+                        <?php echo $tipp->firstname.' '.$tipp->lastname; ?>
+                        <?php echo ($this->isMobile) ? '': ' ('.$tipp->username.')'; ?>
+                    </a>
+                </td>
+
+                <td class="tipp"><?php echo $tipp->tipp; ?></td>
+                <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $tipp->points); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    <?php endif; ?>
+
+    <tfoot><tr>
 
         <?php if($this->avatarActive): ?>
-            <td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
+            <td colspan="3">&nbsp;</td>
+        <?php else: ?>
+            <td colspan="2">&nbsp;</td>
         <?php endif; ?>
 
-        <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name">
-            <a href="<?php echo $tipp->link; ?>">
-                <?php echo $tipp->firstname.' '.$tipp->lastname; ?>
-                <?php echo ($this->isMobile) ? '': ' ('.$tipp->username.')'; ?>
-            </a>
+
+        <td class="details">
+            <?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
         </td>
-
-        <td class="tipp"><?php echo $tipp->tipp; ?></td>
-		<td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $tipp->points); ?></td>
-	</tr>
-<?php endforeach; ?>
-	</tbody>
-<?php endif; ?>
-
-	<tfoot><tr>
-		
-		<?php if($this->avatarActive): ?>
-			<td colspan="3">&nbsp;</td>
-		<?php else: ?>
-			<td colspan="2">&nbsp;</td>
-		<?php endif; ?>
-		
-		
-		<td class="details">
-			<?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
-		</td>
-		<td class="points"><?php echo $this->summary->points; ?></td>
-	</tr></tfoot>	
+        <td class="points"><?php echo $this->summary->points; ?></td>
+    </tr>
+    </tfoot>
 </table>
 
 

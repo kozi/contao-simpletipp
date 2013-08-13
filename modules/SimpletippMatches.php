@@ -257,6 +257,7 @@ class SimpletippMatches extends SimpletippModule {
             $date_filter[] = array(
                     'title'    => sprintf($GLOBALS['TL_LANG']['simpletipp']['last'][0], $l),
                     'cssClass' => ($this->matches_filter->type =='last-'.$l) ? ' class="date_filter active"':' class="date_filter"',
+                    'selected' => ($this->matches_filter->type =='last-'.$l) ? ' selected="selected"':'',
                     'desc'     => sprintf($GLOBALS['TL_LANG']['simpletipp']['last'][1], $l),
                     'href'     => $this->addToUrl('date=last-'.$l.'&group=&matches='));
         }
@@ -264,12 +265,14 @@ class SimpletippMatches extends SimpletippModule {
         $date_filter[] = array(
                     'title'    => $GLOBALS['TL_LANG']['simpletipp']['current'][0],
 					'cssClass' => ($this->matches_filter->type =='current') ? ' class="date_filter active"':' class="date_filter"',
+                    'selected' => ($this->matches_filter->type =='current') ? ' selected="selected"':'',
 					'desc'     => $GLOBALS['TL_LANG']['simpletipp']['current'][1],
 					'href'     => $this->addToUrl('matches=current&date=&group='));
 
         $date_filter[] = array(
                     'title'    => $GLOBALS['TL_LANG']['simpletipp']['all'][0],
 					'cssClass' => ($this->matches_filter->type =='all') ? ' class="date_filter active"':' class="date_filter"',
+                    'selected' => ($this->matches_filter->type =='all') ? ' selected="selected"':'',
 					'desc'     => $GLOBALS['TL_LANG']['simpletipp']['all'][1],
 					'href'     => $this->addToUrl('matches=all&date=&group='));
 
@@ -277,6 +280,7 @@ class SimpletippMatches extends SimpletippModule {
             $date_filter[] = array(
                 'title'    => sprintf($GLOBALS['TL_LANG']['simpletipp']['next'][0], $n),
                 'cssClass' => ($this->matches_filter->type =='next-'.$n) ? ' class="date_filter active"':' class="date_filter"',
+                'selected' => ($this->matches_filter->type =='next-'.$n) ? ' selected="selected"':'',
                 'desc'     => sprintf($GLOBALS['TL_LANG']['simpletipp']['next'][1], $n),
                 'href'     => $this->addToUrl('date=next-'.$n.'&group=&matches='));
         }
@@ -290,6 +294,7 @@ class SimpletippMatches extends SimpletippModule {
                     'desc'     => $mg->title,
                     'href'     => $this->addToUrl('group='.$mg->title.'&date=&matches='),
                     'cssClass' => ($this->matches_filter->type == $mg->title) ? ' class="active"': '',
+                    'selected' => ($this->matches_filter->type == $mg->title) ? ' selected="selected"':'',
                 );
 		    }
             $tmpl->group_filter = $groups;

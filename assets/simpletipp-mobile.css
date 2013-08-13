@@ -1,4 +1,5 @@
-.mod_simpletipp_matches {
-    padding:0 10px;
+.mod_simpletipp_matches,
+.mod_simpletipp_match {
+    padding:0 5px;
 }
 

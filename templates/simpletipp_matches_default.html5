@@ -61,7 +61,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
             <td class="result"><?php echo $match->result; ?></td>
         <?php endif; ?>
 
-        <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $match->points); ?></td></tr>
+        <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $match->points); ?></td>
     </tr>
 <?php endforeach; ?>
 </tbody>

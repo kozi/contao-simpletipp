@@ -5,13 +5,13 @@
 
 <?php if($this->special_filter): ?>
     <?php foreach($this->special_filter as $link): ?>
-        <option <?php echo $link['cssClass'];?> value="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></option>
+        <option <?php echo $link['cssClass'].$link['selected'];?> value="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></option>
     <?php endforeach;?>
 <?php endif; ?>
 
 <?php if($this->group_filter): ?>
         <?php $i=1; foreach($this->group_filter as $link): ?>
-	    <option<?php echo $link['cssClass'];?> value="<?php echo $link['href']; ?>"><?php echo $link['desc']; ?></option>
+	    <option<?php echo $link['cssClass'].$link['selected'];?> value="<?php echo $link['href']; ?>"><?php echo $link['desc']; ?></option>
         <?php if ($i++ == 17) echo '</ul><ul class="matchfilter">' ?>
     <?php endforeach; ?>
 <?php endif; ?>
