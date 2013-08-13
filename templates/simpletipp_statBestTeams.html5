@@ -13,7 +13,7 @@
         <td class="logos">
             <i style="background-image:url('<?php echo $team['icon']; ?>');"><?php echo $team['name_short']; ?></i>
         </td>
-        <td class="team"><?php echo $team['name']; ?></td>
+        <td class="team"><?php echo ($this->isMobile) ? $team['name_short'] : $team['name']; ?></td>
         <td class="points"><?php echo $team['points'][1]; ?>/<?php echo $team['points'][2]; ?>/<?php echo $team['points'][3]; ?></td>
         <td class="points"><?php echo $team['points'][0]; ?></td>
     </tr>
