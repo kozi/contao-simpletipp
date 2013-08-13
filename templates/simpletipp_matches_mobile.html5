@@ -1,9 +1,4 @@
 <?php $i = 1; ?>
-<style>
-    .mod_simpletipp_matches {
-        padding:0 10px;
-    }
-</style>
 
 <div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
@@ -51,7 +46,9 @@
             <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo $match->icon_a; ?>');"><?php echo $match->team_a_three; ?></i>
         </td>
         <td class="title">
-            <a href="<?php echo $match->matchLink; ?>"><?php echo $match->title_short;?></a>
+            <a href="<?php echo $match->matchLink; ?>">
+                <?php echo $match->team_h_three;?> - <?php echo $match->team_a_three;?>
+            </a>
         </td>
     <?php if ($match->isStarted): ?>
         <td class="tipp <?php echo $match->pointsClass; ?>"><?php echo $match->tipp; ?></td>

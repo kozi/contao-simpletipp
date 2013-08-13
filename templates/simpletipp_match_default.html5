@@ -13,7 +13,7 @@
             <i class="<?php echo $this->match->alias_a; ?>" style="background-image:url('<?php echo $this->match->icon_a; ?>');"><?php echo $this->match->team_a_three; ?></i>
         </th>
 
-        <th class="matchtitle"><?php echo $this->match->title; ?></th>
+        <th class="matchtitle"><?php echo ($this->isMobile) ? $this->match->title_short : $this->match->title; ?></th>
 		<th class="result"><?php echo $this->match->result;?></th>
 		<th></th>
 	</tr>
@@ -32,7 +32,12 @@
             <td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
         <?php endif; ?>
 
-        <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name"><a href="<?php echo $tipp->link; ?>"><?php echo $tipp->firstname.' '.$tipp->lastname.' ('.$tipp->username.')'; ?></a></td>
+        <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name">
+            <a href="<?php echo $tipp->link; ?>">
+                <?php echo $tipp->firstname.' '.$tipp->lastname; ?>
+                <?php echo ($this->isMobile) ? '': ' ('.$tipp->username.')'; ?>
+            </a>
+        </td>
 
         <td class="tipp"><?php echo $tipp->tipp; ?></td>
 		<td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $tipp->points); ?></td>

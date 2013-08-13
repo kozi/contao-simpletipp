@@ -58,7 +58,10 @@ abstract class SimpletippModule extends \Module {
         $this->simpletipp           = SimpletippModel::findByPk($this->simpletipp_group);
 
         if (TL_MODE !== 'BE') {
-            $GLOBALS['TL_CSS'][]        = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";
+            $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";
+            if ($this->isMobile) {
+                $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp-mobile.css|screen|static";
+            }
         }
 
         if ($this->simpletipp === null) {
