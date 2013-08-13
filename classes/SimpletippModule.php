@@ -44,6 +44,12 @@ abstract class SimpletippModule extends \Module {
 
     protected $participant_group;
 
+    protected static $cache_key_prefix      = 'simpletipp';
+    protected static $cache_key_suffix      = '.json';
+    protected static $cache_key_highscore   = 'highscore';
+    protected static $cache_key_points      = 'points';
+
+
     public function __construct($objModule, $strColumn='main') {
         global $objPage;
 
@@ -92,13 +98,7 @@ abstract class SimpletippModule extends \Module {
             $this->avatarFallback = $fileObj->path;
         }
 
-
-        $factor = explode(',' , $this->simpletipp_factor);
-        $this->pointFactors = new stdClass;
-        $this->pointFactors->perfect    = $factor[0];
-        $this->pointFactors->difference = $factor[1];
-        $this->pointFactors->tendency   = $factor[2];
-
+        $this->pointFactors = $this->simpletipp->getPointFactors();
         $this->pointSummary = (Object) array('points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0);
 
     }
@@ -187,5 +187,30 @@ abstract class SimpletippModule extends \Module {
         $this->pointSummary->difference += $pointObj->difference;
         $this->pointSummary->tendency   += $pointObj->tendency;
     }
+
+
+    protected function cachedResult($key, $data = null, $cleanEntries = false) {
+        $fn = static::$cache_key_prefix.'_'.$key.'_'.$this->simpletipp->id
+                        .'_'.$this->simpletipp->lastChanged.static::$cache_key_suffix;
+        $objFile = new \File('system/tmp/'.$fn, true);
+
+        if ($data !== null) {
+
+            if ($cleanEntries) {
+                foreach ($data as &$item) {
+                    Simpletipp::cleanItem($item);
+                }
+            }
+            $objFile->write(serialize($data));
+            $objFile->close();
+            return null;
+        }
+
+        if (!$objFile->exists()) {
+            return null;
+        }
+        return unserialize($objFile->getContent());
+    }
+
 
 } // END class Simpletipp

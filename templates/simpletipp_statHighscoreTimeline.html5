@@ -1,0 +1,5 @@
+<div class="simpletipp_stat">
+    <table>
+        <?php // $this->showTemplateVars(); ?>
+    </table>
+</div>

@@ -17,17 +17,17 @@
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_matches'] =
 '{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_group,simpletipp_factor,simpletipp_template,simpletipp_match_page;'
+.'{simpletipp_legend},simpletipp_group,simpletipp_template,simpletipp_match_page;'
 .'{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_highscore'] =
 '{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_group,simpletipp_matches_page,simpletipp_factor,simpletipp_template;'
+.'{simpletipp_legend},simpletipp_group,simpletipp_matches_page,simpletipp_template;'
 .'{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_match'] =
 '{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_group,simpletipp_matches_page,simpletipp_factor,simpletipp_template;'
+.'{simpletipp_legend},simpletipp_group,simpletipp_matches_page,simpletipp_template;'
 .'{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_questions'] =
@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_userselect'] =
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_calendar'] =
 '{title_legend},name,type;'
-.'{simpletipp_legend},simpletipp_group,simpletipp_factor,simpletipp_matches_page;';
+.'{simpletipp_legend},simpletipp_group,simpletipp_matches_page;';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_ranking'] =
     '{title_legend},name,headline,type;'
@@ -89,16 +89,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_matches_page'] = array
 		'inputType'               => 'pageTree',
 		'eval'                    => array('fieldType'=>'radio', 'tl_class' => 'long'),
 		'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_factor'] = array
-(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_factor'],
-		'exclude'                 => true,
-		'default'                 => '3,2,1',
-		'inputType'               => 'text',
-		'eval'                    => array('rgxp'=> 'SimpletippFactor', 'mandatory' => true, 'tl_class'=>'w50'),
-		'sql'                     => "varchar(16) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = array

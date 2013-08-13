@@ -26,12 +26,12 @@ class Simpletipp extends System {
     public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
 
     public static function getPoints($result, $tipp, $simpletippFactor = null) {
-
-        $points = new SimpletippPoints($simpletippFactor, 0, 0, 0);
+        $perfect    = 0;
+        $difference = 0;
+        $tendency   = 0;
 
         if (strlen($result) === 0 || strlen($tipp) === 0) {
-            $points->wrong = 0;
-            return $points;
+            return new SimpletippPoints($simpletippFactor, 0, 0, 0);
         }
         $tmp = explode(":", $result);
         $rh = intval($tmp[0], 10); $ra = intval($tmp[1], 10);
@@ -40,25 +40,16 @@ class Simpletipp extends System {
         $th = intval($tmp[0], 10); $ta = intval($tmp[1], 10);
 
         if ($rh === $th && $ra === $ta) {
-            $points->wrong   = 0;
-            $points->perfect = 1;
-            return $points;
+            $perfect = 1;
+        }
+        elseif (($rh-$ra) === ($th-$ta)) {
+            $difference = 1;
+        }
+        elseif (($rh < $ra && $th < $ta) || ($rh > $ra && $th > $ta)) {
+            $tendency = 1;
         }
 
-        if (($rh-$ra) === ($th-$ta)) {
-            $points->wrong      = 0;
-            $points->difference = 1;
-            return $points;
-        }
-
-        if (($rh < $ra && $th < $ta) || ($rh > $ra && $th > $ta)) {
-            $points->wrong    = 0;
-            $points->tendency = 1;
-            return $points;
-        }
-
-        $points->wrong = 1;
-        return $points;
+        return new SimpletippPoints($simpletippFactor, $perfect, $difference, $tendency);
     }
 
 
@@ -195,6 +186,28 @@ class Simpletipp extends System {
         $h = intval($tmp[0], 10);
         $a = intval($tmp[1], 10);
         return $h.':'.$a;
+    }
+
+
+    public static function cleanItem(&$item) {
+        if (is_object($item)) {
+            unset($item->password);
+            unset($item->session);
+            unset($item->autologin);
+            unset($item->activation);
+            foreach($item as $property => $value)  {
+                if (is_string($value) && strlen($value) == 0) {
+                    unset($item->$property);
+                }
+            }
+        }
+        if (is_array($item)) {
+            foreach($item as $key => $value)  {
+                if (is_string($value) && strlen($value) == 0) {
+                    unset($item[$key]);
+                }
+            }
+        }
     }
 
 } // END class Simpletipp

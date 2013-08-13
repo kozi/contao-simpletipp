@@ -1,0 +1,12 @@
+<div class="simpletipp_stat">
+<table>
+<?php foreach($this->table as $row): ?>
+    <tr>
+        <td><?php echo $row->username; ?></td>
+        <td><?php echo $row->firstname.' '.$row->lastname; ?></td>
+
+        <td><?php echo print_r($row, true); ?></td>
+    </tr>
+<?php endforeach; ?>
+</table>
+</div>

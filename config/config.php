@@ -42,6 +42,9 @@ $GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'tipp
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]   = array('SimpletippCallbacks', 'addCustomRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('SimpletippCallbacks', 'randomLine');
 
+
+
+
 array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
     'simpletipp_calendar'   => 'SimpletippCalendar',
     'simpletipp_matches'    => 'SimpletippMatches',
@@ -52,6 +55,10 @@ array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
     'simpletipp_ranking'    => 'SimpletippRanking',
     'simpletipp_pokal'      => 'SimpletippPokal',
     'simpletipp_nottipped'  => 'SimpletippNotTipped'
+));
+
+array_insert($GLOBALS['TL_CTE']['simpletipp'], 0, array(
+    'simpletipp_statistics' => 'ContentSimpletippStatistics',
 ));
 
 array_insert($GLOBALS['BE_MOD'], 1, array(

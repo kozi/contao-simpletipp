@@ -44,14 +44,7 @@
     <?php endif; ?>
 
     <tfoot><tr>
-
-        <?php if($this->avatarActive): ?>
-            <td colspan="3">&nbsp;</td>
-        <?php else: ?>
-            <td colspan="2">&nbsp;</td>
-        <?php endif; ?>
-
-
+        <td colspan="2">&nbsp;</td>
         <td class="details">
             <?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
         </td>

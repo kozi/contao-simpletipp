@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, title, leagueID, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
+		'default'                     => '{simpletipp_legend}, title, leagueID, factor, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
 	),
 
 
@@ -141,6 +141,16 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'flag'                    => 1,
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
+        ),
+        'factor' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['factor'],
+            'exclude'                 => true,
+            'default'                 => '3,2,1',
+            'flag'                    => 1,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''",
         ),
 
