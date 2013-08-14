@@ -26,10 +26,11 @@
 class ContentSimpletippStatistics extends \SimpletippModule {
     protected $strTemplate = 'ce_simpletipp_statistics';
     public static $types = array(
-        'statBestMatches'       =>  'Die 10 punktereichsten Spiele',
-        'statBestTeams'         =>  'Die 10 punktereichsten Mannschaften',
-        'statPoints'            =>  'Punkte pro Spieltag',
-        'statHighscoreTimeline' =>  'Tabellenplatzverlauf',
+        'statBestMatches'       => 'Die 10 punktereichsten Spiele',
+        'statBestTeams'         => 'Die 10 punktereichsten Mannschaften',
+        'statPoints'            => 'Punkte pro Spieltag',
+        'statHighscoreTimeline' => 'Tabellenplatzverlauf',
+        'statSpecialMember'     => 'Tippanalyse',
     );
 
     public function generate() {
@@ -183,13 +184,95 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         }
         usort($memberArray, function($a, $b) {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
-
         });
         $this->cachedResult(static::$cache_key_points, $memberArray, true);
         $this->statsTemplate->table = $memberArray;
     }
 
+    protected function statSpecialMember() {
 
+        $table = $this->cachedResult(static::$cache_key_special);
+        if ($table != null) {
+            $this->statsTemplate->table = $table;
+            return true;
+        }
+
+        $table = array(
+            'maxTore' => array('realValue' => 0, 'title' => 'Die meisten Tore'),
+            'minTore' => array('realValue' => 0, 'title' => 'Die wenigsten Tore'),
+            'home'    => array('realValue' => 0, 'title' => 'Die meisten Heimsiege'),
+            'draw'    => array('realValue' => 0, 'title' => 'Die meisten Unentschieden'),
+            'away'    => array('realValue' => 0, 'title' => 'Die meisten Auswärtssiege'),
+            'two_one' => array('realValue' => 0, 'title' => 'Die meisten 2:1 Tipps')
+        );
+
+        $result = $this->Database->prepare("SELECT id,result FROM tl_simpletipp_match
+            WHERE leagueID = ? AND isFinished = ?")
+            ->execute($this->simpletipp->leagueID, '1');
+        while ($result->next()) {
+            $match_ids[] = $result->id;
+
+            $rArr = array_map('intval', explode(':', $result->result));
+            var_dump($rArr);
+            $table['maxTore']['realValue'] = $table['maxTore']['realValue'] + $rArr[0] + $rArr[1];
+            $table['minTore']['realValue'] = $table['maxTore']['realValue'];
+            $table['two_one']['realValue'] = ('2:1' == $result->result) ? ++$table['two_one']['realValue'] : $table['two_one']['realValue'];
+            $table['draw']['realValue']    = ($rArr[0] == $rArr[1]) ? ++$table['draw']['realValue'] : $table['draw']['realValue'];
+            $table['home']['realValue']    = ($rArr[0] > $rArr[1])  ? ++$table['home']['realValue'] : $table['home']['realValue'];
+            $table['away']['realValue']    = ($rArr[0] < $rArr[1])  ? ++$table['away']['realValue'] : $table['away']['realValue'];
+            // TODO Den realen Wert einfügen!
+        }
+        $result = $this->Database->execute("SELECT tl_member.id AS member_id,
+                    tl_member.firstname, tl_member.lastname,
+                    tl_simpletipp_tipp.tipp FROM tl_simpletipp_tipp, tl_member WHERE
+                    tl_member.id = tl_simpletipp_tipp.member_id
+                    AND match_id IN (".implode(',', $match_ids).")");
+
+        $memberArray = array();
+        while ($result->next()) {
+            if (!array_key_exists($result->member_id, $memberArray )) {
+                $member       = (Object) $result->row();
+                $member->tore = 0; $member->two_one = 0;
+                $member->home = 0; $member->draw = 0; $member->away = 0;
+                unset($member->tipp);
+                $memberArray[$result->member_id] = $member;
+            }
+
+            $m          = &$memberArray[$result->member_id];
+            $tArr       = array_map('intval', explode(':', $result->tipp));
+            $m->tore    = $m->tore + $tArr[0] + $tArr[1];
+            $m->two_one = ('2:1' == $result->tipp) ? ++$m->two_one : $m->two_one;
+            $m->draw    = ($tArr[0] == $tArr[1]) ? ++$m->draw : $m->draw;
+            $m->home    = ($tArr[0] > $tArr[1])  ? ++$m->home : $m->home;
+            $m->away    = ($tArr[0] < $tArr[1])  ? ++$m->away : $m->away;
+        }
+
+
+        // Tore
+        $count = count($memberArray);
+        usort($memberArray, function($a, $b) {
+            return ($b->tore - $a->tore);
+        });
+        $table['maxTore']['member'] = array_slice($memberArray, 0, 3);
+        $table['minTore']['member'] = array_reverse(array_slice($memberArray, $count-3, 3));
+
+        usort($memberArray, function($a, $b) { return ($b->home - $a->home); });
+        $table['home']['member'] = array_slice($memberArray, 0, 3);
+
+        usort($memberArray, function($a, $b) { return ($b->away - $a->away); });
+        $table['away']['member'] = array_slice($memberArray, 0, 3);
+
+        usort($memberArray, function($a, $b) { return ($b->draw - $a->draw); });
+        $table['draw']['member'] = array_slice($memberArray, 0, 3);
+
+        usort($memberArray, function($a, $b) { return ($b->two_one - $a->two_one); });
+        $table['two_one']['member'] = array_slice($memberArray, 0, 3);
+
+        // TODO Den realen Wert einfügen!
+        $this->cachedResult(static::$cache_key_special, $table);
+        $this->statsTemplate->table = $table;
+
+    }
 
     private function getPointsForMatch($match) {
         $points     = new stdClass();

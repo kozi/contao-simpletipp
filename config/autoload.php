@@ -67,6 +67,7 @@ TemplateLoader::addFiles(array(
     'simpletipp_statBestMatches'       => 'system/modules/simpletipp/templates',
     'simpletipp_statBestTeams'         => 'system/modules/simpletipp/templates',
     'simpletipp_statHighscoreTimeline' => 'system/modules/simpletipp/templates',
+    'simpletipp_statSpecialMember'     => 'system/modules/simpletipp/templates',
 ));
 
 

@@ -1,0 +1,17 @@
+<div class="simpletipp_stat">
+    <table>
+        <?php foreach($this->table as $key => $row):
+            $key = ($key == 'minTore' || $key == 'maxTore') ? 'tore' : $key; ?>
+            <tr>
+                <th colspan="2"><?php echo $row['title']; ?> (Realer Wert: <?php echo $row['realValue']; ?>)</th>
+            </tr>
+            <?php foreach($row['member'] as $m): ?>
+                <tr>
+                    <td><?php echo $m->firstname.' '.$m->lastname; ?></td>
+                    <td><?php echo $m->$key; ?></td>
+                </tr>
+            <?php endforeach; ?>
+
+        <?php endforeach; ?>
+    </table>
+</div>
