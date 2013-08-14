@@ -22,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['simpletipp_statistics'] = '{type_l
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['simpletipp_statistics_type'] = array
 (
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_statistics_type'],
+		'label'                   => &$GLOBALS['TL_LANG']['tl_content']['simpletipp_statistics_type'],
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options'                 => ContentSimpletippStatistics::$types,
@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['simpletipp_statistics_type'] = array
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['simpletipp_group'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_group'],
+    'label'                   => &$GLOBALS['TL_LANG']['tl_content']['simpletipp_group'],
     'exclude'                 => true,
     'inputType'               => 'select',
     'options_callback'        => array('tl_content_simpletipp', 'getSimpletippGroups'),

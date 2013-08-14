@@ -63,9 +63,9 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             ->execute($this->simpletipp->leagueID, '1');
 
         while ($result->next()) {
-            $match               = $result->row();
-            $match['points']     = $this->getPointsForMatch($match);
-            $matches[] = $match;
+            $match           = $result->row();
+            $match['points'] = $this->getPointsForMatch($match);
+            $matches[]       = $match;
         }
 
         usort($matches, function($match_a, $match_b) {
@@ -148,7 +148,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             $pos = 1;
             foreach($this->getHighscore($matchgroups) as $tableEntry) {
                 $member = &$memberArray[$tableEntry->member_id];
-                // $member->highscorePositions[] = $pos++;
+                // TODO $member->highscorePositions[] = $pos++;
                 $member->highscorePositions   = $this->getTestArray(34, 65);
             }
         }
@@ -213,15 +213,15 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             $match_ids[] = $result->id;
 
             $rArr = array_map('intval', explode(':', $result->result));
-            var_dump($rArr);
             $table['maxTore']['realValue'] = $table['maxTore']['realValue'] + $rArr[0] + $rArr[1];
             $table['minTore']['realValue'] = $table['maxTore']['realValue'];
             $table['two_one']['realValue'] = ('2:1' == $result->result) ? ++$table['two_one']['realValue'] : $table['two_one']['realValue'];
             $table['draw']['realValue']    = ($rArr[0] == $rArr[1]) ? ++$table['draw']['realValue'] : $table['draw']['realValue'];
             $table['home']['realValue']    = ($rArr[0] > $rArr[1])  ? ++$table['home']['realValue'] : $table['home']['realValue'];
             $table['away']['realValue']    = ($rArr[0] < $rArr[1])  ? ++$table['away']['realValue'] : $table['away']['realValue'];
-            // TODO Den realen Wert einfügen!
         }
+
+
         $result = $this->Database->execute("SELECT tl_member.id AS member_id,
                     tl_member.firstname, tl_member.lastname,
                     tl_simpletipp_tipp.tipp FROM tl_simpletipp_tipp, tl_member WHERE
@@ -248,13 +248,9 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         }
 
 
-        // Tore
-        $count = count($memberArray);
-        usort($memberArray, function($a, $b) {
-            return ($b->tore - $a->tore);
-        });
+        usort($memberArray, function($a, $b) { return ($b->tore - $a->tore); });
         $table['maxTore']['member'] = array_slice($memberArray, 0, 3);
-        $table['minTore']['member'] = array_reverse(array_slice($memberArray, $count-3, 3));
+        $table['minTore']['member'] = array_reverse(array_slice($memberArray, count($memberArray)-3, 3));
 
         usort($memberArray, function($a, $b) { return ($b->home - $a->home); });
         $table['home']['member'] = array_slice($memberArray, 0, 3);
