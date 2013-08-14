@@ -15,6 +15,16 @@
         <th class="result"><?php echo $this->match->result;?></th>
     </tr>
     <tr>
+        <td colspan="4">
+            <div class="bar_wrapper">
+                <div title="Heimsieg" style="width:<?php echo $this->count->home->percent;?>%;" class="home"><?php echo $this->count->home->abs;?></div>
+                <div title="Unentschieden" style="width:<?php echo $this->count->draw->percent;?>%;" class="draw"><?php echo $this->count->draw->abs;?></div>
+                <div title="Auswärtssieg" style="width:<?php echo $this->count->away->percent;?>%;" class="away"><?php echo $this->count->away->abs;?></div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
         <th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
         <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?></th>
         <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>

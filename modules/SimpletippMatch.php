@@ -67,6 +67,12 @@ class SimpletippMatch extends SimpletippModule {
         $objPage       = PageModel::findByPk($this->simpletipp_matches_page);
         $pageRow       = ($objPage !== null) ? $objPage->row() : null;
 
+
+        $count = (Object) array(
+            'home' => (Object) array('abs' => 0, 'percent' => 0),
+            'draw' => (Object) array('abs' => 0, 'percent' => 0),
+            'away' => (Object) array('abs' => 0, 'percent' => 0),
+        );
         $i     = 0;
         $tipps = array();
 		while ($result->next()) {
@@ -79,7 +85,12 @@ class SimpletippMatch extends SimpletippModule {
 
             $tipp->cssClass    = ($i++ % 2 === 0 ) ? 'odd':'even';
             $tipp->cssClass    .= ($result->numRows == $i) ? ' last':'';
-			$tipp->pointsClass = $pointObj->getPointsClass();
+            $tipp->pointsClass = $pointObj->getPointsClass();
+
+            $tmp = array_map('intval', explode(':', $tipp->tipp));
+            $count->home->abs = ($tmp[0] > $tmp[1])  ? ++$count->home->abs : $count->home->abs;
+            $count->draw->abs = ($tmp[0] == $tmp[1]) ? ++$count->draw->abs : $count->draw->abs;
+            $count->away->abs = ($tmp[0] < $tmp[1])  ? ++$count->away->abs : $count->away->abs;
 
             $this->updateSummary($pointObj);
 
@@ -101,7 +112,12 @@ class SimpletippMatch extends SimpletippModule {
 
 
 		}
-		
+
+        $summe = count($tipps);
+        $count->home->percent = floor(($count->home->abs / $summe) * 10000) / 100;
+        $count->draw->percent = floor(($count->draw->abs / $summe) * 10000) / 100;
+        $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;
+
 		// Match
         $teams = explode("-", $this->match->title_short);
         $this->match->alias_h = standardize($teams[0]);
@@ -110,6 +126,7 @@ class SimpletippMatch extends SimpletippModule {
         $this->Template->isMobile     = $this->isMobile;
         $this->Template->avatarActive = $this->avatarActive;
         $this->Template->match        = $this->match;
+        $this->Template->count        = $count;
 		$this->Template->tipps        = $tipps;
 		$this->Template->summary      = $this->pointSummary;
 	}

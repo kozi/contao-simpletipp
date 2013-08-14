@@ -127,3 +127,27 @@
     margin:10px 0;
     padding:10px;
 }
+
+
+/* Match Graph
+----------------------------------------------------*/
+.mod_simpletipp .bar_wrapper {
+    position:relative;
+    display:block;
+    padding:0;
+    margin:0;
+    width:100%;
+    text-align:center;
+}
+.mod_simpletipp .bar_wrapper div {
+    text-align:center;
+    display:inline-block;
+    overflow:hidden;
+    padding:5px 0;
+    margin:0;
+}
+
+.mod_simpletipp .bar_wrapper .home { background-color:#648F59; }
+.mod_simpletipp .bar_wrapper .draw { background-color:#C6EFB3; }
+.mod_simpletipp .bar_wrapper .away { background-color:#90B97D; }
+
