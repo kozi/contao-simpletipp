@@ -19,14 +19,16 @@ $GLOBALS['TL_DCA']['tl_member']['palettes']['default'] .= ';{simpletipp_legend},
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_confirmation'] = array(
     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_email_confirmation'],
+    'default'                 => '1',
     'exclude'                 => true,
     'inputType'               => 'checkbox',
     'eval'                    => array('tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'),
-    'sql'                     => "char(1) NOT NULL default ''"
+    'sql'                     => "char(1) NOT NULL default '1'"
 );
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_reminder'] = array(
     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_email_reminder'],
+    'default'                 => '1',
     'exclude'                 => true,
     'inputType'               => 'checkbox',
     'eval'                    => array('tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'),
@@ -39,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = array
     'default'                 => '',
     'exclude'                 => true,
     'inputType'               => 'text',
-    'sql'                     => "varchar(255) NOT NULL default ''",
+    'sql'                     => "varchar(255) NOT NULL default '1'",
     'load_callback'           => array
     (
         array('tl_member_simpletipp', 'generateUniqid')
