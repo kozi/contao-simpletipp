@@ -24,9 +24,7 @@
 
 require_once (TL_ROOT.'/system/modules/simpletipp/classes/iCalcreator.class.php');
 
-//TODO $this->pointFactors;
-
-class SimpletippCalendar extends Module {
+class SimpletippCalendar extends SimpletippModule {
     private $title         = 'Tippspiel';
     private $matchesPage   = null;
 
@@ -42,6 +40,8 @@ class SimpletippCalendar extends Module {
 
     protected function compile() {
 
+
+        $isDebug              = (Input::get('debug') == '1');
         $calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), Input::get('cal')));
         $this->User           = MemberModel::findBy('simpletipp_calendar', $calId);
 
@@ -51,7 +51,6 @@ class SimpletippCalendar extends Module {
         }
 
         $this->matchesPage    = PageModel::findByPk($this->simpletipp_matches_page)->row();
-        $this->simpletipp     = SimpletippModel::findByPk($this->simpletipp_group);
 
         $v = new vcalendar();
         $v->setConfig('unique_id', Environment::get('base'));
@@ -64,29 +63,40 @@ class SimpletippCalendar extends Module {
             $v->setComponent($event);
         }
 
-        /* DEBUG -----------------------------------------------------------
-        $xml   = iCal2XML($v);
-        $dom   = new DOMDocument('1.0', 'UTF-8');
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $dl = @$dom->loadXML($xml);
-        echo '<pre>'.htmlentities($dom->saveXML()).'</pre>';
-         ------------------------------------------------------------------*/
+
+        /* DEBUG -----------------------------------------------------------*/
+        if ($isDebug) {
+            $xml   = iCal2XML($v);
+            $dom   = new DOMDocument('1.0', 'UTF-8');
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = true;
+            $dl = @$dom->loadXML($xml);
+            echo '<pre>'.htmlentities($dom->saveXML()).'</pre>';
+            exit;
+        }
+         /*------------------------------------------------------------------*/
+
+
         $v->returnCalendar();
-        exit();
+        exit;
     }
 
 	private function getMatchEvents() {
+
 		if ($this->User === null) {
 			$matches = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
 				WHERE leagueID = ? ORDER BY deadline")->execute($this->simpletipp->leagueID);
 		}
 		else {
-			$matches = $this->Database->prepare("SELECT * FROM tl_simpletipp_match AS tblm
+			$matches = $this->Database->prepare("SELECT
+                 tblm.*,
+                 tblt.*,
+                 tblt.id AS tipp_id
+                 FROM tl_simpletipp_match AS tblm
 				 LEFT JOIN tl_simpletipp_tipp AS tblt
 				 ON (tblt.match_id = tblm.id  AND tblt.member_id = ?)
 				 WHERE tblm.leagueID = ?
-				 ORDER BY tblm.deadline")->execute($this->id, $this->simpletipp->leagueID);
+				 ORDER BY tblm.deadline")->execute($this->User->id, $this->simpletipp->leagueID);
 		}
 
 
@@ -95,8 +105,8 @@ class SimpletippCalendar extends Module {
 		$lastDeadline = null;
 		
 		while($matches->next()) {
-			
-			$m = (Object) $matches->row();
+
+            $m = (Object) $matches->row();
 
 			if ($m->deadline === $lastDeadline) {
 				$tmpMatches[] = $m;
@@ -118,7 +128,7 @@ class SimpletippCalendar extends Module {
 		} // foreach($matches as $m)
 	
 		if (sizeof($tmpMatches) > 0) {
-			$events[] = self::getNewEvent($tmpMatches);
+			$events[] = $this->getNewEvent($tmpMatches);
 		}
 	
 		return $events;
@@ -135,10 +145,10 @@ class SimpletippCalendar extends Module {
 		$url = Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
 					"/group/".urlencode($matches[0]->groupName));
 
-		$title       = $matches[0]->groupName.' ('.sizeof($matches).' Spiele)'; // TODO translation
-		$info        = " ".date("H:i", $timestamp);
-		$description = $url."\n";
-		$pointsSum   = 0;
+        // TODO translation
+		$title              = $matches[0]->groupName.' ('.sizeof($matches).' Spiele)';
+		$description        = $url."\n";
+		$pointsSum          = 0;
 		$all_matches_tipped = true;
 		
 		foreach($matches as $m) {
@@ -161,7 +171,7 @@ class SimpletippCalendar extends Module {
 					$info2 = " *OK*"; // TODO translation
 				}
 				else {
-                    $p          = Simpletipp::getPoints($m->result, $m->tipp, $this->simpletipp_factor);
+                    $p          = Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
                     $pointsSum  = $pointsSum + $p->points;
 					$info2      = " ".$p->getPointsString();
 				}

@@ -180,7 +180,7 @@ class SimpletippCallbacks extends Backend {
 
 
     public function tippReminder() {
-        $simpletippRes = $this->Database->execute("SELECT * FROM tl_simpletipp");
+        $simpletippRes = $this->Database->executeUncached("SELECT * FROM tl_simpletipp");
         $hours         = 24;
         $now           = time();
 
@@ -196,6 +196,15 @@ class SimpletippCallbacks extends Backend {
 
             $pageObj         = PageModel::findByIdOrAlias('spiele');
             $email           = new Email();
+            $bccArr          = array();
+            $userNamesArr    = array();
+
+            foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
+                $bccArr[]    = $u['email'];
+                $userNames[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
+            }
+            $email->sendBcc(implode(',', $bccArr));
+
             $email->from     = $simpletippRes->adminEmail;
             $email->fromName = $simpletippRes->adminName;
             $email->subject  = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
@@ -203,20 +212,17 @@ class SimpletippCallbacks extends Backend {
                 $hours, $match->title, Date::parse('d.m.Y H:i', $match->deadline),
                 Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
-            foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
-                $email->sendBcc($u['email']);
-                $userNames[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
-            }
-
             $email->sendTo($simpletippRes->adminEmail);
 
             $email           = new Email();
             $email->from     = $simpletippRes->adminEmail;
             $email->fromName = $simpletippRes->adminName;
             $email->subject  = 'Tipperinnerung verschickt!';
-            $email->text     = sprintf("Tipperinnerung an folgende Tipper verschickt:\n\n%s\n\n",
-                                    implode("\n", $userNames)
-            );
+            $email->text     = sprintf(
+                                    "Tipperinnerung an folgende Tipper verschickt:\n\n%s\n\n",
+                                    implode("\n", $userNamesArr)
+                                );
+
             $email->sendTo($simpletippRes->adminEmail);
 
             // Update lastRemindedMatch witch current match_id
