@@ -247,6 +247,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             $m->away    = ($tArr[0] < $tArr[1])  ? ++$m->away : $m->away;
         }
 
+        // TODO Den link zu dem Benutzer
 
         usort($memberArray, function($a, $b) { return ($b->tore - $a->tore); });
         $table['maxTore']['member'] = array_slice($memberArray, 0, 3);
@@ -264,7 +265,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         usort($memberArray, function($a, $b) { return ($b->two_one - $a->two_one); });
         $table['two_one']['member'] = array_slice($memberArray, 0, 3);
 
-        // TODO Den realen Wert einfügen!
+
         $this->cachedResult(static::$cache_key_special, $table);
         $this->statsTemplate->table = $table;
 

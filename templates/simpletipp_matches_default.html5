@@ -11,13 +11,15 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
 
 <?php echo $this->messages; ?>
 
+<?php echo $this->filter; ?>
+
 <?php if ($this->isPersonal): ?>
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
     <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
     <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <?php endif; ?>
 
-<?php echo $this->filter; ?>
+
 
 <?php if($this->matches): ?>
 <br>

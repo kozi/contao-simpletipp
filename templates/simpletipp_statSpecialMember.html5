@@ -4,6 +4,7 @@
             $key = ($key == 'minTore' || $key == 'maxTore') ? 'tore' : $key; ?>
             <tr>
                 <th colspan="2"><?php echo $row['title']; ?> (Realer Wert: <?php echo $row['realValue']; ?>)</th>
+                <th style="text-align:right"; colspan="2"><?php echo $row['title']; ?> (Realer Wert: <?php echo $row['realValue']; ?>)</th>
             </tr>
             <?php foreach($row['member'] as $m): ?>
                 <tr>
