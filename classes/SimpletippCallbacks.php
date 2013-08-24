@@ -200,8 +200,12 @@ class SimpletippCallbacks extends Backend {
             $userNamesArr    = array();
 
             foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
-                $bccArr[]    = $u['email'];
-                $userNames[] = $u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
+                $emailSent = '';
+                if ($u['simpletipp_email_reminder'] == '1') {
+                    $bccArr[]  = $u['email'];
+                    $emailSent = '@ ';
+                }
+                $userNames[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
             }
             $email->sendBcc(implode(',', $bccArr));
 

@@ -15,7 +15,23 @@
 
 // simpletipp_email
 
-$GLOBALS['TL_DCA']['tl_member']['palettes']['default'] .= ';{simpletipp_legend},simpletipp_calendar';
+$GLOBALS['TL_DCA']['tl_member']['palettes']['default'] .= ';{simpletipp_legend},simpletipp_calendar, simpletipp_email_reminder, simpletipp_email_confirmation';
+
+$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_confirmation'] = array(
+    'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_email_confirmation'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'eval'                    => array('tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'),
+    'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_reminder'] = array(
+    'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_email_reminder'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'eval'                    => array('tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'),
+    'sql'                     => "char(1) NOT NULL default ''"
+);
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = array
 (

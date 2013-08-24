@@ -25,7 +25,6 @@
 class SimpletippMatches extends SimpletippModule {
 	protected $strTemplate  = 'simpletipp_matches_default';
 	private $formId         = 'tl_simpletipp';
-	private $sendEmail      = true;
 	private $matches_filter = null;
 	
 
@@ -348,13 +347,16 @@ class SimpletippMatches extends SimpletippModule {
             // TODO translation
             $message = "Es wurden keine Tipps eingetragen!";
         }
-        else if ($this->sendEmail) {
-			$this->sendTippEmail($to_db);
-			$message = sprintf($GLOBALS['TL_LANG']['simpletipp']['message_inserted_email'], $this->User->email);
-		}
-		else {
-			$message = $GLOBALS['TL_LANG']['simpletipp']['message_inserted'];
-		}
+        else {
+            $this->sendTippEmail($to_db);
+
+            if ($this->User->simpletipp_email_confirmation == '1') {
+                $message = sprintf($GLOBALS['TL_LANG']['simpletipp']['message_inserted_email'], $this->User->email);
+            }
+            else {
+                $message = $GLOBALS['TL_LANG']['simpletipp']['message_inserted'];
+            }
+        }
         Simpletipp::addSimpletippMessage($message);
 		return true;
 	}
@@ -382,24 +384,25 @@ class SimpletippMatches extends SimpletippModule {
         $subject  = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_subject'],
                        date('d.m.Y H:i:s'), $this->User->firstname.' '.$this->User->lastname);
 
-
         // Send to user
-        $email           = new Email();
-		$email->from     = $this->simpletipp->adminEmail;
-        $email->fromName = $this->simpletipp->adminName;
-		$email->subject  = $subject;
-        $email->text     = $content;
-        $email->replyTo($this->User->email);
-		$email->sendTo($this->User->email);
+        if ($this->User->simpletipp_email_confirmation == '1') {
+            $email           = new Email();
+            $email->from     = $this->simpletipp->adminEmail;
+            $email->fromName = $this->simpletipp->adminName;
+            $email->subject  = $subject;
+            $email->text     = $content;
+            $email->replyTo($this->User->email);
+            $email->sendTo($this->User->email);
+        }
 
-		// Send encoded to admin
+        // Send encoded to admin
         $email           = new Email();
         $email->from     = $this->simpletipp->adminEmail;
         $email->fromName = $this->simpletipp->adminName;
         $email->subject  = $subject;
-		$email->text     = base64_encode($content);
+        $email->text     = base64_encode($content);
         $email->replyTo($this->User->email);
-		$email->sendTo($GLOBALS['TL_ADMIN_EMAIL']);
+        $email->sendTo($GLOBALS['TL_ADMIN_EMAIL']);
 
         return true;
 	}
