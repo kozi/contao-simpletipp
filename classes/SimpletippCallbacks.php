@@ -202,13 +202,15 @@ class SimpletippCallbacks extends Backend {
                 Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
             foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
+
                 $emailSent = '';
                 if ($u['simpletipp_email_reminder'] == '1') {
                     $email = $this->generateEmailObject($simpletippRes, $emailSubject, $emailText);
                     $email->sendTo($u['email']);
                     $emailSent = '@ ';
                 }
-                $userNames[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
+
+                $userNamesArr[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
             }
 
             $email       = $this->generateEmailObject($simpletippRes, 'Tipperinnerung verschickt!');
