@@ -34,6 +34,8 @@ class SimpletippPokal extends SimpletippModule {
     protected $strTemplate = 'simpletipp_pokal_default';
 
 	public function generate() {
+
+
         if (TL_MODE == 'BE') {
             $this->Template            = new BackendTemplate('be_wildcard');
             $this->Template->wildcard  = '### SimpletippPokal ###';
