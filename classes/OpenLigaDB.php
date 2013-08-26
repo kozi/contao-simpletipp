@@ -44,8 +44,22 @@ class OpenLigaDB {
 		}			
 	}	
 	
-	public function getMatch() {
-		return $match;
+	public function getMatchGoals($matchId) {
+        try {
+            $params = new stdClass();
+            $params->MatchID = $matchId;
+
+            $response = $this->client->GetGoalsByMatch($params);
+            $data     = $response->GetGoalsByMatchResult->Goal;
+
+            return $data;
+        }
+        catch (SoapFault $e) {
+            return false;
+        }
+        catch (Exception $e) {
+            return false;
+        }
 	}
 	
 	public function setLeague($leagueObj) {
@@ -93,22 +107,4 @@ class OpenLigaDB {
 		}
 		return $response->GetLastChangeDateByLeagueSaisonResult;
 	}
-	
-	public function getLastGroupChange($group) {
-		try {
-		    $params = new stdClass;
-			$params->leagueShortcut = $this->leagueShortcut;
-			$params->leagueSaison = $this->leagueSaison;
-			$params->groupOrderID = $group;
-		    $response = $this->client->GetLastChangeDateByGroupLeagueSaison($params);
-		}
-		catch (SoapFault $e) {
-		    return false;
-		}
-		catch (Exception $e) {
-		    return false;
-		}
-		return $response->GetLastChangeDateByGroupLeagueSaisonResult;
-	}
-	
 }

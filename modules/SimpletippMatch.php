@@ -57,6 +57,12 @@ class SimpletippMatch extends SimpletippModule {
 
         $this->isStarted = (time() > $this->match->deadline);
 
+        // GoalData
+        $this->import('SimpletippCallbacks');
+        $this->match->goalData = unserialize($this->match->goalData);
+        $this->match = $this->SimpletippCallbacks->refreshGoalData($this->simpletipp, $this->match);
+
+
 		$result = $this->Database->prepare(
 				"SELECT *, tl_member.id AS memberId FROM tl_simpletipp_tipp, tl_simpletipp_match, tl_member"
 				." WHERE match_id = ? AND match_id = tl_simpletipp_match.id"
@@ -130,6 +136,7 @@ class SimpletippMatch extends SimpletippModule {
 		$this->Template->tipps        = $tipps;
 		$this->Template->summary      = $this->pointSummary;
 	}
+
 
 } // END class SimpletippMatch
 

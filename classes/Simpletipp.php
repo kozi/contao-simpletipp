@@ -24,6 +24,7 @@
 
 class Simpletipp extends System {
     public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
+    public static $MATCH_LENGTH       = 6900;
 
     public static function getPoints($result, $tipp, $simpletippFactor = null) {
         $perfect    = 0;

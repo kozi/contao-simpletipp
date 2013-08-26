@@ -56,8 +56,8 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 	),
     'tstamp' => array
     (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp'],
-        'sql'                     => "int(10) unsigned NOT NULL default '0'"
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp'],
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
     ),
 	'deadline' => array
 	(
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 			'sql'                     => "varchar(255) NOT NULL default ''",
 	),
     'groupName_short' => array(
-        'sql'                         => "varchar(255) NOT NULL default ''",
+            'sql'                     => "varchar(255) NOT NULL default ''",
     ),
 	'title' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['title'],
@@ -104,10 +104,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 			'sql'                     => "varchar(255) NOT NULL default ''",
 	),
     'team_h_three' => array(
-        'sql'                     => "varchar(255) NOT NULL default ''",
+            'sql'                     => "varchar(255) NOT NULL default ''",
     ),
     'team_a_three' => array(
-        'sql'                     => "varchar(255) NOT NULL default ''",
+            'sql'                     => "varchar(255) NOT NULL default ''",
     ),
 	'lastUpdate' => array(
 			'sql'                     => "int(10) unsigned NOT NULL"
@@ -121,7 +121,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 	'result' => array(
 			'label'                   => $GLOBALS['TL_LANG']['tl_simpletipp_match']['result'],
 			'sql'                     => "varchar(32) NOT NULL default ''",
-	)
+	),
+    'goalData' => array(
+            'sql'                     => "blob NULL",
+    ),
 	
 ) //fields
 

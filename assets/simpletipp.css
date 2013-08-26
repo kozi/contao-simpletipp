@@ -55,9 +55,26 @@
 .mod_simpletipp td,
 .mod_simpletipp th {
 	vertical-align:middle;
-	white-space: nowrap;
+    white-space: nowrap;
     padding:8px 3px;
 }
+
+.mod_simpletipp td.goalData {
+    white-space:normal;
+    font-size:12px;
+}
+.mod_simpletipp td.goalData .goalEntry {
+    display:inline-block;
+    padding:2px 1px;
+    white-space:nowrap;
+}
+.mod_simpletipp td.goalData .goalResult {
+    display:inline-block;
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding-left:20px;
+}
+
 .mod_simpletipp th {
     text-align:left;
 }

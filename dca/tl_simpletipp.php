@@ -191,6 +191,11 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'label'        => array('lastChanged', 'lastChanged'),
             'sql'          => "int(10) unsigned NOT NULL default '0'",
         ),
+        'lastLookup' => array
+        (
+            'label'        => array('lastLookup', 'lastLookup'),
+            'sql'          => "int(10) unsigned NOT NULL default '0'",
+        ),
         'lastRemindedMatch' => array
         (
             'label'        => array('lastRemindedMatch', 'lastRemindedMatch'),

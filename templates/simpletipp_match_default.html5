@@ -15,6 +15,24 @@
         <th class="result"><?php echo $this->match->result;?></th>
     </tr>
     <tr>
+        <td class="goalData" colspan="4">
+            <?php foreach($this->match->goalData->data as $goal):
+                $team_alias = ($goal->home) ? $this->match->alias_h: $this->match->alias_a;
+                $team_icon  = Image::get(($goal->home) ? $this->match->icon_h: $this->match->icon_a, 16, 16, 'center_center');
+                ?>
+            <span class="goalEntry">
+                <strong class="goalResult <?php echo $team_alias;?>"  style="background-image:url('<?php echo $team_icon; ?>');"><?php echo $goal->result; ?></strong>
+                <span class="goalName"><?php echo ucfirst($goal->name); ?></span>
+                (<span class="goalDetails"><?php echo $goal->minute
+                    .(($goal->overtime === true) ? '+.': '.')
+                    .(($goal->penalty === true) ? ', <abbr title="Elfmeter">EM</abbr>':'')
+                    .(($goal->ownGoal === true) ? ', <abbr title="Eigentor">ET</abbr>':'');?></span>)
+            </span>
+            <?php endforeach; ?>
+        </td>
+    </tr>
+
+    <tr>
         <td colspan="4">
             <div class="bar_wrapper">
                 <div title="Heimsieg" style="width:<?php echo $this->count->home->percent;?>%;" class="home"><?php echo $this->count->home->abs;?></div>

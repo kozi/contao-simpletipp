@@ -46,6 +46,14 @@ class SimpletippCallbacks extends Backend {
     private function updateLeagueMatches($simpletippObj) {
         $leagueObj  = unserialize($simpletippObj->leagueObject);
 
+        if ($this->lastLookupOnlySecondsAgo($simpletippObj)) {
+            $message = sprintf(
+                'Letzte Aktualisierung für <strong>%s</strong> erst vor %s Sekunden.',
+                $leagueObj->leagueName,
+                (time() - $simpletippObj->lastLookup));
+            return $message;
+        }
+
         $this->OpenLigaDB->setLeague($leagueObj);
 
         $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
@@ -132,6 +140,66 @@ class SimpletippCallbacks extends Backend {
 		}
 		return false;
 	}
+
+    public function refreshGoalData($simpletipp, $match) {
+        $now = time();
+
+        if ($now < $this->match->deadline) {
+            return $match;
+        }
+
+        $simpletippLastChanged = intval($simpletipp->lastChanged);
+
+        if ($match->goalData == NULL
+            || $match->goalData->lastUpdate < $simpletippLastChanged
+            || ($now - $match->deadline) < (Simpletipp::$MATCH_LENGTH + 900)) {
+
+            $this->import('OpenLigaDB');
+            $leagueObj  = unserialize($simpletipp->leagueObject);
+            $this->OpenLigaDB->setLeague($leagueObj);
+            $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
+
+            if ($match->goalData->lastUpdate < $openligaLastChanged) {
+                // Update goalData
+                $match->goalData             = new stdClass();
+                $match->goalData->lastUpdate = $openligaLastChanged;
+                $match->goalData->data       = $this->convertGoalData($this->OpenLigaDB->getMatchGoals($match->id));
+            }
+
+            $this->Database->prepare("UPDATE tl_simpletipp_match SET goalData = ? WHERE id = ? ")
+                ->execute(serialize($match->goalData), $match->id);
+        }
+        return $match;
+    }
+
+    private function convertGoalData($data) {
+        $goalData    = array();
+
+        if (is_object($data)) {
+            $goalObjects = array($data);
+        }
+        elseif (is_array($data)) {
+            $goalObjects = $data;
+        }
+        else {
+            $goalObjects = array();
+        }
+
+        $previousHome = 0;
+        foreach($goalObjects as $goalObj) {
+            $goalData[] = (Object) array(
+                'name'     => $goalObj->goalGetterName,
+                'minute'   => $goalObj->goalMatchMinute,
+                'result'   => $goalObj->goalScoreTeam1.':'.$goalObj->goalScoreTeam2,
+                'penalty'  => $goalObj->goalPenalty,
+                'ownGoal'  => $goalObj->goalOwnGoal,
+                'overtime' => $goalObj->goalOvertime,
+                'home'     => ($previousHome !== $goalObj->goalScoreTeam1),
+            );
+            $previousHome = $goalObj->goalScoreTeam1;
+        }
+        return $goalData;
+    }
 
     public function createNewsletterChannel() {
         $result = $this->Database->execute("SELECT * FROM tl_simpletipp");
@@ -276,5 +344,14 @@ class SimpletippCallbacks extends Backend {
         return false;
     }
 
+    private function lastLookupOnlySecondsAgo($simpletipp, $seconds = 180) {
+        $now = time();
+        if (($now - $simpletipp->lastLookup) < $seconds) {
+            return true;
+        }
+        $this->Database->prepare("UPDATE tl_simpletipp SET lastLookup = ? WHERE id = ?")
+            ->execute($now, $simpletipp->id);
+        return false;
+    }
 
 }
