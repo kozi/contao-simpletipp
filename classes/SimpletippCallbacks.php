@@ -28,11 +28,11 @@ class SimpletippCallbacks extends Backend {
         $this->import('tl_simpletipp');
         $this->import('OpenLigaDB');
 
-        $id = intval(Input::get('id'));
-
-        $result = $this->Database->prepare(
-            'SELECT * FROM tl_simpletipp'.(($id != 0) ? ' WHERE id = ?' : '')
-        )->execute($id);
+        $id     = intval(Input::get('id'));
+        $result = $this->Database
+            ->prepare('SELECT * FROM tl_simpletipp'
+                .(($id != 0) ? ' WHERE id = ?' : ''))
+            ->execute($id);
 
         while($result->next()) {
             $simpletippObj = (Object) $result->row();
@@ -41,7 +41,6 @@ class SimpletippCallbacks extends Backend {
             Message::add($message, TL_INFO);
             System::log($message, 'SimpletippCallbacks updateMatches()', TL_INFO);
         }
-
 
         $this->redirect(Environment::get('script').'?do=simpletipp_groups');
     }
