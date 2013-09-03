@@ -28,7 +28,7 @@ class SimpletippCallbacks extends Backend {
         $this->import('tl_simpletipp');
         $this->import('OpenLigaDB');
 
-        $id     = intval(Input::get('id'));
+        $id     = (Input::get('id') !== null) ? intval(Input::get('id')) : 0;
         $result = $this->Database
             ->prepare('SELECT * FROM tl_simpletipp'
                 .(($id != 0) ? ' WHERE id = ?' : ''))
@@ -37,14 +37,15 @@ class SimpletippCallbacks extends Backend {
         while($result->next()) {
             $simpletippObj = (Object) $result->row();
             $message       = $this->updateLeagueMatches($simpletippObj);
-
-            Message::add($message, TL_INFO);
-            System::log($message, 'SimpletippCallbacks updateMatches()', TL_INFO);
+            if ($id != 0) {
+                Message::add($message, TL_INFO);
+                $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+            }
+            else {
+                System::log(strip_tags($message), 'SimpletippCallbacks updateMatches()', TL_INFO);
+            }
         }
-
-        $this->redirect(Environment::get('script').'?do=simpletipp_groups');
     }
-
 
     private function updateLeagueMatches($simpletippObj) {
         $leagueObj  = unserialize($simpletippObj->leagueObject);
@@ -302,9 +303,8 @@ class SimpletippCallbacks extends Backend {
         $email->subject  = $subject;
         if ($text != NULL) {
             $email->text  = $text;
+            $email->html  = $text;
         }
-
-
         return $email;
     }
 
