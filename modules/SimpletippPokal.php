@@ -86,7 +86,7 @@ class SimpletippPokal extends SimpletippModule {
                     if ($this->nextGroup->index > 0) {
                         $group_alias = $this->groupAliases[$this->nextGroup->index - 1];
                         $last_group  = $this->groups[$group_alias];
-                        $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
+                        $result      = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
                             WHERE groupName IN ('".implode("','", $last_group->matchgroups)."')
                             AND (result = ? OR isFinished = ?)")->execute('', 0);
                         $calculatePairs = ($result->numRows == 0);
@@ -109,7 +109,6 @@ class SimpletippPokal extends SimpletippModule {
         $group->alias       = $alias;
         $group->matchgroups = $this->pokal_ranges[$alias];
         $group->highscores  = $this->getGroupHighscores($group, deserialize($this->simpletipp->$alias));
-
         if (is_array($group->matchgroups) && count($group->matchgroups) > 0) {
             $group->first       = $group->matchgroups[0];
             $group->last        = $group->matchgroups[count($group->matchgroups)-1];

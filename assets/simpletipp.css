@@ -32,18 +32,27 @@
 .mod_simpletipp_highscore tr,
 .mod_simpletipp_match tr,
 .mod_simpletipp_matches tr,
+.mod_simpletipp_pokal tr,
 .simpletipp_stat tr {
     border-bottom:1px solid #ddd;
 }
 
-.mod_simpletipp_highscore tr.current {
+.mod_simpletipp_highscore tr.current,
+.mod_simpletipp_pokal tr.current {
     background-color:#C6EFB3;
 }
+
+
 
 .highscore_bestof tr.pos1,
 .highscore_complete tr.pos1, .highscore_complete tr.pos2,
 .highscore_complete tr.pos3, .highscore_complete tr.pos4,
-.highscore_complete tr.pos5 { font-weight:bold; }
+.highscore_complete tr.pos5,
+.mod_simpletipp_pokal tr.pos1,
+.mod_simpletipp_pokal tr.pos2,
+.mod_simpletipp_pokal tr.pos3,
+.mod_simpletipp_pokal tr.pos4
+{ font-weight:bold; }
 
 
 .highscore_bestof tr.pos1,
@@ -168,3 +177,13 @@
 .mod_simpletipp .bar_wrapper .draw { background-color:#C6EFB3; }
 .mod_simpletipp .bar_wrapper .away { background-color:#90B97D; }
 
+/* Pokal
+------------------------------------------------*/
+.mod_simpletipp_pokal .pokal_highscore {
+    height:300px;
+    width:48%;
+    margin:0 0 20px 2%;
+    padding:0;
+    display:block;
+    float:left;
+}

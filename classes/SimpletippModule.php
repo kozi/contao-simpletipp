@@ -132,8 +132,8 @@ abstract class SimpletippModule extends \Module {
         ." GROUP BY tl_member.id"
         ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
 
-        $table = array();
-
+        $table   = array();
+        $this->i = 1;
         while($result->next()) {
             $table[$result->member_id] = $this->getHighscoreRow($result->row());
         }
@@ -154,7 +154,7 @@ abstract class SimpletippModule extends \Module {
         $row           = (Object) $memberRow;
 
         $row->avatar    = ($row->avatar != null) ? $row->avatar : $this->avatarFallback;
-        $row->cssClass  = (($this->i++ % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i;
+        $row->cssClass  = (($this->i % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i++;
         $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
 
         $pageModel = PageModel::findByPk($this->simpletipp_matches_page);

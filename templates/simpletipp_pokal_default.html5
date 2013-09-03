@@ -2,11 +2,36 @@
 
     <ul class="pokal_phases">
         <?php foreach ($this->groups as $group): ?>
-            <li class="<?php echo $group->cssClass; ?>"><strong><?php echo $group->name; ?>:</strong> <?php echo $group->first; ?> - <?php echo $group->last; ?> <small>(<?php echo Date::parse("d.m.Y", $group->start); ?> - <?php echo Date::parse("d.m.Y", $group->end); ?>)</small></li>
+            <li class="<?php echo $group->cssClass; ?>"><strong><?php echo $group->name; ?>:</strong> <?php echo $group->first.' - '.$group->last; ?> <small>(<?php echo Date::parse("d.m.Y", $group->start); ?> - <?php echo Date::parse("d.m.Y", $group->end); ?>)</small></li>
         <?php endforeach; ?>
     </ul>
 
-    <?php foreach (array_reverse($this->groups) as $group): if ($group->pairings != null) : ?>
-        <?php var_dump($group->pairings); ?>
+    <?php foreach (array_reverse($this->groups) as $group): if ($group->highscores != null) : ?>
+        <h3><?php echo $group->name; ?> <small>(<?php echo $group->first.' - '.$group->last; ?>)</small></h3>
+        <?php foreach ($group->highscores as $highscore): ?>
+            <div class="pokal_highscore">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Name</th>
+                        <th>Punkte</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php $i = 1; foreach ($highscore as $row): ?>
+                        <tr class="<?php echo $row->cssClass; ?>">
+                            <td><?php echo $i++; ?>.</td>
+                            <td><?php echo $row->firstname.' '.$row->lastname; ?></td>
+
+                            <td class="points">
+                                <small>(<?php echo $row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency; ?>)</small>
+                                <?php echo $row->points; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table></div>
+        <?php endforeach; ?>
     <?php endif; endforeach; ?>
 </div>
