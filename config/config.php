@@ -13,36 +13,11 @@
  * @filesource
  */
 
-$GLOBALS['simpletipp']['teamShortener'] = array(
-    'Borussia Dortmund'            => array('Dortmund', 'BVB'),
-    'Bayern München'               => array('Bayern', 'FCB'),
-    'Hamburger SV'                 => array('HSV', 'HSV'),
-    'SC Freiburg'                  => array('Freiburg', 'SCF'),
-    'FC Schalke 04'                => array('Schalke', 'S04'),
-    'Borussia Mönchengladbach'     => array('Gladbach', 'GLA'),
-    'Bayer 04 Leverkusen'          => array('Leverkusen', 'LEV'),
-    'Hannover 96'                  => array('Hannover', 'H96'),
-    'VfL Wolfsburg'                => array('Wolfsburg', 'WOL'),
-    'TSG 1899 Hoffenheim'          => array('Hoffenheim', 'HOF'),
-    '1. FC Nürnberg'               => array('Nürnberg', 'FCN'),
-    '1. FSV Mainz 05'              => array('Mainz', 'MAI'),
-    'VfB Stuttgart'                => array('Stuttgart', 'VFB'),
-    'FC Augsburg'                  => array('Augsburg', 'FCA'),
-    'Eintracht Braunschweig'       => array('Braunschweig', 'BRA'),
-    'Werder Bremen'                => array('Werder', 'BRE'),
-    'Hertha BSC'                   => array('Hertha', 'BSC'),
-    'Eintracht Frankfurt'          => array('Frankfurt', 'FRA'),
-    'Fortuna Düsseldorf'           => array('Düsseldorf', 'DUS'),
-    'SpVgg Greuther Fuerth'        => array('Fürth', 'FUE'),
-);
-
 $GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'tippReminder');
 $GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'updateMatches');
 
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]   = array('SimpletippCallbacks', 'addCustomRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('SimpletippCallbacks', 'randomLine');
-
-
 
 
 array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
@@ -87,5 +62,30 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 				
 		)
 ));
+
+$GLOBALS['simpletipp']['teamShortener'] = array(
+    'Borussia Dortmund'            => array('Dortmund', 'BVB'),
+    'Bayern München'               => array('Bayern', 'FCB'),
+    'Hamburger SV'                 => array('HSV', 'HSV'),
+    'SC Freiburg'                  => array('Freiburg', 'SCF'),
+    'FC Schalke 04'                => array('Schalke', 'S04'),
+    'Borussia Mönchengladbach'     => array('Gladbach', 'GLA'),
+    'Bayer 04 Leverkusen'          => array('Leverkusen', 'LEV'),
+    'Hannover 96'                  => array('Hannover', 'H96'),
+    'VfL Wolfsburg'                => array('Wolfsburg', 'WOL'),
+    'TSG 1899 Hoffenheim'          => array('Hoffenheim', 'HOF'),
+    '1. FC Nürnberg'               => array('Nürnberg', 'FCN'),
+    '1. FSV Mainz 05'              => array('Mainz', 'MAI'),
+    'VfB Stuttgart'                => array('Stuttgart', 'VFB'),
+    'FC Augsburg'                  => array('Augsburg', 'FCA'),
+    'Eintracht Braunschweig'       => array('Braunschweig', 'BRA'),
+    'Werder Bremen'                => array('Werder', 'BRE'),
+    'Hertha BSC'                   => array('Hertha', 'BSC'),
+    'Eintracht Frankfurt'          => array('Frankfurt', 'FRA'),
+    'Fortuna Düsseldorf'           => array('Düsseldorf', 'DUS'),
+    'SpVgg Greuther Fuerth'        => array('Fürth', 'FUE'),
+);
+
+
 
 

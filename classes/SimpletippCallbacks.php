@@ -37,8 +37,12 @@ class SimpletippCallbacks extends Backend {
         while($result->next()) {
             $simpletippObj = (Object) $result->row();
             $message       = $this->updateLeagueMatches($simpletippObj);
-            Message::add($message, 'TL_INFO');
+
+            Message::add($message, TL_INFO);
+            System::log($message, 'SimpletippCallbacks updateMatches()', TL_INFO);
         }
+
+
         $this->redirect(Environment::get('script').'?do=simpletipp_groups');
     }
 
