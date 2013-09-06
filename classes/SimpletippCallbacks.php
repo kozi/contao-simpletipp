@@ -25,6 +25,7 @@
 class SimpletippCallbacks extends Backend {
 
     public function updateMatches() {
+        require_once(TL_ROOT.'/system/modules/simpletipp/dca/tl_simpletipp.php');
         $this->import('tl_simpletipp');
         $this->import('OpenLigaDB');
 
@@ -89,7 +90,6 @@ class SimpletippCallbacks extends Backend {
             FROM tl_simpletipp, tl_simpletipp_match
             WHERE tl_simpletipp.id = ? AND tl_simpletipp_match.isFinished = ?
             AND tl_simpletipp_match.leagueID = tl_simpletipp.leagueID"
-
         )->execute($id, '1');
 
         $leagueObj = null;
@@ -252,6 +252,8 @@ class SimpletippCallbacks extends Backend {
 
 
     public function tippReminder() {
+        System::loadLanguageFile('default');
+
         $simpletippRes = $this->Database->executeUncached("SELECT * FROM tl_simpletipp");
         $hours         = 24;
         $now           = time();
