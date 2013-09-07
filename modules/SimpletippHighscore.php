@@ -138,7 +138,10 @@ class SimpletippHighscore extends SimpletippModule {
 	}
 
     private function bestOfTable() {
-
+        $bestOf = $this->cachedResult(static::$cache_key_bestof);
+        if ($bestOf != null) {
+            return $bestOf;
+        }
         $bestOf = array();
 
         // Alle bisher gespielten Gruppen holen
@@ -156,12 +159,34 @@ class SimpletippHighscore extends SimpletippModule {
                     $newRow                     = $row;
                     $newRow->groupName          = $matchgroupName;
                     $bestOf[$row->member_id]    = $newRow;
+
                 }
             }
         }
+        // Sortieren
+        usort($bestOf, function($a, $b) {
+            if ($a->points > $b->points) return -1;
+            if ($a->points < $b->points) return 1;
 
-        // TODO sortieren
-        // TODO Ergebnis cachen?!?
+            if ($a->sum_perfect > $b->sum_perfect) return -1;
+            if ($a->sum_perfect < $b->sum_perfect) return 1;
+
+            if ($a->sum_difference > $b->sum_difference) return -1;
+            if ($a->sum_difference < $b->sum_difference) return 1;
+
+            return 0;
+        });
+
+        // CSS Klassen setzen
+        $i = 1;
+        foreach($bestOf as &$row) {
+            $row->cssClass = 'pos'.$i++.' '.(($i %2 == 0) ? ' odd' : ' even');
+        }
+
+        // Ergebnis cachen
+        $this->cachedResult(static::$cache_key_bestof, $bestOf);
+
+
         return $bestOf;
 	}
 	

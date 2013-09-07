@@ -47,6 +47,7 @@ abstract class SimpletippModule extends \Module {
     protected static $cache_key_prefix      = 'simpletipp';
     protected static $cache_key_suffix      = '.json';
     protected static $cache_key_highscore   = 'highscore';
+    protected static $cache_key_bestof      = 'bestof';
     protected static $cache_key_points      = 'points';
     protected static $cache_key_special     = 'special';
 
