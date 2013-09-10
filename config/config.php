@@ -28,7 +28,7 @@ array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
     'simpletipp_questions'  => 'SimpletippQuestions',
     'simpletipp_highscore'  => 'SimpletippHighscore',
     'simpletipp_ranking'    => 'SimpletippRanking',
-    'simpletipp_pokal'      => 'SimpletippPokal',
+    'simpletipp_pokal'      => 'SimpletippModulePokal',
     'simpletipp_nottipped'  => 'SimpletippNotTipped'
 ));
 
@@ -46,6 +46,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 						'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
                         'update'     => array('SimpletippCallbacks', 'updateMatches'),
                         'calculate'  => array('SimpletippCallbacks', 'calculateTipps'),
+                        'pokal'      => array('SimpletippPokal', 'calculate'),
 				),
 				'simpletipp_matches' => array
 				(

@@ -24,7 +24,8 @@ ClassLoader::addClasses(array(
     'Simpletipp'                    => 'system/modules/simpletipp/classes/Simpletipp.php',
     'SimpletippPoints'              => 'system/modules/simpletipp/classes/SimpletippPoints.php',
     'SimpletippModule'              => 'system/modules/simpletipp/classes/SimpletippModule.php',
-	'SimpletippCallbacks'           => 'system/modules/simpletipp/classes/SimpletippCallbacks.php',
+    'SimpletippCallbacks'           => 'system/modules/simpletipp/classes/SimpletippCallbacks.php',
+    'SimpletippPokal'               => 'system/modules/simpletipp/classes/SimpletippPokal.php',
 
     // Models
     'MatchModel'                    => 'system/modules/simpletipp/models/MatchModel.php',
@@ -38,7 +39,7 @@ ClassLoader::addClasses(array(
     'SimpletippQuestions'           => 'system/modules/simpletipp/modules/SimpletippQuestions.php',
     'SimpletippCalendar'            => 'system/modules/simpletipp/modules/SimpletippCalendar.php',
     'SimpletippRanking'             => 'system/modules/simpletipp/modules/SimpletippRanking.php',
-    'SimpletippPokal'               => 'system/modules/simpletipp/modules/SimpletippPokal.php',
+    'SimpletippModulePokal'         => 'system/modules/simpletipp/modules/SimpletippModulePokal.php',
     'SimpletippNotTipped'           => 'system/modules/simpletipp/modules/SimpletippNotTipped.php',
 
     // Elements

@@ -21,7 +21,7 @@
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
- 
+
 abstract class SimpletippModule extends \Module {
     protected $now;
     protected $isMobile;
@@ -35,8 +35,8 @@ abstract class SimpletippModule extends \Module {
     protected $pointFactors;
     protected $pointSummary;
 
-	protected $factorDifference;
-	protected $factorTendency;
+    protected $factorDifference;
+    protected $factorTendency;
 
     protected $avatarActive = false;
     protected $avatarSql;
@@ -51,30 +51,23 @@ abstract class SimpletippModule extends \Module {
     protected static $cache_key_points      = 'points';
     protected static $cache_key_special     = 'special';
 
-
-    public function __construct($objModule, $strColumn='main') {
+    public function __construct($objModule = null, $strColumn='main') {
         global $objPage;
 
-        parent::__construct($objModule, $strColumn);
-
+        if ($objModule !== null) {
+            parent::__construct($objModule, $strColumn);
+        }
 
         $this->loadLanguageFile('tl_simpletipp');
         $this->import('Database');
         $this->import('FrontendUser', 'User');
         $this->now                  = time();
         $this->isMobile             = $objPage->isMobile;
-        $this->simpletipp           = SimpletippModel::findByPk($this->simpletipp_group);
+        $this->setSimpletipp($this->simpletipp_group);
 
         if (TL_MODE !== 'BE') {
             $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";
         }
-
-        if ($this->simpletipp === null) {
-            echo 'No simpletipp defined';
-            exit;
-        }
-
-        $this->simpletippGroups     = Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
 
         if (Input::get('user')) {
             $userObj = MemberModel::findBy('username', Input::get('user'));
@@ -91,19 +84,32 @@ abstract class SimpletippModule extends \Module {
 
             }
         }
+
+
         $this->isPersonal           = ($this->simpletippUserId === $this->User->id);
-        $this->avatarActive         = (in_array('avatar', $this->Config->getActiveModules()));
-        $this->avatarSql            = ($this->avatarActive) ? ' tl_member.avatar AS avatar,' : '';
+
+        if ($this->Config) {
+            $this->avatarActive         = (in_array('avatar', $this->Config->getActiveModules()));
+            $this->avatarSql            = ($this->avatarActive) ? ' tl_member.avatar AS avatar,' : '';
+        }
 
         if ($this->avatarActive) {
             $fileObj = FilesModel::findByPk($GLOBALS['TL_CONFIG']['avatar_fallback_image']);
             $this->avatarFallback = $fileObj->path;
         }
 
-        $this->pointFactors = $this->simpletipp->getPointFactors();
-        $this->pointSummary = (Object) array('points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0);
 
     }
+
+    public function setSimpletipp($simpletippId) {
+        $this->simpletipp       = SimpletippModel::findByPk($simpletippId);
+        if($this->simpletipp !== null){
+            $this->simpletippGroups = Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
+            $this->pointFactors     = $this->simpletipp->getPointFactors();
+            $this->pointSummary     = (Object) array('points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0);
+        }
+    }
+
 
     protected function getHighscore($matchgroup = null, $memberArr = null) {
         $matches = $this->getMatches($matchgroup);
@@ -193,7 +199,7 @@ abstract class SimpletippModule extends \Module {
 
     protected function cachedResult($key, $data = null, $cleanEntries = false) {
         $fn = static::$cache_key_prefix.'_'.$key.'_'.$this->simpletipp->id
-                        .'_'.$this->simpletipp->lastChanged.static::$cache_key_suffix;
+            .'_'.$this->simpletipp->lastChanged.static::$cache_key_suffix;
         $objFile = new \File('system/tmp/'.$fn, true);
 
         if ($data !== null) {

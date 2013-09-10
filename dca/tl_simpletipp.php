@@ -75,6 +75,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 					'href'                => 'key=update',
 					'icon'                => 'system/themes/default/images/reload.gif',
 			),
+            'pokal' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal'],
+                'href'                => 'key=pokal',
+                'icon'                => 'system/modules/simpletipp/assets/images/pokal.png',
+            ),
 			'questions' => array
 			(
 					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],

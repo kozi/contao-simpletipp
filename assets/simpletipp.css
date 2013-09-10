@@ -47,11 +47,7 @@
 .highscore_bestof tr.pos1,
 .highscore_complete tr.pos1, .highscore_complete tr.pos2,
 .highscore_complete tr.pos3, .highscore_complete tr.pos4,
-.highscore_complete tr.pos5,
-.mod_simpletipp_pokal tr.pos1,
-.mod_simpletipp_pokal tr.pos2,
-.mod_simpletipp_pokal tr.pos3,
-.mod_simpletipp_pokal tr.pos4
+.highscore_complete tr.pos5
 { font-weight:bold; }
 
 
@@ -181,10 +177,19 @@
 /* Pokal
 ------------------------------------------------*/
 .mod_simpletipp_pokal .pokal_highscore {
-    height:300px;
     width:48%;
     margin:0 0 20px 2%;
     padding:0;
     display:block;
     float:left;
 }
+
+.mod_simpletipp_pokal .pokal_highscore.pokal_group {
+    height:300px;
+}
+
+.mod_simpletipp_pokal tr.pos1,
+.mod_simpletipp_pokal .pokal_group tr.pos2,
+.mod_simpletipp_pokal .pokal_group tr.pos3,
+.mod_simpletipp_pokal .pokal_group tr.pos4
+{ font-weight:bold; }
