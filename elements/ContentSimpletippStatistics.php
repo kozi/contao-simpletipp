@@ -48,7 +48,12 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         $this->Template->stats_type = $stats_type;
         $this->Template->title      = static::$types[$stats_type];
 
+
+
+
         $this->statsTemplate        = new FrontendTemplate('simpletipp_'.$stats_type);
+
+        $this->statsTemplate->user  = $this->User;
         $this->statsTemplate->type  = $stats_type;
         $this->$stats_type();
         $this->Template->content    = $this->statsTemplate->parse();
@@ -122,6 +127,10 @@ class ContentSimpletippStatistics extends \SimpletippModule {
 
     protected function statHighscoreTimeline() {
 
+        $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.css';
+
         $memberArray = $this->cachedResult(static::$cache_key_highscore);
 
         if ($memberArray != null) {
@@ -153,11 +162,16 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             }
         }
         $this->cachedResult(static::$cache_key_highscore, $memberArray, true);
+
         $this->statsTemplate->maxPos = 65;
         $this->statsTemplate->table  = $memberArray;
     }
 
     protected function statPoints() {
+
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
+
         $memberArray = $this->cachedResult(static::$cache_key_points);
         if ($memberArray != null) {
             $this->statsTemplate->table = $memberArray;
@@ -177,9 +191,9 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             $matchgroup = $result->groupName;
             foreach($this->getHighscore($matchgroup) as $tableEntry) {
                 $member = &$memberArray[$tableEntry->member_id];
-                //$member->pointsArray[$result->groupName] = intval($tableEntry->points);
+                $member->pointsArray[$result->groupName] = intval($tableEntry->points);
 
-                $member->pointsArray = $this->getTestPointArray();
+                // $member->pointsArray = $this->getTestPointArray();
             }
         }
         usort($memberArray, function($a, $b) {

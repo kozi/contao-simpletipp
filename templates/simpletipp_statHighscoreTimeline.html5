@@ -28,7 +28,7 @@
 
 <div class="simpletipp_stat">
     <ul>
-        <?php foreach($this->table as $row): var_dump($row); ?>
+        <?php foreach($this->table as $row): ?>
             <li class="user_pos" id="user_<?php echo $row->username; ?>">
                 <h4><?php echo $row->firstname.' '.$row->lastname; ?></h4>
                 <ul class="pos_graph">
