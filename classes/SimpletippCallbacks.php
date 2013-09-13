@@ -265,6 +265,8 @@ class SimpletippCallbacks extends Backend {
                 || $simpletippRes->lastRemindedMatch == $match->id
                 || ($match->deadline > (($hours*3600)+$now))) {
                 // no next match found or already reminded or more than $hours to start
+                $message = sprinf('No next match found or already reminded or more than %s to start', $hours);
+                System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
                 return false;
             }
 
@@ -275,6 +277,7 @@ class SimpletippCallbacks extends Backend {
                 $hours, $match->title, Date::parse('d.m.Y H:i', $match->deadline),
                 Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
+            $emailCount = 0;
             foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
 
                 $emailSent = '';
@@ -282,6 +285,7 @@ class SimpletippCallbacks extends Backend {
                     $email = $this->generateEmailObject($simpletippRes, $emailSubject, $emailText);
                     $email->sendTo($u['email']);
                     $emailSent = '@ ';
+                    $emailCount++;
                 }
 
                 $userNamesArr[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
@@ -294,6 +298,10 @@ class SimpletippCallbacks extends Backend {
             // Update lastRemindedMatch witch current match_id
             $this->Database->prepare("UPDATE tl_simpletipp SET lastRemindedMatch = ? WHERE id = ?")
                 ->execute($match->id, $simpletippRes->id);
+
+            $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
+                $match->title, Date::parse('d.m.Y H:i', $match->deadline));
+            System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
         }
     }
 
