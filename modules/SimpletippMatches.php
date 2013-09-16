@@ -30,6 +30,11 @@ class SimpletippMatches extends SimpletippModule {
 
 	public function generate() {
 
+        // Search for finished matches which are not marked as finished
+        // So maybe the current result is not the final one
+        $this->finishedMatches();
+
+
 		if (TL_MODE == 'BE') {
 			$this->Template = new BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippMatches ###';
@@ -124,7 +129,7 @@ class SimpletippMatches extends SimpletippModule {
 
             $match->cssClass    = ($i++ % 2 === 0 ) ? 'odd':'even';
             $match->cssClass   .= ($i == $result->numRows) ? ' last' : '';
-
+            $match->cssClass   .= ($match->isFinished) ? ' finished' : '';
 
             if (count($matches) > 0 && $match->groupName_short != $currentGroup) {
                 $prevMatch = &$matches[(count($matches)-1)];
@@ -406,6 +411,20 @@ class SimpletippMatches extends SimpletippModule {
 
         return true;
 	}
+
+    private function finishedMatches() {
+
+        $matchEnd = time() - Simpletipp::$MATCH_LENGTH;
+        $result   = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
+               WHERE leagueID = ? AND deadline < ? AND isFinished = ?")
+            ->execute($this->simpletipp->leagueID, $matchEnd, 0);
+
+        if ($result->numRows > 0) {
+            $this->import('SimpletippCallbacks');
+            $this->SimpletippCallbacks->updateSimpletippMatches($this->simpletipp);
+        }
+
+    }
 
 } // END class SimpletippMatches
 

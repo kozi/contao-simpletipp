@@ -103,7 +103,7 @@ abstract class SimpletippModule extends \Module {
 
     public function setSimpletipp($simpletippId) {
         $this->simpletipp       = SimpletippModel::findByPk($simpletippId);
-        if($this->simpletipp !== null){
+        if($this->simpletipp !== null) {
             $this->simpletippGroups = Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
             $this->pointFactors     = $this->simpletipp->getPointFactors();
             $this->pointSummary     = (Object) array('points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0);

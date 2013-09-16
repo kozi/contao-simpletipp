@@ -23,21 +23,19 @@
  * @package    Controller
  */
 class SimpletippCallbacks extends Backend {
+    private static $lookupLockSeconds = 180;
 
     public function updateMatches() {
-        require_once(TL_ROOT.'/system/modules/simpletipp/dca/tl_simpletipp.php');
-        $this->import('tl_simpletipp');
-        $this->import('OpenLigaDB');
 
         $id     = (Input::get('id') !== null) ? intval(Input::get('id')) : 0;
         $result = $this->Database
             ->prepare('SELECT * FROM tl_simpletipp'
-                .(($id != 0) ? ' WHERE id = ?' : ''))
+            .(($id != 0) ? ' WHERE id = ?' : ''))
             ->execute($id);
 
         while($result->next()) {
             $simpletippObj = (Object) $result->row();
-            $message       = $this->updateLeagueMatches($simpletippObj);
+            $message       = $this->updateSimpletippMatches($simpletippObj);
             if ($id != 0) {
                 Message::add($message, TL_INFO);
                 $this->redirect(Environment::get('script').'?do=simpletipp_groups');
@@ -48,8 +46,8 @@ class SimpletippCallbacks extends Backend {
         }
     }
 
-    private function updateLeagueMatches($simpletippObj) {
-        $leagueObj  = unserialize($simpletippObj->leagueObject);
+    public function updateSimpletippMatches($simpletippObj) {
+        $leagueObj = unserialize($simpletippObj->leagueObject);
 
         if ($this->lastLookupOnlySecondsAgo($simpletippObj)) {
             $message = sprintf(
@@ -59,13 +57,14 @@ class SimpletippCallbacks extends Backend {
             return $message;
         }
 
+        $this->import('OpenLigaDB');
         $this->OpenLigaDB->setLeague($leagueObj);
 
         $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
         $simpletippLastChanged = intval($simpletippObj->lastChanged);
 
         if ($simpletippLastChanged != $openligaLastChanged) {
-            $matchIDs = $this->tl_simpletipp->updateMatches(null, $leagueObj);
+            $matchIDs = $this->updateLeagueMatches($leagueObj);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
         }
@@ -318,8 +317,6 @@ class SimpletippCallbacks extends Backend {
         return $email;
     }
 
-
-
     public function randomLine($strTag) {
         $arr = explode('::', $strTag);
         if ($arr[0] == 'random_line') {
@@ -357,14 +354,63 @@ class SimpletippCallbacks extends Backend {
         return false;
     }
 
-    private function lastLookupOnlySecondsAgo($simpletipp, $seconds = 180) {
+    private function lastLookupOnlySecondsAgo($simpletipp) {
         $now = time();
-        if (($now - $simpletipp->lastLookup) < $seconds) {
+        if (($now - $simpletipp->lastLookup) < static::$lookupLockSeconds) {
             return true;
         }
         $this->Database->prepare("UPDATE tl_simpletipp SET lastLookup = ? WHERE id = ?")
             ->execute($now, $simpletipp->id);
         return false;
+    }
+
+    private function updateLeagueMatches($leagueObject) {
+        $this->import('OpenLigaDB');
+        $this->OpenLigaDB->setLeague($leagueObject);
+
+        $matches = $this->OpenLigaDB->getMatches();
+        if ($matches === false) {
+            return false;
+        }
+
+        $matchIDs   = array();
+        $newMatches = array();
+
+        foreach($matches as $match) {
+            $tmp          = get_object_vars($match);
+            $matchIDs[]   = $tmp['matchID'];
+
+            $results      = Simpletipp::parseResults($tmp['matchResults']);
+            $newMatches[] = array(
+                'id'              => $tmp['matchID'],
+                'leagueID'        => $tmp['leagueID'],
+                'groupID'         => $tmp['groupID'],
+                'groupName'       => $tmp['groupName'],
+                'groupName_short' => trim(str_replace('. Spieltag', '', $tmp['groupName'])),
+                'deadline'        => strtotime($tmp['matchDateTimeUTC']),
+                'title'           => sprintf("%s - %s", $tmp['nameTeam1'], $tmp['nameTeam2']),
+                'title_short'     => sprintf("%s - %s", Simpletipp::teamShortener($tmp['nameTeam1']), Simpletipp::teamShortener($tmp['nameTeam2'])),
+                'team_h'       => Simpletipp::teamShortener($tmp['nameTeam1']),
+                'team_a'       => Simpletipp::teamShortener($tmp['nameTeam2']),
+                'team_h_three' => Simpletipp::teamShortener($tmp['nameTeam1'], true),
+                'team_a_three' => Simpletipp::teamShortener($tmp['nameTeam2'], true),
+                'icon_h'       => Simpletipp::iconUrl($tmp['nameTeam1'], '/files/vereinslogos/'),
+                'icon_a'       => Simpletipp::iconUrl($tmp['nameTeam2'], '/files/vereinslogos/'),
+
+                'isFinished'   => $tmp['matchIsFinished'],
+                'lastUpdate'   => strtotime($tmp['lastUpdate']),
+                'resultFirst'  => $results[0],
+                'result'       => $results[1],
+            );
+        }
+
+        $this->Database->execute("DELETE FROM tl_simpletipp_match WHERE id IN ('"
+        .implode("', '", $matchIDs)."')");
+
+        foreach($newMatches as $m) {
+            $this->Database->prepare("INSERT INTO tl_simpletipp_match %s")->set($m)->execute();
+        }
+        return $matchIDs;
     }
 
 }

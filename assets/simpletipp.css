@@ -99,6 +99,18 @@
 	text-align:right;
 }
 
+.mod_simpletipp table.matches td.points,
+.mod_simpletipp table.matches td.result {
+    color:#eee;
+}
+
+
+.mod_simpletipp table.matches tfoot td.points,
+.mod_simpletipp table.matches .finished td.points,
+.mod_simpletipp table.matches .finished td.result {
+    color:#333;
+}
+
 .mod_simpletipp td.tipp input {
     width:36px;
 }

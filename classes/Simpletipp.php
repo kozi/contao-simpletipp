@@ -211,6 +211,27 @@ class Simpletipp extends System {
         }
     }
 
+
+    public static function parseResults($matchResults) {
+        $rFirst = '';
+        $rFinal = '';
+
+        if ($matchResults->matchResult === null){
+            return array($rFirst, $rFinal);
+        }
+
+        foreach ($matchResults->matchResult as $res) {
+            if ($res->resultTypeId === 1) {
+                $rFirst = $res->pointsTeam1.':'.$res->pointsTeam2;
+            }
+            if ($res->resultTypeId === 2) {
+                $rFinal = $res->pointsTeam1.':'.$res->pointsTeam2;
+            }
+        }
+        return array($rFirst, $rFinal);
+    }
+
+
 } // END class Simpletipp
 
 

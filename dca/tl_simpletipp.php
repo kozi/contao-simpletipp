@@ -318,90 +318,18 @@ class tl_simpletipp extends Backend {
 	}
 	
 	
-	public function updateMatches($dc, $leagueObject = null) {
-		if ($dc->activeRecord->leagueObject === null && $leagueObject === null) {
+	public function updateMatches($dc) {
+		if ($dc->activeRecord->leagueObject === null) {
 			return false;
 		}
-		if ($dc->activeRecord->leagueObject !== null) {
-			$lObj  = unserialize($dc->activeRecord->leagueObject);
-		} else {
-			$lObj  = $leagueObject;
-		}
-
-		if (!is_object($lObj)) {
+        $leagueObject  = unserialize($dc->activeRecord->leagueObject);
+		if (!is_object($leagueObject)) {
 			return false;
 		}
 
-		$this->OpenLigaDB->setLeague($lObj);
-		
-		$matches = $this->OpenLigaDB->getMatches();
-		if ($matches === false) {
-			return false;
-		}
-		
-		$matchIDs   = array();
-		$newMatches = array();
-
-		foreach($matches as $match) {
-			$tmp          = get_object_vars($match);
-			$matchIDs[]   = $tmp['matchID'];
-			
-			$results      = $this->parseResults($tmp['matchResults']);  
-			$newMatches[] = array(
-				'id'              => $tmp['matchID'],
-				'leagueID'        => $tmp['leagueID'],
-				'groupID'         => $tmp['groupID'],
-                'groupName'       => $tmp['groupName'],
-                'groupName_short' => trim(str_replace('. Spieltag', '', $tmp['groupName'])),
-				'deadline'        => strtotime($tmp['matchDateTimeUTC']),
-				'title'           => sprintf("%s - %s", $tmp['nameTeam1'], $tmp['nameTeam2']),
-				'title_short'     => sprintf("%s - %s", Simpletipp::teamShortener($tmp['nameTeam1']), Simpletipp::teamShortener($tmp['nameTeam2'])),
-
-                'team_h'       => Simpletipp::teamShortener($tmp['nameTeam1']),
-				'team_a'       => Simpletipp::teamShortener($tmp['nameTeam2']),
-                'team_h_three' => Simpletipp::teamShortener($tmp['nameTeam1'], true),
-                'team_a_three' => Simpletipp::teamShortener($tmp['nameTeam2'], true),
-				'icon_h'       => Simpletipp::iconUrl($tmp['nameTeam1'], '/files/vereinslogos/'),
-				'icon_a'       => Simpletipp::iconUrl($tmp['nameTeam2'], '/files/vereinslogos/'),
-
-				'isFinished'   => $tmp['matchIsFinished'],
-				'lastUpdate'   => strtotime($tmp['lastUpdate']),
-				'resultFirst'  => $results[0],
-				'result'       => $results[1],
-			);
-		}
-
-		$this->Database->execute("DELETE FROM tl_simpletipp_match WHERE id IN ('"
-				.implode("', '", $matchIDs)."')");
-
-		foreach($newMatches as $m) {
-			$this->Database->prepare("INSERT INTO tl_simpletipp_match %s")->set($m)->execute();
-		}
-
-		
-		return $matchIDs;
+        $this->import('SimpletippCallbacks');
+        $this->SimpletippCallbacks->updateMatches($leagueObject);
 	}
-
-	
-	private function parseResults($matchResults) {
-		$rFirst = '';
-		$rFinal = '';
-
-		if ($matchResults->matchResult === null){
-			return array($rFirst, $rFinal);
-		}
-
-		foreach ($matchResults->matchResult as $res) {
-			 if ($res->resultTypeId === 1) {
-				$rFirst = $res->pointsTeam1.':'.$res->pointsTeam2;
-			}
-			if ($res->resultTypeId === 2) {
-				$rFinal = $res->pointsTeam1.':'.$res->pointsTeam2;
-			}
-		}
-		return array($rFirst, $rFinal);
-	}
-
 	
 	private function cleanupMatches() {
 		$this->Database->execute("DELETE FROM tl_simpletipp_match
