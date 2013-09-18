@@ -23,10 +23,13 @@
  */
 
 class Simpletipp extends System {
-    public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
-    public static $MATCH_LENGTH       = 6900;
+    private static $TIPP_DIVIDER       = ':';
+    public static  $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
+    public static  $MATCH_LENGTH       = 6900;
+
 
     public static function getPoints($result, $tipp, $simpletippFactor = null) {
+
         $perfect    = 0;
         $difference = 0;
         $tendency   = 0;
@@ -34,10 +37,10 @@ class Simpletipp extends System {
         if (strlen($result) === 0 || strlen($tipp) === 0) {
             return new SimpletippPoints($simpletippFactor, 0, 0, 0);
         }
-        $tmp = explode(":", $result);
+        $tmp = explode(self::$TIPP_DIVIDER, $result);
         $rh = intval($tmp[0], 10); $ra = intval($tmp[1], 10);
 
-        $tmp = explode(":", $tipp);
+        $tmp = explode(self::$TIPP_DIVIDER, $tipp);
         $th = intval($tmp[0], 10); $ta = intval($tmp[1], 10);
 
         if ($rh === $th && $ra === $ta) {
@@ -170,15 +173,15 @@ class Simpletipp extends System {
         $_SESSION['TL_SIMPLETIPP_MESSAGE'][] = $message;
     }
 
-    public static function cleanupTipp($tipp){
-        $t = preg_replace ('/[^0-9]/',' ',$tipp);
-        $t = preg_replace ('/\s+/',':',$t);
+    public static function cleanupTipp($tipp) {
+        $t = preg_replace ('/[^0-9]/',' ', $tipp);
+        $t = preg_replace ('/\s+/',self::$TIPP_DIVIDER, $t);
 
         if (strlen($t) < 3) {
             return '';
         }
 
-        $tmp = explode(":", $t);
+        $tmp = explode(self::$TIPP_DIVIDER, $t);
 
         if(strlen($tmp[0]) < 1 && strlen($tmp[1]) < 1) {
             return '';
@@ -186,7 +189,7 @@ class Simpletipp extends System {
 
         $h = intval($tmp[0], 10);
         $a = intval($tmp[1], 10);
-        return $h.':'.$a;
+        return $h.self::$TIPP_DIVIDER.$a;
     }
 
 
@@ -222,10 +225,10 @@ class Simpletipp extends System {
 
         foreach ($matchResults->matchResult as $res) {
             if ($res->resultTypeId === 1) {
-                $rFirst = $res->pointsTeam1.':'.$res->pointsTeam2;
+                $rFirst = $res->pointsTeam1.self::$TIPP_DIVIDER.$res->pointsTeam2;
             }
             if ($res->resultTypeId === 2) {
-                $rFinal = $res->pointsTeam1.':'.$res->pointsTeam2;
+                $rFinal = $res->pointsTeam1.self::$TIPP_DIVIDER.$res->pointsTeam2;
             }
         }
         return array($rFirst, $rFinal);

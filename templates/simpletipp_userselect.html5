@@ -13,3 +13,14 @@
         </noscript>
     </form>
 </div>
+
+<?php if (!$this->isMobile):
+$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
+$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
+?>
+<script>
+$(document).ready(function() {
+    $('.simpletipp_userselect select').chosen();
+});
+</script>
+<?php endif;?>

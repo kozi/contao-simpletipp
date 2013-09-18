@@ -131,6 +131,10 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.css';
 
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.canvasTextRenderer.min.js';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.pointLabels.min.js';
+
         $memberArray = $this->cachedResult(static::$cache_key_highscore);
 
         if ($memberArray != null) {
@@ -147,23 +151,24 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             ->execute($this->simpletipp->leagueID, '1');
         $groups = array();
         while($result->next()) {
-
             $groups[] = $result->groupName;
         }
 
-
         for ($i=1;$i <= count($groups);$i++) {
             $matchgroups = array_slice($groups, 0, $i);
-            $pos = 1;
+            $pos = 0;
             foreach($this->getHighscore($matchgroups) as $tableEntry) {
                 $member = &$memberArray[$tableEntry->member_id];
-                // TODO $member->highscorePositions[] = $pos++;
-                $member->highscorePositions   = $this->getTestArray(34, 65);
+                $member->highscorePositions[] = intval($pos++) * (-1);
+                // $member->highscorePositions   = $this->getTestArray(34, 56);
             }
         }
-        $this->cachedResult(static::$cache_key_highscore, $memberArray, true);
 
-        $this->statsTemplate->maxPos = 65;
+        usort($memberArray, function($a, $b) {
+            return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
+        });
+
+        $this->cachedResult(static::$cache_key_highscore, $memberArray, true);
         $this->statsTemplate->table  = $memberArray;
     }
 
@@ -187,19 +192,21 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
             ->execute($this->simpletipp->leagueID, '1');
 
+        $maxPoints = 0;
         while($result->next()) {
             $matchgroup = $result->groupName;
             foreach($this->getHighscore($matchgroup) as $tableEntry) {
-                $member = &$memberArray[$tableEntry->member_id];
-                $member->pointsArray[$result->groupName] = intval($tableEntry->points);
+                $member    = &$memberArray[$tableEntry->member_id];
+                $points    = intval($tableEntry->points);
+                $member->pointsArray[$result->groupName] = $points;
 
-                // $member->pointsArray = $this->getTestPointArray();
             }
         }
         usort($memberArray, function($a, $b) {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
         $this->cachedResult(static::$cache_key_points, $memberArray, true);
+
         $this->statsTemplate->table = $memberArray;
     }
 
@@ -306,19 +313,14 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         return $points;
     }
 
-    private function getTestPointArray() {
-        $arr = array();
-        for ($i=1;$i<35;$i++) {
-            $arr[$i.'. Spieltag'] = rand(0,22);
-        }
-        return $arr;
-    }
-
-
     private function getTestArray($count, $rangeMax) {
-        $arr = array();
+        $arr   = array();
+        $value = 0;
         for ($i=1;$i<$count;$i++) {
-            $arr[] = rand(0, $rangeMax);
+            $min   = max($value - 10, 0);
+            $max   = min($value + 10, $rangeMax);
+            $value = rand($min, $max);
+            $arr[] = $value;
         }
         return $arr;
     }

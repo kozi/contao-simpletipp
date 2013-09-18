@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2013 Leo Feyer
@@ -14,8 +13,8 @@
  * @filesource
  */
 
-$GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'tippReminder');
-$GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippCallbacks', 'updateMatches');
+$GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippEmailReminder', 'tippReminder');
+$GLOBALS['TL_CRON']['hourly'][]             = array('SimpletippMatchUpdater', 'updateMatches');
 
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]   = array('SimpletippCallbacks', 'addCustomRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('SimpletippCallbacks', 'randomLine');
@@ -45,8 +44,8 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 						'icon'       => 'system/modules/simpletipp/assets/images/soccer.png',
 						'javascript' => 'system/modules/simpletipp/assets/simpletipp-backend.js',
 						'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-                        'update'     => array('SimpletippCallbacks', 'updateMatches'),
-                        'calculate'  => array('SimpletippCallbacks', 'calculateTipps'),
+                        'update'     => array('SimpletippMatchUpdater', 'updateMatches'),
+                        'calculate'  => array('SimpletippMatchUpdater', 'calculateTipps'),
                         'pokal'      => array('SimpletippPokal', 'calculate'),
 				),
 				'simpletipp_matches' => array

@@ -39,15 +39,16 @@ class SimpletippUserselect extends SimpletippModule {
 	}
 	
 	protected function compile() {
-
+        global $objPage;
         $participants = array();
         $order        = "ORDER BY lastname ASC, firstname ASC";
         foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group, true, $order) as $u) {
             $u->link              = $this->addToUrl('user='.$u->username);
             $participants[$u->id] = $u;
         }
-    
+
         $this->Template->action             = $this->addToUrl('user=');
+        $this->Template->isMobile           = $objPage->isMobile;
         $this->Template->participants       = $participants;
         $this->Template->simpletippUserId   = $this->simpletippUserId;
         $this->Template->simpletipp         = $this->simpletipp;

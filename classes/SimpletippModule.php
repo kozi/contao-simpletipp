@@ -67,6 +67,7 @@ abstract class SimpletippModule extends \Module {
 
         if (TL_MODE !== 'BE') {
             $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";
+            $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp-statistics.css|screen|static";
         }
 
         if (Input::get('user')) {

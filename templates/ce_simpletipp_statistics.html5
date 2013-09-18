@@ -1,14 +1,14 @@
-<div class="mod_simpletipp <?php echo $this->statistics_type; ?> <?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="mod_simpletipp <?php echo $this->statistics_type; ?> <?php echo $this->class; ?>"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
-<?php if ($this->headline): ?>
-    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-<?php endif; ?>
+    <?php if ($this->headline): ?>
+        <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+    <?php endif; ?>
 
-<h3><?php echo $this->title; ?></h3>
+    <h3><?php echo $this->title; ?></h3>
 
-<div class="stat_content">
-    <?php echo $this->content; ?>
-</div>
+    <div class="stat_content">
+        <?php echo $this->content; ?>
+    </div>
 
-<p style="text-align:right;"><small style="font-size:10px;color:#ccc;"><?php echo $this->duration; ?></small></p>
+    <div class="duration"><?php echo $this->duration; ?></div>
 </div>

@@ -25,6 +25,8 @@ ClassLoader::addClasses(array(
     'SimpletippPoints'              => 'system/modules/simpletipp/classes/SimpletippPoints.php',
     'SimpletippModule'              => 'system/modules/simpletipp/classes/SimpletippModule.php',
     'SimpletippCallbacks'           => 'system/modules/simpletipp/classes/SimpletippCallbacks.php',
+    'SimpletippMatchUpdater'        => 'system/modules/simpletipp/classes/SimpletippMatchUpdater.php',
+    'SimpletippEmailReminder'       => 'system/modules/simpletipp/classes/SimpletippEmailReminder.php',
     'SimpletippPokal'               => 'system/modules/simpletipp/classes/SimpletippPokal.php',
 
     // Models

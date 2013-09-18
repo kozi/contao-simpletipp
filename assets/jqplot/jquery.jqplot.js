@@ -4283,7 +4283,7 @@
         
         return this._elem;
     };
-        
+
     $.jqplot.DefaultTickFormatter = function (format, val) {
         if (typeof val == 'number') {
             if (!format) {

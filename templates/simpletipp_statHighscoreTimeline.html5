@@ -1,40 +1,92 @@
-<style>
-    .simpletipp_stat ul {
-        display:block;
-        list-style:none;
-        margin:0;
-        padding:0;
-    }
-    .pos_graph li.position_bar {
-        position:relative;
-        display: inline-block;
-        list-style:none;
-        text-align:center;
-        font-size:10px;
-        font-weight:bold;
-        overflow:hidden;
-        color:#ffffff;
-        background-color:#648F59;
-        width:13px;
-        margin:0 1px 0 0;
-        padding:2px 2px 1px 2px;
-    }
+<?php
 
-    <?php $maxPos = count($this->table); for ($i = 0;$i < $maxPos;$i++): ?>
-        .pos_graph .pos<?php echo $i; ?> { height:<?php echo (1 + $i*5); ?>px; }
-    <?php endfor; ?>
+$maxPos = count($this->table);
+$maxPos = $maxPos + (5-($maxPos%5));
 
-</style>
+$verticalTicks = array_map(function($v) {
+    return ($v != 0 )? (-($v-1)) : 0;
+}, range($maxPos, 0, 5));
 
-<div class="simpletipp_stat">
-    <ul>
-        <?php foreach($this->table as $row): ?>
-            <li class="user_pos" id="user_<?php echo $row->username; ?>">
-                <h4><?php echo $row->firstname.' '.$row->lastname; ?></h4>
-                <ul class="pos_graph">
-                    <?php foreach($row->highscorePositions as $pos): ?><li class="position_bar pos<?php echo $pos; ?>"><span><?php echo $pos; ?></span></li><?php endforeach; ?>
-                </ul>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+?>
+
+<div id="highscoreTimeline-select">
+<select style="width:100%" multiple="multiple">
+    <?php foreach($this->table as $row): ?>
+        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?php echo $row->username; ?>"><?php echo $row->firstname.' '.$row->lastname; ?></option>
+    <?php endforeach; ?>
+</select>
 </div>
+
+<div id="highscoreTimeline" style="height:400px;"></div>
+<script>
+var highscoreTimeline = new Array();
+<?php foreach($this->table as $row): $ticks = count($row->highscorePositions); ?>
+    highscoreTimeline['user_<?php echo $row->username; ?>'] = [];
+    <?php $i=0; foreach($row->highscorePositions as $pos): ?>
+        highscoreTimeline['user_<?php echo $row->username; ?>'].push([<?php echo $i++;?>, <?php echo $pos;?>]);
+    <?php endforeach; ?>
+<?php endforeach; ?>
+
+var plotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
+var plotOptions = {
+
+    seriesColors: plotColors,
+    //animate: true,
+    // animateReplot: true,
+    axesDefaults: {
+        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    },
+    axes: {
+        xaxis: {
+            label: 'Spieltag',
+            pad: 0,
+            ticks: <?php echo json_encode(range(0, $ticks)); ?>,
+            tickOptions: { formatString: '%u.'}
+        },
+        yaxis: {
+            pad: 0,
+            max: 0,
+            min: <?php echo $maxPos; ?>,
+            label: 'Platzierung',
+            tickRenderer: $.jqplot.AxisTickRenderer,
+            ticks: <?php echo json_encode($verticalTicks); ?>,
+            tickOptions: {
+                formatter: function(format, value) { return (Math.abs(value)+1)+'.'; }
+            }
+        }
+    },
+    seriesDefaults: {
+        showMarker: true,
+        pointLabels: { show:true, location:'s', ypadding: 3 }
+    }
+};
+
+
+$(document).ready(function() {
+
+    $("#highscoreTimeline-select select").chosen();
+    $('#highscoreTimeline-select select').on('change', function(evt, params) {
+
+        if ($(this).val() == null) {
+            return false;
+        }
+        newData = [];
+        $.each($(this).val(), function(index, value) {
+            newData.push(highscoreTimeline[value]);
+        });
+        plotObj.replot({data:newData});
+
+
+        $('#highscoreTimeline-select .search-choice').each(function(index) {
+
+            $(this).css('background', plotColors[index]);
+            $(this).css('color', '#ffffff');
+        });
+    });
+
+defaultData = [highscoreTimeline['user_<?php echo  $this->user->username; ?>']];
+plotObj     = $.jqplot('highscoreTimeline', defaultData, plotOptions);
+
+});
+</script>
+
