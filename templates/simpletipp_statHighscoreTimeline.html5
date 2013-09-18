@@ -67,6 +67,8 @@ $(document).ready(function() {
     $("#highscoreTimeline-select select").chosen();
     $('#highscoreTimeline-select select').on('change', function(evt, params) {
 
+        console.log(evt, params);
+
         if ($(this).val() == null) {
             return false;
         }
@@ -74,11 +76,14 @@ $(document).ready(function() {
         $.each($(this).val(), function(index, value) {
             newData.push(highscoreTimeline[value]);
         });
+        newData.reverse();
+
         plotObj.replot({data:newData});
 
 
         $('#highscoreTimeline-select .search-choice').each(function(index) {
-
+            console.log(this, index);
+            console.log($(this).html(), $(this).text());
             $(this).css('background', plotColors[index]);
             $(this).css('color', '#ffffff');
         });
