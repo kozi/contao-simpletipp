@@ -127,6 +127,9 @@ class ContentSimpletippStatistics extends \SimpletippModule {
 
     protected function statHighscoreTimeline() {
 
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
+
         $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.css';
@@ -134,6 +137,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.canvasTextRenderer.min.js';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.pointLabels.min.js';
+
 
         $memberArray = $this->cachedResult(static::$cache_key_highscore);
 
@@ -177,6 +181,14 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
 
+        $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.css';
+
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.barRenderer.min.js';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.categoryAxisRenderer.min.js';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.pointLabels.min.js';
+
         $memberArray = $this->cachedResult(static::$cache_key_points);
         if ($memberArray != null) {
             $this->statsTemplate->table = $memberArray;
@@ -197,8 +209,14 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             $matchgroup = $result->groupName;
             foreach($this->getHighscore($matchgroup) as $tableEntry) {
                 $member    = &$memberArray[$tableEntry->member_id];
-                $points    = intval($tableEntry->points);
-                $member->pointsArray[$result->groupName] = $points;
+
+                $values = array(
+                    intval($tableEntry->points),
+                    intval($tableEntry->sum_perfect) * $this->pointFactors->perfect,
+                    intval($tableEntry->sum_difference) * $this->pointFactors->difference,
+                    intval($tableEntry->sum_tendency) * $this->pointFactors->tendency,
+                );
+                $member->pointsArray[$result->groupName] = $values;
 
             }
         }
@@ -313,14 +331,15 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         return $points;
     }
 
-    private function getTestArray($count, $rangeMax) {
+    private function getTestArray($count, $rangeMax, $factor = -1) {
         $arr   = array();
         $value = 0;
+        $arr[] = $value;
         for ($i=1;$i<$count;$i++) {
             $min   = max($value - 10, 0);
             $max   = min($value + 10, $rangeMax);
             $value = rand($min, $max);
-            $arr[] = $value;
+            $arr[] = $value * $factor;
         }
         return $arr;
     }

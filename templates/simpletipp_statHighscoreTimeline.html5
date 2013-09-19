@@ -17,6 +17,7 @@ $verticalTicks = array_map(function($v) {
 </select>
 </div>
 
+
 <div id="highscoreTimeline" style="height:400px;"></div>
 <script>
 var highscoreTimeline = new Array();
@@ -27,12 +28,13 @@ var highscoreTimeline = new Array();
     <?php endforeach; ?>
 <?php endforeach; ?>
 
-var plotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
-var plotOptions = {
+var highscorePlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
+var highscorePlotOptions = {
 
-    seriesColors: plotColors,
-    //animate: true,
-    // animateReplot: true,
+    animate: !$.jqplot.use_excanvas,
+    animateReplot: !$.jqplot.use_excanvas,
+
+    seriesColors: highscorePlotColors,
     axesDefaults: {
         labelRenderer: $.jqplot.CanvasAxisLabelRenderer
     },
@@ -55,42 +57,45 @@ var plotOptions = {
             }
         }
     },
+
     seriesDefaults: {
         showMarker: true,
-        pointLabels: { show:true, location:'s', ypadding: 3 }
+        pointLabels: {
+            show:true,
+            location:'s',
+            ypadding: 3
+        }
     }
-};
 
+}; // highscorePlotOptions
 
 $(document).ready(function() {
 
     $("#highscoreTimeline-select select").chosen();
     $('#highscoreTimeline-select select').on('change', function(evt, params) {
 
-        console.log(evt, params);
+        var newData         = [];
+        var selectedOptions = $(this).val();
 
-        if ($(this).val() == null) {
+        if (selectedOptions == null) {
             return false;
         }
-        newData = [];
-        $.each($(this).val(), function(index, value) {
-            newData.push(highscoreTimeline[value]);
+
+        $('#highscoreTimeline-select .search-choice .search-choice-close').each(function(index) {
+            var dataOptionIndex = $(this).attr('data-option-array-index');
+            var optionKey = $('#highscoreTimeline-select').find('option').eq(dataOptionIndex).attr('value');
+
+            if ($.inArray(optionKey, selectedOptions) != -1) {
+                $(this.parentElement).css('background', plotColors[newData.length]);
+                newData.push(highscoreTimeline[optionKey]);
+            }
         });
-        newData.reverse();
 
-        plotObj.replot({data:newData});
-
-
-        $('#highscoreTimeline-select .search-choice').each(function(index) {
-            console.log(this, index);
-            console.log($(this).html(), $(this).text());
-            $(this).css('background', plotColors[index]);
-            $(this).css('color', '#ffffff');
-        });
+        highscorePlot.replot({data:newData});
     });
 
-defaultData = [highscoreTimeline['user_<?php echo  $this->user->username; ?>']];
-plotObj     = $.jqplot('highscoreTimeline', defaultData, plotOptions);
+highscorePlotData = [highscoreTimeline['user_<?php echo  $this->user->username; ?>']];
+highscorePlot     = $.jqplot('highscoreTimeline', highscorePlotData, highscorePlotOptions);
 
 });
 </script>

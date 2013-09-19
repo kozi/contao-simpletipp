@@ -5,43 +5,79 @@
     <?php endforeach; ?>
 </select>
 
-<div class="simpletipp_stat">
-    <ul>
-        <?php foreach($this->table as $row): $countBars = count($row->pointsArray); ?>
-            <li class="user_points" id="user_<?php echo $row->username; ?>">
-                <h4><?php echo $row->firstname.' '.$row->lastname; ?></h4>
-                <ul class="point_graph">
-                    <li class="point_bar maxPoints">&nspb;</li>
-                    <?php $maxPoints = 0; foreach($row->pointsArray as $title => $points): $maxP = ($points > $maxP) ? $points : $maxP; ?><li class="point_bar points<?php echo $points; ?>" title="<?php echo $title; ?>"><span><?php echo $points; ?></span><span class="desc"><?php echo explode('. ', $title)[0]; ?></span></li><?php endforeach; ?>
-                </ul>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-</div>
+<script>
+var labelArray = [];
+<?php foreach($this->table[0]->pointsArray as $title => $values): ?>
+labelArray.push('<?php echo $title; ?>');
+<?php endforeach; ?>
+console.log('labelArray', labelArray);
 
-<style>
-    <?php
-        $heightFactor = 12;
-        $barWidth     = floor(600/$countBars) - 2;
-        $barWidth      = ($barWidth > 32) ? 32: $barWidth;
-    ?>
-    .point_graph li.point_bar { width:<?php echo $barWidth;?>px; }
-    .point_graph li.maxPoints { width:1px; height:<?php echo (1 + $maxP*$heightFactor); ?>px; background:none; }
-    <?php for ($i=0;$i<=$maxP;$i++): ?>
-    .point_graph .points<?php echo $i; ?> { height:<?php echo (1 + $i*$heightFactor); ?>px; }
-    <?php endfor; ?>
-</style>
+var pointsObject = new Object();
+<?php foreach($this->table as $row): ?>
+    pointsObject.user_<?php echo $row->username; ?> = new Array(3);
+    pointsObject.user_<?php echo $row->username; ?>[0] = new Array();
+    pointsObject.user_<?php echo $row->username; ?>[1] = new Array();
+    pointsObject.user_<?php echo $row->username; ?>[2] = new Array();
+    <?php foreach($row->pointsArray as $title => $values): ?>
+
+        pointsObject.user_<?php echo $row->username; ?>[0].push(<?php echo $values[1]; ?>);
+        pointsObject.user_<?php echo $row->username; ?>[1].push(<?php echo $values[2]; ?>);
+        pointsObject.user_<?php echo $row->username; ?>[2].push(<?php echo $values[3]; ?>);
+    <?php endforeach; ?>
+
+<?php endforeach; ?>
+</script>
+
+<div id="pointsPlot" style="height:400px;"></div>
 
 <script>
-    $(document).ready(function() {
-        $("#pointstat-select").chosen();
-        $('#pointstat-select').on('change', function(evt, params) {
-            $('.simpletipp_stat .user_points').hide();
-            $('#'+this.value).show();
-        });
+var pointsPlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
+var pointsPlotOptions = {
 
-        $('#user_<?php echo $this->user->username; ?>').show();
+    animate: !$.jqplot.use_excanvas,
+    animateReplot: !$.jqplot.use_excanvas,
 
+    seriesColors: pointsPlotColors,
+    stackSeries: true,
+    legend: {
+        show: true,
+        location: 'ne',
+        placement: 'inside'
+    },
+    series:[
+        {label:'Dreier'},
+        {label:'Differenz'},
+        {label:'Tendenz'}
+    ],
+    seriesDefaults:{
+        renderer:$.jqplot.BarRenderer,
+        pointLabels: { show: true, stackedValue: true }
+    },
+    axes: {
+        xaxis: {
+            renderer: $.jqplot.CategoryAxisRenderer,
+            ticks: labelArray
+        },
+        yaxis: {
+            min: 0,
+            pad: 1.2
+
+        }
+    },
+    highlighter: { show: false }
+}; // pointsPlotOptions
+
+$(document).ready(function() {
+    $.jqplot.config.enablePlugins = true;
+
+    $("#pointstat-select").chosen();
+
+    $('#pointstat-select').on('change', function(evt, params) {
+        pointsPlot.replot({data: pointsObject[this.value] });
     });
 
+    pointsPlotData = pointsObject.user_<?php echo  $this->user->username; ?>;
+    console.log('pointsPlotData', pointsPlotData);
+    pointsPlot     = $.jqplot('pointsPlot', pointsPlotData, pointsPlotOptions);
+});
 </script>
