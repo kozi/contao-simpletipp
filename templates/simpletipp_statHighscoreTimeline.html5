@@ -86,7 +86,7 @@ $(document).ready(function() {
             var optionKey = $('#highscoreTimeline-select').find('option').eq(dataOptionIndex).attr('value');
 
             if ($.inArray(optionKey, selectedOptions) != -1) {
-                $(this.parentElement).css('background', plotColors[newData.length]);
+                $(this.parentElement).css('background', highscorePlotColors[newData.length]);
                 newData.push(highscoreTimeline[optionKey]);
             }
         });
