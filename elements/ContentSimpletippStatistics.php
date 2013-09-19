@@ -204,7 +204,6 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
             ->execute($this->simpletipp->leagueID, '1');
 
-        $maxPoints = 0;
         while($result->next()) {
             $matchgroup = $result->groupName;
             foreach($this->getHighscore($matchgroup) as $tableEntry) {

@@ -13,13 +13,12 @@ labelArray.push('<?php echo $title; ?>');
 console.log('labelArray', labelArray);
 
 var pointsObject = new Object();
-<?php foreach($this->table as $row): ?>
+<?php $maxPoints = 0; foreach($this->table as $row): ?>
     pointsObject.user_<?php echo $row->username; ?> = new Array(3);
     pointsObject.user_<?php echo $row->username; ?>[0] = new Array();
     pointsObject.user_<?php echo $row->username; ?>[1] = new Array();
     pointsObject.user_<?php echo $row->username; ?>[2] = new Array();
-    <?php foreach($row->pointsArray as $title => $values): ?>
-
+    <?php foreach($row->pointsArray as $title => $values): $maxPoints = ($values[0] > $maxPoints) ? $values[0] : $maxPoints; ?>
         pointsObject.user_<?php echo $row->username; ?>[0].push(<?php echo $values[1]; ?>);
         pointsObject.user_<?php echo $row->username; ?>[1].push(<?php echo $values[2]; ?>);
         pointsObject.user_<?php echo $row->username; ?>[2].push(<?php echo $values[3]; ?>);
@@ -60,7 +59,11 @@ var pointsPlotOptions = {
         },
         yaxis: {
             min: 0,
-            pad: 1.2
+            max: <?php echo ($maxPoints+1); ?>,
+            pad: 0,
+            tickOptions: {
+                formatString: '%d'
+            }
 
         }
     },
