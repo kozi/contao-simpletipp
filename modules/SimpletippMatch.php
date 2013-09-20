@@ -58,9 +58,9 @@ class SimpletippMatch extends SimpletippModule {
         $this->isStarted = (time() > $this->match->deadline);
 
         // GoalData
-        $this->import('SimpletippCallbacks');
+        $this->import('SimpletippMatchUpdater');
         $this->match->goalData = unserialize($this->match->goalData);
-        $this->match = $this->SimpletippCallbacks->refreshGoalData($this->simpletipp, $this->match);
+        $this->match = $this->SimpletippMatchUpdater->refreshGoalData($this->simpletipp, $this->match);
 
 
 		$result = $this->Database->prepare(

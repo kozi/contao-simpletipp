@@ -23,7 +23,7 @@
  * @package    Controller
  */
 class SimpletippMatchUpdater extends Backend {
-    private static $lookupLockSeconds = 180;
+    private static $lookupLockSeconds     = 180;
     private static $resultTypeEndergebnis = 2;
     private static $resultTypeHalbzeit    = 1;
 

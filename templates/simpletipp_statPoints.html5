@@ -28,7 +28,7 @@ var pointsObject = new Object();
 
 <div id="pointsPlot" style="height:400px;"></div>
 <div id="pointsPlotImage"></div>
-<button onclick="showPlotAsImage('pointsPlot')">Als Bild anzeigen</button>
+<button style="display:none;" onclick="showPlotAsImage('pointsPlot')">Als Bild anzeigen</button>
 <script>
 
 var pointsPlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
