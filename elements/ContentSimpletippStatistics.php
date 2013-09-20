@@ -43,6 +43,9 @@ class ContentSimpletippStatistics extends \SimpletippModule {
     }
 
     protected function compile() {
+
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/simpletipp-statistics.js';
+
         $microtime                  = microtime(true);
         $stats_type                 = $this->simpletipp_statistics_type;
         $this->Template->stats_type = $stats_type;

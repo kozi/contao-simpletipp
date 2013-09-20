@@ -23,9 +23,9 @@
  */
 
 class Simpletipp extends System {
-    private static $TIPP_DIVIDER       = ':';
-    public static  $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
-    public static  $MATCH_LENGTH       = 6900;
+    public static $TIPP_DIVIDER       = ':';
+    public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
+    public static $MATCH_LENGTH       = 6900;
 
 
     public static function getPoints($result, $tipp, $simpletippFactor = null) {
@@ -214,27 +214,5 @@ class Simpletipp extends System {
         }
     }
 
-
-    public static function parseResults($matchResults) {
-        $rFirst = '';
-        $rFinal = '';
-
-        if ($matchResults->matchResult === null){
-            return array($rFirst, $rFinal);
-        }
-
-        foreach ($matchResults->matchResult as $res) {
-            if ($res->resultTypeId === 1) {
-                $rFirst = $res->pointsTeam1.self::$TIPP_DIVIDER.$res->pointsTeam2;
-            }
-            if ($res->resultTypeId === 2) {
-                $rFinal = $res->pointsTeam1.self::$TIPP_DIVIDER.$res->pointsTeam2;
-            }
-        }
-        return array($rFirst, $rFinal);
-    }
-
-
 } // END class Simpletipp
-
 

@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 
     $matchRows = $('table.matches tr');

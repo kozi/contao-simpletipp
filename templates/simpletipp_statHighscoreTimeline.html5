@@ -90,7 +90,6 @@ $(document).ready(function() {
                 newData.push(highscoreTimeline[optionKey]);
             }
         });
-
         highscorePlot.replot({data:newData});
     });
 

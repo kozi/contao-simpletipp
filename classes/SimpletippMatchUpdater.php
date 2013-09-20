@@ -24,6 +24,8 @@
  */
 class SimpletippMatchUpdater extends Backend {
     private static $lookupLockSeconds = 180;
+    private static $resultTypeEndergebnis = 2;
+    private static $resultTypeHalbzeit    = 1;
 
 
     public function updateMatches() {
@@ -226,7 +228,7 @@ class SimpletippMatchUpdater extends Backend {
             $tmp          = get_object_vars($match);
             $matchIDs[]   = $tmp['matchID'];
 
-            $results      = Simpletipp::parseResults($tmp['matchResults']);
+            $results      = self::parseResults($tmp['matchResults']);
             $newMatches[] = array(
                 'id'              => $tmp['matchID'],
                 'leagueID'        => $tmp['leagueID'],
@@ -259,5 +261,25 @@ class SimpletippMatchUpdater extends Backend {
         }
         return $matchIDs;
     }
+
+    private static function parseResults($matchResults) {
+        $rFirst = '';
+        $rFinal = '';
+
+        if ($matchResults->matchResult === null){
+            return array($rFirst, $rFinal);
+        }
+
+        foreach ($matchResults->matchResult as $res) {
+            if ($res->resultTypeId === self::$resultTypeHalbzeit) {
+                $rFirst = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+            }
+            if ($res->resultTypeId === self::$resultTypeEndergebnis) {
+                $rFinal = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+            }
+        }
+        return array($rFirst, $rFinal);
+    }
+
 
 }

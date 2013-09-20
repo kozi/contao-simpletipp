@@ -10,7 +10,6 @@ var labelArray = [];
 <?php foreach($this->table[0]->pointsArray as $title => $values): ?>
 labelArray.push('<?php echo $title; ?>');
 <?php endforeach; ?>
-console.log('labelArray', labelArray);
 
 var pointsObject = new Object();
 <?php $maxPoints = 0; foreach($this->table as $row): ?>
@@ -28,8 +27,10 @@ var pointsObject = new Object();
 </script>
 
 <div id="pointsPlot" style="height:400px;"></div>
-
+<div id="pointsPlotImage"></div>
+<button onclick="showPlotAsImage('pointsPlot')">Als Bild anzeigen</button>
 <script>
+
 var pointsPlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
 var pointsPlotOptions = {
 
@@ -77,10 +78,10 @@ $(document).ready(function() {
 
     $('#pointstat-select').on('change', function(evt, params) {
         pointsPlot.replot({data: pointsObject[this.value] });
+        $('#pointsPlotImage').empty();
     });
 
     pointsPlotData = pointsObject.user_<?php echo  $this->user->username; ?>;
-    console.log('pointsPlotData', pointsPlotData);
     pointsPlot     = $.jqplot('pointsPlot', pointsPlotData, pointsPlotOptions);
 });
 </script>
