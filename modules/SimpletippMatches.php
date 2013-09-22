@@ -420,8 +420,8 @@ class SimpletippMatches extends SimpletippModule {
             ->execute($this->simpletipp->leagueID, $matchEnd, 0);
 
         if ($result->numRows > 0) {
-            $this->import('SimpletippCallbacks');
-            $this->SimpletippCallbacks->updateSimpletippMatches($this->simpletipp);
+            $this->import('SimpletippMatchUpdater');
+            $this->SimpletippMatchUpdater->updateSimpletippMatches($this->simpletipp);
         }
 
     }

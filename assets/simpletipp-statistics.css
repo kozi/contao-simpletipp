@@ -5,6 +5,7 @@
     color:#ccc;
 }
 
+.mod_simpletipp #highscoreTimeline table,
 .mod_simpletipp #pointsPlot table {
     width:auto;
 }

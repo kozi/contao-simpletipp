@@ -57,7 +57,6 @@ var highscorePlotOptions = {
             }
         }
     },
-
     seriesDefaults: {
         showMarker: true,
         pointLabels: {
@@ -75,6 +74,7 @@ $(document).ready(function() {
     $('#highscoreTimeline-select select').on('change', function(evt, params) {
 
         var newData         = [];
+        var newSeries       = [];
         var selectedOptions = $(this).val();
 
         if (selectedOptions == null) {
@@ -85,12 +85,17 @@ $(document).ready(function() {
             var dataOptionIndex = $(this).attr('data-option-array-index');
             var optionKey = $('#highscoreTimeline-select').find('option').eq(dataOptionIndex).attr('value');
 
+
+
             if ($.inArray(optionKey, selectedOptions) != -1) {
-                $(this.parentElement).css('background', highscorePlotColors[newData.length]);
+                $element = $(this.parentElement);
+                $element.css('background', highscorePlotColors[newData.length]);
                 newData.push(highscoreTimeline[optionKey]);
+                console.log(highscorePlot, $element.text());
+                newSeries.push($element.text());
             }
         });
-        highscorePlot.replot({data:newData});
+        highscorePlot.replot({data:newData, series: newSeries});
     });
 
 highscorePlotData = [highscoreTimeline['user_<?php echo  $this->user->username; ?>']];
