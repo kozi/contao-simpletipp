@@ -120,9 +120,11 @@ class SimpletippMatch extends SimpletippModule {
 		}
 
         $summe = count($tipps);
-        $count->home->percent = floor(($count->home->abs / $summe) * 10000) / 100;
-        $count->draw->percent = floor(($count->draw->abs / $summe) * 10000) / 100;
-        $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;
+        if ($summe > 0) {
+            $count->home->percent = floor(($count->home->abs / $summe) * 10000) / 100;
+            $count->draw->percent = floor(($count->draw->abs / $summe) * 10000) / 100;
+            $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;
+        }
 
 		// Match
         $teams = explode("-", $this->match->title_short);

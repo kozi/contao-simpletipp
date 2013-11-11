@@ -62,6 +62,9 @@ class SimpletippMatches extends SimpletippModule {
 		// Spiele filtern
 		$this->setMatchFilter();
 
+
+        var_dump($this->matches_filter);
+
         $this->Template->simpletipp = $this->simpletipp;
 
         $this->Template->member     = \Contao\MemberModel::findByPk($this->simpletippUserId);
@@ -164,7 +167,7 @@ class SimpletippMatches extends SimpletippModule {
 	}
 	
 	private function setMatchFilter() {
-		$this->matches_filter           = new stdClass;
+        $this->matches_filter           = new stdClass;
 		$this->matches_filter->type     = '';
 		$this->matches_filter->stmt     = '';
 		$this->matches_filter->params   = array();
@@ -172,9 +175,9 @@ class SimpletippMatches extends SimpletippModule {
 		$this->matches_filter->order_by = ' ORDER BY deadline, matches.id ASC';
 
 		// matchgroup filter
-		$group   = $this->Input->get('group');
-		$date    = $this->Input->get('date');
-		$matches = $this->Input->get('matches');
+        $group   = (Input::get('group') !== null) ? urldecode(Input::get('group')) : null;
+		$date    = Input::get('date');
+		$matches = Input::get('matches');
 
 		if ($group === null && $date === null && $matches === null) {
 			$this->redirect($this->addToUrl('matches=current&date=&group='));
