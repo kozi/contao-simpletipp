@@ -62,9 +62,6 @@ class SimpletippMatches extends SimpletippModule {
 		// Spiele filtern
 		$this->setMatchFilter();
 
-
-        var_dump($this->matches_filter);
-
         $this->Template->simpletipp = $this->simpletipp;
 
         $this->Template->member     = \Contao\MemberModel::findByPk($this->simpletippUserId);
