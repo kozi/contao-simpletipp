@@ -47,7 +47,7 @@ class SimpletippHighscore extends SimpletippModule {
         global $objPage;
 
         // Filter
-        $this->show = (Input::get('show')) ? Input::get('show') : 'all';
+        $this->show = (Input::get('show') !== null) ? urldecode(Input::get('show')) : 'all';
 
         $this->Template->filter   = $this->generateFilter();
         $this->Template->isMobile = $objPage->isMobile;
@@ -65,11 +65,12 @@ class SimpletippHighscore extends SimpletippModule {
 
             // get current matchgroup
             $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
-               WHERE leagueID = ? AND result != '' ORDER BY deadline")->limit(1)
+               WHERE leagueID = ? AND result != '' ORDER BY deadline DESC")->limit(1)
                 ->execute($this->simpletipp->leagueID);
+
             if ($result->numRows == 0) {
                 $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
-                   WHERE leagueID = ? ORDER BY deadline")->limit(1)
+                   WHERE leagueID = ? ORDER BY deadline ASC")->limit(1)
                    ->execute($this->simpletipp->leagueID);
             }
 
