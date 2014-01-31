@@ -322,15 +322,11 @@ class tl_simpletipp extends Backend {
 		if ($dc->activeRecord->leagueObject === null) {
 			return false;
 		}
-        $leagueObject  = unserialize($dc->activeRecord->leagueObject);
-		if (!is_object($leagueObject)) {
-			return false;
-		}
 
-        $this->import('SimpletippCallbacks');
-        $this->SimpletippCallbacks->updateMatches($leagueObject);
+        $this->import('SimpletippMatchUpdater');
+        $this->SimpletippMatchUpdater->updateMatches();
 	}
-	
+
 	private function cleanupMatches() {
 		$this->Database->execute("DELETE FROM tl_simpletipp_match
 			WHERE leagueID NOT IN (SELECT tl_simpletipp.leagueID FROM tl_simpletipp)");

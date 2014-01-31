@@ -89,21 +89,22 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             ->execute($this->simpletipp->leagueID, '1');
 
         while ($result->next()) {
-            $match      = $result->row();
-            $tippPoints = $this->getPointsForMatch($match);
-            $team_h     = $match['team_h'];
-            $team_a     = $match['team_a'];
+            $match        = $result->row();
+            $tippPoints   = $this->getPointsForMatch($match);
+            $team_h       = $match['team_h'];
+            $team_a       = $match['team_a'];
+            $match_title  = explode(' - ', $match['title']);
 
             if (!array_key_exists($team_h, $teams)) {
                 $teams[$team_h] = array(
-                    'name'       => explode(' - ', $match['title'])[0],
+                    'name'       => $match_title[0],
                     'icon'       => $match['icon_h'],
                     'name_short' => $team_h,
                     'points'     => array(0, 0 , 0, 0));
             }
             if (!array_key_exists($team_a, $teams)) {
                 $teams[$team_a] = array(
-                    'name'       => explode(' - ', $match['title'])[1],
+                    'name'       => $match_title[1],
                     'icon'       => $match['icon_a'],
                     'name_short' => $team_a,
                     'points'     => array(0, 0 , 0, 0));
