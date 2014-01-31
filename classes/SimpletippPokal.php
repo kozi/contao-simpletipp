@@ -60,6 +60,11 @@ class SimpletippPokal extends Backend {
         $ranges = array();
         $i      = 0;
         $pInt   = 0;
+
+        if ($simpletippObj->pokal_ranges === null) {
+            return false;
+        }
+
         foreach(deserialize($simpletippObj->pokal_ranges) as $item) {
             $cInt = intval($item);
             if (($cInt != $pInt+1) && $pInt != 0) {
@@ -69,7 +74,7 @@ class SimpletippPokal extends Backend {
             $pInt = intval($item);
         }
         if (count($ranges) != count(self::$groupAliases)) {
-            return null;
+            return false;
         }
 
         // Gruppenobjekte befüllen
@@ -100,13 +105,18 @@ class SimpletippPokal extends Backend {
             $this->currentGroup  = ($group->current) ? $group : $this->currentGroup;
             $this->finishedGroup = ($group->finished) ? $group : $this->finishedGroup;
         }
-        return $this->groups;
+        return true;
     }
 
 
     public function calculate() {
         $this->simpletipp = SimpletippModel::findByPk(Input::get('id'));
-        $this->getGroups($this->simpletipp);
+        $result = $this->getGroups($this->simpletipp);
+
+        if ($result !== true) {
+            Message::add('Keine Pokalgruppen definiert.', 'TL_ERROR');
+            $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+        }
 
         if ($this->currentGroup != null) {
             Message::add(sprintf('<strong>%s</strong> (%s-%s) läuft noch!', $this->currentGroup->name,
