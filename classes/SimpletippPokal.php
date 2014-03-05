@@ -83,8 +83,8 @@ class SimpletippPokal extends Backend {
         foreach($this->groups as $group) {
             $group->matchgroups = $ranges[$group->index];
 
-            $alias = $group->alias;
-            $group->pairings = deserialize($simpletippObj->$alias);
+            $alias            = $group->alias;
+            $group->pairings  = deserialize($simpletippObj->$alias);
 
             $group->first     = $group->matchgroups[0];
             $group->last      = $group->matchgroups[count($group->matchgroups)-1];
@@ -105,7 +105,7 @@ class SimpletippPokal extends Backend {
             $this->currentGroup  = ($group->current) ? $group : $this->currentGroup;
             $this->finishedGroup = ($group->finished) ? $group : $this->finishedGroup;
         }
-        return true;
+        return $this->groups;
     }
 
 
