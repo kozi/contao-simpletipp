@@ -32,11 +32,11 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['adminName']    = array("Admin Name","Name 
 $GLOBALS['TL_LANG']['tl_simpletipp']['adminEmail']   = array("Admin Email","Email des Tipprundenadmins");
 $GLOBALS['TL_LANG']['tl_simpletipp']['factor']       = array('Punkteverteilung', 'Punkteverteilung (Richtig, Differenz, Tendenz)');
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueID']     = array("Liga", "Liga die getippt werden soll.");
-$GLOBALS['TL_LANG']['tl_simpletipp']['leagueObject'] = array("Liga", "Liga die getippt werden soll.");
+$GLOBALS['TL_LANG']['tl_simpletipp']['leagueInfos']  = array("LigaInfos", "LigaInfos");
 $GLOBALS['TL_LANG']['tl_simpletipp']['teaser']       = array("Info", "Info");
 
 
-$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'] = array('Pokal Spieltage', 'Es müssen 6 Abschnitte ausgewählt werden. Zwischen jedem Abschnitt muss mindestens 1 Spieltag frei bleiben.');
+$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'] = array('Pokal Spieltage', 'Es müssen 6 sich nicht überschneidende Abschnitte gewählt werden.');
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group']  = array('Gruppenphase', 'Spieltage festlegen.');
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_16']     = array('1. Runde', 'Spieltage festlegen.');
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_8']      = array('Achtelfinale', 'Spieltage festlegen.');

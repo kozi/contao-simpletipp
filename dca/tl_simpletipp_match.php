@@ -139,10 +139,10 @@ class tl_simpletipp_match extends Backend {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 
-		$result = $this->Database->execute('SELECT leagueID, leagueObject FROM tl_simpletipp');
+		$result = $this->Database->execute('SELECT leagueID, leagueInfos FROM tl_simpletipp');
 		while($result->next()) {
-			$leagueObj = unserialize($result->leagueObject);
-			$this->leagues[$result->leagueID] = $leagueObj->leagueName;  			
+            $leagueInfos = unserialize($result->leagueInfos);
+			$this->leagues[$result->leagueID] = $leagueInfos['name'];
 		}
 		
 		$result = $this->Database->execute('SELECT groupID, groupName FROM tl_simpletipp_match GROUP BY groupID ORDER BY groupID');

@@ -26,8 +26,8 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
 		'onsubmit_callback' => array(
-			array('tl_simpletipp', 'saveLeagueObject'),
-			array('tl_simpletipp', 'updateMatches')
+            array('tl_simpletipp', 'updateMatches'),
+            array('tl_simpletipp', 'saveLeagueInfos')
 		),
 		'sql' => array(
 			'keys' => array('id' => 'primary')
@@ -170,9 +170,9 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 			'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true),
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
-		'leagueObject' => array
+		'leagueInfos' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueObject'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueInfos'],
 			'sql'                     => "blob NULL"
 		),
 		'teaser' => array
@@ -210,12 +210,11 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
         'pokal_ranges' => array
         (
-            'label'        => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'],
-            'exclude'      => true,
-            'inputType'    => 'select',
-            'eval'         => array('multiple' => true, 'tl_class' => 'pokal_ranges'),
-            'options_callback' => array('tl_simpletipp','getMatchgroups'),
-            'sql'          => "blob NULL",
+            'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'],
+            'exclude'          => true,
+            'inputType'        => 'pokalRanges',
+            'eval'             => array('tl_class' => 'tl_long'),
+            'sql'              => "blob NULL",
         ),
 
         'pokal_group'  => array('sql' => "blob NULL"),
@@ -271,12 +270,12 @@ class tl_simpletipp extends Backend {
 			return $label;
 		}
 
-		$leagueObject = unserialize($row['leagueObject']);
+        $leagueInfos = unserialize($row['leagueInfos']);
 
 		$args[1] = sprintf('<span title="%s (%s, %s)">%s</span>',
-				$leagueObject->leagueName,
-				$leagueObject->leagueShortcut, $leagueObject->leagueSaison,
-				$leagueObject->leagueName);
+                $leagueInfos['name'],
+                $leagueInfos['shortcut'],$leagueInfos['saison'],
+                $leagueInfos['name']);
 		
 		
 		$groupId = $args[2];
@@ -300,7 +299,7 @@ class tl_simpletipp extends Backend {
 
     }
 
-    public function saveLeagueObject(DataContainer $dc) {
+    public function saveLeagueInfos(DataContainer $dc) {
         $leagueID  = intval($dc->activeRecord->leagueID);
 		$leagues   = $this->OpenLigaDB->getAvailLeagues();
 		$leagueObj = null;
@@ -311,18 +310,23 @@ class tl_simpletipp extends Backend {
 			}
 		}
 
-		if ($leagueObj != null) {
-			$this->Database->prepare("UPDATE tl_simpletipp SET leagueObject = ? WHERE id = ?")
-			->execute(serialize($leagueObj), $dc->activeRecord->id);
+        if ($leagueObj != null) {
+            $leagueInfos = array(
+                'name'     => $leagueObj->leagueName,
+                'shortcut' => $leagueObj->leagueShortcut,
+                'saison'   => $leagueObj->leagueSaison
+            );
+        	$this->Database->prepare("UPDATE tl_simpletipp SET leagueInfos = ? WHERE id = ?")
+			    ->execute(serialize($leagueInfos), $dc->activeRecord->id);
 		}
+
 	}
 	
 	
 	public function updateMatches($dc) {
-		if ($dc->activeRecord->leagueObject === null) {
+		if ($dc->activeRecord->leagueInfos === null) {
 			return false;
 		}
-
         $this->import('SimpletippMatchUpdater');
         $this->SimpletippMatchUpdater->updateMatches();
 	}

@@ -23,7 +23,7 @@
  */
 
 class SimpletippPokal extends Backend {
-    private static $groupAliases = array('pokal_group', 'pokal_16', 'pokal_8', 'pokal_4', 'pokal_2', 'pokal_finale');
+    public static $groupAliases  = array('pokal_group', 'pokal_16', 'pokal_8', 'pokal_4', 'pokal_2', 'pokal_finale');
     private $groups              = array();
     private $nextGroup           = null;
     private $currentGroup        = null;
@@ -56,40 +56,25 @@ class SimpletippPokal extends Backend {
             $deadlines[$result->groupName] = $result->row();
         }
 
-        // Ranges parsen
-        $ranges = array();
-        $i      = 0;
-        $pInt   = 0;
-
-        if ($simpletippObj->pokal_ranges === null) {
+        if ($simpletippObj->pokal_ranges === null ) {
             return false;
         }
 
-        foreach(deserialize($simpletippObj->pokal_ranges) as $item) {
-            $cInt = intval($item);
-            if (($cInt != $pInt+1) && $pInt != 0) {
-                $i++;
-            }
-            $ranges[$i][] = $item;
-            $pInt = intval($item);
-        }
-        if (count($ranges) != count(self::$groupAliases)) {
-            return false;
-        }
+        $ranges = unserialize($simpletippObj->pokal_ranges);
 
         // Gruppenobjekte befüllen
         $now          = time();
 
         foreach($this->groups as $group) {
-            $group->matchgroups = $ranges[$group->index];
+            $alias              = $group->alias;
 
-            $alias            = $group->alias;
-            $group->pairings  = deserialize($simpletippObj->$alias);
+            $group->matchgroups = $ranges[$alias];
+            $group->pairings    = unserialize($simpletippObj->$alias);
 
-            $group->first     = $group->matchgroups[0];
-            $group->last      = $group->matchgroups[count($group->matchgroups)-1];
-            $group->start     = $deadlines[$group->first]['start'];
-            $group->end       = $deadlines[$group->last]['end'];
+            $group->first       = $group->matchgroups[0];
+            $group->last        = $group->matchgroups[count($group->matchgroups)-1];
+            $group->start       = $deadlines[$group->first]['start'];
+            $group->end         = $deadlines[$group->last]['end'];
 
             $group->current   = ($now > $group->start && $now < $group->end);
             $group->next      = ($this->nextGroup == null && $now < $group->start);
@@ -113,7 +98,7 @@ class SimpletippPokal extends Backend {
         $this->simpletipp = SimpletippModel::findByPk(Input::get('id'));
         $result = $this->getGroups($this->simpletipp);
 
-        if ($result !== true) {
+        if ($result === false) {
             Message::add('Keine Pokalgruppen definiert.', 'TL_ERROR');
             $this->redirect(Environment::get('script').'?do=simpletipp_groups');
         }
@@ -132,6 +117,7 @@ class SimpletippPokal extends Backend {
         $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
             WHERE groupName IN ('".implode("','", $this->finishedGroup->matchgroups)."')
                             AND (result = ? OR isFinished = ?)")->execute('', 0);
+
         if ($result->numRows == 0) {
             if (Input::get('confirm') == '1') {
                 $this->calculatePairs();

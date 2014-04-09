@@ -57,6 +57,11 @@ class SimpletippModulePokal extends SimpletippModule {
             return null;
         }
         $highscores = array();
+
+        if ($group->pairings === false) {
+            return $highscores;
+        }
+
         foreach ($group->pairings as $memberArr) {
             $highscores[] = $this->getHighscore($group->matchgroups, $memberArr);
         }

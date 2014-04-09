@@ -28,6 +28,7 @@ ClassLoader::addClasses(array(
     'SimpletippMatchUpdater'        => 'system/modules/simpletipp/classes/SimpletippMatchUpdater.php',
     'SimpletippEmailReminder'       => 'system/modules/simpletipp/classes/SimpletippEmailReminder.php',
     'SimpletippPokal'               => 'system/modules/simpletipp/classes/SimpletippPokal.php',
+    'PokalRangesField'              => 'system/modules/simpletipp/classes/PokalRangesField.php',
 
     // Models
     'MatchModel'                    => 'system/modules/simpletipp/models/MatchModel.php',

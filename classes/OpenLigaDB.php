@@ -62,9 +62,9 @@ class OpenLigaDB {
         }
 	}
 	
-	public function setLeague($leagueObj) {
-		$this->leagueShortcut = $leagueObj->leagueShortcut;
-		$this->leagueSaison   = $leagueObj->leagueSaison;
+	public function setLeague(array $leagueInfos) {
+		$this->leagueShortcut = $leagueInfos['shortcut'];
+		$this->leagueSaison   = $leagueInfos['saison'];
 	}
 
 	public function getMatches() {

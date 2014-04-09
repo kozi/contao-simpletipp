@@ -14,6 +14,7 @@ class SimpletippModel extends \Model {
         $pointFactors->perfect    = intval($factor[0]);
         $pointFactors->difference = intval($factor[1]);
         $pointFactors->tendency   = intval($factor[2]);
+
         return $pointFactors;
     }
 

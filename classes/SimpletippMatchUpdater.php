@@ -51,29 +51,29 @@ class SimpletippMatchUpdater extends Backend {
 
 
     public function updateSimpletippMatches($simpletippObj) {
-        $leagueObj = unserialize($simpletippObj->leagueObject);
+        $leagueInfos = unserialize($simpletippObj->leagueInfos);
 
         if ($this->lastLookupOnlySecondsAgo($simpletippObj)) {
             $message = sprintf(
                 'Letzte Aktualisierung für <strong>%s</strong> erst vor %s Sekunden.',
-                $leagueObj->leagueName,
+                $leagueInfos['name'],
                 (time() - $simpletippObj->lastLookup));
             return $message;
         }
 
         $this->import('OpenLigaDB');
-        $this->OpenLigaDB->setLeague($leagueObj);
+        $this->OpenLigaDB->setLeague($leagueInfos);
 
         $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
         $simpletippLastChanged = intval($simpletippObj->lastChanged);
 
         if ($simpletippLastChanged != $openligaLastChanged) {
-            $matchIDs = $this->updateLeagueMatches($leagueObj);
+            $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
-            $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
+            $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
         }
         else {
-            $message = sprintf('Keine Änderungen seit der letzen Aktualisierung in Liga <strong>%s</strong>. ', $leagueObj->leagueName);
+            $message = sprintf('Keine Änderungen seit der letzen Aktualisierung in Liga <strong>%s</strong>. ', $leagueInfos['name']);
         }
 
         $this->Database->prepare("UPDATE tl_simpletipp SET lastChanged = ? WHERE id = ?")
@@ -90,25 +90,25 @@ class SimpletippMatchUpdater extends Backend {
             return true;
         }
         $result = $this->Database->prepare(
-            "SELECT tl_simpletipp_match.*, tl_simpletipp.leagueObject
+            "SELECT tl_simpletipp_match.*, tl_simpletipp.leagueInfos
             FROM tl_simpletipp, tl_simpletipp_match
             WHERE tl_simpletipp.id = ? AND tl_simpletipp_match.isFinished = ?
             AND tl_simpletipp_match.leagueID = tl_simpletipp.leagueID"
         )->execute($id, '1');
 
-        $leagueObj = null;
+        $leagueInfos = null;
         $match_ids = array();
 
         while ($result->next()) {
 
-            if ($leagueObj == null) {
-                $leagueObj = unserialize($result->leagueObject);
+            if ($leagueInfos == null) {
+                $leagueInfos = unserialize($result->leagueInfos);
             }
             $match_ids[] = $result->id;
         }
         $this->updateTipps($match_ids);
 
-        $message = sprintf('Tipps für die Liga <strong>%s</strong> aktualisiert! ', $leagueObj->leagueName);
+        $message = sprintf('Tipps für die Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
         Message::add($message, 'TL_INFO');
         $this->redirect(Environment::get('script').'?do=simpletipp_groups');
 
@@ -155,8 +155,8 @@ class SimpletippMatchUpdater extends Backend {
             || ($now - $match->deadline) < (Simpletipp::$MATCH_LENGTH + 900)) {
 
             $this->import('OpenLigaDB');
-            $leagueObj  = unserialize($simpletipp->leagueObject);
-            $this->OpenLigaDB->setLeague($leagueObj);
+            $leagueInfos  = unserialize($simpletipp->leagueInfos);
+            $this->OpenLigaDB->setLeague($leagueInfos);
             $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
 
             if ($match->goalData->lastUpdate < $openligaLastChanged) {
@@ -212,9 +212,9 @@ class SimpletippMatchUpdater extends Backend {
     }
 
 
-    private function updateLeagueMatches($leagueObject) {
+    private function updateLeagueMatches($leagueInfos) {
         $this->import('OpenLigaDB');
-        $this->OpenLigaDB->setLeague($leagueObject);
+        $this->OpenLigaDB->setLeague($leagueInfos);
 
         $matches = $this->OpenLigaDB->getMatches();
         if ($matches === false) {
