@@ -1,5 +1,12 @@
 # Simpletipp #
 
+Eine Tippspiel-Erweiterung für das CMS [Contao][] auf Basis von [OpenLigaDB][].
+
+
+[Contao]: https://contao.org/
+[OpenLigaDB]: http://openligadb.de/
+
+
 ## Anleitung ##
 
 
