@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options_callback'        => array('tl_simpletipp', 'getLeagues'),
-			'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true, 'chosen' => true),
+			'eval'                    => array('mandatory'=> true, 'tl_class' => 'w50', 'submitOnChange' => true, 'chosen' => true),
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
 		'leagueInfos' => array
@@ -189,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'exclude'                 => true,
 				'inputType'               => 'radio',
 				'foreignKey'              => 'tl_member_group.name',
-				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr'),
+				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr', 'mandatory' => true),
 				'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
         'lastChanged' => array

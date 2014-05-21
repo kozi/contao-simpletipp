@@ -35,9 +35,6 @@
             "sources":{
                 "src": "system/modules/simpletipp"
             }
-        },
-        "master": {
-            "master/3.2.2": "3.2.2"
         }
     }
 }
