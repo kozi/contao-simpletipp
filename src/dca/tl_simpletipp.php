@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options_callback'        => array('tl_simpletipp', 'getLeagues'),
-			'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true),
+			'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'submitOnChange' => true, 'chosen' => true),
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
 		'leagueInfos' => array
@@ -259,10 +259,16 @@ class tl_simpletipp extends Backend {
 	public function getLeagues(DataContainer $dc) {
 		$leagues = $this->OpenLigaDB->getAvailLeagues();
 		$options = array();
+        $tmpl    = '%s [%s, %s]';
 		foreach ($leagues as $league) {
-            $options[$league->leagueID] = $league->leagueName;
+            $options[$league->leagueID] = sprintf($tmpl,
+                $league->leagueName,
+                String::substr($league->leagueShortcut, 10),
+                $league->leagueID
+            );
 		}
-		return $options;
+        asort($options);
+        return $options;
 	}	
 
 	public function labelCallback($row, $label, DataContainer $dc, $args = null) {

@@ -11,6 +11,7 @@ class PokalRangesField extends Widget {
 
     public function generate() {
         $this->leagueGroups  = Simpletipp::getLeagueGroups($this->activeRecord->leagueID);
+        $this->varValue      = ($this->varValue === null) ? array() : $this->varValue;
 
         // Initialize the tab index
         if (!\Cache::has('tabindex')) {
@@ -18,11 +19,12 @@ class PokalRangesField extends Widget {
         }
         $tabindex = \Cache::get('tabindex');
 
-        $return   = '<table id="ctrl_'.$this->strId.'" class="tl_pokalRanges" data-tabindex="'.$tabindex.'"><tbody>';
+        $return   = '<table id="ctrl_'.$this->strId.'" class="tl_pokalRanges" data-tabindex="'.$tabindex++.'"><tbody>';
         $tmpl     = '<tr><td>%s:</td><td><select name="%s_start" class="tl_select" onfocus="Backend.getScrollOffset()">%s</select></td><td><select class="tl_select" onfocus="Backend.getScrollOffset()" name="%s_end">%s</select></td></tr>';
 
-        foreach(SimpletippPokal::$groupAliases as $groupAlias) {
 
+
+        foreach(SimpletippPokal::$groupAliases as $groupAlias) {
 
             $start = array_key_exists($groupAlias, $this->varValue) ? $this->varValue[$groupAlias][0] : '';
             $end   = array_key_exists($groupAlias, $this->varValue) ? end($this->varValue[$groupAlias]) : '';

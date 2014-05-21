@@ -1,0 +1,43 @@
+{
+    "name":"martin-kozianka/contao-simpletipp",
+    "description":"Simpletipp",
+    "keywords":["contao", "openligadb", "tippspiel"],
+    "type":"contao-module",
+    "homepage":"",
+    "license":"LGPL-3.0+",
+    "authors":[
+        {
+            "name":"Martin Kozianka",
+            "email":"martin@kozianka.de",
+            "homepage":"http://kozianka.de",
+            "role":"Developer"
+        }
+    ],
+    "support":{
+        "email":"martin@kozianka.de",
+        "issues":"https://github.com/kozi/simpletipp/issues",
+        "irc":"irc://irc.freenode.org/contao.dev",
+        "source":"https://github.com/kozi/simpletipp"
+
+    },
+    "require":{
+        "php":">=5.3",
+        "contao/core":">=3.2,<4"
+    },
+    "replace":{
+        "contao-legacy/simpletipp": "*"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "extra":{
+        "contao": {
+            "sources":{
+                "src": "system/modules/simpletipp"
+            }
+        },
+        "master": {
+            "master/3.2.2": "3.2.2"
+        }
+    }
+}

@@ -88,7 +88,33 @@ class OpenLigaDB {
 		    return false;
 		}
 	}
-	
+
+
+    public function getLeagueTeams() {
+        if ($this->leagueShortcut == '' || $this->leagueSaison == 0) {
+            return false;
+        }
+
+        try {
+            $params = new stdClass();
+            $params->leagueShortcut = $this->leagueShortcut;
+            $params->leagueSaison   = $this->leagueSaison;
+
+            $response = $this->client->GetTeamsByLeagueSaison($params);
+            $data     = $response->GetTeamsByLeagueSaisonResult;
+            var_dump($data);
+            die();
+            return $data;
+        }
+        catch (SoapFault $e) {
+            return false;
+        }
+        catch (Exception $e) {
+            return false;
+        }
+    }
+
+
 	
 	public function getLastLeagueChange() {
 		try {

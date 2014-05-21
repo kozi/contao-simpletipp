@@ -29,17 +29,13 @@ class SimpletippMatchUpdater extends Backend {
 
 
     public function updateMatches() {
-
         $id     = (Input::get('id') !== null) ? intval(Input::get('id')) : 0;
-        $result = $this->Database
-            ->prepare('SELECT * FROM tl_simpletipp'
-            .(($id != 0) ? ' WHERE id = ?' : ''))
-            ->execute($id);
 
-        while($result->next()) {
-            $simpletippObj = (Object) $result->row();
-            $message       = $this->updateSimpletippMatches($simpletippObj);
-            if ($id != 0) {
+        $objSimpletippCollection = ($id === 0) ? SimpletippModel::findAll() : SimpletippModel::findBy('id', $id);
+
+        foreach($objSimpletippCollection as $objSimpletipp) {
+            $message       = $this->updateSimpletippMatches($objSimpletipp);
+            if ('update' === Input::get('key')) {
                 Message::add($message, TL_INFO);
                 $this->redirect(Environment::get('script').'?do=simpletipp_groups');
             }
@@ -50,7 +46,7 @@ class SimpletippMatchUpdater extends Backend {
     }
 
 
-    public function updateSimpletippMatches($simpletippObj) {
+    public function updateSimpletippMatches(&$simpletippObj) {
         $leagueInfos = unserialize($simpletippObj->leagueInfos);
 
         if ($this->lastLookupOnlySecondsAgo($simpletippObj)) {
@@ -64,10 +60,10 @@ class SimpletippMatchUpdater extends Backend {
         $this->import('OpenLigaDB');
         $this->OpenLigaDB->setLeague($leagueInfos);
 
-        $openligaLastChanged   = strtotime($this->OpenLigaDB->getLastLeagueChange());
-        $simpletippLastChanged = intval($simpletippObj->lastChanged);
+        $openligaLastChanged    = strtotime($this->OpenLigaDB->getLastLeagueChange());
+        $simpletippLastChanged  = intval($simpletippObj->lastChanged);
 
-        if ($simpletippLastChanged != $openligaLastChanged) {
+        if ($simpletippLastChanged != $openligaLastChanged || MatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
             $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
@@ -76,8 +72,8 @@ class SimpletippMatchUpdater extends Backend {
             $message = sprintf('Keine Änderungen seit der letzen Aktualisierung in Liga <strong>%s</strong>. ', $leagueInfos['name']);
         }
 
-        $this->Database->prepare("UPDATE tl_simpletipp SET lastChanged = ? WHERE id = ?")
-            ->execute($openligaLastChanged, $simpletippObj->id);
+        $simpletippObj->lastChanged = $openligaLastChanged;
+        $simpletippObj->save();
 
         return $message;
 	}
@@ -201,13 +197,16 @@ class SimpletippMatchUpdater extends Backend {
         return $goalData;
     }
 
-    private function lastLookupOnlySecondsAgo($simpletipp) {
+    private function lastLookupOnlySecondsAgo(&$objSimpletipp) {
+
+        return false;
+
         $now = time();
-        if (($now - $simpletipp->lastLookup) < static::$lookupLockSeconds) {
+        if (($now - $objSimpletipp->lastLookup) < static::$lookupLockSeconds) {
             return true;
         }
-        $this->Database->prepare("UPDATE tl_simpletipp SET lastLookup = ? WHERE id = ?")
-            ->execute($now, $simpletipp->id);
+        $objSimpletipp->lastLookup = $now;
+        $objSimpletipp->save();
         return false;
     }
 

@@ -96,7 +96,12 @@ class SimpletippRanking extends SimpletippModule {
             if ($a > $b) return -1;
             if ($a < $b) return 1;
 
-            // Hier fehlen noch ein paar Regeln (siehe: http://www.dfb.de/?id=82917)
+            // TODO :: Hier fehlen noch ein paar Regeln (siehe: http://www.dfb.de/?id=82917)
+            // TODO :: Hier fehlt auch die Option noch andere Regeln hinzuzufügen
+            // Direkter Vergleich
+            // Torverhältnis
+            // FIFA Koeffizient
+
             return 0;
         });
 
