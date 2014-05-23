@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -18,7 +18,7 @@
  * Class SimpletippEmailReminder
  *
  * Provide methods to for email reminder
- * @copyright  Martin Kozianka 2012-2013
+ * @copyright  Martin Kozianka 2012-2014
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */
@@ -70,14 +70,15 @@ class SimpletippEmailReminder extends Backend {
             $email->sendTo($simpletippRes->adminEmail);
 
             // Update lastRemindedMatch witch current match_id
-            $this->Database->prepare("UPDATE tl_simpletipp SET lastRemindedMatch = ? WHERE id = ?")
-                ->execute($match->id, $simpletippRes->id);
+            $simpletippRes->lastRemindedMatch = $match->id;
+            $simpletippRes->save();
 
             $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
                 $match->title, Date::parse('d.m.Y H:i', $match->deadline));
             System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
         }
     }
+
 
     private function generateEmailObject($simpletippRes, $subject, $text = NULL) {
         $email           = new Email();

@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -64,6 +64,20 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 				
 		)
 ));
+
+
+// leagueID 676 WM-2014
+$GLOBALS['simpletipp']['groupNames'][676] = array(
+    'Gruppe A' => array('Brasilien', 'Kroatien', 'Mexiko', 'Kamerun'),
+    'Gruppe B' => array('Spanien', 'Niederlande', 'Chile', 'Australien'),
+    'Gruppe C' => array('Kolumbien', 'Griechenland', 'Elfenbeinküste', 'Japan'),
+    'Gruppe D' => array('Uruguay', 'Costa Rica', 'England', 'Italien'),
+    'Gruppe E' => array('Schweiz', 'Ecuador', 'Frankreich', 'Honduras'),
+    'Gruppe F' => array('Argentinien', 'Bosnien-Herz.', 'Iran', 'Nigeria'),
+    'Gruppe G' => array('Deutschland', 'Portugal', 'Ghana', 'USA'),
+    'Gruppe H' => array('Belgien', 'Algerien', 'Russland', 'Südkorea'),
+);
+
 
 $GLOBALS['simpletipp']['teamShortener'] = array(
     'Borussia Dortmund'            => array('Dortmund', 'BVB'),

@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -140,14 +140,14 @@ class SimpletippPokal extends Backend {
         $pairings = array();
         if ($this->finishedGroup === null) {
             // 8 Gruppen auslosen
-            $user = Simpletipp::getGroupMember($this->simpletipp->participant_group);
-            shuffle($user);
+            $arrUserIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
+            shuffle($arrUserIds);
 
-            $total    = count($user);
+            $total    = count($arrUserIds);
             $minSize  = floor($total / 8);
             $rest     = $total % 8;
             $oneGroup = array();
-            foreach($user as $userId) {
+            foreach($arrUserIds as $userId) {
                 $oneGroup[] = $userId;
                 if((count($oneGroup) == ($minSize+1) && $rest > 0) || (count($oneGroup) == $minSize && $rest <= 0)) {
                     $rest--;
@@ -171,17 +171,17 @@ class SimpletippPokal extends Backend {
             $this->import('SimpletippModulePokal');
             $this->SimpletippModulePokal->setSimpletipp($this->simpletipp->id);
             $highscores = $this->SimpletippModulePokal->getGroupHighscores($this->finishedGroup);
-            $user = array();
+            $arrUserIds = array();
             foreach($highscores as $highscore) {
                 // Nur die memberIDs speichern
-                $highscore = array_map(function($row) { return $row->id; }, $highscore);
+                $highscore  = array_map(function($row) { return $row->id; }, $highscore);
 
-                $user      = array_merge($user, array_slice($highscore, 0, $winRanks));
+                $arrUserIds = array_merge($arrUserIds, array_slice($highscore, 0, $winRanks));
             }
-            shuffle($user);
+            shuffle($arrUserIds);
             $i = 0;
-            while($i < count($user)){
-                $pairings[] = array($user[$i++], $user[$i++]);
+            while($i < count($arrUserIds)){
+                $pairings[] = array($arrUserIds[$i++], $arrUserIds[$i++]);
             }
         }
 

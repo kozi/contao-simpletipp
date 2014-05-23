@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -41,10 +41,13 @@ class SimpletippUserselect extends SimpletippModule {
 	protected function compile() {
         global $objPage;
         $participants = array();
-        $order        = "ORDER BY lastname ASC, firstname ASC";
-        foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group, true, $order) as $u) {
-            $u->link              = $this->addToUrl('user='.$u->username);
-            $participants[$u->id] = $u;
+
+        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        if ($objMembers != null) {
+            foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+                $objMember->link              = $this->addToUrl('user='.$objMember->username);
+                $participants[$objMember->id] = $objMember;
+            }
         }
 
         $this->Template->action             = $this->addToUrl('user=');

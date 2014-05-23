@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -15,21 +15,42 @@
 
 
 class OpenLigaDB {
-	private $client;
+    const SOAP_URL = 'http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL';
+
+
+    /**
+     * @var OpenLigaDB
+     */
+    protected static $instance;
+
+    private $client;
 	private $leagueShortcut = '';
 	private $leagueSaison   =  0;
-	
-	private static $location = 'http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL';
-	private static $options  = array('encoding' => 'UTF-8',
-			'connection_timeout'   => 10,
-			'exceptions'           => 1,
-	);
 
-	public function __construct() {
-		$this->client = new SoapClient(self::$location, self::$options);
+
+
+    /**
+     * Instantiate the OpenLigaDB object (Factory)
+     *
+     * @return \OpenLigaDB The OpenLigaDB object
+     */
+    static public function getInstance() {
+
+        if (static::$instance === null) {
+            static::$instance = new static();
+        }
+        return static::$instance;
+    }
+
+    public function __construct() {
+		$this->client = new SoapClient(OpenLigaDB::SOAP_URL, array(
+                'encoding'             => 'UTF-8',
+                'connection_timeout'   => 10,
+                'exceptions'           => 1,
+            ));
 	}
-	
-	
+
+
 	public function getAvailLeagues() {
 		try {
 			$response = $this->client->GetAvailLeagues();
@@ -41,9 +62,9 @@ class OpenLigaDB {
 		}
 		catch (Exception $e) {
 			return false;
-		}			
-	}	
-	
+		}
+	}
+
 	public function getMatchGoals($matchId) {
         try {
             $params = new stdClass();
@@ -61,7 +82,7 @@ class OpenLigaDB {
             return false;
         }
 	}
-	
+
 	public function setLeague(array $leagueInfos) {
 		$this->leagueShortcut = $leagueInfos['shortcut'];
 		$this->leagueSaison   = $leagueInfos['saison'];
@@ -76,7 +97,7 @@ class OpenLigaDB {
 		    $params = new stdClass();
 			$params->leagueShortcut = $this->leagueShortcut;
 			$params->leagueSaison   = $this->leagueSaison;
-			
+
 			$response = $this->client->GetMatchdataByLeagueSaison($params);
 			$data     = $response->GetMatchdataByLeagueSaisonResult->Matchdata;
 			return $data;
@@ -102,8 +123,6 @@ class OpenLigaDB {
 
             $response = $this->client->GetTeamsByLeagueSaison($params);
             $data     = $response->GetTeamsByLeagueSaisonResult;
-            var_dump($data);
-            die();
             return $data;
         }
         catch (SoapFault $e) {
@@ -114,8 +133,6 @@ class OpenLigaDB {
         }
     }
 
-
-	
 	public function getLastLeagueChange() {
 		try {
 			$params = new stdClass;

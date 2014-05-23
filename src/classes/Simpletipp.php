@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -17,7 +17,7 @@
 /**
  * Class SimpletippCalendar
  *
- * @copyright  Martin Kozianka 2012-2013
+ * @copyright  Martin Kozianka 2012-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -27,6 +27,7 @@ class Simpletipp extends System {
     public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
     public static $MATCH_LENGTH       = 6900;
 
+    const GROUPNAME_VORRUNDE          = 'Vorrunde';
 
     public static function getPoints($result, $tipp, $simpletippFactor = null) {
 
@@ -67,48 +68,75 @@ class Simpletipp extends System {
         }
     }
 
+    public static function groupShortener($strGroupName) {
+        $strName = str_replace(
+            array('Gruppe', '. Spieltag'),
+            array('', ''),
+            $strGroupName);
+        return trim($strName);
+    }
+
+    public static function groupMapper($arrMatch) {
+        $leagueID = $arrMatch['leagueID'];
+        $arrGroup = array(
+            'id'    => $arrMatch['id'],
+            'name'  => $arrMatch['groupName'],
+            'short' => $arrMatch['groupName']
+        );
+
+        if (array_key_exists($leagueID, $GLOBALS['simpletipp']['groupNames'])) {
+            $groupNames = $GLOBALS['simpletipp']['groupNames'][$leagueID];
+
+            if ($arrGroup['name'] ===  static::GROUPNAME_VORRUNDE) {
+                $i = 1;
+                foreach($groupNames as $strGroupName => $arrTeams) {
+                    if (in_array($arrMatch['nameTeam1'], $arrTeams) || in_array($arrMatch['nameTeam2'], $arrTeams)){
+                        $arrGroup['name'] = $strGroupName;
+                        $arrGroup['id']   = 100000 + $i;
+                    }
+                    $i++;
+                }
+            }
+        }
+        $arrGroup['short'] = static::groupShortener($arrGroup['name']);
+        return $arrGroup;
+    }
+
+
+
     public static function iconUrl($teamName, $prefix = '', $suffix = '.png') {
         $team = self::teamShortener($teamName);
         return $prefix.standardize($team).$suffix;
     }
 
-
-    public static function getMatchesLeague($leagueID) {
-        $matches = array();
-        $result = \Database::getInstance()->prepare("SELECT id FROM tl_simpletipp_match
-            WHERE leagueID = ?")->execute($leagueID);
-
-        while($result->next()) {
-            $matches[] = $result->id;
-        }
-        return $matches;
-    }
-
-    public static function getGroupMember($groupID, $complete = false, $order = '') {
-        $member         = array();
+    public static function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC') {
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
-        $keys           = ($complete) ? '*' : 'id';
-
-        $result = \Database::getInstance()->prepare("SELECT ".$keys." FROM tl_member WHERE groups LIKE ? ".$order)
-            ->execute($participantStr);
-        while($result->next()) {
-            $member[$result->id] = ($complete) ? (Object) $result->row() : $result->id;
-        }
-        return $member;
+        $objMembers     = \MemberModel::findBy(
+                                array('tl_member.groups LIKE ?'),
+                                $participantStr,
+                                array(
+                                        'order' => $order
+                                )
+                          );
+        return $objMembers;
     }
+
+    public static function getGroupMemberIds($groupID) {
+        return array_keys(static::getGroupMember($groupID));
+    }
+
 
     public static function getNextMatch($leagueID) {
-
-        $result = \Database::getInstance()->prepare("SELECT * FROM tl_simpletipp_match
-            WHERE leagueID = ? AND deadline > ?
-            ORDER BY deadline ASC, id ASC")->limit(1)->execute($leagueID, time());
-
-        if ($result->numRows == 0) {
-            // no next match
-            return null;
-        }
-        return (Object) $result->row();
+        $objMatch = \MatchModel::findOneBy(
+            array('leagueID = ?', 'deadline > ?'),
+            array($leagueID, time()),
+            array(
+                'order' => 'deadline ASC, id ASC'
+            )
+        );
+        return $objMatch;
     }
+
 
     public static function getNotTippedUser($groupID, $match_id) {
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
@@ -120,11 +148,11 @@ class Simpletipp extends System {
              WHERE tblt.id IS NULL
              ORDER BY tblu.lastname")->execute($match_id, $participantStr);
 
-        $userArr = array();
+        $arrUser = array();
         while ($result->next()) {
-            $userArr[] = $result->row();
+            $arrUser[] = $result->row();
         }
-        return $userArr;
+        return $arrUser;
     }
 
 

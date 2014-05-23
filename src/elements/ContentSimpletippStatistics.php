@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -150,9 +150,10 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             return true;
         }
 
-        $memberArray = Simpletipp::getGroupMember($this->simpletipp->participant_group, true);
-        foreach($memberArray as &$member) {
-            $member->highscorePositions = array(0);
+        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        foreach($objMembers as $objMember) {
+            $objMember->highscorePositions = array(0);
+            $memberArray[$objMember->id]   = $objMember;
         }
         $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
@@ -199,10 +200,12 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             return true;
         }
 
-        $memberArray = Simpletipp::getGroupMember($this->simpletipp->participant_group, true);
-        foreach($memberArray as &$member) {
-            $member->pointsArray = array();
+        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        foreach($objMembers as $objMember) {
+            $objMember->pointsArray        = array();
+            $memberArray[$objMember->id]   = $objMember;
         }
+
 
         $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")

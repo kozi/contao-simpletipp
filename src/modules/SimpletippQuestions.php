@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -17,13 +17,13 @@
 /**
  * Class SimpletippQuestions
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
  
 class SimpletippQuestions extends SimpletippModule {
-	private $matchId;
+
 	protected $strTemplate = 'simpletipp_questions_default';
 
 	public function generate() {
@@ -42,7 +42,7 @@ class SimpletippQuestions extends SimpletippModule {
 	protected function compile() {
 
 		$result = $this->Database->prepare("SELECT * FROM tl_simpletipp_question"
-				." WHERE pid = ? ORDER BY sorting ASC")->execute($this->simpletipp_group);
+				." WHERE pid = ? ORDER BY sorting ASC")->execute($this->simpletipp->id);
 
 		$questions = array();
 		while($result->next()) {

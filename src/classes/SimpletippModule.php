@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -63,7 +63,11 @@ abstract class SimpletippModule extends \Module {
         $this->import('FrontendUser', 'User');
         $this->now                  = time();
         $this->isMobile             = $objPage->isMobile;
-        $this->setSimpletipp($this->simpletipp_group);
+
+
+        // Get simpletipp_group from root page
+        $objRootPage = \PageModel::findByPk($objPage->rootId);
+        $this->setSimpletipp($objRootPage->simpletipp_group);
 
         if (TL_MODE !== 'BE') {
             $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";
@@ -111,16 +115,15 @@ abstract class SimpletippModule extends \Module {
         }
     }
 
-
-    protected function getHighscore($matchgroup = null, $memberArr = null) {
+    protected function getHighscore($matchgroup = null, $arrMemberIds = null) {
         $matches = $this->getMatches($matchgroup);
 
-        $restrictToMember = '';
-        if ($memberArr != null) {
-            $restrictToMember = " AND tl_member.id in (".implode(',', $memberArr).")";
-            $participants = $memberArr;
+        if ($arrMemberIds != null) {
+            $restrictToMember  = " AND tl_member.id in (".implode(',', $arrMemberIds).")";
+            $arrParticipantIds = $arrMemberIds;
         } else {
-            $participants = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+            $restrictToMember  = '';
+            $arrParticipantIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
         }
 
         $result  = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
@@ -148,7 +151,7 @@ abstract class SimpletippModule extends \Module {
 
         // Jetzt noch die member, die noch nichts getippt haben hinzufügen
         $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
-        ." WHERE tl_member.id in (".implode(',', $participants).")");
+        ." WHERE tl_member.id in (".implode(',', $arrParticipantIds).")");
         while($result->next()) {
             if (!array_key_exists($result->member_id, $table)) {
                 $table[$result->member_id] = $this->getHighscoreRow($result->row());

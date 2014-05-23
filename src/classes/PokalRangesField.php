@@ -2,11 +2,9 @@
 
 class PokalRangesField extends Widget {
 
-    protected $strTemplate    = 'be_widget';
-
-    protected $blnSubmitInput = true;
-
-    protected $varValue       = array();
+    protected $strTemplate     = 'be_widget';
+    protected $blnSubmitInput  = true;
+    protected $varValue        = array();
 
 
     public function generate() {

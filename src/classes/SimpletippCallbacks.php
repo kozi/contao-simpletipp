@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -18,7 +18,7 @@
  * Class SimpletippCallbacks
  *
  * Provide some methods
- * @copyright  Martin Kozianka 2012-2013 
+ * @copyright  Martin Kozianka 2012-2014
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */
@@ -62,25 +62,26 @@ class SimpletippCallbacks extends Backend {
                 ->execute($channel_id);
 
             $emails     = array();
-            $memberArr  = Simpletipp::getGroupMember($simpletipp['participant_group'], true);
-            foreach($memberArr as $member) {
-                $emails[] = $member->email;
+            $objMembers = Simpletipp::getGroupMember($simpletipp['participant_group']);
+            foreach($objMembers as $objMember) {
+                $emails[] = $objMember->email;
             }
 
             $emails = array_unique($emails);
             foreach($emails as $email) {
-                $this->Database->prepare("INSERT INTO tl_newsletter_recipients %s")->set(array(
+                $recipient = new NewsletterRecipientsModel();
+                $recipient->setRow(array(
                     'pid'       => $channel_id,
                     'email'     => $email,
                     'tstamp'    => $simpletipp['tstamp'],
                     'addedOn'   => $simpletipp['tstamp'],
                     'confirmed' => $simpletipp['tstamp'],
-                    'active'    => '1',
-                ))->execute();
+                    'active'    => '1'
+                ));
+                $recipient->save();
             }
         }
     }
-
 
     public function randomLine($strTag) {
         $arr = explode('::', $strTag);

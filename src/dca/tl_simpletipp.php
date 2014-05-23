@@ -2,19 +2,16 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
-if (TL_MODE == 'BE') {
-    $GLOBALS['TL_JAVASCRIPT'][]         = "/system/modules/simpletipp/assets/String.sprintf.js";
-}
 
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
@@ -244,8 +241,8 @@ class tl_simpletipp extends Backend {
 		parent::__construct();
 		$this->cleanupMatches();
 		$this->import('BackendUser', 'User');
-		$this->import('OpenLigaDB');
-		
+        $this->oldb = OpenLigaDB::getInstance();
+
 		// Mitgliedergruppen holen		
 		$result = $this->Database->execute("SELECT id, name FROM tl_member_group ORDER BY id");
 		while($result->next()) {
@@ -257,7 +254,7 @@ class tl_simpletipp extends Backend {
 	}
 
 	public function getLeagues(DataContainer $dc) {
-		$leagues = $this->OpenLigaDB->getAvailLeagues();
+		$leagues = $this->oldb->getAvailLeagues();
 		$options = array();
         $tmpl    = '%s [%s, %s]';
 		foreach ($leagues as $league) {
@@ -307,7 +304,7 @@ class tl_simpletipp extends Backend {
 
     public function saveLeagueInfos(DataContainer $dc) {
         $leagueID  = intval($dc->activeRecord->leagueID);
-		$leagues   = $this->OpenLigaDB->getAvailLeagues();
+		$leagues   = $this->oldb->getAvailLeagues();
 		$leagueObj = null;
 		foreach($leagues as $league) {
 			if ($league->leagueID == $leagueID) {
@@ -317,13 +314,13 @@ class tl_simpletipp extends Backend {
 		}
 
         if ($leagueObj != null) {
-            $leagueInfos = array(
+            $objSimpletipp = SimpletippModel::findByPk($dc->activeRecord->id);
+            $objSimpletipp->leagueInfos = serialize(array(
                 'name'     => $leagueObj->leagueName,
                 'shortcut' => $leagueObj->leagueShortcut,
                 'saison'   => $leagueObj->leagueSaison
-            );
-        	$this->Database->prepare("UPDATE tl_simpletipp SET leagueInfos = ? WHERE id = ?")
-			    ->execute(serialize($leagueInfos), $dc->activeRecord->id);
+            ));
+            $objSimpletipp->save();
 		}
 
 	}

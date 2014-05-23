@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -17,7 +17,7 @@
 /**
  * Class SimpletippCalendar
  *
- * @copyright  Martin Kozianka 2012-2013
+ * @copyright  Martin Kozianka 2012-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */

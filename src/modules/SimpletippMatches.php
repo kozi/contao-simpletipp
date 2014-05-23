@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -188,9 +188,7 @@ class SimpletippMatches extends SimpletippModule {
 						WHERE leagueID = ?
 						AND deadline < ? ORDER BY deadline DESC")
 						->limit(1)->execute($this->simpletipp->leagueID, $this->now);
-			
-			
-	
+
 			if ($result->numRows == 1) {
 				$this->matches_filter->params[] = $result->groupID;
 			}

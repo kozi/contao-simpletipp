@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2013 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -33,13 +33,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 	'sorting' => array
 	(
 		'mode'                    => 2,
-		'fields'                  => array('groupID ASC'),
+		'fields'                  => array('groupID ASC, deadline ASC'),
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
 	),
 	'label' => array
 	(
-		'fields'                  => array('leagueID', 'groupID', 'title', 'result'),
+		'fields'                  => array('leagueID', 'groupID', 'deadline', 'title', 'result'),
 		'showColumns'             => true,
 		'label_callback'          => array('tl_simpletipp_match', 'labelCallback')
 	),
@@ -132,29 +132,35 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 
 
 class tl_simpletipp_match extends Backend {
-	private $leagues;
+	private $leagueInfos;
 	private $groups;
-	
+
 	public function __construct() {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 
+        $this->leagueInfos = array();
+        $this->groups      = array();
+
 		$result = $this->Database->execute('SELECT leagueID, leagueInfos FROM tl_simpletipp');
 		while($result->next()) {
             $leagueInfos = unserialize($result->leagueInfos);
-			$this->leagues[$result->leagueID] = $leagueInfos['name'];
+            $this->leagueInfos[$result->leagueID] = $leagueInfos;
 		}
-		
+
 		$result = $this->Database->execute('SELECT groupID, groupName FROM tl_simpletipp_match GROUP BY groupID ORDER BY groupID');
 		while($result->next()) {
-			$this->groups[$result->groupID] = $result->groupName;
+            $this->groups[$result->groupID] = $result->groupName;
 		}
-		
+
 	}
 
 	public function getLeagues(DataContainer $dc) {
-		//var_dump($dc);
-		return $this->leagues;
+        $leagueOptions = array();
+        foreach($this->leagueInfos as $leagueID => $info) {
+            $leagueOptions[$leagueID] = $info['name'];
+        }
+		return $leagueOptions;
 	}
 
 	public function getGroups(DataContainer $dc) {
@@ -168,11 +174,14 @@ class tl_simpletipp_match extends Backend {
 		}
 		
 		$leagueID = $args[0];
-		$args[0]  = $this->leagues[$leagueID];
-		
-		$groupID = $args[1];
+		$args[0]  = $this->leagueInfos[$leagueID]['shortcut'];
+
+
+
+		// Overwrite groupID with groupName
+        $groupID  = $row['groupID'];
 		$args[1]  = $this->groups[$groupID];
-		
+
 		
 		return $args;
 	}
