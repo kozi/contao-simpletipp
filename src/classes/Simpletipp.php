@@ -119,7 +119,12 @@ class Simpletipp extends System {
     }
 
     public static function getGroupMemberIds($groupID) {
-        return array_keys(static::getGroupMember($groupID));
+        $arrIds     = array();
+        $objMembers = static::getGroupMember($groupID);
+        foreach($objMembers as $objMember) {
+            $arrIds[] = $objMember->id;
+        }
+        return $arrIds;
     }
 
 
@@ -238,6 +243,34 @@ class Simpletipp extends System {
             }
         }
     }
+
+    public static function convertIconLinks(&$match) {
+
+        foreach(array('h','a') as $suffix) {
+            $iconKey  = 'icon_'.$suffix;
+            $aliasKey = 'alias_'.$suffix;
+            $strAlias = $match->$aliasKey;
+            $url      = $match->$iconKey;
+
+            // Wikimedia hack TODO search for '/??px'
+            $url      =  str_replace('20px', '512px', $url);
+
+            // TODO Read path from module configuration
+            $strFile  = 'files/simpletipp-icons/' .$strAlias.'.'.pathinfo($url, PATHINFO_EXTENSION);
+
+            if (!file_exists(TL_ROOT . '/'.$strFile)) {
+                $fileData = file_get_contents($url);
+                $file     = new \File($strFile);
+                $file->write($fileData);
+                $file->close();
+            }
+
+            $match->$iconKey = $strFile;
+        }
+
+    }
+
+
 
 } // END class Simpletipp
 

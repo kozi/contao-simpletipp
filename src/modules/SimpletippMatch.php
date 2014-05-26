@@ -126,10 +126,15 @@ class SimpletippMatch extends SimpletippModule {
             $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;
         }
 
+
+
+
 		// Match
         $teams = explode("-", $this->match->title_short);
         $this->match->alias_h = standardize($teams[0]);
         $this->match->alias_a = standardize($teams[1]);
+
+        Simpletipp::convertIconLinks($this->match);
 
         $this->Template->isMobile     = $this->isMobile;
         $this->Template->avatarActive = $this->avatarActive;

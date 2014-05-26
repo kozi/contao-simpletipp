@@ -153,7 +153,7 @@ class SimpletippMatches extends SimpletippModule {
 			$match->alias_a = standardize($teams[1]);
 
 
-            $this->convertIconLinks($match);
+            Simpletipp::convertIconLinks($match);
 
             $matches[] = $match;
 
@@ -420,33 +420,6 @@ class SimpletippMatches extends SimpletippModule {
         if ($result->numRows > 0) {
             $this->import('SimpletippMatchUpdater');
             $this->SimpletippMatchUpdater->updateSimpletippMatches($this->simpletipp);
-        }
-
-    }
-
-
-    private function convertIconLinks(&$match) {
-
-        foreach(array('h','a') as $suffix) {
-            $iconKey  = 'icon_'.$suffix;
-            $aliasKey = 'alias_'.$suffix;
-            $strAlias = $match->$aliasKey;
-            $url      = $match->$iconKey;
-
-            // Wikimedia hack TODO search for '/??px'
-            $url      =  str_replace('20px', '512px', $url);
-
-            // TODO Read path from module configuration
-            $strFile  = 'files/simpletipp-icons/' .$strAlias.'.'.pathinfo($url, PATHINFO_EXTENSION);
-
-            if (!file_exists(TL_ROOT . '/'.$strFile)) {
-                $fileData = file_get_contents($url);
-                $file     = new \File($strFile);
-                $file->write($fileData);
-                $file->close();
-            }
-
-            $match->$iconKey = $strFile;
         }
 
     }

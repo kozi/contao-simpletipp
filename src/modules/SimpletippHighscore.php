@@ -17,7 +17,7 @@
 /**
  * Class SimpletippHighscore
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2012-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */

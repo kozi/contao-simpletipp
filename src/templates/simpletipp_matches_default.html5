@@ -41,8 +41,8 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
             <small title="<?php echo $match->date_title; ?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small>
         </td>
         <td class="logos">
-            <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo Image::get($match->icon_h, 32,32,'box'); ?>');"><?php echo $match->team_h_three; ?></i>
-            <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo Image::get($match->icon_a, 32,32,'box'); ?>');"><?php echo $match->team_a_three; ?></i>
+            <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo Image::get($match->icon_h, 0,32,'box'); ?>');"><?php echo $match->team_h_three; ?></i>
+            <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo Image::get($match->icon_a, 0,32,'box'); ?>');"><?php echo $match->team_a_three; ?></i>
         </td>
         <td class="title">
             <a href="<?php echo $match->matchLink; ?>"><?php echo $match->title; ?></a>
