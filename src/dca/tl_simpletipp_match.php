@@ -61,8 +61,9 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
     ),
 	'deadline' => array
 	(
-			'label'                   => array('DEADLINE'),
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['deadline'],
 			'search'                  => false,
+
 			'sql'                     => "int(10) unsigned NOT NULL"
 	),
 	'leagueID' => array(

@@ -116,7 +116,8 @@ abstract class SimpletippModule extends \Module {
     }
 
     protected function getHighscore($matchgroup = null, $arrMemberIds = null) {
-        $matches = $this->getMatches($matchgroup);
+
+
 
         if ($arrMemberIds != null) {
             $restrictToMember  = " AND tl_member.id in (".implode(',', $arrMemberIds).")";
@@ -126,28 +127,34 @@ abstract class SimpletippModule extends \Module {
             $arrParticipantIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
         }
 
-        $result  = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
-        .$this->avatarSql
-        ." SUM(tendency) AS sum_tendency,"
-        ." SUM(difference) AS sum_difference,"
-        ." SUM(perfect) AS sum_perfect,"
-        ." SUM(wrong) AS sum_wrong,"
-        ." SUM(perfect*".$this->pointFactors->perfect
-        ." + difference*".$this->pointFactors->difference
-        ." + tendency*".$this->pointFactors->tendency
-        .") AS points"
-        ." FROM tl_simpletipp_tipp AS tblTipp, tl_member"
-        ." WHERE tblTipp.member_id = tl_member.id"
-        ." AND tblTipp.match_id in (".implode(',', $matches).")"
-        .$restrictToMember
-        ." GROUP BY tl_member.id"
-        ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
-
-        $table   = array();
         $this->i = 1;
-        while($result->next()) {
-            $table[$result->member_id] = $this->getHighscoreRow($result->row());
+        $table   = array();
+        $matches = $this->getMatches($matchgroup);
+
+        if (count($matches) > 0) {
+            $result  = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
+                .$this->avatarSql
+                ." SUM(tendency) AS sum_tendency,"
+                ." SUM(difference) AS sum_difference,"
+                ." SUM(perfect) AS sum_perfect,"
+                ." SUM(wrong) AS sum_wrong,"
+                ." SUM(perfect*".$this->pointFactors->perfect
+                ." + difference*".$this->pointFactors->difference
+                ." + tendency*".$this->pointFactors->tendency
+                .") AS points"
+                ." FROM tl_simpletipp_tipp AS tblTipp, tl_member"
+                ." WHERE tblTipp.member_id = tl_member.id"
+                ." AND tblTipp.match_id in (".implode(',', $matches).")"
+                .$restrictToMember
+                ." GROUP BY tl_member.id"
+                ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
+
+            while($result->next()) {
+                $table[$result->member_id] = $this->getHighscoreRow($result->row());
+            }
+
         }
+
 
         // Jetzt noch die member, die noch nichts getippt haben hinzufügen
         $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"

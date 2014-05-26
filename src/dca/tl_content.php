@@ -13,8 +13,7 @@
  * @filesource
  */
 
-
-$GLOBALS['TL_DCA']['tl_content']['palettes']['simpletipp_statistics'] = '{type_legend},type,headline;{simpletipp_legend},simpletipp_group,simpletipp_statistics_type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['simpletipp_statistics'] = '{type_legend},type,headline;{simpletipp_legend},simpletipp_statistics_type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
 
 
 /**
@@ -26,36 +25,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['simpletipp_statistics_type'] = array
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options'                 => ContentSimpletippStatistics::$types,
-		'eval'                    => array('multiple' => false, 'mandatory' => true, 'tl_class'=>'w50'),
+		'eval'                    => array('multiple' => false, 'mandatory' => true),
 		'sql'                     => "varchar(32) NOT NULL default ''"
 		
 );
-
-$GLOBALS['TL_DCA']['tl_content']['fields']['simpletipp_group'] = array
-(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_content']['simpletipp_group'],
-    'exclude'                 => true,
-    'inputType'               => 'select',
-    'options_callback'        => array('tl_content_simpletipp', 'getSimpletippGroups'),
-    'eval'                    => array('multiple' => false, 'mandatory' => true, 'tl_class'=>'w50'),
-    'sql'                     => "int(10) unsigned NOT NULL default '0'"
-
-);
-
-
-
-class tl_content_simpletipp extends Backend {
-
-    public function getSimpletippGroups() {
-        $groups = array();
-
-        $result = $this->Database->execute(
-            "SELECT id, title FROM tl_simpletipp ORDER BY title DESC");
-
-        while($result->next()) {
-            $groups[$result->id] = $result->title;
-        }
-        return $groups;
-    }
-
-}

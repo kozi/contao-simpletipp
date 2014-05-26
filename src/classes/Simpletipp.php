@@ -70,8 +70,9 @@ class Simpletipp extends System {
 
     public static function groupMapper($arrMatch) {
         $leagueID = $arrMatch['leagueID'];
+        $oneMio   = 1000000;
         $arrGroup = array(
-            'id'    => $arrMatch['id'],
+            'id'    => $arrMatch['groupID'],
             'name'  => $arrMatch['groupName'],
             'short' => $arrMatch['groupName']
         );
@@ -80,12 +81,14 @@ class Simpletipp extends System {
             $groupNames = $GLOBALS['simpletipp']['groupNames'][$leagueID];
 
             if ($arrGroup['name'] ===  static::GROUPNAME_VORRUNDE) {
-                $i = 1;
+                $i   = 1;
+
                 foreach($groupNames as $strGroupName => $arrTeams) {
                     if (in_array($arrMatch['nameTeam1'], $arrTeams) || in_array($arrMatch['nameTeam2'], $arrTeams)){
                         $arrGroup['name'] = $strGroupName;
-                        $arrGroup['id']   = 100000 + $i;
+                        $arrGroup['id']   = $oneMio + $i;
                     }
+
                     $i++;
                 }
             }

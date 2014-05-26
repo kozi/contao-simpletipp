@@ -254,8 +254,10 @@ class ContentSimpletippStatistics extends \SimpletippModule {
         $result = $this->Database->prepare("SELECT id,result FROM tl_simpletipp_match
             WHERE leagueID = ? AND isFinished = ?")
             ->execute($this->simpletipp->leagueID, '1');
+        $arrMatchIds = array();
+
         while ($result->next()) {
-            $match_ids[] = $result->id;
+            $arrMatchIds[] = $result->id;
 
             $rArr = array_map('intval', explode(':', $result->result));
             $table['maxTore']['realValue'] = $table['maxTore']['realValue'] + $rArr[0] + $rArr[1];
@@ -266,12 +268,15 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             $table['away']['realValue']    = ($rArr[0] < $rArr[1])  ? ++$table['away']['realValue'] : $table['away']['realValue'];
         }
 
+        if (sizeof($arrMatchIds) === 0) {
+            return;
+        }
 
         $result = $this->Database->execute("SELECT tl_member.id AS member_id,
                     tl_member.firstname, tl_member.lastname,
                     tl_simpletipp_tipp.tipp FROM tl_simpletipp_tipp, tl_member WHERE
                     tl_member.id = tl_simpletipp_tipp.member_id
-                    AND match_id IN (".implode(',', $match_ids).")");
+                    AND match_id IN (".implode(',', $arrMatchIds).")");
 
         $memberArray = array();
         while ($result->next()) {

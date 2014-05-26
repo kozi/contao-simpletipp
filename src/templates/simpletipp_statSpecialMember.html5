@@ -1,4 +1,6 @@
 <div class="simpletipp_stat">
+
+    <?php if($this->table): ?>
     <table>
         <?php foreach($this->table as $key => $row):
             $key = ($key == 'minTore' || $key == 'maxTore') ? 'tore' : $key; ?>
@@ -14,4 +16,5 @@
 
         <?php endforeach; ?>
     </table>
+    <?php endif; ?>
 </div>
