@@ -34,15 +34,15 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
 </thead>
 
 <tbody>
-<?php $points = 0; foreach($this->matches as $match):?>
+<?php $points = 0; foreach($this->matches as $match): ?>
     <tr id="match_<?php echo $match->id; ?>" class="<?php echo $match->cssClass; ?>">
         <td class="matchgroup">
-            <?php echo sprintf('%02s', $match->groupName_short).'. '; ?>
+            <abbr title="<?php echo $match->groupName; ?>"><?php echo $match->groupName_short; ?></abbr>
             <small title="<?php echo $match->date_title; ?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small>
         </td>
         <td class="logos">
-            <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo $match->icon_h; ?>');"><?php echo $match->team_h_three; ?></i>
-            <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo $match->icon_a; ?>');"><?php echo $match->team_a_three; ?></i>
+            <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo Image::get($match->icon_h, 32,32,'box'); ?>');"><?php echo $match->team_h_three; ?></i>
+            <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo Image::get($match->icon_a, 32,32,'box'); ?>');"><?php echo $match->team_a_three; ?></i>
         </td>
         <td class="title">
             <a href="<?php echo $match->matchLink; ?>"><?php echo $match->title; ?></a>

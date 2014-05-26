@@ -142,8 +142,6 @@ class SimpletippMatches extends SimpletippModule {
                 $alias = str_replace(array('ü','ä','ö'), array('ue', 'ae', 'oe'), $alias);
                 $match->matchLink = $this->generateFrontendUrl($pageRow, '/match/'.$alias);
             }
-			$mg = explode('.', $match->groupName);
-            $match->groupName_short = $mg[0];
 
             $match->pointsClass = '';
 			if (strlen($match->result) > 0) {
@@ -154,8 +152,10 @@ class SimpletippMatches extends SimpletippModule {
 			$match->alias_h = standardize($teams[0]);
 			$match->alias_a = standardize($teams[1]);
 
-            $matches[] = $match;
 
+            $this->convertIconLinks($match);
+
+            $matches[] = $match;
 
 			$this->updateSummary($pointObj);
 		}
@@ -423,6 +423,34 @@ class SimpletippMatches extends SimpletippModule {
         }
 
     }
+
+
+    private function convertIconLinks(&$match) {
+
+        foreach(array('h','a') as $suffix) {
+            $iconKey  = 'icon_'.$suffix;
+            $aliasKey = 'alias_'.$suffix;
+            $strAlias = $match->$aliasKey;
+            $url      = $match->$iconKey;
+
+            // Wikimedia hack TODO search for '/??px'
+            $url      =  str_replace('20px', '512px', $url);
+
+            // TODO Read path from module configuration
+            $strFile  = 'files/simpletipp-icons/' .$strAlias.'.'.pathinfo($url, PATHINFO_EXTENSION);
+
+            if (!file_exists(TL_ROOT . '/'.$strFile)) {
+                $fileData = file_get_contents($url);
+                $file     = new \File($strFile);
+                $file->write($fileData);
+                $file->close();
+            }
+
+            $match->$iconKey = $strFile;
+        }
+
+    }
+
 
 } // END class SimpletippMatches
 

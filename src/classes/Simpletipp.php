@@ -68,14 +68,6 @@ class Simpletipp extends System {
         }
     }
 
-    public static function groupShortener($strGroupName) {
-        $strName = str_replace(
-            array('Gruppe', '. Spieltag'),
-            array('', ''),
-            $strGroupName);
-        return trim($strName);
-    }
-
     public static function groupMapper($arrMatch) {
         $leagueID = $arrMatch['leagueID'];
         $arrGroup = array(
@@ -98,7 +90,12 @@ class Simpletipp extends System {
                 }
             }
         }
-        $arrGroup['short'] = static::groupShortener($arrGroup['name']);
+
+        $arrGroup['short'] = $strName = trim(str_replace(
+            array('Gruppe', '. Spieltag'),
+            array('', ''),
+            $arrGroup['name']));
+
         return $arrGroup;
     }
 

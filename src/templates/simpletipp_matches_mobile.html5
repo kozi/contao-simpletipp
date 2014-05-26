@@ -36,7 +36,7 @@
     <?php if ($dateRow != $match->deadline): $dateRow = $match->deadline; ?>
     <tr class="dateRow">
         <td colspan="5" class="matchgroup">
-            <?php echo sprintf('%02s', $match->groupName).'. '; ?>
+            <abbr title="<?php echo $match->groupName; ?>"><?php echo $match->groupName_short; ?></abbr>
             <small title="<?php echo $match->date_title; ?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small>
         </td>
     </tr>
