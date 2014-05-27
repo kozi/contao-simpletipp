@@ -24,7 +24,7 @@
 
 class SimpletippMatches extends SimpletippModule {
 	protected $strTemplate  = 'simpletipp_matches_default';
-	private $formId         = 'tl_simpletipp';
+	private $formId         = 'tl_simpletipp_matches';
 	private $matches_filter = null;
 	
 
@@ -54,7 +54,7 @@ class SimpletippMatches extends SimpletippModule {
         global $objPage;
 
 		// Die übergebenen Tipps eintragen
-		if ($this->Input->post('FORM_SUBMIT') === $this->formId) {
+		if (Input::post('FORM_SUBMIT') === $this->formId) {
 			$this->processTipps();
 			$this->redirect($this->addToUrl(''));
 		}
@@ -310,8 +310,8 @@ class SimpletippMatches extends SimpletippModule {
 		if (!FE_USER_LOGGED_IN) {
 			return false;
 		}
-        $ids   = $this->Input->post('match_ids');
-        $tipps = $this->Input->post('tipps');
+        $ids   = Input::post('match_ids');
+        $tipps = Input::post('tipps');
 
 		$to_db = array();
 		
@@ -361,7 +361,7 @@ class SimpletippMatches extends SimpletippModule {
             }
         }
         Simpletipp::addSimpletippMessage($message);
-		return true;
+        return true;
 	}
 
 	private function sendTippEmail($matches) {

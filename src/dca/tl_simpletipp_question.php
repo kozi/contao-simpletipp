@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 	(
 		'dataContainer'               => 'Table',
 		'ptable'                      => 'tl_simpletipp',
-		'enableVersioning'            => false,
+		'enableVersioning'            => true,
 	    'sql' => array(
             'keys' => array('id' => 'primary')
         )
@@ -214,14 +214,15 @@ class tl_simpletipp_question extends Backend {
 			$this->redirect('contao/main.php?act=error');
 		}
 
-		$this->createInitialVersion('tl_simpletipp_question', $intId);
+        $objVersions = new Versions('tl_simpletipp_question', $intId);
+        $objVersions->initialize();
 
 		// Update the database
 		$this->Database->prepare("UPDATE tl_simpletipp_question SET tstamp=". time()
 				.", published='" . ($blnVisible ? 1 : '') . "' WHERE id = ?")
 				->execute($intId);
-		
-		$this->createNewVersion('tl_simpletipp_question', $intId);
+
+        $objVersions->create();
 	}
 	
 	public function clearImporter($varValue, DataContainer $dc) {
@@ -243,9 +244,15 @@ class tl_simpletipp_question extends Backend {
 		}
 		$arr = array_filter(array_map('trim', $arr));
 
-		$result = $this->Database->prepare("UPDATE tl_simpletipp_question"
-				." SET tstamp = ?, answers = ? WHERE id = ?")
-				->execute(time(), serialize($arr), $dc->id);
+        $objVersions = new Versions('tl_simpletipp_question', $dc->id);
+        $objVersions->initialize();
+
+        $this->Database
+            ->prepare("UPDATE tl_simpletipp_question SET tstamp = ?, answers = ? WHERE id = ?")
+            ->execute(time(), serialize($arr), $dc->id);
+
+        $objVersions->create();
+
 		return '';
 	}
 	

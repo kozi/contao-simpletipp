@@ -1,26 +1,44 @@
-<hr style="height:20px; width:600px;" />
 <div class="<?php echo $this->class; ?> block mod_simpletipp_questions"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
-<?php if ($this->headline): ?>
-<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+    <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<?php foreach($this->questions as $q): ?>
-<fieldset class="question" id="<?php echo $q->key; ?>">
-	<legend><?php echo $q->points; ?> Punkt(e)</legend>
-	<label for="<?php echo $q->key; ?>"><?php echo $q->question; ?></label>
-	<select name="<?php echo $q->key; ?>">
-		<option value="-">Bitte wählen...</option>
-		<?php foreach($q->answers as $a): ?>
-		<option value="<?php echo $a; ?>"><?php echo $a; ?></option>
-		<?php endforeach; ?>
-	</select>
-</fieldset>
 
-<?php endforeach; ?>
+<?php if($this->questions): ?>
+
+    <?php if ($this->isPersonal): ?>
+
+        <?php echo $this->messages; ?>
+
+        <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
+        <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+    <?php endif; ?>
+
+    <?php foreach($this->questions as $q): ?>
+        <fieldset class="question" id="<?php echo $q->key; ?>">
+            <legend><?php echo $q->points; ?> Punkt(e)</legend>
+            <label for="<?php echo $q->key; ?>"><?php echo $q->question; ?></label>
+            <select name="<?php echo $q->key; ?>">
+                <option value="<?php echo $q->emptyValue; ?>">Bitte wählen...</option>
+                <?php foreach($q->answers as $a): ?>
+                    <option<?php echo ($q->userAnswer == $a) ? ' selected="selected"' : ''; ?> value="<?php echo $a; ?>"><?php echo $a; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </fieldset>
+    <?php endforeach; ?>
+
+    <?php if ($this->isPersonal): ?>
+        <div class="submit_container">
+            <input tabindex="<?php echo $i;?>" type="submit" value="Abschicken" />
+        </div>
+
+        </form>
+    <?php endif; ?>
+
+<?php endif; ?>
 
 
 
 </div>
-
-<hr style="height:20px; width:600px;" />

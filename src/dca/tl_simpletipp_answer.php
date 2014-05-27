@@ -30,9 +30,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ptable'                      => 'tl_simpletipp',
-		'enableVersioning'            => false
-	),
+		'ptable'                      => 'tl_simpletipp_question',
+	    'dataContainer'               => 'Table',
+	    'sql' => array(
+            'keys' => array('id' => 'primary')
+        ),
+	    'notEditable'                 => true,
+	    'closed'                      => true,
+    ),
 
 	// List
 	'list' => array
@@ -40,15 +45,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 		'sorting' => array
 		(
 			'mode'                    => 4,
-			'fields'                  => array('sorting'),
+			'fields'                  => array('pid'),
 			'flag'                    => 1,
 			'panelLayout'             => 'limit',
-			'child_record_callback'   => array('tl_simpletipp_question', 'addQuestions'),
-			'headerFields'            => array('title', 'teaser', 'tstamp')
 		),
 		'label' => array
 		(
-			'fields'                  => array('question', 'points'),
+			'fields'                  => array('pid', 'ans'),
 			'showColumns'             => true,
 		),
 		'global_operations' => array
@@ -116,50 +119,16 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
             'search'                  => false,
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
         ),
-		'question' => array
+        'member' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_answer']['member'],
+            'sql'                     => "int(10) unsigned NOT NULL default '0'",
+        ),
+		'answer' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['question'],
-			'exclude'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'tl_class' => 'long')
-		),
-		'points' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['points'],
-				'exclude'                 => true,
-				'inputType'               => 'text',
-				'default'				  => 1,
-				'eval'					  => array('rgxp' => 'number','mandatory'=>true, 'tl_class' => 'w50')
-		),
-		'published' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['published'],
-				'exclude'                 => true,
-				'inputType'               => 'checkbox',
-				'eval'                    => array('doNotCopy'=>true, 'tl_class' => 'w50')
-		),
-		'importer' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['importer'],
-				'inputType'               => 'textarea',
-				'exclude'                 => true,
-				'eval'                    => array('doNotShow'=>true, 'decodeEntities' => true),
-				'load_callback'           => array(
-						array('tl_simpletipp_question', 'clearImporter')
-				),
-				'save_callback'           => array(
-						array('tl_simpletipp_question', 'importAnswers')
-				),
-				
-		),
-		'answers' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['answers'],
-			'exclude'                 => true,
-			'inputType'               => 'listWizard',
-			'eval'					  => array('tl_class' => 'long clr' , 'mandatory' => false)
-		)
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_answer']['answer'],
+            'sql'                     => "varchar(255) NOT NULL default ''",
+        )
 		
 		
 	)

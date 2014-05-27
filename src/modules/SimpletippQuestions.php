@@ -23,7 +23,8 @@
  */
  
 class SimpletippQuestions extends SimpletippModule {
-
+    private $questions     = null;
+    private $formId        = 'tl_simpletipp_questions';
 	protected $strTemplate = 'simpletipp_questions_default';
 
 	public function generate() {
@@ -41,23 +42,72 @@ class SimpletippQuestions extends SimpletippModule {
 	
 	protected function compile() {
 
-		$result = $this->Database->prepare("SELECT * FROM tl_simpletipp_question"
-				." WHERE pid = ? ORDER BY sorting ASC")->execute($this->simpletipp->id);
+        $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_question"
+            ." WHERE pid = ? ORDER BY sorting ASC")->execute($this->simpletipp->id);
 
-		$questions = array();
+		$this->questions = array();
 		while($result->next()) {
 			$q = new stdClass;
-			$q->id = "question_".$result->id;
-			$q->question = $result->question;
-			$q->points   = $result->points;
-			$q->answers  = unserialize($result->answers);
-			
-			$questions[] = $q;
+            $q->id             = $result->id;
+            $q->key            = "question_".$result->id;
+			$q->question       = $result->question;
+			$q->points         = $result->points;
+            $q->answers        = unserialize($result->answers);
+            $q->emptyValue     = '-';
+            $q->arrUserAnswers = array(); //$result->userAnswer;
+
+            $this->questions[$q->id] = $q;
 		}
-		
-		$this->Template->questions = $questions;
-		
-	}
+
+        if (count($this->questions > 0)) {
+            $ids = implode(',', array_keys($this->questions));
+            $result = $this->Database->execute("SELECT * FROM tl_simpletipp_answer WHERE pid IN(".$ids.")");
+            while($result->next()) {
+                $this->questions[$result->pid]->arrUserAnswers[$result->member] = $result->answer;
+                if ($result->member == $this->User->id) {
+                    $this->questions[$result->pid]->userAnswer = $result->answer;
+                }
+            }
+
+
+
+        }
+
+        // Die übergebenen Antworten eintragen
+        if ($this->Input->post('FORM_SUBMIT') === $this->formId) {
+            $this->processAnswers();
+            $this->redirect($this->addToUrl(''));
+        }
+
+        $this->Template->formId     = $this->formId;
+        $this->Template->action     = ampersand(Environment::get('request'));
+        $this->Template->messages   = Simpletipp::getSimpletippMessages();
+
+        $this->Template->isPersonal = $this->isPersonal;
+		$this->Template->questions  = $this->questions;
+
+    }
+
+    private function processAnswers() {
+        $message = 'Folgende Antworten wurden eingetragen:<ul>';
+        $tmpl    = '<li><span class="question">%s</span> <span class="anwer">%s</span></li>';
+        foreach($this->questions as $question) {
+            $userAnswer = Input::post($question->key);
+
+            if($userAnswer != $question->emptyValue) {
+                $this->Database->prepare("DELETE FROM tl_simpletipp_answer WHERE pid = ? AND member = ?")
+                    ->execute($question->id, $this->User->id);
+
+                $this->Database->prepare(
+                    "INSERT INTO tl_simpletipp_answer (pid, member, answer)VALUES (?,?,?)")
+                    ->execute($question->id, $this->User->id, $userAnswer);
+                $message .= sprintf($tmpl, $question->question, $userAnswer);
+            }
+        }
+        $message .= '</ul>';
+        Simpletipp::addSimpletippMessage($message);
+        return true;
+    }
 
 } // END class SimpletippQuestions
 
