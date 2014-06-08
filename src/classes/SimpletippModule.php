@@ -129,7 +129,7 @@ abstract class SimpletippModule extends \Module {
 
         $this->i = 1;
         $table   = array();
-        $matches = $this->getMatches($matchgroup);
+        $matches = $this->getMatchIds($matchgroup);
 
         if (count($matches) > 0) {
             $result  = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
@@ -182,7 +182,7 @@ abstract class SimpletippModule extends \Module {
         return $row;
     }
 
-    private function getMatches($matchgroup = null) {
+    private function getMatchIds($matchgroup = null) {
         $matches = array();
         $where   = ($matchgroup !== null) ? ' WHERE leagueID = ? AND groupName = ?' : ' WHERE leagueID = ?';
 

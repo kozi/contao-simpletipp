@@ -70,7 +70,6 @@ class SimpletippMatches extends SimpletippModule {
         $this->Template->filter     = $this->getMatchFilter();
         $this->Template->matches    = $this->getMatches();
 
-
         $this->Template->formId     = $this->formId;
         $this->Template->action     = ampersand(Environment::get('request'));
         $this->Template->isMobile   = $this->isMobile;
