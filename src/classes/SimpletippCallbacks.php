@@ -6,23 +6,26 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
+
+
 
 /**
  * Class SimpletippCallbacks
  *
  * Provide some methods
- * @copyright  Martin Kozianka 2012-2014
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */
-class SimpletippCallbacks extends Backend {
+class SimpletippCallbacks extends \Backend {
 
 
 	public function addCustomRegexp($strRegexp, $varValue, Widget $objWidget) {
@@ -45,7 +48,7 @@ class SimpletippCallbacks extends Backend {
                         ->execute($simpletipp['id']);
 
             if ($channelResult->numRows == 0) {
-                $nlc = new NewsletterChannelModel();
+                $nlc = new \NewsletterChannelModel();
                 $nlc->setRow(array(
                     'simpletipp' => $simpletipp['id'],
                     'title'      => 'SIMPLETIPP '.$simpletipp['title'],
@@ -62,14 +65,14 @@ class SimpletippCallbacks extends Backend {
                 ->execute($channel_id);
 
             $emails     = array();
-            $objMembers = Simpletipp::getGroupMember($simpletipp['participant_group']);
+            $objMembers = \Simpletipp::getGroupMember($simpletipp['participant_group']);
             foreach($objMembers as $objMember) {
                 $emails[] = $objMember->email;
             }
 
             $emails = array_unique($emails);
             foreach($emails as $email) {
-                $recipient = new NewsletterRecipientsModel();
+                $recipient = new \NewsletterRecipientsModel();
                 $recipient->setRow(array(
                     'pid'       => $channel_id,
                     'email'     => $email,

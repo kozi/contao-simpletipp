@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippMatch
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -28,7 +29,7 @@ class SimpletippMatch extends SimpletippModule {
 
 	public function generate() {
 		if (TL_MODE == 'BE') {
-			$this->Template = new BackendTemplate('be_wildcard');
+			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard = '### SimpletippMatch ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
@@ -39,14 +40,14 @@ class SimpletippMatch extends SimpletippModule {
 	
 	protected function compile() {
 
-        $matchAlias = Input::get('match');
+        $matchAlias = \Input::get('match');
 
         if (is_numeric($matchAlias)) {
-            $this->match = MatchModel::findByPk($matchAlias);
+            $this->match = \MatchModel::findByPk($matchAlias);
         }
         else {
             // get matchId from team short names
-            $this->match = MatchModel::findByShortNames($matchAlias);
+            $this->match = \MatchModel::findByShortNames($matchAlias);
         }
 
         if ($this->match == null) {
@@ -70,7 +71,7 @@ class SimpletippMatch extends SimpletippModule {
 				->execute($this->match->id);
 
 
-        $objPage       = PageModel::findByPk($this->simpletipp_matches_page);
+        $objPage       = \PageModel::findByPk($this->simpletipp_matches_page);
         $pageRow       = ($objPage !== null) ? $objPage->row() : null;
 
 
@@ -85,7 +86,7 @@ class SimpletippMatch extends SimpletippModule {
 
             $tipp         = (Object) $result->row();
 
-            $pointObj     = new SimpletippPoints($this->pointFactors, $tipp->perfect, $tipp->difference, $tipp->tendency);
+            $pointObj     = new \SimpletippPoints($this->pointFactors, $tipp->perfect, $tipp->difference, $tipp->tendency);
 			$tipp->points = $pointObj->points;
 
 
@@ -134,7 +135,7 @@ class SimpletippMatch extends SimpletippModule {
         $this->match->alias_h = standardize($teams[0]);
         $this->match->alias_a = standardize($teams[1]);
 
-        Simpletipp::convertIconLinks($this->match);
+        \Simpletipp::convertIconLinks($this->match);
 
         $this->Template->isMobile     = $this->isMobile;
         $this->Template->avatarActive = $this->avatarActive;

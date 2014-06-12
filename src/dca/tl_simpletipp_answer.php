@@ -6,7 +6,7 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL

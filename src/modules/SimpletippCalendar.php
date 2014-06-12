@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippCalendar
  *
- * @copyright  Martin Kozianka 2012-2014
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -30,7 +31,7 @@ class SimpletippCalendar extends SimpletippModule {
 
     public function generate() {
         if (TL_MODE == 'BE') {
-            $this->Template = new BackendTemplate('be_wildcard');
+            $this->Template = new \BackendTemplate('be_wildcard');
             $this->Template->wildcard  = '### SimpletippCalendar ###<br>';
             $this->Template->wildcard .= $GLOBALS['TL_LANG']['FMD']['simpletipp_calendar_info'];
             return $this->Template->parse();
@@ -41,19 +42,19 @@ class SimpletippCalendar extends SimpletippModule {
     protected function compile() {
 
 
-        $isDebug              = (Input::get('debug') == '1');
-        $calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), Input::get('cal')));
-        $this->User           = MemberModel::findBy('simpletipp_calendar', $calId);
+        $isDebug              = (\Input::get('debug') == '1');
+        $calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), \Input::get('cal')));
+        $this->User           = \MemberModel::findBy('simpletipp_calendar', $calId);
 
         if (strlen($calId) > 0 && $this->User === null && $calId !== 'common') {
             echo 'Calendar not found! '.$calId;
             exit();
         }
 
-        $this->matchesPage    = PageModel::findByPk($this->simpletipp_matches_page)->row();
+        $this->matchesPage    = \PageModel::findByPk($this->simpletipp_matches_page)->row();
 
         $v = new vcalendar();
-        $v->setConfig('unique_id', Environment::get('base'));
+        $v->setConfig('unique_id', \Environment::get('base'));
         $v->setProperty('method', 'PUBLISH');
         $v->setProperty("X-WR-CALNAME",  $this->title);
         $v->setProperty("X-WR-CALDESC",  $this->title);
@@ -142,7 +143,7 @@ class SimpletippCalendar extends SimpletippModule {
 		$timestamp      = $matches[0]->deadline;
 		$timestamp_ende = $timestamp + (105*60); // add 105 (2x45 + 15) minutes
 
-		$url = Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
+		$url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
 					"/group/".urlencode($matches[0]->groupName));
 
         // TODO translation
@@ -171,7 +172,7 @@ class SimpletippCalendar extends SimpletippModule {
 					$info2 = " *OK*"; // TODO translation
 				}
 				else {
-                    $p          = Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
+                    $p          = \Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
                     $pointsSum  = $pointsSum + $p->points;
 					$info2      = " ".$p->getPointsString();
 				}

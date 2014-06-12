@@ -1,7 +1,7 @@
 <div class="mod_rss_podcast">
 <?php
     $item           = $this->items[0];
-    $podcast        = new stdClass();
+    $podcast        = new \stdClass();
     $podcast->title = $item['title'];
     $podcast->desc  = $item['description'];
     $podcast->path  = str_replace('?#', '', $item['enclosure']);

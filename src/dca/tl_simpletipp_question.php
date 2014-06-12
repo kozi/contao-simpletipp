@@ -6,7 +6,7 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -171,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
  * Class tl_simpletipp_question
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */
@@ -214,7 +214,7 @@ class tl_simpletipp_question extends Backend {
 			$this->redirect('contao/main.php?act=error');
 		}
 
-        $objVersions = new Versions('tl_simpletipp_question', $intId);
+        $objVersions = new \Versions('tl_simpletipp_question', $intId);
         $objVersions->initialize();
 
 		// Update the database
@@ -244,7 +244,7 @@ class tl_simpletipp_question extends Backend {
 		}
 		$arr = array_filter(array_map('trim', $arr));
 
-        $objVersions = new Versions('tl_simpletipp_question', $dc->id);
+        $objVersions = new \Versions('tl_simpletipp_question', $dc->id);
         $objVersions->initialize();
 
         $this->Database

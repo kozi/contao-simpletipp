@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippUserselect
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -30,7 +31,7 @@ class SimpletippUserselect extends SimpletippModule {
 	public function generate() {
 
 		if (TL_MODE == 'BE') {
-			$this->Template = new BackendTemplate('be_wildcard');
+			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippUserselect ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
@@ -42,9 +43,9 @@ class SimpletippUserselect extends SimpletippModule {
         global $objPage;
         $participants = array();
 
-        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
         if ($objMembers != null) {
-            foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+            foreach (\Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
                 $objMember->link              = $this->addToUrl('user='.$objMember->username);
                 $participants[$objMember->id] = $objMember;
             }

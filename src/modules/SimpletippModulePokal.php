@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippModulePokal
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -31,7 +32,7 @@ class SimpletippModulePokal extends SimpletippModule {
 
 
         if (TL_MODE == 'BE') {
-            $this->Template            = new BackendTemplate('be_wildcard');
+            $this->Template            = new \BackendTemplate('be_wildcard');
             $this->Template->wildcard  = '### SimpletippPokal ###';
             $this->Template->wildcard .= '<br/>'.$this->headline;
             return $this->Template->parse();

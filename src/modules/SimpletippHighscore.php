@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippHighscore
  *
- * @copyright  Martin Kozianka 2012-2014
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -32,7 +33,7 @@ class SimpletippHighscore extends SimpletippModule {
 
 	public function generate() {
 		if (TL_MODE == 'BE') {
-			$this->Template            = new BackendTemplate('be_wildcard');
+			$this->Template            = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippHighscore ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
@@ -47,7 +48,7 @@ class SimpletippHighscore extends SimpletippModule {
         global $objPage;
 
         // Filter
-        $this->show = (Input::get('show') !== null) ? urldecode(Input::get('show')) : 'all';
+        $this->show = (\Input::get('show') !== null) ? urldecode(\Input::get('show')) : 'all';
 
         $this->Template->filter   = $this->generateFilter();
         $this->Template->isMobile = $objPage->isMobile;
@@ -131,7 +132,7 @@ class SimpletippHighscore extends SimpletippModule {
 		}
 
         $tmplStr = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';
-        $tmpl                 = new FrontendTemplate($tmplStr);
+        $tmpl                 = new \FrontendTemplate($tmplStr);
         $tmpl->special_filter = $special_options;
         $tmpl->group_filter   = $group_options;
 

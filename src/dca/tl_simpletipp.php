@@ -6,7 +6,7 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, title, leagueID, factor, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
+		'default'                     => '{simpletipp_legend}, title, leagueID, factor, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
 	),
 
 
@@ -153,10 +153,17 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'default'                 => '3,2,1',
             'flag'                    => 1,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true),
+            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''",
         ),
-
+        'quizDeadline' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['quizDeadline'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'sql'                     => "varchar(10) NOT NULL default ''",
+        ),
 		'leagueID' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueID'],
@@ -229,19 +236,19 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
  * Class tl_simpletipp
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */
 
-class tl_simpletipp extends Backend {
+class tl_simpletipp extends \Backend {
     private $memberGroups       = array();
     private $matchGroupOptions  = array();
 	public function __construct() {
 		parent::__construct();
 		$this->cleanupMatches();
 		$this->import('BackendUser', 'User');
-        $this->oldb = OpenLigaDB::getInstance();
+        $this->oldb = \OpenLigaDB::getInstance();
 
 		// Mitgliedergruppen holen		
 		$result = $this->Database->execute("SELECT id, name FROM tl_member_group ORDER BY id");
@@ -260,7 +267,7 @@ class tl_simpletipp extends Backend {
 		foreach ($leagues as $league) {
             $options[$league->leagueID] = sprintf($tmpl,
                 $league->leagueName,
-                String::substr($league->leagueShortcut, 10),
+                \String::substr($league->leagueShortcut, 10),
                 $league->leagueID
             );
 		}
@@ -293,7 +300,7 @@ class tl_simpletipp extends Backend {
         if (count($this->matchGroupOptions) == 0) {
             $this->matchGroupOptions[''] = '-';
             $leagueID = intval($dc->activeRecord->leagueID);
-            $groups   = Simpletipp::getLeagueGroups($leagueID);
+            $groups   = \Simpletipp::getLeagueGroups($leagueID);
             foreach ($groups as $g) {
                 $this->matchGroupOptions[$g->title] = $g->title;
             }
@@ -314,7 +321,7 @@ class tl_simpletipp extends Backend {
 		}
 
         if ($leagueObj != null) {
-            $objSimpletipp = SimpletippModel::findByPk($dc->activeRecord->id);
+            $objSimpletipp = \SimpletippModel::findByPk($dc->activeRecord->id);
             $objSimpletipp->leagueInfos = serialize(array(
                 'name'     => $leagueObj->leagueName,
                 'shortcut' => $leagueObj->leagueShortcut,

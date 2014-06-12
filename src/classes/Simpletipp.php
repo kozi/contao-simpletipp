@@ -6,23 +6,26 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
+
+
 
 /**
  * Class SimpletippCalendar
  *
- * @copyright  Martin Kozianka 2012-2014
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
 
-class Simpletipp extends System {
+class Simpletipp extends \System {
     public static $TIPP_DIVIDER       = ':';
     public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
     public static $MATCH_LENGTH       = 6900;

@@ -6,19 +6,22 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
+
+
 
 /**
  * Class SimpletippStatistics
  *
  * Front end content element "SimpletippStatistics".
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    simpletipp
  */
@@ -54,7 +57,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
 
 
 
-        $this->statsTemplate        = new FrontendTemplate('simpletipp_'.$stats_type);
+        $this->statsTemplate        = new \FrontendTemplate('simpletipp_'.$stats_type);
 
         $this->statsTemplate->user  = $this->User;
         $this->statsTemplate->type  = $stats_type;
@@ -150,7 +153,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             return true;
         }
 
-        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
         foreach($objMembers as $objMember) {
             $objMember->highscorePositions = array(0);
             $memberArray[$objMember->id]   = $objMember;
@@ -200,7 +203,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             return true;
         }
 
-        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
         foreach($objMembers as $objMember) {
             $objMember->pointsArray        = array();
             $memberArray[$objMember->id]   = $objMember;
@@ -322,7 +325,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
     }
 
     private function getPointsForMatch($match) {
-        $points     = new stdClass();
+        $points     = new \stdClass();
         $points->points     = 0;
         $points->perfect    = 0;
         $points->difference = 0;
@@ -333,7 +336,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
                             WHERE match_id = ?")->execute($match['id']);
         while ($tippResult->next()) {
 
-            $tippPoints = Simpletipp::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);
+            $tippPoints = \Simpletipp::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);
             $points->points     += $tippPoints->points;
             $points->perfect    += $tippPoints->perfect;
             $points->difference += $tippPoints->difference;

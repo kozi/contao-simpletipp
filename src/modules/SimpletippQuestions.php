@@ -6,13 +6,14 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippQuestions
@@ -29,12 +30,12 @@ class SimpletippQuestions extends SimpletippModule {
 
 	public function generate() {
 		if (TL_MODE == 'BE') {
-			$this->Template = new BackendTemplate('be_wildcard');
+			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard = '### SimpletippQuestions ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
 		}
-		
+
 		$this->strTemplate = $this->simpletipp_template;
 		
 		return parent::generate();
@@ -47,7 +48,7 @@ class SimpletippQuestions extends SimpletippModule {
 
 		$this->questions = array();
 		while($result->next()) {
-			$q = new stdClass;
+			$q = new \stdClass;
             $q->id             = $result->id;
             $q->key            = "question_".$result->id;
 			$q->question       = $result->question;
@@ -64,7 +65,7 @@ class SimpletippQuestions extends SimpletippModule {
             $result = $this->Database->execute("SELECT * FROM tl_simpletipp_answer WHERE pid IN(".$ids.")");
             while($result->next()) {
                 $this->questions[$result->pid]->arrUserAnswers[$result->member] = $result->answer;
-                if ($result->member == $this->User->id) {
+                if ($result->member == $this->simpletippUserId) {
                     $this->questions[$result->pid]->userAnswer = $result->answer;
                 }
             }
@@ -73,15 +74,18 @@ class SimpletippQuestions extends SimpletippModule {
 
         }
 
+        $quizFinished = time() > $this->simpletipp->quizDeadline;
+
         // Die übergebenen Antworten eintragen
-        if ($this->Input->post('FORM_SUBMIT') === $this->formId) {
+        if (!$quizFinished && $this->Input->post('FORM_SUBMIT') === $this->formId) {
             $this->processAnswers();
             $this->redirect($this->addToUrl(''));
         }
 
+        $this->Template->finished   = $quizFinished;
         $this->Template->formId     = $this->formId;
-        $this->Template->action     = ampersand(Environment::get('request'));
-        $this->Template->messages   = Simpletipp::getSimpletippMessages();
+        $this->Template->action     = ampersand(\Environment::get('request'));
+        $this->Template->messages   = \Simpletipp::getSimpletippMessages();
 
         $this->Template->isPersonal = $this->isPersonal;
 		$this->Template->questions  = $this->questions;
@@ -92,20 +96,20 @@ class SimpletippQuestions extends SimpletippModule {
         $message = 'Folgende Antworten wurden eingetragen:<ul>';
         $tmpl    = '<li><span class="question">%s</span> <span class="anwer">%s</span></li>';
         foreach($this->questions as $question) {
-            $userAnswer = Input::post($question->key);
+            $userAnswer = \Input::post($question->key);
 
             if($userAnswer != $question->emptyValue) {
                 $this->Database->prepare("DELETE FROM tl_simpletipp_answer WHERE pid = ? AND member = ?")
                     ->execute($question->id, $this->User->id);
 
                 $this->Database->prepare(
-                    "INSERT INTO tl_simpletipp_answer (pid, member, answer)VALUES (?,?,?)")
+                    "INSERT INTO tl_simpletipp_answer (pid, member, answer) VALUES (?,?,?)")
                     ->execute($question->id, $this->User->id, $userAnswer);
                 $message .= sprintf($tmpl, $question->question, $userAnswer);
             }
         }
         $message .= '</ul>';
-        Simpletipp::addSimpletippMessage($message);
+        \Simpletipp::addSimpletippMessage($message);
         return true;
     }
 

@@ -6,12 +6,14 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
+
+namespace Simpletipp;
 
 
 class OpenLigaDB {
@@ -32,7 +34,7 @@ class OpenLigaDB {
     /**
      * Instantiate the OpenLigaDB object (Factory)
      *
-     * @return \OpenLigaDB The OpenLigaDB object
+     * @return OpenLigaDB The OpenLigaDB object
      */
     static public function getInstance() {
 
@@ -43,7 +45,7 @@ class OpenLigaDB {
     }
 
     public function __construct() {
-		$this->client = new SoapClient(OpenLigaDB::SOAP_URL, array(
+		$this->client = new \SoapClient(static::SOAP_URL, array(
                 'encoding'             => 'UTF-8',
                 'connection_timeout'   => 10,
                 'exceptions'           => 1,
@@ -67,7 +69,7 @@ class OpenLigaDB {
 
 	public function getMatchGoals($matchId) {
         try {
-            $params = new stdClass();
+            $params = new \stdClass();
             $params->MatchID = $matchId;
 
             $response = $this->client->GetGoalsByMatch($params);
@@ -94,7 +96,7 @@ class OpenLigaDB {
 		}
 
 		try {
-		    $params = new stdClass();
+		    $params = new \stdClass();
 			$params->leagueShortcut = $this->leagueShortcut;
 			$params->leagueSaison   = $this->leagueSaison;
 
@@ -117,7 +119,7 @@ class OpenLigaDB {
         }
 
         try {
-            $params = new stdClass();
+            $params = new \stdClass();
             $params->leagueShortcut = $this->leagueShortcut;
             $params->leagueSaison   = $this->leagueSaison;
 
@@ -135,7 +137,7 @@ class OpenLigaDB {
 
 	public function getLastLeagueChange() {
 		try {
-			$params = new stdClass;
+			$params = new \stdClass;
 			$params->leagueShortcut = $this->leagueShortcut;
 			$params->leagueSaison   = $this->leagueSaison;
 			$response = $this->client->GetLastChangeDateByLeagueSaison($params);

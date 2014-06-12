@@ -6,23 +6,26 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
+
+
 
 /**
  * Class SimpletippPokal
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
 
-class SimpletippPokal extends Backend {
+class SimpletippPokal extends \Backend {
     public static $groupAliases  = array('pokal_group', 'pokal_16', 'pokal_8', 'pokal_4', 'pokal_2', 'pokal_finale');
     private $groups              = array();
     private $nextGroup           = null;
@@ -34,7 +37,7 @@ class SimpletippPokal extends Backend {
         $this->loadLanguageFile('tl_simpletipp');
         $i = 0;
         foreach (static::$groupAliases as $alias) {
-            $group = new stdClass();
+            $group = new \stdClass();
             $group->index         = $i++;
             $group->alias         = $alias;
             $group->name          = $GLOBALS['TL_LANG']['tl_simpletipp'][$alias][0];
@@ -95,44 +98,44 @@ class SimpletippPokal extends Backend {
 
 
     public function calculate() {
-        $this->simpletipp = SimpletippModel::findByPk(Input::get('id'));
+        $this->simpletipp = \SimpletippModel::findByPk(\Input::get('id'));
         $result = $this->getGroups($this->simpletipp);
 
         if ($result === false) {
-            Message::add('Keine Pokalgruppen definiert.', 'TL_ERROR');
-            $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+            \Message::add('Keine Pokalgruppen definiert.', 'TL_ERROR');
+            $this->redirect(\Environment::get('script').'?do=simpletipp_groups');
         }
 
         if ($this->currentGroup != null) {
-            Message::add(sprintf('<strong>%s</strong> (%s-%s) läuft noch!', $this->currentGroup->name,
+            \Message::add(sprintf('<strong>%s</strong> (%s-%s) läuft noch!', $this->currentGroup->name,
                 $this->currentGroup->first, $this->currentGroup->last), 'TL_ERROR');
-            $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+            $this->redirect(\Environment::get('script').'?do=simpletipp_groups');
         }
 
         if ($this->nextGroup != null && $this->nextGroup->pairings != null) {
-            Message::add(sprintf('<strong>%s</strong> (%s-%s) wurde schon ausgelost!', $this->nextGroup->name,
+            \Message::add(sprintf('<strong>%s</strong> (%s-%s) wurde schon ausgelost!', $this->nextGroup->name,
                 $this->nextGroup->first, $this->nextGroup->last), 'TL_ERROR');
-            $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+            $this->redirect(\Environment::get('script').'?do=simpletipp_groups');
         }
         $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
             WHERE groupName IN ('".implode("','", $this->finishedGroup->matchgroups)."')
                             AND (result = ? OR isFinished = ?)")->execute('', 0);
 
         if ($result->numRows == 0) {
-            if (Input::get('confirm') == '1') {
+            if (\Input::get('confirm') == '1') {
                 $this->calculatePairs();
             }
             else {
-                Message::add(sprintf('<strong>%s</strong> (%s-%s) Wirklich auslosen? <button onclick="location.href=\'%s\'">Auslosen!</button>',
+                \Message::add(sprintf('<strong>%s</strong> (%s-%s) Wirklich auslosen? <button onclick="location.href=\'%s\'">Auslosen!</button>',
                     $this->nextGroup->name, $this->nextGroup->first, $this->nextGroup->last,
-                    Environment::get('request').'&confirm=1'), 'TL_CONFIRM');
+                    \Environment::get('request').'&confirm=1'), 'TL_CONFIRM');
             }
         }
         else {
-            Message::add(sprintf('<strong>%s</strong> (%s-%s): Es sind noch nicht alle Spiele eingetragen!', $this->finishedGroup->name,
+            \Message::add(sprintf('<strong>%s</strong> (%s-%s): Es sind noch nicht alle Spiele eingetragen!', $this->finishedGroup->name,
                 $this->finishedGroup->first, $this->finishedGroup->last), 'TL_ERROR');
         }
-        $this->redirect(Environment::get('script').'?do=simpletipp_groups');
+        $this->redirect(\Environment::get('script').'?do=simpletipp_groups');
     }
 
     private function calculatePairs() {
@@ -140,7 +143,7 @@ class SimpletippPokal extends Backend {
         $pairings = array();
         if ($this->finishedGroup === null) {
             // 8 Gruppen auslosen
-            $arrUserIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
+            $arrUserIds = \Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
             shuffle($arrUserIds);
 
             $total    = count($arrUserIds);
@@ -189,7 +192,7 @@ class SimpletippPokal extends Backend {
             WHERE id = ?")->execute(serialize($pairings), $this->simpletipp->id);
 
         $message = sprintf('Paarungen für <strong>%s</strong> ausgelost!', $this->nextGroup->name);
-        Message::add($message, 'TL_NEW');
+        \Message::add($message, 'TL_NEW');
         return true;
     }
 

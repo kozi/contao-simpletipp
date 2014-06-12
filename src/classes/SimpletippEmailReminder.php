@@ -6,7 +6,7 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -14,45 +14,48 @@
  */
 
 
+namespace Simpletipp;
+
+
 /**
  * Class SimpletippEmailReminder
  *
  * Provide methods to for email reminder
- * @copyright  Martin Kozianka 2012-2014
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */
-class SimpletippEmailReminder extends Backend {
+class SimpletippEmailReminder extends \Backend {
 
 
     public function tippReminder() {
-        System::loadLanguageFile('default');
+        \System::loadLanguageFile('default');
 
         $simpletippRes = $this->Database->executeUncached("SELECT * FROM tl_simpletipp");
         $hours         = 24;
         $now           = time();
 
         while($simpletippRes->next()) {
-            $match = Simpletipp::getNextMatch($simpletippRes->leagueID);
+            $match = \Simpletipp::getNextMatch($simpletippRes->leagueID);
 
             if ($match == null
                 || $simpletippRes->lastRemindedMatch == $match->id
                 || ($match->deadline > (($hours*3600)+$now))) {
                 // no next match found or already reminded or more than $hours to start
                 $message = sprintf('No next match found or already reminded or more than %s to start', $hours);
-                System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
+                \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
                 return false;
             }
 
-            $pageObj         = PageModel::findByIdOrAlias('spiele');
+            $pageObj         = \PageModel::findByIdOrAlias('spiele');
             $userNamesArr    = array();
             $emailSubject    = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
             $emailText       = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
-                $hours, $match->title, Date::parse('d.m.Y H:i', $match->deadline),
-                Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
+                $hours, $match->title, \Date::parse('d.m.Y H:i', $match->deadline),
+                \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
             $emailCount = 0;
-            foreach(Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
+            foreach(\Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
 
                 $emailSent = '';
                 if ($u['simpletipp_email_reminder'] == '1') {
@@ -74,14 +77,14 @@ class SimpletippEmailReminder extends Backend {
             $simpletippRes->save();
 
             $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
-                $match->title, Date::parse('d.m.Y H:i', $match->deadline));
-            System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
+                $match->title, \Date::parse('d.m.Y H:i', $match->deadline));
+            \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
         }
     }
 
 
     private function generateEmailObject($simpletippRes, $subject, $text = NULL) {
-        $email           = new Email();
+        $email           = new \Email();
         $email->from     = $simpletippRes->adminEmail;
         $email->fromName = $simpletippRes->adminName;
         $email->subject  = $subject;

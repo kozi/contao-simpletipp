@@ -7,14 +7,12 @@
 
 <?php if($this->questions): ?>
 
-    <?php if ($this->isPersonal): ?>
+<?php if ($this->isPersonal && !$this->finished): ?>
 
-        <?php echo $this->messages; ?>
-
-        <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
-        <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
-        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
-    <?php endif; ?>
+    <?php echo $this->messages; ?>
+    <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
+    <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+    <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 
     <?php foreach($this->questions as $q): ?>
         <fieldset class="question" id="<?php echo $q->key; ?>">
@@ -29,16 +27,26 @@
         </fieldset>
     <?php endforeach; ?>
 
-    <?php if ($this->isPersonal): ?>
-        <div class="submit_container">
-            <input tabindex="<?php echo $i;?>" type="submit" value="Abschicken" />
+    <div class="submit_container">
+        <input tabindex="<?php echo $i;?>" type="submit" value="Abschicken" />
+    </div>
+    </form>
+<?php endif; ?>
+
+<?php if ($this->finished): ?>
+    <h3>Antworten von <?php echo 'USER!'; ?></h3>
+    <?php foreach($this->questions as $q): ?>
+        <div class="question" id="<?php echo $q->key; ?>">
+            <p>
+                <?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]<br>
+                <strong><?php echo $q->userAnswer; ?></strong>
+            </p>
         </div>
-
-        </form>
-    <?php endif; ?>
-
+    <?php endforeach; ?>
 <?php endif; ?>
 
 
 
+
+<?php endif; ?>
 </div>

@@ -6,18 +6,21 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
+
+
 
 /**
  * Class Simpletipp
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -74,8 +77,8 @@ abstract class SimpletippModule extends \Module {
             $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp-statistics.css|screen|static";
         }
 
-        if (Input::get('user')) {
-            $userObj = MemberModel::findBy('username', Input::get('user'));
+        if (\Input::get('user')) {
+            $userObj = \MemberModel::findBy('username', \Input::get('user'));
             if ($userObj != null) {
                 $this->simpletippUserId = $userObj->id;
                 $_SESSION[Simpletipp::$SIMPLETIPP_USER_ID] = $this->simpletippUserId;
@@ -99,7 +102,7 @@ abstract class SimpletippModule extends \Module {
         }
 
         if ($this->avatarActive) {
-            $fileObj = FilesModel::findByPk($GLOBALS['TL_CONFIG']['avatar_fallback_image']);
+            $fileObj = \FilesModel::findByPk($GLOBALS['TL_CONFIG']['avatar_fallback_image']);
             $this->avatarFallback = $fileObj->path;
         }
 
@@ -107,9 +110,9 @@ abstract class SimpletippModule extends \Module {
     }
 
     public function setSimpletipp($simpletippId) {
-        $this->simpletipp       = SimpletippModel::findByPk($simpletippId);
+        $this->simpletipp       = \SimpletippModel::findByPk($simpletippId);
         if($this->simpletipp !== null) {
-            $this->simpletippGroups = Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
+            $this->simpletippGroups = \Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
             $this->pointFactors     = $this->simpletipp->getPointFactors();
             $this->pointSummary     = (Object) array('points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0);
         }
@@ -124,7 +127,7 @@ abstract class SimpletippModule extends \Module {
             $arrParticipantIds = $arrMemberIds;
         } else {
             $restrictToMember  = '';
-            $arrParticipantIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
+            $arrParticipantIds = \Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
         }
 
         $this->i = 1;
@@ -175,7 +178,7 @@ abstract class SimpletippModule extends \Module {
         $row->cssClass  = (($this->i % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i++;
         $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
 
-        $pageModel = PageModel::findByPk($this->simpletipp_matches_page);
+        $pageModel = \PageModel::findByPk($this->simpletipp_matches_page);
         if ($pageModel !== null) {
             $row->memberLink = self::generateFrontendUrl($pageModel->row(), '/user/'.$row->username.$params);
         }
@@ -217,7 +220,7 @@ abstract class SimpletippModule extends \Module {
 
             if ($cleanEntries) {
                 foreach ($data as &$item) {
-                    Simpletipp::cleanItem($item);
+                    \Simpletipp::cleanItem($item);
                 }
             }
             $objFile->write(serialize($data));

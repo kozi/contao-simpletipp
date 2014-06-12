@@ -6,7 +6,7 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -14,39 +14,38 @@
  */
 
 
-/**
- * Register the classes
- */
+ClassLoader::addNamespace('Simpletipp');
+
 ClassLoader::addClasses(array(
 
     // Classes
-	'OpenLigaDB'                    => 'system/modules/simpletipp/classes/OpenLigaDB.php',
-    'Simpletipp'                    => 'system/modules/simpletipp/classes/Simpletipp.php',
-    'SimpletippPoints'              => 'system/modules/simpletipp/classes/SimpletippPoints.php',
-    'SimpletippModule'              => 'system/modules/simpletipp/classes/SimpletippModule.php',
-    'SimpletippCallbacks'           => 'system/modules/simpletipp/classes/SimpletippCallbacks.php',
-    'SimpletippMatchUpdater'        => 'system/modules/simpletipp/classes/SimpletippMatchUpdater.php',
-    'SimpletippEmailReminder'       => 'system/modules/simpletipp/classes/SimpletippEmailReminder.php',
-    'SimpletippPokal'               => 'system/modules/simpletipp/classes/SimpletippPokal.php',
-    'PokalRangesField'              => 'system/modules/simpletipp/classes/PokalRangesField.php',
+	'Simpletipp\OpenLigaDB'                    => 'system/modules/simpletipp/classes/OpenLigaDB.php',
+    'Simpletipp\Simpletipp'                    => 'system/modules/simpletipp/classes/Simpletipp.php',
+    'Simpletipp\SimpletippPoints'              => 'system/modules/simpletipp/classes/SimpletippPoints.php',
+    'Simpletipp\SimpletippModule'              => 'system/modules/simpletipp/classes/SimpletippModule.php',
+    'Simpletipp\SimpletippCallbacks'           => 'system/modules/simpletipp/classes/SimpletippCallbacks.php',
+    'Simpletipp\SimpletippMatchUpdater'        => 'system/modules/simpletipp/classes/SimpletippMatchUpdater.php',
+    'Simpletipp\SimpletippEmailReminder'       => 'system/modules/simpletipp/classes/SimpletippEmailReminder.php',
+    'Simpletipp\SimpletippPokal'               => 'system/modules/simpletipp/classes/SimpletippPokal.php',
+    'Simpletipp\PokalRangesField'              => 'system/modules/simpletipp/classes/PokalRangesField.php',
 
     // Models
-    'MatchModel'                    => 'system/modules/simpletipp/models/MatchModel.php',
-    'SimpletippModel'               => 'system/modules/simpletipp/models/SimpletippModel.php',
+    'Simpletipp\MatchModel'                    => 'system/modules/simpletipp/models/MatchModel.php',
+    'Simpletipp\SimpletippModel'               => 'system/modules/simpletipp/models/SimpletippModel.php',
 
     // Modules
-    'SimpletippUserselect'          => 'system/modules/simpletipp/modules/SimpletippUserselect.php',
-    'SimpletippHighscore'           => 'system/modules/simpletipp/modules/SimpletippHighscore.php',
-    'SimpletippMatches'             => 'system/modules/simpletipp/modules/SimpletippMatches.php',
-    'SimpletippMatch'               => 'system/modules/simpletipp/modules/SimpletippMatch.php',
-    'SimpletippQuestions'           => 'system/modules/simpletipp/modules/SimpletippQuestions.php',
-    'SimpletippCalendar'            => 'system/modules/simpletipp/modules/SimpletippCalendar.php',
-    'SimpletippRanking'             => 'system/modules/simpletipp/modules/SimpletippRanking.php',
-    'SimpletippModulePokal'         => 'system/modules/simpletipp/modules/SimpletippModulePokal.php',
-    'SimpletippNotTipped'           => 'system/modules/simpletipp/modules/SimpletippNotTipped.php',
+    'Simpletipp\SimpletippUserselect'          => 'system/modules/simpletipp/modules/SimpletippUserselect.php',
+    'Simpletipp\SimpletippHighscore'           => 'system/modules/simpletipp/modules/SimpletippHighscore.php',
+    'Simpletipp\SimpletippMatches'             => 'system/modules/simpletipp/modules/SimpletippMatches.php',
+    'Simpletipp\SimpletippMatch'               => 'system/modules/simpletipp/modules/SimpletippMatch.php',
+    'Simpletipp\SimpletippQuestions'           => 'system/modules/simpletipp/modules/SimpletippQuestions.php',
+    'Simpletipp\SimpletippCalendar'            => 'system/modules/simpletipp/modules/SimpletippCalendar.php',
+    'Simpletipp\SimpletippRanking'             => 'system/modules/simpletipp/modules/SimpletippRanking.php',
+    'Simpletipp\SimpletippModulePokal'         => 'system/modules/simpletipp/modules/SimpletippModulePokal.php',
+    'Simpletipp\SimpletippNotTipped'           => 'system/modules/simpletipp/modules/SimpletippNotTipped.php',
 
     // Elements
-    'ContentSimpletippStatistics'   => 'system/modules/simpletipp/elements/ContentSimpletippStatistics.php',
+    'Simpletipp\ContentSimpletippStatistics'   => 'system/modules/simpletipp/elements/ContentSimpletippStatistics.php',
 
 ));
 

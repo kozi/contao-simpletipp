@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippNotTipped
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -27,7 +28,7 @@ class SimpletippNotTipped extends SimpletippModule {
 
 	public function generate() {
 		if (TL_MODE == 'BE') {
-			$this->Template = new BackendTemplate('be_wildcard');
+			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard = '### SimpletippNotTipped ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
@@ -41,13 +42,13 @@ class SimpletippNotTipped extends SimpletippModule {
 	protected function compile() {
         $userArr = array();
 
-        $match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
+        $match = \Simpletipp::getNextMatch($this->simpletipp->leagueID);
         if ($match == null) {
             // no next match
             return;
         }
 
-        foreach(Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
+        foreach(\Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
             $userArr[] =  $u['firstname'].' '.$u['lastname'];
         }
 

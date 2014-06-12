@@ -6,18 +6,19 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
+namespace Simpletipp;
 
 /**
  * Class SimpletippMatches
  *
- * @copyright  Martin Kozianka 2011-2013
+ * @copyright  Martin Kozianka 2011-2014
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -36,7 +37,7 @@ class SimpletippMatches extends SimpletippModule {
 
 
 		if (TL_MODE == 'BE') {
-			$this->Template = new BackendTemplate('be_wildcard');
+			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippMatches ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
@@ -54,7 +55,7 @@ class SimpletippMatches extends SimpletippModule {
         global $objPage;
 
 		// Die übergebenen Tipps eintragen
-		if (Input::post('FORM_SUBMIT') === $this->formId) {
+		if (\Input::post('FORM_SUBMIT') === $this->formId) {
 			$this->processTipps();
 			$this->redirect($this->addToUrl(''));
 		}
@@ -64,18 +65,18 @@ class SimpletippMatches extends SimpletippModule {
 
         $this->Template->simpletipp = $this->simpletipp;
 
-        $this->Template->member     = \Contao\MemberModel::findByPk($this->simpletippUserId);
+        $this->Template->member     = \MemberModel::findByPk($this->simpletippUserId);
         $this->Template->isPersonal = $this->isPersonal;
 
         $this->Template->filter     = $this->getMatchFilter();
         $this->Template->matches    = $this->getMatches();
 
         $this->Template->formId     = $this->formId;
-        $this->Template->action     = ampersand(Environment::get('request'));
+        $this->Template->action     = ampersand(\Environment::get('request'));
         $this->Template->isMobile   = $this->isMobile;
 
 		$this->Template->summary    = $this->pointSummary;
-		$this->Template->messages   = Simpletipp::getSimpletippMessages();
+		$this->Template->messages   = \Simpletipp::getSimpletippMessages();
 	}
 
 	private function getMatches() {
@@ -111,7 +112,7 @@ class SimpletippMatches extends SimpletippModule {
 		}
 
 		$i            = 0;
-        $pageObj      = PageModel::findByPk($this->simpletipp_match_page);
+        $pageObj      = \PageModel::findByPk($this->simpletipp_match_page);
         $pageRow      = ($pageObj !=null) ? $pageObj->row() : null;
         $currentGroup = 0;
 
@@ -123,7 +124,7 @@ class SimpletippMatches extends SimpletippModule {
 			$match->date        = date($GLOBALS['TL_CONFIG']['datimFormat'], $match->deadline);
 			$match->date_title  = $match->date;
 
-            $pointObj           = new SimpletippPoints($this->pointFactors, $match->perfect, $match->difference, $match->tendency);
+            $pointObj           = new \SimpletippPoints($this->pointFactors, $match->perfect, $match->difference, $match->tendency);
 			$match->points      = $pointObj->points;
 
             $match->cssClass    = ($i++ % 2 === 0 ) ? 'odd':'even';
@@ -151,8 +152,7 @@ class SimpletippMatches extends SimpletippModule {
 			$match->alias_h = standardize($teams[0]);
 			$match->alias_a = standardize($teams[1]);
 
-
-            Simpletipp::convertIconLinks($match);
+            \Simpletipp::convertIconLinks($match);
 
             $matches[] = $match;
 
@@ -163,7 +163,7 @@ class SimpletippMatches extends SimpletippModule {
 	}
 	
 	private function setMatchFilter() {
-        $this->matches_filter           = new stdClass;
+        $this->matches_filter           = new \stdClass;
 		$this->matches_filter->type     = '';
 		$this->matches_filter->stmt     = '';
 		$this->matches_filter->params   = array();
@@ -171,9 +171,9 @@ class SimpletippMatches extends SimpletippModule {
 		$this->matches_filter->order_by = ' ORDER BY deadline, matches.id ASC';
 
 		// matchgroup filter
-        $group   = (Input::get('group') !== null) ? urldecode(Input::get('group')) : null;
-		$date    = Input::get('date');
-		$matches = Input::get('matches');
+        $group   = (\Input::get('group') !== null) ? urldecode(\Input::get('group')) : null;
+		$date    = \Input::get('date');
+		$matches = \Input::get('matches');
 
 		if ($group === null && $date === null && $matches === null) {
 			$this->redirect($this->addToUrl('matches=current&date=&group='));
@@ -248,7 +248,7 @@ class SimpletippMatches extends SimpletippModule {
 
 	private function getMatchFilter() {
         $tmplStr     = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';
-        $tmpl        = new FrontendTemplate($tmplStr);
+        $tmpl        = new \FrontendTemplate($tmplStr);
         $date_filter = array();
 
         $lastArr     = array(9);
@@ -309,8 +309,8 @@ class SimpletippMatches extends SimpletippModule {
 		if (!FE_USER_LOGGED_IN) {
 			return false;
 		}
-        $ids   = Input::post('match_ids');
-        $tipps = Input::post('tipps');
+        $ids   = \Input::post('match_ids');
+        $tipps = \Input::post('tipps');
 
 		$to_db = array();
 		
@@ -319,7 +319,7 @@ class SimpletippMatches extends SimpletippModule {
 		
 			for ($i=0;$i < count($ids);$i++) {
 				$id    = intval($ids[$i]);
-				$tipp  = Simpletipp::cleanupTipp($tipps[$i]);
+				$tipp  = \Simpletipp::cleanupTipp($tipps[$i]);
 
 				if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp)) {
 					$to_db[$id] = $tipp;
@@ -359,7 +359,7 @@ class SimpletippMatches extends SimpletippModule {
                 $message = $GLOBALS['TL_LANG']['simpletipp']['message_inserted'];
             }
         }
-        Simpletipp::addSimpletippMessage($message);
+        \Simpletipp::addSimpletippMessage($message);
         return true;
 	}
 
@@ -388,7 +388,7 @@ class SimpletippMatches extends SimpletippModule {
 
         // Send to user
         if ($this->User->simpletipp_email_confirmation == '1') {
-            $email           = new Email();
+            $email           = new \Email();
             $email->from     = $this->simpletipp->adminEmail;
             $email->fromName = $this->simpletipp->adminName;
             $email->subject  = $subject;
@@ -398,7 +398,7 @@ class SimpletippMatches extends SimpletippModule {
         }
 
         // Send encoded to admin
-        $email           = new Email();
+        $email           = new \Email();
         $email->from     = $this->simpletipp->adminEmail;
         $email->fromName = $this->simpletipp->adminName;
         $email->subject  = $subject;
@@ -411,7 +411,7 @@ class SimpletippMatches extends SimpletippModule {
 
     private function finishedMatches() {
 
-        $matchEnd = time() - Simpletipp::$MATCH_LENGTH;
+        $matchEnd = time() - \Simpletipp::$MATCH_LENGTH;
         $result   = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
                WHERE leagueID = ? AND deadline < ? AND isFinished = ?")
             ->execute($this->simpletipp->leagueID, $matchEnd, 0);

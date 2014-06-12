@@ -6,7 +6,7 @@
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2012-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -127,7 +127,7 @@ class tl_simpletipp_tipp extends Backend {
 
 		$result = $this->Database->execute('SELECT id, title, result, groupName FROM tl_simpletipp_match ORDER BY deadline');
 		while($result->next()) {
-			$match = new stdClass;
+			$match = new \stdClass;
 			$match->id     = $result->id;
 			$match->title  = $result->title;
             $match->result = $result->result;
@@ -172,10 +172,10 @@ class tl_simpletipp_tipp extends Backend {
 			$args[2]  = $tipp;
 			$args[3]  = $m->result;
 
-            $points   = Simpletipp::getPoints($m->result, $tipp);
+            $points   = \Simpletipp::getPoints($m->result, $tipp);
             $c        = $points->getPointsClass();
             $args[4]  = sprintf('<i class="%s">%s</i>', $c, strtoupper(substr($c, 0, 1)));
-			$args[5]  = Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
+			$args[5]  = \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
 		}
 		return $args;
 	}
