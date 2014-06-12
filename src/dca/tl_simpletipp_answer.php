@@ -127,6 +127,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 		'answer' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_answer']['answer'],
+            'eval'                    => array('decodeEntities' => false),
             'sql'                     => "varchar(255) NOT NULL default ''",
         )
 		

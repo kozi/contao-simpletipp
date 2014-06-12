@@ -28,7 +28,7 @@ namespace Simpletipp;
 class SimpletippCallbacks extends \Backend {
 
 
-	public function addCustomRegexp($strRegexp, $varValue, Widget $objWidget) {
+	public function addCustomRegexp($strRegexp, $varValue, \Widget $objWidget) {
 		if ($strRegexp == 'SimpletippFactor') {
 			if (!preg_match('#^[0-9]{1,6},[0-9]{1,6},[0-9]{1,6}$#', $varValue)) {
 				$objWidget->addError('Format must be <strong>NUMBER,NUMBER,NUMBER</strong>.');
