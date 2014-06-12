@@ -93,8 +93,8 @@ class SimpletippQuestions extends SimpletippModule {
     }
 
     private function processAnswers() {
-        $message = 'Folgende Antworten wurden eingetragen:<ul>';
-        $tmpl    = '<li><span class="question">%s</span> <span class="anwer">%s</span></li>';
+        $message = 'Folgende Antworten wurden eingetragen:<ul>'."\n";
+        $tmpl    = '<li><span class="question">%s</span> <span class="anwer">%s</span></li>'."\n";
         foreach($this->questions as $question) {
             $userAnswer = \Input::post($question->key);
 
@@ -108,8 +108,33 @@ class SimpletippQuestions extends SimpletippModule {
                 $message .= sprintf($tmpl, $question->question, $userAnswer);
             }
         }
-        $message .= '</ul>';
+        $message .= '</ul>'."\n\n";
         \Simpletipp::addSimpletippMessage($message);
+
+        $subject = 'Quiz - '.date('d.m.Y H:i:s').' '.$this->User->firstname.' '.$this->User->lastname;
+        $content = strip_tags($message);
+
+        // Send to user
+        if ($this->User->simpletipp_email_confirmation == '1') {
+            $email           = new \Email();
+            $email->from     = $this->simpletipp->adminEmail;
+            $email->fromName = $this->simpletipp->adminName;
+            $email->subject  = $subject;
+            $email->text     = $content;
+            $email->replyTo($this->User->email);
+            $email->sendTo($this->User->email);
+        }
+
+        // Send encoded to admin
+        $email           = new \Email();
+        $email->from     = $this->simpletipp->adminEmail;
+        $email->fromName = $this->simpletipp->adminName;
+        $email->subject  = $subject;
+        $email->text     = base64_encode($content);
+        $email->replyTo($this->User->email);
+        $email->sendTo($GLOBALS['TL_ADMIN_EMAIL']);
+
+
         return true;
     }
 

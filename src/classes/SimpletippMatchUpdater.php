@@ -69,9 +69,7 @@ class SimpletippMatchUpdater extends \Backend {
         $openligaLastChanged    = strtotime($this->oldb->getLastLeagueChange());
         $simpletippLastChanged  = intval($simpletippObj->lastChanged);
 
-
-        // TODO TEMP TEMP TEMP
-        if (true || $simpletippLastChanged != $openligaLastChanged || \MatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
+        if ($simpletippLastChanged != $openligaLastChanged || \MatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
             $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
