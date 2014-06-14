@@ -27,7 +27,9 @@ namespace Simpletipp;
  */
 class SimpletippMatchUpdater extends \Backend {
     private static $lookupLockSeconds     = 180;
-    private static $resultTypeEndergebnis = 2;
+
+    // TODO Typen auswählbar machen in der Tipprunde
+    private static $resultTypeEndergebnis = 3;
     private static $resultTypeHalbzeit    = 1;
 
 
@@ -69,7 +71,10 @@ class SimpletippMatchUpdater extends \Backend {
         $openligaLastChanged    = strtotime($this->oldb->getLastLeagueChange());
         $simpletippLastChanged  = intval($simpletippObj->lastChanged);
 
-        if ($simpletippLastChanged != $openligaLastChanged || \MatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
+        //
+        // TODO
+        //
+        if (true || $simpletippLastChanged != $openligaLastChanged || \MatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
             $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
