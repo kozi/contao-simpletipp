@@ -152,8 +152,9 @@ class Simpletipp extends \System {
         $result = \Database::getInstance()->prepare("SELECT tblu.*
              FROM tl_member as tblu
              LEFT JOIN tl_simpletipp_tipp AS tblt
-             ON ( tblu.id = tblt.member_id AND tblt.match_id = ? AND tblu.groups LIKE ?)
+             ON ( tblu.id = tblt.member_id AND tblt.match_id = ?)
              WHERE tblt.id IS NULL
+             AND CONVERT(tblu.groups USING utf8) LIKE ?
              ORDER BY tblu.lastname")->execute($match_id, $participantStr);
 
         $arrUser = array();
