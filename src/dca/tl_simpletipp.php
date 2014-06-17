@@ -164,7 +164,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                     => "varchar(10) NOT NULL default ''",
         ),
-		'leagueID' => array
+        //'matchResultType'   => array(
+        // TODO
+        // ),
+		'leagueID'     => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueID'],
 			'exclude'                 => true,

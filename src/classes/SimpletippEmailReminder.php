@@ -44,44 +44,43 @@ class SimpletippEmailReminder extends \Backend {
                 // no next match found or already reminded or more than $hours to start
                 $message = sprintf('No next match found or already reminded or more than %s to start', $hours);
                 \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
-                return false;
             }
+            else {
+                $pageObj         = \PageModel::findByIdOrAlias('spiele');
+                $userNamesArr    = array();
+                $emailSubject    = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
+                $emailText       = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
+                    $hours, $match->title, \Date::parse('d.m.Y H:i', $match->deadline),
+                    \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
-            $pageObj         = \PageModel::findByIdOrAlias('spiele');
-            $userNamesArr    = array();
-            $emailSubject    = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
-            $emailText       = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
-                $hours, $match->title, \Date::parse('d.m.Y H:i', $match->deadline),
-                \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
+                $emailCount = 0;
+                foreach(\Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
 
-            $emailCount = 0;
-            foreach(\Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
+                    $emailSent = '';
+                    if ($u['simpletipp_email_reminder'] == '1') {
+                        $email = $this->generateEmailObject($simpletippRes, $emailSubject, $emailText);
+                        $email->sendTo($u['email']);
+                        $emailSent = '@ ';
+                        $emailCount++;
+                    }
 
-                $emailSent = '';
-                if ($u['simpletipp_email_reminder'] == '1') {
-                    $email = $this->generateEmailObject($simpletippRes, $emailSubject, $emailText);
-                    $email->sendTo($u['email']);
-                    $emailSent = '@ ';
-                    $emailCount++;
+                    $userNamesArr[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
                 }
 
-                $userNamesArr[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
-            }
+                $email       = $this->generateEmailObject($simpletippRes, 'Tipperinnerung verschickt!');
+                $email->text = "Tipperinnerung an folgende Tipper verschickt:\n\n".implode("\n", $userNamesArr)."\n\n";
+                $email->sendTo($simpletippRes->adminEmail);
 
-            $email       = $this->generateEmailObject($simpletippRes, 'Tipperinnerung verschickt!');
-            $email->text = "Tipperinnerung an folgende Tipper verschickt:\n\n".implode("\n", $userNamesArr)."\n\n";
-            $email->sendTo($simpletippRes->adminEmail);
+                // Update lastRemindedMatch witch current match_id
+                $simpletippRes->lastRemindedMatch = $match->id;
+                $simpletippRes->save();
 
-            // Update lastRemindedMatch witch current match_id
-            $simpletippRes->lastRemindedMatch = $match->id;
-            $simpletippRes->save();
-
-            $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
-                $match->title, \Date::parse('d.m.Y H:i', $match->deadline));
-            \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
+                $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
+                    $match->title, \Date::parse('d.m.Y H:i', $match->deadline));
+                \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
+            } // END else
         }
     }
-
 
     private function generateEmailObject($simpletippRes, $subject, $text = NULL) {
         $email           = new \Email();
