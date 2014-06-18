@@ -107,9 +107,8 @@ class SimpletippMatch extends SimpletippModule {
                     '/group/'.$tipp->groupName.'/user/'.$tipp->username);
             }
 
-
-
-			if (!$this->isStarted) {
+			// Alle Tipps bis auf den eigenen vor Spielstart ausblenden
+            if (!$this->isStarted && $tipp->member_id != $this->User->id) {
 				$tipp->tipp = "?:?";
 			}
 
@@ -140,6 +139,7 @@ class SimpletippMatch extends SimpletippModule {
         $this->Template->isMobile     = $this->isMobile;
         $this->Template->avatarActive = $this->avatarActive;
         $this->Template->match        = $this->match;
+        $this->Template->isStarted    = $this->isStarted;
         $this->Template->count        = $count;
 		$this->Template->tipps        = $tipps;
 		$this->Template->summary      = $this->pointSummary;

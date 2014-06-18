@@ -5,6 +5,9 @@
     <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
+
+
+
 <?php if ($this->match): ?>
 <table>
     <thead>
@@ -34,6 +37,8 @@
         </td>
     </tr>
 
+
+    <?php if($this->isStarted): ?>
     <tr>
         <td colspan="4">
             <div class="bar_wrapper">
@@ -43,6 +48,7 @@
             </div>
         </td>
     </tr>
+    <?php endif;?>
 
     <tr>
         <th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
