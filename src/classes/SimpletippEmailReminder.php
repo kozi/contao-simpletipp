@@ -27,19 +27,18 @@ namespace Simpletipp;
  */
 class SimpletippEmailReminder extends \Backend {
 
-
     public function tippReminder() {
         \System::loadLanguageFile('default');
 
-        $simpletippRes = $this->Database->executeUncached("SELECT * FROM tl_simpletipp");
-        $hours         = 24;
-        $now           = time();
+        $simpletippModel = SimpletippModel::findAll();
+        $hours           = 24;
+        $now             = time();
 
-        while($simpletippRes->next()) {
-            $match = \Simpletipp::getNextMatch($simpletippRes->leagueID);
+        foreach ($simpletippModel as $simpletippObj) {
+            $match = \Simpletipp::getNextMatch($simpletippObj->leagueID);
 
             if ($match == null
-                || $simpletippRes->lastRemindedMatch == $match->id
+                || $simpletippObj->lastRemindedMatch == $match->id
                 || ($match->deadline > (($hours*3600)+$now))) {
                 // no next match found or already reminded or more than $hours to start
                 $message = sprintf('No next match found or already reminded or more than %s to start', $hours);
@@ -54,11 +53,11 @@ class SimpletippEmailReminder extends \Backend {
                     \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
                 $emailCount = 0;
-                foreach(\Simpletipp::getNotTippedUser($simpletippRes->participant_group, $match->id) as $u) {
+                foreach(\Simpletipp::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u) {
 
                     $emailSent = '';
                     if ($u['simpletipp_email_reminder'] == '1') {
-                        $email = $this->generateEmailObject($simpletippRes, $emailSubject, $emailText);
+                        $email = $this->generateEmailObject($simpletippObj, $emailSubject, $emailText);
                         $email->sendTo($u['email']);
                         $emailSent = '@ ';
                         $emailCount++;
@@ -67,13 +66,13 @@ class SimpletippEmailReminder extends \Backend {
                     $userNamesArr[] = $emailSent.$u['firstname'].' '.$u['lastname'].' ('.$u['username'].')';
                 }
 
-                $email       = $this->generateEmailObject($simpletippRes, 'Tipperinnerung verschickt!');
+                $email       = $this->generateEmailObject($simpletippObj, 'Tipperinnerung verschickt!');
                 $email->text = "Tipperinnerung an folgende Tipper verschickt:\n\n".implode("\n", $userNamesArr)."\n\n";
-                $email->sendTo($simpletippRes->adminEmail);
+                $email->sendTo($simpletippObj->adminEmail);
 
                 // Update lastRemindedMatch witch current match_id
-                $simpletippRes->lastRemindedMatch = $match->id;
-                $simpletippRes->save();
+                $simpletippObj->lastRemindedMatch = $match->id;
+                $simpletippObj->save();
 
                 $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
                     $match->title, \Date::parse('d.m.Y H:i', $match->deadline));

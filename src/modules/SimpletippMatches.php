@@ -35,6 +35,8 @@ class SimpletippMatches extends SimpletippModule {
         // So maybe the current result is not the final one
         $this->finishedMatches();
 
+        $this->import('SimpletippEmailReminder');
+        $this->SimpletippEmailReminder->tippReminder();
 
 		if (TL_MODE == 'BE') {
 			$this->Template = new \BackendTemplate('be_wildcard');
