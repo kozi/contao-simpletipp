@@ -30,7 +30,7 @@ ClassLoader::addClasses(array(
     'Simpletipp\PokalRangesField'              => 'system/modules/simpletipp/classes/PokalRangesField.php',
 
     // Models
-    'Simpletipp\MatchModel'                    => 'system/modules/simpletipp/models/MatchModel.php',
+    'Simpletipp\SimpletippMatchModel'          => 'system/modules/simpletipp/models/SimpletippMatchModel.php',
     'Simpletipp\SimpletippModel'               => 'system/modules/simpletipp/models/SimpletippModel.php',
 
     // Modules

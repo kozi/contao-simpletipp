@@ -43,11 +43,11 @@ class SimpletippMatch extends SimpletippModule {
         $matchAlias = \Input::get('match');
 
         if (is_numeric($matchAlias)) {
-            $this->match = \MatchModel::findByPk($matchAlias);
+            $this->match = \SimpletippMatchModel::findByPk($matchAlias);
         }
         else {
             // get matchId from team short names
-            $this->match = \MatchModel::findByShortNames($matchAlias);
+            $this->match = \SimpletippMatchModel::findByShortNames($matchAlias);
         }
 
         if ($this->match == null) {

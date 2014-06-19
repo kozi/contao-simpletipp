@@ -71,7 +71,7 @@ class SimpletippMatchUpdater extends \Backend {
         $openligaLastChanged    = strtotime($this->oldb->getLastLeagueChange());
         $simpletippLastChanged  = intval($simpletippObj->lastChanged);
 
-        if ($simpletippLastChanged != $openligaLastChanged || \MatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
+        if (true || $simpletippLastChanged != $openligaLastChanged || \SimpletippMatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
             $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
@@ -228,19 +228,17 @@ class SimpletippMatchUpdater extends \Backend {
             return false;
         }
 
-        $matchIDs   = array();
         $newMatches = array();
 
         foreach($matches as $match) {
             $tmp          = get_object_vars($match);
-            $matchIDs[]   = $tmp['matchID'];
+            $matchId      = $tmp['matchID'];
 
             // GroupName
             $arrGroup    = \Simpletipp::groupMapper($tmp);
 
             $results      = self::parseResults($tmp['matchResults']);
             $newMatch     = array(
-                'id'              => $tmp['matchID'],
                 'leagueID'        => $tmp['leagueID'],
                 'groupID'         => $arrGroup['id'],
                 'deadline'        => strtotime($tmp['matchDateTimeUTC']),
@@ -262,18 +260,33 @@ class SimpletippMatchUpdater extends \Backend {
                 'resultFirst'     => $results[0],
                 'result'          => $results[1],
             );
-            $newMatches[] = $newMatch;
+            $newMatches[$matchId] = $newMatch;
         }
 
-        $this->Database->execute("DELETE FROM tl_simpletipp_match WHERE id IN ('"
-            .implode("', '", $matchIDs)."')");
+        $arrMatchIds = array_keys($newMatches);
+        // update existing matches
+        foreach(\SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch) {
+            $matchId = intval($objMatch->id);
 
-        foreach($newMatches as $arrMatch) {
-            $objMatch = new \MatchModel();
+            if (array_key_exists($objMatch->id, $newMatches)) {
+                $objMatch->setRow($newMatches[$matchId]);
+                $objMatch->save();
+                unset($newMatches[$matchId]);
+            }
+
+        }
+
+        // add new matches
+        foreach($newMatches as $matchId => $arrMatch) {
+            $objMatch       = new \SimpletippMatchModel();
+            $arrMatch['id'] = $matchId;
+
             $objMatch->setRow($arrMatch);
             $objMatch->save();
         }
-        return $matchIDs;
+
+
+        return $arrMatchIds;
     }
 
     private static function parseResults($matchResults) {

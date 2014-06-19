@@ -17,7 +17,7 @@ namespace Simpletipp;
 
 
 
-class MatchModel extends \Model {
+class SimpletippMatchModel extends \Model {
 
     /**
      * Table name
