@@ -267,13 +267,11 @@ class SimpletippMatchUpdater extends \Backend {
         // update existing matches
         foreach(\SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch) {
             $matchId = intval($objMatch->id);
-
             if (array_key_exists($objMatch->id, $newMatches)) {
                 $objMatch->setRow($newMatches[$matchId]);
                 $objMatch->save();
                 unset($newMatches[$matchId]);
             }
-
         }
 
         // add new matches
@@ -284,7 +282,6 @@ class SimpletippMatchUpdater extends \Backend {
             $objMatch->setRow($arrMatch);
             $objMatch->save();
         }
-
 
         return $arrMatchIds;
     }
