@@ -36,12 +36,20 @@ class SimpletippMatchUpdater extends \Backend {
     public function updateMatches() {
         $id     = (\Input::get('id') !== null) ? intval(\Input::get('id')) : 0;
 
+        if ($id === 0) {
+            $objSimpletippCollection =  \SimpletippModel::findAll();
+            $manualUpdate            = false;
+        }
+        else {
+            $objSimpletippCollection = \SimpletippModel::findBy('id', $id);
+            $manualUpdate            = true;
+        }
 
 
-        $objSimpletippCollection = ($id === 0) ? \SimpletippModel::findAll() : \SimpletippModel::findBy('id', $id);
+
 
         foreach($objSimpletippCollection as $objSimpletipp) {
-            $message       = $this->updateSimpletippMatches($objSimpletipp);
+            $message       = $this->updateSimpletippMatches($objSimpletipp, $manualUpdate);
             if ('update' === \Input::get('key')) {
                 \Message::add($message, TL_INFO);
                 $this->redirect(\Environment::get('script').'?do=simpletipp_groups');
@@ -53,7 +61,7 @@ class SimpletippMatchUpdater extends \Backend {
     }
 
 
-    public function updateSimpletippMatches(&$simpletippObj) {
+    public function updateSimpletippMatches(&$simpletippObj, $forceUpdate = false) {
         $leagueInfos = unserialize($simpletippObj->leagueInfos);
 
         if ($this->lastLookupOnlySecondsAgo($simpletippObj)) {
@@ -64,14 +72,13 @@ class SimpletippMatchUpdater extends \Backend {
             return $message;
         }
 
-
         $this->oldb = \OpenLigaDB::getInstance();
         $this->oldb->setLeague($leagueInfos);
 
         $openligaLastChanged    = strtotime($this->oldb->getLastLeagueChange());
         $simpletippLastChanged  = intval($simpletippObj->lastChanged);
 
-        if ($simpletippLastChanged != $openligaLastChanged || \SimpletippMatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
+        if ($forceUpdate || $simpletippLastChanged != $openligaLastChanged || \SimpletippMatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
             $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
@@ -267,8 +274,11 @@ class SimpletippMatchUpdater extends \Backend {
         // update existing matches
         foreach(\SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch) {
             $matchId = intval($objMatch->id);
+
             if (array_key_exists($objMatch->id, $newMatches)) {
-                $objMatch->setRow($newMatches[$matchId]);
+                foreach($newMatches[$matchId] as $key => $value) {
+                    $objMatch->$key = $value;
+                }
                 $objMatch->save();
                 unset($newMatches[$matchId]);
             }
