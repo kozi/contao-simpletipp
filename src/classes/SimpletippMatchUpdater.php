@@ -29,6 +29,8 @@ class SimpletippMatchUpdater extends \Backend {
     private static $lookupLockSeconds     = 180;
 
     // TODO Typen auswählbar machen in der Tipprunde
+    // TODO Prioritäten festlegen d.h. die resultTypes in eine Reihenfolge bringen
+    private static $resultTypeNach11Meter = 4;
     private static $resultTypeEndergebnis = 3;
     private static $resultTypeHalbzeit    = 1;
 
@@ -245,6 +247,8 @@ class SimpletippMatchUpdater extends \Backend {
             $arrGroup    = \Simpletipp::groupMapper($tmp);
 
             $results      = self::parseResults($tmp['matchResults']);
+
+
             $newMatch     = array(
                 'leagueID'        => $tmp['leagueID'],
                 'groupID'         => $arrGroup['id'],
@@ -267,6 +271,9 @@ class SimpletippMatchUpdater extends \Backend {
                 'resultFirst'     => $results[0],
                 'result'          => $results[1],
             );
+
+            var_dump($newMatch['title'], $newMatch['result']);
+
             $newMatches[$matchId] = $newMatch;
         }
 
@@ -304,14 +311,27 @@ class SimpletippMatchUpdater extends \Backend {
             return array($rFirst, $rFinal);
         }
 
+        $arrResults = array();
         foreach ($matchResults->matchResult as $res) {
-            if ($res->resultTypeId === self::$resultTypeHalbzeit) {
-                $rFirst = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
-            }
-            if ($res->resultTypeId === self::$resultTypeEndergebnis) {
-                $rFinal = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
-            }
+            $arrResults[$res->resultTypeId] = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
         }
+
+        // Halbzeitergebnis
+        if (array_key_exists(self::$resultTypeHalbzeit, $arrResults)) {
+            $rFirst = $arrResults[self::$resultTypeHalbzeit];
+        }
+
+        // Endergebnisse
+        if (array_key_exists(self::$resultTypeEndergebnis, $arrResults)) {
+            $rFinal = $arrResults[self::$resultTypeEndergebnis];
+        }
+
+        if (array_key_exists(self::$resultTypeNach11Meter, $arrResults)) {
+            $rFinal = $arrResults[self::$resultTypeNach11Meter];
+        }
+
+
+
         return array($rFirst, $rFinal);
     }
 
