@@ -271,9 +271,6 @@ class SimpletippMatchUpdater extends \Backend {
                 'resultFirst'     => $results[0],
                 'result'          => $results[1],
             );
-
-            var_dump($newMatch['title'], $newMatch['result']);
-
             $newMatches[$matchId] = $newMatch;
         }
 
