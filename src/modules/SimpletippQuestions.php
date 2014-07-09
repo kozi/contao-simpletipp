@@ -87,23 +87,24 @@ class SimpletippQuestions extends SimpletippModule {
             while($result->next()) {
                 $question             = &$this->questions[$result->pid];
                 $objMember            = &$participants[$result->member];
+                $objMember->theAnswer = $result->answer;
 
                 if ($objMember === null) {
                     continue;
                 }
 
-                if (in_array($result->theAnswer, $question->results)) {
+                if (in_array($objMember->theAnswer, $question->results)) {
                     $objMember->questionPoints += $question->points;
                 }
 
-                $objMember->theAnswer = $result->answer;
+
                 $clonedMember         = clone $objMember;
 
-                $question->answers[$result->answer]->member[] = $clonedMember;
-                $question->answers[$result->answer]->count++;
+                $question->answers[$objMember->theAnswer]->member[] = $clonedMember;
+                $question->answers[$objMember->theAnswer]->count++;
 
                 if ($result->member == $this->simpletippUserId) {
-                    $question->currentMember = $objMember;
+                    $question->currentMember = clone $objMember;
                 }
             }
         }

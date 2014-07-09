@@ -5,7 +5,7 @@
             <?php foreach($this->participants as $user):
                 $sel = ($user->id == $this->simpletippUserId) ? ' selected="selected"':'';
                 ?>
-                <option<?php echo $sel;?> value="<?php echo $user->username; ?>"><?php echo $user->firstname.' '.$user->lastname.' ('.$user->username.')'; ?></option>
+                <option<?php echo $sel;?> value="<?php echo $user->username; ?>"><?php echo $user->lastname.', '.$user->firstname.' ('.$user->username.')'; ?></option>
             <?php endforeach; ?>
         </select>
         <noscript>
