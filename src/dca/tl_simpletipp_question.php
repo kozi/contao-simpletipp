@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'					=> '{legend}, question, points, answers;{legend_importer}, importer;',
+		'default'					=> '{legend}, question, points;{legend_answers}, answers;{legend_results}, results;{legend_importer}, importer;',
 	),
 
     // Fields
@@ -160,7 +160,16 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 			'inputType'               => 'listWizard',
 			'eval'					  => array('tl_class' => 'long clr' , 'mandatory' => false),
             'sql'                     => "blob NULL",
-		)
+		),
+
+        'results' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['results'],
+			'exclude'                 => true,
+			'inputType'               => 'listWizard',
+			'eval'					  => array('tl_class' => 'long clr' , 'mandatory' => false),
+            'sql'                     => "blob NULL",
+		),
 		
 		
 	)

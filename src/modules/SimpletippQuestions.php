@@ -52,8 +52,8 @@ class SimpletippQuestions extends SimpletippModule {
             $q->id             = $result->id;
             $q->key            = "question_".$result->id;
 			$q->question       = $result->question;
-			$q->points         = $result->points;
-
+            $q->points         = $result->points;
+            $q->results        = ($result->results == '') ? array() : unserialize($result->results);
             $q->answers        = array();
             foreach (unserialize($result->answers) as $val) {
                 $q->answers[$val] = (object) array(
@@ -76,25 +76,38 @@ class SimpletippQuestions extends SimpletippModule {
             $objMembers   = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
             if ($objMembers != null) {
                 foreach (\Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
-                    $participants[$objMember->id] = $objMember;
+                    $participants[$objMember->id] = (object) $objMember->row();
                 }
             }
 
             $ids    = implode(',', array_keys($this->questions));
             $result = $this->Database->execute("SELECT * FROM tl_simpletipp_answer WHERE pid IN(".$ids.")");
             while($result->next()) {
-                $objMember            = clone $participants[$result->member];
-                $objMember->theAnswer = $result->answer;
+                $question             = &$this->questions[$result->pid];
+                $objMember            = &$participants[$result->member];
 
-                $this->questions[$result->pid]->answers[$objMember->theAnswer]->member[] = &$objMember;
-                $this->questions[$result->pid]->answers[$objMember->theAnswer]->count++;
-                $this->questions[$result->pid]->arrUserAnswers[$result->member] = $objMember;
+                if (in_array($objMember->theAnswer, $question->results)) {
+
+                    if ($objMember->questionPoints) {
+                        $objMember->questionPoints  = 11; // + $question->points;
+                    }
+                    else {
+                        $objMember->questionPoints += $question->points;
+                    }
+
+
+                }
+
+                $clonedMember            = clone $objMember;
+                $clonedMember->theAnswer = $result->answer;
+
+                $question->answers[$clonedMember->theAnswer]->member[] = $clonedMember;
+                $question->answers[$clonedMember->theAnswer]->count++;
 
                 if ($result->member == $this->simpletippUserId) {
-                    $this->questions[$result->pid]->currentMember = $objMember;
+                    $question->currentMember = $objMember;
                 }
             }
-
         }
 
         $quizFinished = time() > $this->simpletipp->quizDeadline;
@@ -112,8 +125,10 @@ class SimpletippQuestions extends SimpletippModule {
 
         $this->Template->isPersonal = $this->isPersonal;
         $this->Template->member     = $participants[$this->simpletippUserId];
-
 		$this->Template->questions  = $this->questions;
+
+        usort($participants, function($a , $b) { return $b->questionPoints - $a->questionPoints; });
+        $this->Template->arrRanking = $participants;
 
     }
 

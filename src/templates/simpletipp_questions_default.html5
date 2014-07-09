@@ -35,6 +35,13 @@
 
 <?php if ($this->finished): ?>
 
+
+<ul>
+<?php foreach($this->arrRanking as $m): ?>
+    <li><?php echo $m->username.' '.$m->questionPoints; ?></li>
+<?php endforeach; ?>
+</ul>
+
     <h3>Antworten von <?php echo $this->member->firstname.' '.$this->member->lastname; ?></h3>
         <?php foreach($this->questions as $q): ?>
         <div class="question" id="<?php echo $q->key; ?>">
@@ -43,17 +50,17 @@
                 <strong><?php echo $q->currentMember->theAnswer; ?></strong>
             </p>
 
-            <?php usort($q->answers, function($a, $b) { $a->count - $b->count; }); ?>
+            <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; }); ?>
 
             <ul class="otherAnswers">
                 <?php foreach($q->answers as $arrAnswer): ?>
                 <?php if ($arrAnswer->count > 0): ?>
                     <li>
-                        <h4><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</h4>
-                        <ul>
-                        <?php foreach($arrAnswer->member as $m): ?>
-                            <li><?php echo $m->username; ?></li>
-                        <?php endforeach; ?>
+                        <strong><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</strong>
+                        <ul class="member">
+                            <?php foreach($arrAnswer->member as $m): ?>
+                                <li><?php echo $m->firstname; ?> <?php echo $m->lastname; ?> (<?php echo $m->username; ?>)</li>
+                            <?php endforeach; ?>
                         </ul>
                     </li>
                 <?php endif; ?>
