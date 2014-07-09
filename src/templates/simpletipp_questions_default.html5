@@ -1,4 +1,4 @@
-<div class="<?php echo $this->class; ?> block mod_simpletipp_questions"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?php echo $this->class; ?> block mod_simpletipp mod_simpletipp_questions"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
     <?php if ($this->headline): ?>
     <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
@@ -54,7 +54,7 @@
     <h4><?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]</h4>
     <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; }); ?>
     <ul class="otherAnswers">
-    <?php foreach($q->answers as $arrAnswer): ?>
+    <?php foreach($q->answers as $arrAnswer):?>
         <?php if ($arrAnswer->count > 0): ?>
             <li>
                 <strong><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</strong>
@@ -70,11 +70,22 @@
 <?php endforeach; ?>
 
 <h4>Rangliste</h4>
-<ol>
-    <?php foreach($this->arrRanking as $m): ?>
-        <li><?php echo $m->username;?> [<?php echo $m->questionPoints;?>]</li>
+<table class="questionRanking">
+    <thead><tr>
+        <th>Rang</th>
+        <th>Name</th>
+        <th>Punkte</th>
+    </tr></thead>
+    <tbody>
+
+    <?php $i = 1; foreach($this->arrRanking as $m): ?>
+        <tr>
+            <td class="rank"><?php echo $i++;?>. </td>
+            <td class="name"><?php echo $m->firstname;?> <?php echo $m->lastname;?> (<?php echo $m->username;?>)</td>
+            <td class="points"><?php echo $m->questionPoints;?></td>
+        </tr>
     <?php endforeach; ?>
-</ol>
+</tbody></table>
 
 <?php endif; ?>
 
