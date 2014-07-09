@@ -21,7 +21,7 @@
             <select name="<?php echo $q->key; ?>">
                 <option value="<?php echo $q->emptyValue; ?>">Bitte wählen...</option>
                 <?php foreach($q->answers as $a): ?>
-                    <option<?php echo ($q->userAnswer == $a) ? ' selected="selected"' : ''; ?> value="<?php echo $a; ?>"><?php echo $a; ?></option>
+                    <option<?php echo ($q->userAnswer == $a->value) ? ' selected="selected"' : ''; ?> value="<?php echo $a->value; ?>"><?php echo $a->value; ?></option>
                 <?php endforeach; ?>
             </select>
         </fieldset>
@@ -34,15 +34,33 @@
 <?php endif; ?>
 
 <?php if ($this->finished): ?>
-    <h3>Antworten von <?php echo 'USER!'; ?></h3>
-    <?php foreach($this->questions as $q): ?>
+
+    <h3>Antworten von <?php echo $this->member->firstname.' '.$this->member->lastname; ?></h3>
+        <?php foreach($this->questions as $q): ?>
         <div class="question" id="<?php echo $q->key; ?>">
             <p>
                 <?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]<br>
-                <strong><?php echo $q->userAnswer; ?></strong>
+                <strong><?php echo $q->currentMember->theAnswer; ?></strong>
             </p>
+
+            <?php usort($q->answers, function($a, $b) { $a->count - $b->count; }); ?>
+
+            <ul class="otherAnswers">
+                <?php foreach($q->answers as $arrAnswer): ?>
+                <?php if ($arrAnswer->count > 0): ?>
+                    <li>
+                        <h4><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</h4>
+                        <ul>
+                        <?php foreach($arrAnswer->member as $m): ?>
+                            <li><?php echo $m->username; ?></li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </ul>
         </div>
-    <?php endforeach; ?>
+<?php endforeach; ?>
 <?php endif; ?>
 
 

@@ -53,7 +53,17 @@ class SimpletippQuestions extends SimpletippModule {
             $q->key            = "question_".$result->id;
 			$q->question       = $result->question;
 			$q->points         = $result->points;
-            $q->answers        = unserialize($result->answers);
+
+            $q->answers        = array();
+            foreach (unserialize($result->answers) as $val) {
+                $q->answers[$val] = (object) array(
+                    'value'  => $val,
+                    'count'  => 0,
+                    'member' => array(),
+                );
+            }
+
+
             $q->emptyValue     = '-';
             $q->arrUserAnswers = array(); //$result->userAnswer;
 
@@ -61,16 +71,29 @@ class SimpletippQuestions extends SimpletippModule {
 		}
 
         if (count($this->questions > 0)) {
-            $ids = implode(',', array_keys($this->questions));
-            $result = $this->Database->execute("SELECT * FROM tl_simpletipp_answer WHERE pid IN(".$ids.")");
-            while($result->next()) {
-                $this->questions[$result->pid]->arrUserAnswers[$result->member] = $result->answer;
-                if ($result->member == $this->simpletippUserId) {
-                    $this->questions[$result->pid]->userAnswer = $result->answer;
+
+            $participants = array();
+            $objMembers   = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
+            if ($objMembers != null) {
+                foreach (\Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+                    $participants[$objMember->id] = $objMember;
                 }
             }
 
+            $ids    = implode(',', array_keys($this->questions));
+            $result = $this->Database->execute("SELECT * FROM tl_simpletipp_answer WHERE pid IN(".$ids.")");
+            while($result->next()) {
+                $objMember            = clone $participants[$result->member];
+                $objMember->theAnswer = $result->answer;
 
+                $this->questions[$result->pid]->answers[$objMember->theAnswer]->member[] = &$objMember;
+                $this->questions[$result->pid]->answers[$objMember->theAnswer]->count++;
+                $this->questions[$result->pid]->arrUserAnswers[$result->member] = $objMember;
+
+                if ($result->member == $this->simpletippUserId) {
+                    $this->questions[$result->pid]->currentMember = $objMember;
+                }
+            }
 
         }
 
@@ -88,6 +111,8 @@ class SimpletippQuestions extends SimpletippModule {
         $this->Template->messages   = \Simpletipp::getSimpletippMessages();
 
         $this->Template->isPersonal = $this->isPersonal;
+        $this->Template->member     = $participants[$this->simpletippUserId];
+
 		$this->Template->questions  = $this->questions;
 
     }
