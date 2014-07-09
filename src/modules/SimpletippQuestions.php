@@ -76,7 +76,10 @@ class SimpletippQuestions extends SimpletippModule {
             $objMembers   = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
             if ($objMembers != null) {
                 foreach (\Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
-                    $participants[$objMember->id] = (object) $objMember->row();
+                    $objM                 = (object) $objMember->row();
+                    $objM->questionPoints = 0;
+
+                    $participants[$objMember->id] = $objM;
                 }
             }
 
@@ -87,15 +90,7 @@ class SimpletippQuestions extends SimpletippModule {
                 $objMember            = &$participants[$result->member];
 
                 if (in_array($objMember->theAnswer, $question->results)) {
-
-                    if ($objMember->questionPoints) {
-                        $objMember->questionPoints  = 11; // + $question->points;
-                    }
-                    else {
-                        $objMember->questionPoints += $question->points;
-                    }
-
-
+                    $objMember->questionPoints += $question->points;
                 }
 
                 $clonedMember            = clone $objMember;
