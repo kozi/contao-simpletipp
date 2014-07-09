@@ -51,7 +51,11 @@ class SimpletippCalendar extends SimpletippModule {
             exit();
         }
 
-        $this->matchesPage    = \PageModel::findByPk($this->simpletipp_matches_page)->row();
+
+        $pageObj           = \PageModel::findByPk($this->simpletipp_matches_page);
+        $this->matchesPage = ($pageObj !== null) ? $objPage->row() : null;
+
+
 
         $v = new vcalendar();
         $v->setConfig('unique_id', \Environment::get('base'));
@@ -137,15 +141,16 @@ class SimpletippCalendar extends SimpletippModule {
 
 	private function getNewEvent($matches) {
 
-        $ev  = new vevent();
-        $now = time();
-
+        $ev             = new vevent();
+        $now            = time();
+        $url            = '';
 		$timestamp      = $matches[0]->deadline;
 		$timestamp_ende = $timestamp + (105*60); // add 105 (2x45 + 15) minutes
 
-		$url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
+		if ($this->matchesPage !== null) {
+            $url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
 					"/group/".urlencode($matches[0]->groupName));
-
+        }
         // TODO translation
 		$title              = $matches[0]->groupName.' ('.sizeof($matches).' Spiele)';
 		$description        = $url."\n";
