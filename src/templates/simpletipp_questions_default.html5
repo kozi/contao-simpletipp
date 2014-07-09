@@ -35,33 +35,39 @@
 
 <?php if ($this->finished): ?>
 
-    <h3>Antworten von <?php echo $this->member->firstname.' '.$this->member->lastname; ?></h3>
-        <?php foreach($this->questions as $q): ?>
-        <div class="question" id="<?php echo $q->key; ?>">
-            <p>
-                <?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]<br>
-                <strong><?php echo $q->currentMember->theAnswer; ?></strong>
-            </p>
 
-            <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; }); ?>
+<h3>Antworten von <?php echo $this->member->firstname.' '.$this->member->lastname; ?></h3>
 
-            <ul class="otherAnswers">
-                <?php foreach($q->answers as $arrAnswer): ?>
-                <?php if ($arrAnswer->count > 0): ?>
-                    <li>
-                        <strong><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</strong>
-                        <ul class="member">
-                            <?php foreach($arrAnswer->member as $m): ?>
-                                <li><?php echo $m->firstname; ?> <?php echo $m->lastname; ?> (<?php echo $m->username; ?>)</li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </li>
-                <?php endif; ?>
-            <?php endforeach; ?>
-            </ul>
-        </div>
+<?php foreach($this->questions as $q): ?>
+<div class="question" id="<?php echo $q->key; ?>">
+    <p>
+        <?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]<br>
+        <strong><?php echo $q->currentMember->theAnswer; ?></strong>
+    </p>
+
+</div>
+<?php endforeach; reset($this->questions); ?>
+
+<h3>Antworten</h3>
+
+<?php foreach($this->questions as $q): ?>
+    <h4><?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]</h4>
+    <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; }); ?>
+    <ul class="otherAnswers">
+    <?php foreach($q->answers as $arrAnswer): ?>
+        <?php if ($arrAnswer->count > 0): ?>
+            <li>
+                <strong><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</strong>
+                <ul class="member">
+                    <?php foreach($arrAnswer->member as $m): ?>
+                        <li><?php echo $m->firstname; ?> <?php echo $m->lastname; ?> (<?php echo $m->username; ?>)</li>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    </ul>
 <?php endforeach; ?>
-
 
 <h4>Rangliste</h4>
 <ol>

@@ -63,9 +63,8 @@ class SimpletippQuestions extends SimpletippModule {
                 );
             }
 
-
             $q->emptyValue     = '-';
-            $q->arrUserAnswers = array(); //$result->userAnswer;
+            $q->arrUserAnswers = array();
 
             $this->questions[$q->id] = $q;
 		}
@@ -89,15 +88,19 @@ class SimpletippQuestions extends SimpletippModule {
                 $question             = &$this->questions[$result->pid];
                 $objMember            = &$participants[$result->member];
 
-                if (in_array($objMember->theAnswer, $question->results)) {
+                if ($objMember === null) {
+                    continue;
+                }
+
+                if (in_array($result->theAnswer, $question->results)) {
                     $objMember->questionPoints += $question->points;
                 }
 
-                $clonedMember            = clone $objMember;
-                $clonedMember->theAnswer = $result->answer;
+                $objMember->theAnswer = $result->answer;
+                $clonedMember         = clone $objMember;
 
-                $question->answers[$clonedMember->theAnswer]->member[] = $clonedMember;
-                $question->answers[$clonedMember->theAnswer]->count++;
+                $question->answers[$result->answer]->member[] = $clonedMember;
+                $question->answers[$result->answer]->count++;
 
                 if ($result->member == $this->simpletippUserId) {
                     $question->currentMember = $objMember;
