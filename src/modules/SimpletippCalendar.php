@@ -57,7 +57,7 @@ class SimpletippCalendar extends SimpletippModule {
 
 
 
-        $v = new vcalendar();
+        $v = new \vcalendar();
         $v->setConfig('unique_id', \Environment::get('base'));
         $v->setProperty('method', 'PUBLISH');
         $v->setProperty("X-WR-CALNAME",  $this->title);
@@ -141,7 +141,7 @@ class SimpletippCalendar extends SimpletippModule {
 
 	private function getNewEvent($matches) {
 
-        $ev             = new vevent();
+        $ev             = new \vevent();
         $now            = time();
         $url            = '';
 		$timestamp      = $matches[0]->deadline;
@@ -197,7 +197,7 @@ class SimpletippCalendar extends SimpletippModule {
 		if (!$all_matches_tipped && $now < $matches[0]->deadline) {
 			$title = "* ".$title;
 			// Alarm hinzufügen
-			$alarm = new valarm();
+			$alarm = new \valarm();
 			$alarm->setProperty('action', 'DISPLAY');
 			$alarm->setProperty('description', 'Tippen!'); // TODO translation
 			$alarm->setProperty('trigger', array('hour' => 2));
