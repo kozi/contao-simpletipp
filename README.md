@@ -1,4 +1,4 @@
-# Simpletipp #
+# Simpletipp - contao-simpletipp #
 
 Eine Tippspiel-Erweiterung für das CMS [Contao][] auf Basis von [OpenLigaDB][].
 

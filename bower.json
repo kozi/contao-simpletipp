@@ -1,0 +1,7 @@
+{
+    "name": "contao-simpletipp",
+    "dependencies": {
+        "chosen": "~1",
+        "jqplot": "*"
+    }
+}

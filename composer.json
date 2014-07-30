@@ -3,7 +3,6 @@
     "description":"Simpletipp",
     "keywords":["contao", "openligadb", "tippspiel", "soccer", "game"],
     "type":"contao-module",
-    "homepage":"",
     "license":"LGPL-3.0+",
     "authors":[
         {
@@ -21,20 +20,28 @@
 
     },
     "require":{
-        "php":">=5.3",
-        "contao/core":">=3.2,<4"
+        "php": ">=5.4",
+        "contao/core": "~3.3",
+        "contao-community-alliance/composer-plugin": "~2",
+        "kigkonsult/icalcreator": "*"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "replace":{
         "contao-legacy/simpletipp": "*"
     },
     "autoload": {
-        "classmap": ["src/"]
+        "psr-0": {
+            "Simpletipp": "src/"
+        }
     },
-    "extra":{
+    "extra": {
         "contao": {
-            "sources":{
-                "src": "system/modules/simpletipp"
+            "sources": {
+                "contao": "system/modules/simpletipp"
             }
         }
     }
 }
+
+

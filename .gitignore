@@ -9,3 +9,12 @@ Thumbs.db
 .build/
 .idea/
 nbproject/
+
+# bower
+contao/**/.bower.json
+contao/**/bower.json
+
+# dependencies
+build
+vendor
+composer.lock
