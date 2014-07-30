@@ -15,6 +15,9 @@
 
 namespace Simpletipp\Modules;
 
+use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippModule;
+
 /**
  * Class SimpletippQuestions
  *
@@ -72,9 +75,9 @@ class SimpletippQuestions extends SimpletippModule {
         if (count($this->questions > 0)) {
 
             $participants = array();
-            $objMembers   = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
+            $objMembers   = Simpletipp::getGroupMember($this->simpletipp->participant_group);
             if ($objMembers != null) {
-                foreach (\Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+                foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
                     $objM                 = (object) $objMember->row();
                     $objM->questionPoints = 0;
 
@@ -118,7 +121,7 @@ class SimpletippQuestions extends SimpletippModule {
         $this->Template->finished   = $quizFinished;
         $this->Template->formId     = $this->formId;
         $this->Template->action     = ampersand(\Environment::get('request'));
-        $this->Template->messages   = \Simpletipp::getSimpletippMessages();
+        $this->Template->messages   = Simpletipp::getSimpletippMessages();
 
         $this->Template->isPersonal = $this->isPersonal;
         $this->Template->member     = $participants[$this->simpletippUserId];
@@ -146,7 +149,7 @@ class SimpletippQuestions extends SimpletippModule {
             }
         }
         $message .= '</ul>'."\n\n";
-        \Simpletipp::addSimpletippMessage($message);
+        Simpletipp::addSimpletippMessage($message);
 
         $subject = 'Quiz - '.date('d.m.Y H:i:s').' '.$this->User->firstname.' '.$this->User->lastname;
         $content = strip_tags($message);

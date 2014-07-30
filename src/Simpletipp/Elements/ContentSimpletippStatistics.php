@@ -15,6 +15,8 @@
 
 namespace Simpletipp\Elements;
 
+use Simpletipp\Simpletipp;
+use Simpletipp\SimpletippModule;
 
 
 /**
@@ -26,7 +28,7 @@ namespace Simpletipp\Elements;
  * @package    simpletipp
  */
 
-class ContentSimpletippStatistics extends \SimpletippModule {
+class ContentSimpletippStatistics extends SimpletippModule {
     protected $strTemplate = 'ce_simpletipp_statistics';
     public static $types = array(
         'statBestMatches'       => 'Die 10 punktereichsten Spiele',
@@ -153,7 +155,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             return true;
         }
 
-        $objMembers = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         foreach($objMembers as $objMember) {
             $objMember->highscorePositions = array(0);
             $memberArray[$objMember->id]   = $objMember;
@@ -203,7 +205,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
             return true;
         }
 
-        $objMembers = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         foreach($objMembers as $objMember) {
             $objMember->pointsArray        = array();
             $memberArray[$objMember->id]   = $objMember;
@@ -336,7 +338,7 @@ class ContentSimpletippStatistics extends \SimpletippModule {
                             WHERE match_id = ?")->execute($match['id']);
         while ($tippResult->next()) {
 
-            $tippPoints = \Simpletipp::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);
+            $tippPoints = Simpletipp::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);
             $points->points     += $tippPoints->points;
             $points->perfect    += $tippPoints->perfect;
             $points->difference += $tippPoints->difference;

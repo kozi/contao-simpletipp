@@ -15,6 +15,11 @@
 
 namespace Simpletipp\Modules;
 
+use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippPoints;
+use \Simpletipp\SimpletippModule;
+
+
 /**
  * Class SimpletippMatches
  *
@@ -75,7 +80,7 @@ class SimpletippMatches extends SimpletippModule {
         $this->Template->isMobile   = $this->isMobile;
 
 		$this->Template->summary    = $this->pointSummary;
-		$this->Template->messages   = \Simpletipp::getSimpletippMessages();
+		$this->Template->messages   = Simpletipp::getSimpletippMessages();
 	}
 
 	private function getMatches() {
@@ -123,7 +128,7 @@ class SimpletippMatches extends SimpletippModule {
 			$match->date        = date($GLOBALS['TL_CONFIG']['datimFormat'], $match->deadline);
 			$match->date_title  = $match->date;
 
-            $pointObj           = new \SimpletippPoints($this->pointFactors, $match->perfect, $match->difference, $match->tendency);
+            $pointObj           = new SimpletippPoints($this->pointFactors, $match->perfect, $match->difference, $match->tendency);
 			$match->points      = $pointObj->points;
 
             $match->cssClass    = ($i++ % 2 === 0 ) ? 'odd':'even';
@@ -151,7 +156,7 @@ class SimpletippMatches extends SimpletippModule {
 			$match->alias_h = standardize($teams[0]);
 			$match->alias_a = standardize($teams[1]);
 
-            \Simpletipp::convertIconLinks($match);
+            Simpletipp::convertIconLinks($match);
 
             $matches[] = $match;
 
@@ -410,7 +415,7 @@ class SimpletippMatches extends SimpletippModule {
 
     private function finishedMatches() {
 
-        $matchEnd = time() - \Simpletipp::$MATCH_LENGTH;
+        $matchEnd = time() - Simpletipp::$MATCH_LENGTH;
         $result   = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
                WHERE leagueID = ? AND deadline < ? AND isFinished = ?")
             ->execute($this->simpletipp->leagueID, $matchEnd, 0);

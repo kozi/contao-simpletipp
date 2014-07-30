@@ -143,7 +143,7 @@ class SimpletippPokal extends \Backend {
         $pairings = array();
         if ($this->finishedGroup === null) {
             // 8 Gruppen auslosen
-            $arrUserIds = \Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
+            $arrUserIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
             shuffle($arrUserIds);
 
             $total    = count($arrUserIds);

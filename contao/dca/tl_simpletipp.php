@@ -303,7 +303,7 @@ class tl_simpletipp extends \Backend {
         if (count($this->matchGroupOptions) == 0) {
             $this->matchGroupOptions[''] = '-';
             $leagueID = intval($dc->activeRecord->leagueID);
-            $groups   = \Simpletipp::getLeagueGroups($leagueID);
+            $groups   = \Simpletipp\Simpletipp::getLeagueGroups($leagueID);
             foreach ($groups as $g) {
                 $this->matchGroupOptions[$g->title] = $g->title;
             }

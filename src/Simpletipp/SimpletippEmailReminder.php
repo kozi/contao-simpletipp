@@ -35,7 +35,7 @@ class SimpletippEmailReminder extends \Backend {
         $now             = time();
 
         foreach ($simpletippModel as $simpletippObj) {
-            $match = \Simpletipp::getNextMatch($simpletippObj->leagueID);
+            $match = Simpletipp::getNextMatch($simpletippObj->leagueID);
 
             if ($match == null
                 || $simpletippObj->lastRemindedMatch == $match->id
@@ -53,7 +53,7 @@ class SimpletippEmailReminder extends \Backend {
                     \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
                 $emailCount = 0;
-                foreach(\Simpletipp::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u) {
+                foreach(Simpletipp::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u) {
 
                     $emailSent = '';
                     if ($u['simpletipp_email_reminder'] == '1') {

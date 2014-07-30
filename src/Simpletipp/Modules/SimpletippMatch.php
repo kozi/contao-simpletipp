@@ -15,6 +15,11 @@
 
 namespace Simpletipp\Modules;
 
+use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippModule;
+use \Simpletipp\SimpletippPoints;
+use \Simpletipp\Models\SimpletippMatchModel;
+
 /**
  * Class SimpletippMatch
  *
@@ -43,11 +48,11 @@ class SimpletippMatch extends SimpletippModule {
         $matchAlias = \Input::get('match');
 
         if (is_numeric($matchAlias)) {
-            $this->match = \SimpletippMatchModel::findByPk($matchAlias);
+            $this->match = SimpletippMatchModel::findByPk($matchAlias);
         }
         else {
             // get matchId from team short names
-            $this->match = \SimpletippMatchModel::findByShortNames($matchAlias);
+            $this->match = SimpletippMatchModel::findByShortNames($matchAlias);
         }
 
         if ($this->match == null) {
@@ -59,9 +64,9 @@ class SimpletippMatch extends SimpletippModule {
         $this->isStarted = (time() > $this->match->deadline);
 
         // GoalData
-        $this->import('SimpletippMatchUpdater');
+        $this->import('\Simpletipp\SimpletippMatchUpdater', 'matchUpdater');
         $this->match->goalData = unserialize($this->match->goalData);
-        $this->match = $this->SimpletippMatchUpdater->refreshGoalData($this->simpletipp, $this->match);
+        $this->match = $this->matchUpdater->refreshGoalData($this->simpletipp, $this->match);
 
 
 		$result = $this->Database->prepare(
@@ -86,7 +91,7 @@ class SimpletippMatch extends SimpletippModule {
 
             $tipp         = (Object) $result->row();
 
-            $pointObj     = new \SimpletippPoints($this->pointFactors, $tipp->perfect, $tipp->difference, $tipp->tendency);
+            $pointObj     = new SimpletippPoints($this->pointFactors, $tipp->perfect, $tipp->difference, $tipp->tendency);
 			$tipp->points = $pointObj->points;
 
 
@@ -134,7 +139,7 @@ class SimpletippMatch extends SimpletippModule {
         $this->match->alias_h = standardize($teams[0]);
         $this->match->alias_a = standardize($teams[1]);
 
-        \Simpletipp::convertIconLinks($this->match);
+        Simpletipp::convertIconLinks($this->match);
 
         $this->Template->isMobile     = $this->isMobile;
         $this->Template->avatarActive = $this->avatarActive;

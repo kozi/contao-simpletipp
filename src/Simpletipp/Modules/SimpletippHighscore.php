@@ -15,6 +15,10 @@
 
 namespace Simpletipp\Modules;
 
+
+use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippModule;
+
 /**
  * Class SimpletippHighscore
  *

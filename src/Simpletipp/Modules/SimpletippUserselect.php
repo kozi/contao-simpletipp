@@ -15,6 +15,10 @@
 
 namespace Simpletipp\Modules;
 
+
+use \Simpletipp\SimpletippModule;
+use \Simpletipp\Simpletipp;
+
 /**
  * Class SimpletippUserselect
  *
@@ -43,9 +47,9 @@ class SimpletippUserselect extends SimpletippModule {
         global $objPage;
         $participants = array();
 
-        $objMembers = \Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         if ($objMembers != null) {
-            foreach (\Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+            foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
                 $objMember->link              = $this->addToUrl('user='.$objMember->username);
                 $participants[$objMember->id] = $objMember;
             }

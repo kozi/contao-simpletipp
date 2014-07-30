@@ -16,8 +16,8 @@
 $GLOBALS['TL_CRON']['hourly'][]              = array('\Simpletipp\SimpletippEmailReminder', 'tippReminder');
 $GLOBALS['TL_CRON']['hourly'][]              = array('\Simpletipp\SimpletippMatchUpdater', 'updateMatches');
 
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][]    = array('SimpletippCallbacks', 'addCustomRegexp');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][]  = array('SimpletippCallbacks', 'randomLine');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]    = array('\Simpletipp\SimpletippCallbacks', 'addCustomRegexp');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]  = array('\Simpletipp\SimpletippCallbacks', 'randomLine');
 
 $GLOBALS['BE_FFL']['pokalRanges']            = 'PokalRangesField';
 
@@ -50,9 +50,9 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
 						'icon'       => 'system/modules/simpletipp/assets/images/soccer.png',
 						'javascript' => 'system/modules/simpletipp/assets/simpletipp-backend.js',
 						'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-                        'update'     => array('SimpletippMatchUpdater', 'updateMatches'),
-                        'calculate'  => array('SimpletippMatchUpdater', 'calculateTipps'),
-                        'pokal'      => array('SimpletippPokal', 'calculate'),
+                        'update'     => array('\Simpletipp\SimpletippMatchUpdater', 'updateMatches'),
+                        'calculate'  => array('\Simpletipp\SimpletippMatchUpdater', 'calculateTipps'),
+                        'pokal'      => array('\Simpletipp\SimpletippPokal', 'calculate'),
 				),
 				'simpletipp_matches' => array
 				(

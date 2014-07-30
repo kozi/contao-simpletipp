@@ -17,6 +17,8 @@
 namespace Simpletipp;
 
 
+use Simpletipp\Simpletipp;
+
 /**
  * Class SimpletippMatchUpdater
  *
@@ -39,11 +41,11 @@ class SimpletippMatchUpdater extends \Backend {
         $id     = (\Input::get('id') !== null) ? intval(\Input::get('id')) : 0;
 
         if ($id === 0) {
-            $objSimpletippCollection =  \SimpletippModel::findAll();
+            $objSimpletippCollection =  SimpletippModel::findAll();
             $manualUpdate            = false;
         }
         else {
-            $objSimpletippCollection = \SimpletippModel::findBy('id', $id);
+            $objSimpletippCollection = SimpletippModel::findBy('id', $id);
             $manualUpdate            = true;
         }
 
@@ -74,13 +76,13 @@ class SimpletippMatchUpdater extends \Backend {
             return $message;
         }
 
-        $this->oldb = \OpenLigaDB::getInstance();
+        $this->oldb = OpenLigaDB::getInstance();
         $this->oldb->setLeague($leagueInfos);
 
         $openligaLastChanged    = strtotime($this->oldb->getLastLeagueChange());
         $simpletippLastChanged  = intval($simpletippObj->lastChanged);
 
-        if ($forceUpdate || $simpletippLastChanged != $openligaLastChanged || \SimpletippMatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
+        if ($forceUpdate || $simpletippLastChanged != $openligaLastChanged || SimpletippMatchModel::countBy('leagueID', $simpletippObj->leagueID) === 0) {
             $matchIDs = $this->updateLeagueMatches($leagueInfos);
             $this->updateTipps($matchIDs);
             $message = sprintf('Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
@@ -93,7 +95,7 @@ class SimpletippMatchUpdater extends \Backend {
         $simpletippObj->save();
 
         return $message;
-	}
+    }
 
 
     public function calculateTipps() {
@@ -128,30 +130,30 @@ class SimpletippMatchUpdater extends \Backend {
     }
 
 
-	private function updateTipps($ids) {
-		if (count($ids) === 0) {
-			//  Nothing to do
-			return true;
-		}
-	
-		$result = $this->Database->execute(
-				"SELECT id, result FROM tl_simpletipp_match"
-				." WHERE id in (".implode(',', $ids).")");
-		while($result->next()) {
-			$match_results[$result->id] = $result->result;
-		}
+    private function updateTipps($ids) {
+        if (count($ids) === 0) {
+            //  Nothing to do
+            return true;
+        }
 
-		$result = $this->Database->execute(
-				"SELECT id, match_id, tipp FROM tl_simpletipp_tipp"
-				." WHERE match_id in (".implode(',', $ids).")");
-		while($result->next()) {
-            $points = \Simpletipp::getPoints($match_results[$result->match_id], $result->tipp);
+        $result = $this->Database->execute(
+            "SELECT id, result FROM tl_simpletipp_match"
+            ." WHERE id in (".implode(',', $ids).")");
+        while($result->next()) {
+            $match_results[$result->id] = $result->result;
+        }
 
-			$this->Database->prepare("UPDATE tl_simpletipp_tipp"
+        $result = $this->Database->execute(
+            "SELECT id, match_id, tipp FROM tl_simpletipp_tipp"
+            ." WHERE match_id in (".implode(',', $ids).")");
+        while($result->next()) {
+            $points = Simpletipp::getPoints($match_results[$result->match_id], $result->tipp);
+
+            $this->Database->prepare("UPDATE tl_simpletipp_tipp"
                 ." SET perfect = ?, difference = ?, tendency = ?, wrong = ? WHERE id = ?")
                 ->execute($points->perfect, $points->difference, $points->tendency, $points->wrong, $result->id);
-		}
-	}	
+        }
+    }
 
 
     public function refreshGoalData($simpletipp, $match) {
@@ -165,9 +167,9 @@ class SimpletippMatchUpdater extends \Backend {
 
         if ($match->goalData == NULL
             || $match->goalData->lastUpdate < $simpletippLastChanged
-            || ($now - $match->deadline) < (\Simpletipp::$MATCH_LENGTH + 900)) {
+            || ($now - $match->deadline) < (Simpletipp::$MATCH_LENGTH + 900)) {
 
-            $this->oldb = \OpenLigaDB::getInstance();
+            $this->oldb = OpenLigaDB::getInstance();
             $leagueInfos  = unserialize($simpletipp->leagueInfos);
             $this->oldb->setLeague($leagueInfos);
             $openligaLastChanged   = strtotime($this->oldb->getLastLeagueChange());
@@ -229,7 +231,7 @@ class SimpletippMatchUpdater extends \Backend {
 
 
     private function updateLeagueMatches($leagueInfos) {
-        $this->oldb = \OpenLigaDB::getInstance();
+        $this->oldb = OpenLigaDB::getInstance();
         $this->oldb->setLeague($leagueInfos);
 
         $matches = $this->oldb->getMatches();
@@ -244,7 +246,7 @@ class SimpletippMatchUpdater extends \Backend {
             $matchId      = $tmp['matchID'];
 
             // GroupName
-            $arrGroup    = \Simpletipp::groupMapper($tmp);
+            $arrGroup    = Simpletipp::groupMapper($tmp);
 
             $results      = self::parseResults($tmp['matchResults']);
 
@@ -254,15 +256,15 @@ class SimpletippMatchUpdater extends \Backend {
                 'groupID'         => $arrGroup['id'],
                 'deadline'        => strtotime($tmp['matchDateTimeUTC']),
                 'title'           => sprintf("%s - %s", $tmp['nameTeam1'], $tmp['nameTeam2']),
-                'title_short'     => sprintf("%s - %s", \Simpletipp::teamShortener($tmp['nameTeam1']), \Simpletipp::teamShortener($tmp['nameTeam2'])),
+                'title_short'     => sprintf("%s - %s", Simpletipp::teamShortener($tmp['nameTeam1']), Simpletipp::teamShortener($tmp['nameTeam2'])),
 
                 'groupName'       => $arrGroup['name'],
                 'groupName_short' => $arrGroup['short'],
 
-                'team_h'          => \Simpletipp::teamShortener($tmp['nameTeam1']),
-                'team_a'          => \Simpletipp::teamShortener($tmp['nameTeam2']),
-                'team_h_three'    => \Simpletipp::teamShortener($tmp['nameTeam1'], true),
-                'team_a_three'    => \Simpletipp::teamShortener($tmp['nameTeam2'], true),
+                'team_h'          => Simpletipp::teamShortener($tmp['nameTeam1']),
+                'team_a'          => Simpletipp::teamShortener($tmp['nameTeam2']),
+                'team_h_three'    => Simpletipp::teamShortener($tmp['nameTeam1'], true),
+                'team_a_three'    => Simpletipp::teamShortener($tmp['nameTeam2'], true),
                 'icon_h'          => $tmp['iconUrlTeam1'],
                 'icon_a'          => $tmp['iconUrlTeam2'],
 
@@ -276,7 +278,7 @@ class SimpletippMatchUpdater extends \Backend {
 
         $arrMatchIds = array_keys($newMatches);
         // update existing matches
-        foreach(\SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch) {
+        foreach(SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch) {
             $matchId = intval($objMatch->id);
 
             if (array_key_exists($objMatch->id, $newMatches)) {
@@ -290,7 +292,7 @@ class SimpletippMatchUpdater extends \Backend {
 
         // add new matches
         foreach($newMatches as $matchId => $arrMatch) {
-            $objMatch       = new \SimpletippMatchModel();
+            $objMatch       = new SimpletippMatchModel();
             $arrMatch['id'] = $matchId;
 
             $objMatch->setRow($arrMatch);
