@@ -14,9 +14,9 @@
     ],
     "support":{
         "email":"martin@kozianka.de",
-        "issues":"https://github.com/kozi/simpletipp/issues",
+        "issues":"https://github.com/kozi/contao-simpletipp/issues",
         "irc":"irc://irc.freenode.org/contao.dev",
-        "source":"https://github.com/kozi/simpletipp"
+        "source":"https://github.com/kozi/contao-simpletipp"
 
     },
     "require":{
