@@ -15,8 +15,6 @@
 
 namespace Simpletipp\Models;
 
-
-
 class SimpletippMatchModel extends \Model {
 
     /**

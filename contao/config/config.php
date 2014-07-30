@@ -13,13 +13,17 @@
  * @filesource
  */
 
-$GLOBALS['TL_CRON']['hourly'][]             = array('\Simpletipp\SimpletippEmailReminder', 'tippReminder');
-$GLOBALS['TL_CRON']['hourly'][]             = array('\Simpletipp\SimpletippMatchUpdater', 'updateMatches');
+$GLOBALS['TL_CRON']['hourly'][]              = array('\Simpletipp\SimpletippEmailReminder', 'tippReminder');
+$GLOBALS['TL_CRON']['hourly'][]              = array('\Simpletipp\SimpletippMatchUpdater', 'updateMatches');
 
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][]   = array('SimpletippCallbacks', 'addCustomRegexp');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('SimpletippCallbacks', 'randomLine');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]    = array('SimpletippCallbacks', 'addCustomRegexp');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]  = array('SimpletippCallbacks', 'randomLine');
 
-$GLOBALS['BE_FFL']['pokalRanges']           = 'PokalRangesField';
+$GLOBALS['BE_FFL']['pokalRanges']            = 'PokalRangesField';
+
+
+$GLOBALS['TL_MODELS']['tl_simpletipp']       = '\Simpletipp\Models\SimpletippModel';
+$GLOBALS['TL_MODELS']['tl_simpletipp_match'] = '\Simpletipp\Models\SimpletippMatchModel';
 
 
 array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
