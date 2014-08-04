@@ -15,7 +15,7 @@
 
 namespace Simpletipp;
 
-
+use \Simpletipp\Models\SimpletippMatchModel;
 
 /**
  * Class SimpletippCalendar
@@ -133,9 +133,8 @@ class Simpletipp extends \System {
         return $arrIds;
     }
 
-
     public static function getNextMatch($leagueID) {
-        $objMatch = \MatchModel::findOneBy(
+        $objMatch = SimpletippMatchModel::findOneBy(
             array('leagueID = ?', 'deadline > ?'),
             array($leagueID, time()),
             array(
@@ -144,7 +143,6 @@ class Simpletipp extends \System {
         );
         return $objMatch;
     }
-
 
     public static function getNotTippedUser($groupID, $match_id) {
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
@@ -277,7 +275,4 @@ class Simpletipp extends \System {
 
     }
 
-
-
 } // END class Simpletipp
-

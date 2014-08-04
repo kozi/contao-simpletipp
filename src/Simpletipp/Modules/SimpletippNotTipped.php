@@ -15,6 +15,8 @@
 
 namespace Simpletipp\Modules;
 
+use Simpletipp\SimpletippModule;
+use Simpletipp\Simpletipp;
 /**
  * Class SimpletippNotTipped
  *
@@ -42,13 +44,13 @@ class SimpletippNotTipped extends SimpletippModule {
 	protected function compile() {
         $userArr = array();
 
-        $match = \Simpletipp::getNextMatch($this->simpletipp->leagueID);
+        $match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
         if ($match == null) {
             // no next match
             return;
         }
 
-        foreach(\Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
+        foreach(Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
             $userArr[] =  $u['firstname'].' '.$u['lastname'];
         }
 

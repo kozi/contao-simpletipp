@@ -12,7 +12,7 @@
  * @license    LGPL
  * @filesource
  */
-
+use \Simpletipp\Models\SimpletippModel;
 
 // simpletipp_group
 $GLOBALS['TL_DCA']['tl_page']['palettes']['root']                   .= ';{simpletipp_legend:hide},simpletipp_group';
@@ -40,7 +40,7 @@ class tl_page_simpletipp extends Backend {
 
     public function getSimpletippGroups() {
         $arrGroups = array();
-        $objModels = \SimpletippModel::findAll(array('order' => 'title DESC'));
+        $objModels = SimpletippModel::findAll(array('order' => 'title DESC'));
 
         if ($objModels === null) {
             return $arrGroups;
