@@ -18,7 +18,8 @@ namespace Simpletipp;
 
 
 use Simpletipp\Simpletipp;
-
+use Simpletipp\Models\SimpletippModel;
+use Simpletipp\Models\SimpletippMatchModel;
 /**
  * Class SimpletippMatchUpdater
  *
@@ -265,8 +266,8 @@ class SimpletippMatchUpdater extends \Backend {
                 'team_a'          => Simpletipp::teamShortener($tmp['nameTeam2']),
                 'team_h_three'    => Simpletipp::teamShortener($tmp['nameTeam1'], true),
                 'team_a_three'    => Simpletipp::teamShortener($tmp['nameTeam2'], true),
-                'icon_h'          => $tmp['iconUrlTeam1'],
-                'icon_a'          => $tmp['iconUrlTeam2'],
+                'icon_h'          => (Simpletipp::teamIcon($tmp['nameTeam1'])) ? Simpletipp::teamIcon($tmp['nameTeam1']) : $tmp['iconUrlTeam1'],
+                'icon_a'          => (Simpletipp::teamIcon($tmp['nameTeam1'])) ? Simpletipp::teamIcon($tmp['nameTeam2']) : $tmp['iconUrlTeam2'],
 
                 'isFinished'      => $tmp['matchIsFinished'],
                 'lastUpdate'      => strtotime($tmp['lastUpdate']),

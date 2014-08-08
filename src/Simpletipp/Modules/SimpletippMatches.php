@@ -156,8 +156,6 @@ class SimpletippMatches extends SimpletippModule {
 			$match->alias_h = standardize($teams[0]);
 			$match->alias_a = standardize($teams[1]);
 
-            Simpletipp::convertIconLinks($match);
-
             $matches[] = $match;
 
 			$this->updateSummary($pointObj);
@@ -259,51 +257,70 @@ class SimpletippMatches extends SimpletippModule {
         $nextArr     = array(9);
 
         foreach ($lastArr as $l) {
-            $date_filter[] = array(
+            $date_filter['last-'.$l] = array(
                     'title'    => sprintf($GLOBALS['TL_LANG']['simpletipp']['last'][0], $l),
-                    'cssClass' => ($this->matches_filter->type =='last-'.$l) ? ' class="date_filter active"':' class="date_filter"',
-                    'selected' => ($this->matches_filter->type =='last-'.$l) ? ' selected="selected"':'',
                     'desc'     => sprintf($GLOBALS['TL_LANG']['simpletipp']['last'][1], $l),
                     'href'     => $this->addToUrl('date=last-'.$l.'&group=&matches='));
         }
 
-        $date_filter[] = array(
+        $date_filter['current'] = array(
                     'title'    => $GLOBALS['TL_LANG']['simpletipp']['current'][0],
-					'cssClass' => ($this->matches_filter->type =='current') ? ' class="date_filter active"':' class="date_filter"',
-                    'selected' => ($this->matches_filter->type =='current') ? ' selected="selected"':'',
 					'desc'     => $GLOBALS['TL_LANG']['simpletipp']['current'][1],
 					'href'     => $this->addToUrl('matches=current&date=&group='));
 
-        $date_filter[] = array(
+        $date_filter['all'] = array(
                     'title'    => $GLOBALS['TL_LANG']['simpletipp']['all'][0],
-					'cssClass' => ($this->matches_filter->type =='all') ? ' class="date_filter active"':' class="date_filter"',
-                    'selected' => ($this->matches_filter->type =='all') ? ' selected="selected"':'',
 					'desc'     => $GLOBALS['TL_LANG']['simpletipp']['all'][1],
 					'href'     => $this->addToUrl('matches=all&date=&group='));
 
         foreach ($nextArr as $n) {
-            $date_filter[] = array(
+            $date_filter['next-'.$n] = array(
                 'title'    => sprintf($GLOBALS['TL_LANG']['simpletipp']['next'][0], $n),
-                'cssClass' => ($this->matches_filter->type =='next-'.$n) ? ' class="date_filter active"':' class="date_filter"',
-                'selected' => ($this->matches_filter->type =='next-'.$n) ? ' selected="selected"':'',
                 'desc'     => sprintf($GLOBALS['TL_LANG']['simpletipp']['next'][1], $n),
                 'href'     => $this->addToUrl('date=next-'.$n.'&group=&matches='));
+        }
+
+
+        $i     = 0;
+        $count = count($date_filter);
+        foreach($date_filter as $key => &$entry) {
+            $cssClasses = 'date_filter count'.$count.' pos'.$i;
+            $cssClasses .= ($i == 0) ? ' first' : '';
+            $cssClasses .= ($count === $i+1) ? ' last' : '';
+            $entry['selected'] = '';
+
+            if ($this->matches_filter->type == $key) {
+                $cssClasses       .= ' active';
+                $entry['selected'] = ' selected="selected"';
+            }
+            $entry['cssClass'] = ' class="'.$cssClasses.'"';
+            $i++;
         }
 
         $tmpl->special_filter = $date_filter;
 
         if ($this->simpletippGroups !== null) {
+            $i           = 0;
+            $count       = count($this->simpletippGroups);
+            $prefix      = ' class="group_filter count'.$count;
             foreach($this->simpletippGroups as $mg) {
+                $cssClass  = $prefix.(($i == 0) ? ' first' : '');
+                $cssClass .= ($i+1 == $count) ? ' last %s"' : ' %s"';
+                $act = ($this->matches_filter->type == $mg->title);
                 $groups[] = array(
                     'title'    => $mg->short,
                     'desc'     => $mg->title,
                     'href'     => $this->addToUrl('group='.$mg->title.'&date=&matches='),
-                    'cssClass' => ($this->matches_filter->type == $mg->title) ? ' class="active"': '',
-                    'selected' => ($this->matches_filter->type == $mg->title) ? ' selected="selected"':'',
+                    'cssClass' => ($act) ? sprintf($cssClass, 'pos'.$i++.' active') : sprintf($cssClass, 'pos'.$i++),
+                    'selected' => ($act) ? ' selected="selected"':'',
                 );
 		    }
+
             $tmpl->group_filter = $groups;
         }
+
+
+        // Add count and pos cssClasses
 		return $tmpl->parse();
 	}
 

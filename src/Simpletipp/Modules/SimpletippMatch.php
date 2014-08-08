@@ -139,8 +139,6 @@ class SimpletippMatch extends SimpletippModule {
         $this->match->alias_h = standardize($teams[0]);
         $this->match->alias_a = standardize($teams[1]);
 
-        Simpletipp::convertIconLinks($this->match);
-
         $this->Template->isMobile     = $this->isMobile;
         $this->Template->avatarActive = $this->avatarActive;
         $this->Template->match        = $this->match;

@@ -71,6 +71,15 @@ class Simpletipp extends \System {
         }
     }
 
+    public static function teamIcon($teamName) {
+        if (array_key_exists($teamName, $GLOBALS['simpletipp']['teamShortener']) && count($GLOBALS['simpletipp']['teamShortener'][$teamName]) > 2) {
+            return \Config::get('uploadPath') . '/'.$GLOBALS['simpletipp']['teamShortener'][$teamName][2];
+        }
+        else {
+            return false;
+        }
+    }
+
     public static function groupMapper($arrMatch) {
         $leagueID = $arrMatch['leagueID'];
         $oneMio   = 1000000;
@@ -247,32 +256,6 @@ class Simpletipp extends \System {
                 }
             }
         }
-    }
-
-    public static function convertIconLinks(&$match) {
-
-        foreach(array('h','a') as $suffix) {
-            $iconKey  = 'icon_'.$suffix;
-            $aliasKey = 'alias_'.$suffix;
-            $strAlias = $match->$aliasKey;
-            $url      = $match->$iconKey;
-
-            // Wikimedia hack TODO search for '/??px'
-            $url      =  str_replace('20px', '512px', $url);
-
-            // TODO Read path from module configuration
-            $strFile  = 'files/simpletipp-icons/' .$strAlias.'.'.pathinfo($url, PATHINFO_EXTENSION);
-
-            if (!file_exists(TL_ROOT . '/'.$strFile)) {
-                $fileData = file_get_contents($url);
-                $file     = new \File($strFile);
-                $file->write($fileData);
-                $file->close();
-            }
-
-            $match->$iconKey = $strFile;
-        }
-
     }
 
 } // END class Simpletipp

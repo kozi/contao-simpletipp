@@ -22,7 +22,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
 
 
 <?php if($this->matches): ?>
-<br>
+
 <table class="matches" cellspacing="2" cellpadding="2">
 <thead>
     <tr>
@@ -41,11 +41,15 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
             <small title="<?php echo $match->date_title; ?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small>
         </td>
         <td class="logos">
-            <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo Image::get($match->icon_h, 0,32,'box'); ?>');"><?php echo $match->team_h_three; ?></i>
-            <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo Image::get($match->icon_a, 0,32,'box'); ?>');"><?php echo $match->team_a_three; ?></i>
+            <i class="<?php echo $match->alias_h; ?>" style="background-image:url('<?php echo Image::get($match->icon_h, 50, 50, 'center_center'); ?>');"><?php echo $match->team_h_three; ?></i>
+            <i class="<?php echo $match->alias_a; ?>" style="background-image:url('<?php echo Image::get($match->icon_a, 50, 50, 'center_center'); ?>');"><?php echo $match->team_a_three; ?></i>
         </td>
         <td class="title">
-            <a href="<?php echo $match->matchLink; ?>"><?php echo $match->title; ?></a>
+            <a href="<?php echo $match->matchLink; ?>">
+                <span class="full"><?php echo $match->title; ?></span>
+                <span class="short"><?php echo $match->title_short; ?></span>
+                <span class="tiny"><?php echo $match->team_h_three.' - '.$match->team_a_three; ?></span>
+            </a>
         </td>
 
         <?php if ($match->isStarted): ?>
@@ -63,7 +67,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
             <td class="result"><?php echo $match->result; ?></td>
         <?php endif; ?>
 
-        <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $match->points); ?></td>
+        <td class="points points<?php echo $match->points; ?>"><?php echo str_repeat('<i class="icon-ball"></i>', $match->points); ?></td>
     </tr>
 <?php endforeach; ?>
 </tbody>

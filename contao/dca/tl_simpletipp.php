@@ -12,6 +12,9 @@
  * @license    LGPL
  * @filesource
  */
+use \Simpletipp\OpenLigaDB;
+use \Simpletipp\Simpletipp;
+use \Simpletipp\Models\SimpletippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
@@ -251,7 +254,7 @@ class tl_simpletipp extends \Backend {
 		parent::__construct();
 		$this->cleanupMatches();
 		$this->import('BackendUser', 'User');
-        $this->oldb = \OpenLigaDB::getInstance();
+        $this->oldb = OpenLigaDB::getInstance();
 
 		// Mitgliedergruppen holen		
 		$result = $this->Database->execute("SELECT id, name FROM tl_member_group ORDER BY id");
@@ -303,7 +306,7 @@ class tl_simpletipp extends \Backend {
         if (count($this->matchGroupOptions) == 0) {
             $this->matchGroupOptions[''] = '-';
             $leagueID = intval($dc->activeRecord->leagueID);
-            $groups   = \Simpletipp\Simpletipp::getLeagueGroups($leagueID);
+            $groups   = Simpletipp::getLeagueGroups($leagueID);
             foreach ($groups as $g) {
                 $this->matchGroupOptions[$g->title] = $g->title;
             }
@@ -324,7 +327,7 @@ class tl_simpletipp extends \Backend {
 		}
 
         if ($leagueObj != null) {
-            $objSimpletipp = \SimpletippModel::findByPk($dc->activeRecord->id);
+            $objSimpletipp = SimpletippModel::findByPk($dc->activeRecord->id);
             $objSimpletipp->leagueInfos = serialize(array(
                 'name'     => $leagueObj->leagueName,
                 'shortcut' => $leagueObj->leagueShortcut,

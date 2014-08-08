@@ -1,77 +1,27 @@
-.mod_simpletipp {
-    padding:20px 0 10px 0;
-}
+
 
 .mod_simpletipp table {
 	width:100%;
-    border-collapse: collapse;
+    border-collapse: separate;
 }
 
-
-.mod_simpletipp tr:hover  { background:#DEFFCF; }
-.mod_simpletipp tr.active { background:#C6EFB3; }
-
-
-.mod_simpletipp tr.last,
-.mod_simpletipp tr.break,
-.mod_simpletipp thead tr {
-    border-bottom:1px solid #333;
-}
 .mod_simpletipp_match th.logos i,
 .simpletipp_stat td.logos i,
 .mod_simpletipp_matches td.logos i {
-    display:inline-block;
     text-indent:-99999px;
-    width:26px;
-    height:22px;
+    display:inline-block;
+    width:2em;
+    height:2em;
+    background-color:#ffffff;
     background-position: center center;
-    border:1px solid #aaa;
-    border-radius:5px;
+    background-repeat: no-repeat;
+    border:0.1em solid #aaaaaa;
+    border-radius:0.5em;
 }
 
-.mod_simpletipp_highscore tr,
-.mod_simpletipp_match tr,
-.mod_simpletipp_matches tr,
-.mod_simpletipp_pokal tr,
-.mod_simpletipp_questions tr,
-.simpletipp_stat tr {
-    border-bottom:1px solid #ddd;
-}
-
-.mod_simpletipp_highscore tr.current,
-.mod_simpletipp_pokal tr.current {
-    background-color:#C6EFB3;
-}
-
-
-
-.highscore_bestof tr.pos1,
-.highscore_complete tr.pos1, .highscore_complete tr.pos2,
-.highscore_complete tr.pos3, .highscore_complete tr.pos4,
-.highscore_complete tr.pos5
-{ font-weight:bold; }
-
-
-.highscore_bestof tr.pos1,
-.highscore_complete tr.pos5 { border-bottom:1px solid #333; }
-
-
-
-
-.mod_simpletipp td,
-.mod_simpletipp th {
-	vertical-align:middle;
-    white-space: nowrap;
-    padding:8px 3px;
-}
-
-.mod_simpletipp td.goalData {
-    white-space:normal;
-    font-size:12px;
-}
 .mod_simpletipp td.goalData .goalEntry {
     display:inline-block;
-    padding:2px 1px;
+    padding:0.1em;
     white-space:nowrap;
 }
 .mod_simpletipp td.goalData .goalResult {
@@ -100,109 +50,31 @@
 	text-align:right;
 }
 
-.mod_simpletipp table.matches td.points,
-.mod_simpletipp table.matches td.result {
-    color:#eee;
-}
 
-
-.mod_simpletipp table.matches tfoot td.points,
-.mod_simpletipp table.matches .finished td.points,
-.mod_simpletipp table.matches .finished td.result {
-    color:#333;
-}
-
-.mod_simpletipp td.tipp input {
-    width:36px;
-}
+.mod_simpletipp .matches .short { display:none; }
+.mod_simpletipp .matches .tiny  { display:none; }
 
 
 .simpletipp_filter {
+    padding:1em 0;
     display:block;
-    padding-bottom:10px;
-    font-size:14px;
 }
 
-.mod_simpletipp ul.matchfilter {
+.simpletipp_filter ul {
     position:relative;
-    text-align: center;
+    text-align:center;
     display:block;
-    list-style: none;
-    line-height: normal;
-    margin:0;
-    padding:2px 0;
-}
-
-.mod_simpletipp ul.matchfilter li {
-    display:inline-block;
-    text-align: center;
+    list-style:none;
+    line-height:normal;
     margin:0;
     padding:0;
 }
 
-.mod_simpletipp ul.matchfilter a {
+.simpletipp_filter a {
     display:block;
+    min-width: 2em;
+    padding:0.2em 0.4em;
     text-decoration: none;
-    min-width: 20px;
     margin:0;
-    padding:2px 5px;
+    outline: none;
 }
-.mod_simpletipp ul.matchfilter li.date_filter a {
-    min-width:110px;
-}
-.mod_simpletipp ul.matchfilter li a           { color:#4F4F4F; }
-.mod_simpletipp ul.matchfilter li a:hover,
-.mod_simpletipp ul.matchfilter li.active a    { font-weight:bold; color:#648F59; }
-
-
-.simpletipp_messages {
-    background-color:#C6EFB3;
-    text-align: center;
-    display:block;
-    margin:10px 0;
-    padding:10px;
-}
-
-
-/* Match Graph
-----------------------------------------------------*/
-.mod_simpletipp .bar_wrapper {
-    position:relative;
-    display:block;
-    padding:0;
-    margin:0;
-    width:100%;
-    text-align:center;
-}
-.mod_simpletipp .bar_wrapper div {
-    text-align:center;
-    display:inline-block;
-    overflow:hidden;
-    padding:5px 0;
-    margin:0;
-}
-
-.mod_simpletipp .bar_wrapper .home { background-color:#648F59; }
-.mod_simpletipp .bar_wrapper .draw { background-color:#C6EFB3; }
-.mod_simpletipp .bar_wrapper .away { background-color:#90B97D; }
-
-
-/* Pokal
-------------------------------------------------*/
-.mod_simpletipp_pokal .pokal_highscore {
-    width:48%;
-    margin:0 0 20px 2%;
-    padding:0;
-    display:block;
-    float:left;
-}
-
-.mod_simpletipp_pokal .pokal_highscore.pokal_group {
-    height:300px;
-}
-
-.mod_simpletipp_pokal tr.pos1,
-.mod_simpletipp_pokal .pokal_group tr.pos2,
-.mod_simpletipp_pokal .pokal_group tr.pos3,
-.mod_simpletipp_pokal .pokal_group tr.pos4
-{ font-weight:bold; }

@@ -100,39 +100,56 @@ class SimpletippHighscore extends SimpletippModule {
 	}
 	
 	private function generateFilter() {
-
-
         $special_options   = array(
-            array(
-                'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][0],
-                'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_current'][1],
+            'current' => array(
                 'href'     => $this->addToUrl('show=current'),
-                'cssClass' => ($this->show == 'current') ? ' class="current active"': ' class="current"',
-                'selected' => ($this->show == 'current') ? ' selected="selected"':''
+                'active'   => ($this->show == 'current')
             ),
-            array(
-                'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][0],
-                'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_all'][1],
+            'all' => array(
                 'href'     => $this->addToUrl('show='),
-                'cssClass' => (!$this->show || $this->show == 'all') ? ' class="all active"': ' class="all"',
-                'selected' => (!$this->show || $this->show == 'all') ? ' selected="selected"':''
+                'active'   => (!$this->show || $this->show == 'all')
             ),
-            array(
-                'title'    => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][0],
-                'desc'     => $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof'][1],
+            'bestof' => array(
                 'href'     => $this->addToUrl('show=bestof'),
-                'cssClass' => ($this->show == 'bestof') ? ' class="bestof active"': ' class="bestof"',
-                'selected' => ($this->show == 'bestof') ? ' selected="selected"':''
+                'active'   => ($this->show == 'bestof')
             )
         );
+
+        $i     = 0;
+        $count = count($special_options);
+        foreach($special_options as $key => &$entry) {
+            $entry['title'] = $GLOBALS['TL_LANG']['simpletipp']['highscore_'.$key][0];
+            $entry['desc']  = $GLOBALS['TL_LANG']['simpletipp']['highscore_'.$key][1];
+
+            $cssClasses = $key.' count'.$count.' pos'.$i;
+            $cssClasses .= ($i == 0) ? ' first' : '';
+            $cssClasses .= ($count === $i+1) ? ' last' : '';
+            $entry['selected'] = '';
+
+            if ($entry['active']) {
+                $cssClasses       .= ' active';
+                $entry['selected'] = ' selected="selected"';
+            }
+            $entry['cssClass'] = ' class="'.$cssClasses.'"';
+            $i++;
+        }
+
         $group_options = array();
+        $i           = 0;
+        $count       = count($this->simpletippGroups);
+        $prefix      = ' class="matchgroup count'.$count;
 		foreach($this->simpletippGroups as $mg) {
+            $act       = ($this->show == $mg->title);
+            $cssClass  = $prefix.(($i == 0) ? ' first' : '');
+            $cssClass .= ($i+1 == $count) ? ' last %s"' : ' %s"';
+
             $group_options[] = array(
                     'title'    => $mg->short,
 					'desc'     => $mg->title,
 					'href'     => $this->addToUrl('show='.$mg->title),
-					'cssClass' => ($this->show == $mg->title) ? ' class="matchgroup active"': ' class="matchgroup"',
-                    'selected' => ($this->show == $mg->title) ? ' selected="selected"':'');
+					'cssClass' => ($act) ? sprintf($cssClass, 'pos'.$i++.' active') : sprintf($cssClass, 'pos'.$i++),
+                    'selected' => ($act) ? ' selected="selected"':''
+            );
 		}
 
         $tmplStr = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';

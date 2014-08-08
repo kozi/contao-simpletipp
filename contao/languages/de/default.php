@@ -4,8 +4,8 @@ $GLOBALS['TL_LANG']['simpletipp']['tipp']       = array('Tipp', 'Tipp');
 $GLOBALS['TL_LANG']['simpletipp']['name']       = array('Name', 'Name');
 $GLOBALS['TL_LANG']['simpletipp']['position']   = array('Rang', 'Rang');
 $GLOBALS['TL_LANG']['simpletipp']['deadline']   = array("Datum", "Datum");
-$GLOBALS['TL_LANG']['simpletipp']['point']      = array('Punkte', 'Punkte');
-$GLOBALS['TL_LANG']['simpletipp']['points']     = array('Punkt', 'Punkt');
+$GLOBALS['TL_LANG']['simpletipp']['point']      = array('Punkt', 'Punkt');
+$GLOBALS['TL_LANG']['simpletipp']['points']     = array('Punkte', 'Punkte');
 
 
 $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject']  = "Tipperinnerung";

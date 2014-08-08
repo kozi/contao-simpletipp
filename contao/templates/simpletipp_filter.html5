@@ -1,21 +1,14 @@
 <div class="block simpletipp_filter">
 
 <?php if($this->special_filter): ?>
-<ul class="matchfilter date_filter">
-
-    <?php foreach($this->special_filter as $link): ?>
-	    <li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li>
-    <?php endforeach;?>
-
+<ul class="date_filter">
+    <?php foreach($this->special_filter as $link): ?><li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li><?php endforeach;?>
 </ul>
 <?php endif; ?>
 
 <?php if($this->group_filter): ?>
 <ul class="matchfilter">
-        <?php $i=1; foreach($this->group_filter as $link): ?>
-	    <li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li>
-        <?php if ($i++ == 17) echo '</ul><ul class="matchfilter">' ?>
-    <?php endforeach; ?>
+        <?php $i=1; foreach($this->group_filter as $link): ?><li<?php echo $link['cssClass'];?>><a title="<?php echo $link['desc']; ?>" href="<?php echo $link['href']; ?>"><?php echo $link['title']; ?></a></li><?php if ($i++ == 17) echo '</ul><ul class="matchfilter">' ?><?php endforeach; ?>
 </ul>
 
 <?php endif; ?>
