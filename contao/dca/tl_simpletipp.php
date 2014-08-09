@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{simpletipp_legend}, title, leagueID, factor, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
+		'default'                     => '{simpletipp_legend}, title, leagueID, factor, matchLength, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend},pokal_ranges',
 	),
 
 
@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+            'sql'                     => "int(10) unsigned NOT NULL default '6300'"
         ),
         //'matchResultType'   => array(
         // TODO
@@ -351,7 +351,7 @@ class tl_simpletipp extends \Backend {
 		if ($dc->activeRecord->leagueInfos === null) {
 			return false;
 		}
-        $this->import('SimpletippMatchUpdater');
+        $this->import('\Simpletipp\SimpletippMatchUpdater', 'SimpletippMatchUpdater');
         $this->SimpletippMatchUpdater->updateMatches();
 	}
 
