@@ -15,6 +15,9 @@
 
 namespace Simpletipp\Modules;
 
+
+use \Simpletipp\SimpletippModule;
+
 /**
  * Class SimpletippModulePokal
  *
@@ -38,7 +41,7 @@ class SimpletippModulePokal extends SimpletippModule {
             return $this->Template->parse();
         }
 
-        $this->import('SimpletippPokal');
+        $this->import('\Simpletipp\SimpletippPokal', 'SimpletippPokal');
         $this->strTemplate  = $this->simpletipp_template;
         $this->groups       = $this->SimpletippPokal->getGroups($this->simpletipp);
 
