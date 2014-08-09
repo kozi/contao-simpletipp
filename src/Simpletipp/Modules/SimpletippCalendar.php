@@ -15,6 +15,7 @@
 
 namespace Simpletipp\Modules;
 
+use \Simpletipp\SimpletippModule;
 /**
  * Class SimpletippCalendar
  *
@@ -22,8 +23,6 @@ namespace Simpletipp\Modules;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
-require_once (TL_ROOT.'/system/modules/simpletipp/classes/iCalcreator.class.php');
 
 class SimpletippCalendar extends SimpletippModule {
     private $title         = 'Tippspiel';
@@ -40,7 +39,7 @@ class SimpletippCalendar extends SimpletippModule {
     }
 
     protected function compile() {
-
+        global $objPage;
 
         $isDebug              = (\Input::get('debug') == '1');
         $calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), \Input::get('cal')));
@@ -72,7 +71,7 @@ class SimpletippCalendar extends SimpletippModule {
         /* DEBUG -----------------------------------------------------------*/
         if ($isDebug) {
             $xml   = iCal2XML($v);
-            $dom   = new DOMDocument('1.0', 'UTF-8');
+            $dom   = new \DOMDocument('1.0', 'UTF-8');
             $dom->preserveWhiteSpace = false;
             $dom->formatOutput = true;
             $dl = @$dom->loadXML($xml);
