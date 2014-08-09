@@ -144,7 +144,7 @@ class SimpletippCalendar extends SimpletippModule {
         $now            = time();
         $url            = '';
 		$timestamp      = $matches[0]->deadline;
-		$timestamp_ende = $timestamp + (105*60); // add 105 (2x45 + 15) minutes
+		$timestamp_ende = $timestamp + $this->simpletipp->matchLength;
 
 		if ($this->matchesPage !== null) {
             $url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,

@@ -167,6 +167,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                     => "varchar(10) NOT NULL default ''",
         ),
+        'matchLength' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['matchLength'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
         //'matchResultType'   => array(
         // TODO
         // ),

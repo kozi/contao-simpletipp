@@ -432,7 +432,7 @@ class SimpletippMatches extends SimpletippModule {
 
     private function finishedMatches() {
 
-        $matchEnd = time() - Simpletipp::$MATCH_LENGTH;
+        $matchEnd = time() - $this->simpletipp->matchLength;
         $result   = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
                WHERE leagueID = ? AND deadline < ? AND isFinished = ?")
             ->execute($this->simpletipp->leagueID, $matchEnd, 0);

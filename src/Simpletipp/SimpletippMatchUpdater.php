@@ -168,7 +168,7 @@ class SimpletippMatchUpdater extends \Backend {
 
         if ($match->goalData == NULL
             || $match->goalData->lastUpdate < $simpletippLastChanged
-            || ($now - $match->deadline) < (Simpletipp::$MATCH_LENGTH + 900)) {
+            || ($now - $match->deadline) < ($simpletipp->matchLength)) {
 
             $this->oldb = OpenLigaDB::getInstance();
             $leagueInfos  = unserialize($simpletipp->leagueInfos);

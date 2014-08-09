@@ -28,7 +28,6 @@ use \Simpletipp\Models\SimpletippMatchModel;
 class Simpletipp extends \System {
     public static $TIPP_DIVIDER       = ':';
     public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
-    public static $MATCH_LENGTH       = 6900;
 
     const GROUPNAME_VORRUNDE          = 'Vorrunde';
 
