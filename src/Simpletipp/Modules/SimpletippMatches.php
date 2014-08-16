@@ -340,7 +340,7 @@ class SimpletippMatches extends SimpletippModule {
 		
 			for ($i=0;$i < count($ids);$i++) {
 				$id    = intval($ids[$i]);
-				$tipp  = \Simpletipp::cleanupTipp($tipps[$i]);
+				$tipp  = Simpletipp::cleanupTipp($tipps[$i]);
 
 				if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp)) {
 					$to_db[$id] = $tipp;
@@ -356,12 +356,10 @@ class SimpletippMatches extends SimpletippModule {
 				$result = $this->Database->prepare($checkSql)->execute($memberId, $id);
 
 				if ($result->numRows > 0) {
-					$result = $this->Database->prepare($updateSql)
-						->execute($tipp, $result->id);
+					$this->Database->prepare($updateSql)->execute($tipp, $result->id);
 				}
 				else {
-					$result = $this->Database->prepare($insertSql)
-						->execute(time(), $memberId, $id, $tipp);
+					$this->Database->prepare($insertSql)->execute(time(), $memberId, $id, $tipp);
 				}
 			}
 		}
@@ -380,7 +378,7 @@ class SimpletippMatches extends SimpletippModule {
                 $message = $GLOBALS['TL_LANG']['simpletipp']['message_inserted'];
             }
         }
-        \Simpletipp::addSimpletippMessage($message);
+        Simpletipp::addSimpletippMessage($message);
         return true;
 	}
 
