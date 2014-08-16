@@ -12,6 +12,7 @@
  * @license    LGPL
  * @filesource
  */
+use \Simpletipp\Simpletipp;
 
 $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 
@@ -172,10 +173,10 @@ class tl_simpletipp_tipp extends Backend {
 			$args[2]  = $tipp;
 			$args[3]  = $m->result;
 
-            $points   = \Simpletipp\Simpletipp::getPoints($m->result, $tipp);
+            $points   = Simpletipp::getPoints($m->result, $tipp);
             $c        = $points->getPointsClass();
             $args[4]  = sprintf('<i class="%s">%s</i>', $c, strtoupper(substr($c, 0, 1)));
-			$args[5]  = \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
+			$args[5]  = Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
 		}
 		return $args;
 	}

@@ -15,7 +15,6 @@
 
 namespace Simpletipp;
 
-
 class PokalRangesField extends \Widget {
 
     protected $strTemplate     = 'be_widget';
@@ -38,7 +37,7 @@ class PokalRangesField extends \Widget {
 
 
 
-        foreach(\SimpletippPokal::$groupAliases as $groupAlias) {
+        foreach(SimpletippPokal::$groupAliases as $groupAlias) {
 
             $start = array_key_exists($groupAlias, $this->varValue) ? $this->varValue[$groupAlias][0] : '';
             $end   = array_key_exists($groupAlias, $this->varValue) ? end($this->varValue[$groupAlias]) : '';
@@ -68,7 +67,7 @@ class PokalRangesField extends \Widget {
 
     public function validate() {
         $def = array();
-        foreach(\SimpletippPokal::$groupAliases as $groupAlias) {
+        foreach(SimpletippPokal::$groupAliases as $groupAlias) {
             $def[$groupAlias]['start'] = $this->getPost($groupAlias.'_start');
             $def[$groupAlias]['end']   = $this->getPost($groupAlias.'_end');
         }
@@ -76,13 +75,13 @@ class PokalRangesField extends \Widget {
         $valueArr     = array();
         $i            = 0;
         $addGroup     = false;
-        $currentAlias = \SimpletippPokal::$groupAliases[$i];
+        $currentAlias = SimpletippPokal::$groupAliases[$i];
 
         foreach (Simpletipp::getLeagueGroups($this->activeRecord->leagueID) as $g) {
 
             if ($g->title == $def[$currentAlias]['end']) {
                 $valueArr[$currentAlias][] = $g->title;
-                $currentAlias = \SimpletippPokal::$groupAliases[++$i];
+                $currentAlias = SimpletippPokal::$groupAliases[++$i];
                 $addGroup     = false;
             }
             if ($g->title == $def[$currentAlias]['start'] || $addGroup) {

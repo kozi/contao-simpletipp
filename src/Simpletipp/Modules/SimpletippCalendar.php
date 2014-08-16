@@ -15,7 +15,10 @@
 
 namespace Simpletipp\Modules;
 
+
+use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippModule;
+
 /**
  * Class SimpletippCalendar
  *
@@ -176,7 +179,7 @@ class SimpletippCalendar extends SimpletippModule {
 					$info2 = " *OK*"; // TODO translation
 				}
 				else {
-                    $p          = \Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
+                    $p          = Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
                     $pointsSum  = $pointsSum + $p->points;
 					$info2      = " ".$p->getPointsString();
 				}

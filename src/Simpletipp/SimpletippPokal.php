@@ -15,7 +15,7 @@
 
 namespace Simpletipp;
 
-
+use \Simpletipp\Models\SimpletippModel;
 
 /**
  * Class SimpletippPokal
@@ -98,7 +98,7 @@ class SimpletippPokal extends \Backend {
 
 
     public function calculate() {
-        $this->simpletipp = \SimpletippModel::findByPk(\Input::get('id'));
+        $this->simpletipp = SimpletippModel::findByPk(\Input::get('id'));
         $result = $this->getGroups($this->simpletipp);
 
         if ($result === false) {
