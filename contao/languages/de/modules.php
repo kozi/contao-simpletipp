@@ -15,10 +15,10 @@
  * permanent text corrections which are update-safe.
  */
 
-$GLOBALS['TL_LANG']['MOD']['simpletipp']            = 'Tippspiel';
-$GLOBALS['TL_LANG']['MOD']['simpletipp_groups']     = array("Tipprunden", "Tipprunden");
-$GLOBALS['TL_LANG']['MOD']['simpletipp_matches']    = array("Spiele", "Spiele");
-$GLOBALS['TL_LANG']['MOD']['simpletipp_tipps']      = array("Tipps", "Tipps");
+$GLOBALS['TL_LANG']['MOD']['simpletipp']              = 'Tippspiel';
+$GLOBALS['TL_LANG']['MOD']['simpletipp_group']        = array("Tipprunden", "Tipprunden");
+$GLOBALS['TL_LANG']['MOD']['simpletipp_match']        = array("Spiele", "Spiele");
+$GLOBALS['TL_LANG']['MOD']['simpletipp_tipp']         = array("Tipps", "Tipps");
 
 $GLOBALS['TL_LANG']['FMD']['simpletipp']              = 'Simpletipp';
 $GLOBALS['TL_LANG']['FMD']['simpletipp_matches']      = array("Simpletipp Spiele", "Simpletipp Spiele");

@@ -24,6 +24,7 @@ $GLOBALS['BE_FFL']['pokalRanges']            = 'PokalRangesField';
 
 $GLOBALS['TL_MODELS']['tl_simpletipp']       = '\Simpletipp\Models\SimpletippModel';
 $GLOBALS['TL_MODELS']['tl_simpletipp_match'] = '\Simpletipp\Models\SimpletippMatchModel';
+$GLOBALS['TL_MODELS']['tl_simpletipp_tipp']  = '\Simpletipp\Models\SimpletippTippModel';
 
 
 array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, array(
@@ -44,7 +45,7 @@ array_insert($GLOBALS['TL_CTE']['simpletipp'], 0, array(
 
 array_insert($GLOBALS['BE_MOD'], 1, array(
 		'simpletipp' => array(
-				'simpletipp_groups' => array
+				'simpletipp_group' => array
 				(
 						'tables'     => array('tl_simpletipp', 'tl_simpletipp_question'),
 						'icon'       => 'system/modules/simpletipp/assets/images/soccer.png',
@@ -54,13 +55,13 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
                         'calculate'  => array('\Simpletipp\SimpletippMatchUpdater', 'calculateTipps'),
                         'pokal'      => array('\Simpletipp\SimpletippPokal', 'calculate'),
 				),
-				'simpletipp_matches' => array
+				'simpletipp_match' => array
 				(
 						'tables'     => array('tl_simpletipp_match'),
 						'icon'       => 'system/themes/default/images/tablewizard.gif',
                         'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
 				),
-				'simpletipp_tipps' => array
+				'simpletipp_tipp'   => array
 				(
 						'tables'     => array('tl_simpletipp_tipp'),
 						'icon'       => 'system/themes/default/images/tablewizard.gif',

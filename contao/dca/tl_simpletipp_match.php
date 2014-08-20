@@ -22,7 +22,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 	'notEditable'                 => true,
 	'closed'                      => true,
 	'sql' => array(
-		'keys' => array('id' => 'primary')
+		'keys' => array(
+            'id'    => 'primary',
+            'title' => 'index'
+        )
 	)
 		
 ),

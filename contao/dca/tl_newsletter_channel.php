@@ -14,7 +14,7 @@
  */
 
 
-$GLOBALS['TL_DCA']['tl_newsletter_channel']['config']['onload_callback'][] = array('SimpletippCallbacks', 'createNewsletterChannel');
+$GLOBALS['TL_DCA']['tl_newsletter_channel']['config']['onload_callback'][] = array('Simpletipp\SimpletippCallbacks', 'createNewsletterChannel');
 
 $GLOBALS['TL_DCA']['tl_newsletter_channel']['fields']['simpletipp'] = array(
     'label' => "SIMPLETIPP",

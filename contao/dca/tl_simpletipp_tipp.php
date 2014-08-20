@@ -13,6 +13,7 @@
  * @filesource
  */
 use \Simpletipp\Simpletipp;
+use \Simpletipp\Models\SimpletippTippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 
@@ -35,13 +36,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 	'sorting' => array
 	(
 		'mode'                    => 2,
-		'fields'                  => array('tstamp ASC', 'member_id ASC'),
+		'fields'                  => array('tstamp DESC'),
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
 	),
 	'label' => array
 	(
-		'fields'                  => array('member_id', 'match_id', 'tipp', 'result', 'points'),
+
+		'fields'                  => array('member_id', 'title', 'tipp_result', 'points'),
 		'showColumns'             => true,
 		'label_callback'          => array('tl_simpletipp_tipp', 'labelCallback')
 	),
@@ -66,22 +68,24 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 	(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['tstamp'],
 			'search'                  => false,
-			'sql'                     => "int(10) unsigned NOT NULL default '0'"
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 	),
 	'member_id' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['member_id'],
-			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-			'inputType'               => 'select',
-			'foreignKey'              => 'tl_member.username',
-			'filter'                  => true,
+            'filter'                  => true,
+            'inputType'               => 'select',
+            'foreignKey'              => 'tl_member.username',
+            'sql'                     => "int(10) unsigned NOT NULL default '0'",
+            'relation'                => array('type' => 'belongsTo', 'load' => 'eager'),
+            'eval'                    => array('mandatory' => true),
 	),
 	'match_id' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['match_id'],
-			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-			'inputType'               => 'select',
+            'filter'                  => true,
+            'inputType'               => 'select',
 			'foreignKey'              => 'tl_simpletipp_match.title',
-            'options_callback'        => array('tl_simpletipp_tipp','getMatchOptions'),
-			'filter'                  => true,
+            'sql'                     => "int(10) unsigned NOT NULL default '0'",
+            'relation'                => array('type' => 'belongsTo', 'load' => 'eager'),
             'eval'                    => array('mandatory' => true),
 	),
 	'tipp' => array(
@@ -114,17 +118,11 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 
 
 class tl_simpletipp_tipp extends Backend {
-	private $memberNames = array();
 	private $matches     = array();
 
 	public function __construct() {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
-
-		$result = $this->Database->execute('SELECT id, username FROM tl_member');
-		while($result->next()) {
-			$this->memberNames[$result->id] = $result->username;
-		}
 
 		$result = $this->Database->execute('SELECT id, title, result, groupName FROM tl_simpletipp_match ORDER BY deadline');
 		while($result->next()) {
@@ -147,37 +145,27 @@ class tl_simpletipp_tipp extends Backend {
         return $options;
     }
 
-	public function getLeagues(DataContainer $dc) {
-		//var_dump($dc);
-		return $this->leagues;
-	}
-
-	public function getGroups(DataContainer $dc) {
-		//var_dump($dc);
-		return $this->groups;
-	}
-
 	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
-		if ($args === null) {
-			return $label;
+
+        // var_dump($objTipp);
+        if ($args === null) {
+            return $label;
 		}
-		$member_id = intval($row['member_id']);
-		$match_id  = intval($row['match_id']);
 
-		if(array_key_exists($match_id, $this->matches)) {
-            $m        = $this->matches[$match_id];
-            $tipp     = $row['tipp'];
+        $objTipp  = SimpletippTippModel::findByPk($row['id']);
+        $m        = $objTipp->getRelated('match_id');
+        $u        = $objTipp->getRelated('member_id');
+        $tipp     = $row['tipp'];
 
-			$args[0]  = $this->memberNames[$member_id];
-			$args[1]  = $m->title;
-			$args[2]  = $tipp;
-			$args[3]  = $m->result;
+        $points   = Simpletipp::getPoints($m->result, $tipp);
+        $pClass   = $points->getPointsClass();
 
-            $points   = Simpletipp::getPoints($m->result, $tipp);
-            $c        = $points->getPointsClass();
-            $args[4]  = sprintf('<i class="%s">%s</i>', $c, strtoupper(substr($c, 0, 1)));
-			$args[5]  = Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
-		}
+        $args[0]  = $u->username;
+        $args[1]  = $m->title;
+        $args[2]  = (strlen($m->result)>0) ? $tipp.' ['.$m->result.']' : $tipp;
+        $args[3]  = sprintf('<i class="%s">%s</i>', $pClass, strtoupper(substr($pClass, 0, 1)));
+        $args[4]  = Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
+
 		return $args;
 	}
 }
