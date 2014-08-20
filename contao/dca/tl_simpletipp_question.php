@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 	// Palettes
 	'palettes' => array
 	(
-		'default'					=> '{legend}, question, points;{legend_answers}, answers;{legend_results}, results;{legend_importer}, importer;',
+		'default'					=> '{legend}, question, points, multiple;{legend_answers}, answers;{legend_results}, results;{legend_importer}, importer;',
 	),
 
     // Fields
@@ -130,6 +130,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 				'eval'					  => array('rgxp' => 'number','mandatory'=>true, 'tl_class' => 'w50'),
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		),
+        'multiple' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['multiple'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('doNotCopy'=>true, 'tl_class' => 'w50'),
+            'sql'                     => "char(1) NOT NULL default ''",
+        ),
 		'published' => array
 		(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['published'],

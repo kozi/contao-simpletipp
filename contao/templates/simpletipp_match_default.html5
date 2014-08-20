@@ -6,13 +6,15 @@
 <?php endif; ?>
 
 
-
-
 <?php if ($this->match): ?>
 <table>
     <thead>
     <tr>
-        <th class="matchtitle" colspan="2"><?php echo ($this->isMobile) ? $this->match->title_short : $this->match->title; ?></th>
+        <th class="matchtitle" colspan="2">
+            <span class="full"><?php echo $this->match->title; ?></span>
+            <span class="short"><?php echo $this->match->title_short; ?></span>
+            <span class="tiny"><?php echo $this->match->team_h_three.' - '.$this->match->team_a_three; ?></span>
+        </th>
         <th class="logos">
             <i class="<?php echo $this->match->alias_h; ?>" style="background-image:url('<?php echo Image::get($this->match->icon_h, 0,32,'box'); ?>');"><?php echo $this->match->team_h_three; ?></i>
             <i class="<?php echo $this->match->alias_a; ?>" style="background-image:url('<?php echo Image::get($this->match->icon_a, 0,32,'box'); ?>');"><?php echo $this->match->team_a_three; ?></i>

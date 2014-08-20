@@ -51,8 +51,8 @@
 }
 
 
-.mod_simpletipp .matches .short { display:none; }
-.mod_simpletipp .matches .tiny  { display:none; }
+.mod_simpletipp .matchtitle .short { display:none; }
+.mod_simpletipp .matchtitle .tiny  { display:none; }
 
 
 .simpletipp_filter {
