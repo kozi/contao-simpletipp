@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 	(
 			'label'                   => array('ID'),
 			'search'                  => false,
-			'sql'                     => "int(10) unsigned NOT NULL"
+            'sql'                     => "int(10) unsigned NOT NULL",
 	),
     'tstamp' => array
     (

@@ -13,7 +13,6 @@
  * @filesource
  */
 use \Simpletipp\Simpletipp;
-use \Simpletipp\Models\SimpletippTippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 
@@ -43,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 	'label' => array
 	(
 
-		'fields'                  => array('member_id', 'title', 'tipp_result', 'points'),
+		'fields'                  => array('member_id:tl_member.username', 'match_id:tl_simpletipp_match.title', 'match_id:tl_simpletipp_match.result', 'points'),
 		'showColumns'             => true,
 		'label_callback'          => array('tl_simpletipp_tipp', 'labelCallback')
 	),
@@ -76,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
             'inputType'               => 'select',
             'foreignKey'              => 'tl_member.username',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type' => 'belongsTo', 'load' => 'eager'),
+            'relation'                => array('type' => 'hasOne', 'load' => 'eager'),
             'eval'                    => array('mandatory' => true),
 	),
 	'match_id' => array(
@@ -85,10 +84,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
             'inputType'               => 'select',
 			'foreignKey'              => 'tl_simpletipp_match.title',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type' => 'belongsTo', 'load' => 'eager'),
+            'relation'                => array('type' => 'hasOne', 'load' => 'eager'),
             'eval'                    => array('mandatory' => true),
 	),
-	'tipp' => array(
+    'tipp' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['tipp'],
             'inputType'               => 'text',
 			'sql'                     => "varchar(9) NOT NULL default ''",
@@ -147,22 +146,16 @@ class tl_simpletipp_tipp extends Backend {
 
 	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
 
-        // var_dump($objTipp);
         if ($args === null) {
             return $label;
 		}
 
-        $objTipp  = SimpletippTippModel::findByPk($row['id']);
-        $m        = $objTipp->getRelated('match_id');
-        $u        = $objTipp->getRelated('member_id');
         $tipp     = $row['tipp'];
-
-        $points   = Simpletipp::getPoints($m->result, $tipp);
+        $result   = $args[2];
+        $points   = Simpletipp::getPoints($result, $tipp);
         $pClass   = $points->getPointsClass();
 
-        $args[0]  = $u->username;
-        $args[1]  = $m->title;
-        $args[2]  = (strlen($m->result)>0) ? $tipp.' ['.$m->result.']' : $tipp;
+        $args[2]  = (strlen($result)>0) ? $tipp.' ['.$result.']' : $tipp;
         $args[3]  = sprintf('<i class="%s">%s</i>', $pClass, strtoupper(substr($pClass, 0, 1)));
         $args[4]  = Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['tstamp']);
 
