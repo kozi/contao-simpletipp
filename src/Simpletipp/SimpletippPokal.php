@@ -144,6 +144,11 @@ class SimpletippPokal extends \Backend {
         if ($this->finishedGroup === null) {
             // 8 Gruppen auslosen
             $arrUserIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
+            if ($arrUserIds === null) {
+                // No ids --> nothing to do
+                return false;
+            }
+
             shuffle($arrUserIds);
 
             $total    = count($arrUserIds);

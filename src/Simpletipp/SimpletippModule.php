@@ -158,13 +158,14 @@ abstract class SimpletippModule extends \Module {
 
         }
 
-
-        // Jetzt noch die member, die noch nichts getippt haben hinzufügen
-        $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
-        ." WHERE tl_member.id in (".implode(',', $arrParticipantIds).")");
-        while($result->next()) {
-            if (!array_key_exists($result->member_id, $table)) {
-                $table[$result->member_id] = $this->getHighscoreRow($result->row());
+        if ($arrParticipantIds !== null) {
+            // Jetzt noch die member, die noch nichts getippt haben hinzufügen
+            $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
+            ." WHERE tl_member.id in (".implode(',', $arrParticipantIds).")");
+            while($result->next()) {
+                if (!array_key_exists($result->member_id, $table)) {
+                    $table[$result->member_id] = $this->getHighscoreRow($result->row());
+                }
             }
         }
         return $table;

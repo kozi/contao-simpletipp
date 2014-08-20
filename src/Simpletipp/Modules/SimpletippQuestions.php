@@ -77,7 +77,7 @@ class SimpletippQuestions extends SimpletippModule {
             $participants = array();
             $objMembers   = Simpletipp::getGroupMember($this->simpletipp->participant_group);
             if ($objMembers != null) {
-                foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+                foreach ($objMembers as $objMember) {
                     $objM                 = (object) $objMember->row();
                     $objM->questionPoints = 0;
 

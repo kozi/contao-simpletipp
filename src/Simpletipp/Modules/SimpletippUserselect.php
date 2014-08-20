@@ -49,7 +49,7 @@ class SimpletippUserselect extends SimpletippModule {
 
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         if ($objMembers != null) {
-            foreach (Simpletipp::getGroupMember($this->simpletipp->participant_group) as $objMember) {
+            foreach ($objMembers as $objMember) {
                 $objMember->link              = $this->addToUrl('user='.$objMember->username);
                 $participants[$objMember->id] = $objMember;
             }

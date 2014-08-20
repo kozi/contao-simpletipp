@@ -66,8 +66,10 @@ class SimpletippCallbacks extends \Backend {
 
             $emails     = array();
             $objMembers = Simpletipp::getGroupMember($simpletipp['participant_group']);
-            foreach($objMembers as $objMember) {
-                $emails[] = $objMember->email;
+            if ($objMembers !== null) {
+                foreach($objMembers as $objMember) {
+                    $emails[] = $objMember->email;
+                }
             }
 
             $emails = array_unique($emails);

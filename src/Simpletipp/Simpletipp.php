@@ -135,8 +135,10 @@ class Simpletipp extends \System {
     public static function getGroupMemberIds($groupID) {
         $arrIds     = array();
         $objMembers = static::getGroupMember($groupID);
-        foreach($objMembers as $objMember) {
-            $arrIds[] = $objMember->id;
+        if ($objMembers!== null) {
+            foreach($objMembers as $objMember) {
+                $arrIds[] = $objMember->id;
+            }
         }
         return $arrIds;
     }

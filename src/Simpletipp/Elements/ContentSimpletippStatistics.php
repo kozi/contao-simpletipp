@@ -156,9 +156,11 @@ class ContentSimpletippStatistics extends SimpletippModule {
         }
 
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
-        foreach($objMembers as $objMember) {
-            $objMember->highscorePositions = array(0);
-            $memberArray[$objMember->id]   = $objMember;
+        if ($objMembers !== null) {
+            foreach($objMembers as $objMember) {
+                $objMember->highscorePositions = array(0);
+                $memberArray[$objMember->id]   = $objMember;
+            }
         }
         $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
@@ -205,10 +207,13 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
+
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
-        foreach($objMembers as $objMember) {
-            $objMember->pointsArray        = array();
-            $memberArray[$objMember->id]   = $objMember;
+        if ($objMembers !== null) {
+            foreach($objMembers as $objMember) {
+                $objMember->pointsArray        = array();
+                $memberArray[$objMember->id]   = $objMember;
+            }
         }
 
 
