@@ -3,7 +3,7 @@
 <table class="ranking">
     <thead><tr>
         <th>&nbsp;</th>
-        <th class="team">Mannschaft</th>
+        <th colspan="2" class="team">Mannschaft</th>
         <th>Tore</th>
         <th><small>[<abbr title="Siege/Unentschieden/Niederlagen">S/U/N</abbr>]</small> <abbr title="Punkte">P</abbr></th>
     </tr></thead>
@@ -12,7 +12,8 @@
 <?php $i = 1; foreach($this->ranking as $team): ?>
     <tr class="<?php echo $team->alias.' rank'.$i; echo ($i %2 == 0) ? ' even':' odd'; ?>">
         <td class="position"><?php echo $i++; ?>. </td>
-        <td class="name"><abbr style="background-image:url('<?php echo $team->icon; ?>');" title="<?php echo $team->name; ?>"><?php echo $team->short; ?></abbr></td>
+        <td class="logo"><i style="background-image:url('<?php echo Image::get($team->icon, 32, 32, 'center_center'); ?>');"></i></td>
+        <td class="name"><abbr title="<?php echo $team->name; ?>"><?php echo $team->short; ?></abbr></td>
         <td class="goals"><small>(<?php echo $team->goalsPlus; ?>:<?php echo $team->goalsMinus; ?>)</small>&nbsp;<?php echo $team->goalDiff(); ?></td>
         <td class="points"><small>[<?php echo $team->wins; ?>/<?php echo $team->draws; ?>/<?php echo $team->losses; ?>]</small>&nbsp;<?php echo $team->getPoints(); ?></td>
     </tr>

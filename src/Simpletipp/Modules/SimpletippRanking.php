@@ -40,7 +40,6 @@ class SimpletippRanking extends SimpletippModule {
             ->execute($this->simpletipp->leagueID);
 
         $ranking = array();
-        $iconUrl = \Environment::get('url').'/files/vereinslogos/';
         while($result->next()) {
 
             if ($ranking[$result->team_h] === null) {
@@ -48,8 +47,7 @@ class SimpletippRanking extends SimpletippModule {
                 $name  = trim($arr[0]);
                 $arr   = explode('-', $result->title_short);
                 $short = trim($arr[0]);
-                $icon  = str_replace('http://www.openligadb.de/images/teamicons/', $iconUrl, $result->icon_h);
-                $ranking[$result->team_h] = new Team($name, $short, $result->team_h, $icon);
+                $ranking[$result->team_h] = new Team($name, $short, $result->team_h, $result->icon_h);
             }
 
             if ($ranking[$result->team_a] === null) {
@@ -57,8 +55,7 @@ class SimpletippRanking extends SimpletippModule {
                 $name  = trim($arr[1]);
                 $arr   = explode('-', $result->title_short);
                 $short = trim($arr[1]);
-                $icon  = str_replace('http://www.openligadb.de/images/teamicons/', $iconUrl, $result->icon_a);
-                $ranking[$result->team_a] = new Team($name, $short, $result->team_a, $icon);
+                $ranking[$result->team_a] = new Team($name, $short, $result->team_a, $result->icon_a);
             }
             $team_h = &$ranking[$result->team_h];
             $team_a = &$ranking[$result->team_a];

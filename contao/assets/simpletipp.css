@@ -5,6 +5,8 @@
     border-collapse: separate;
 }
 
+
+.mod_simpletipp_ranking td.logo i,
 .mod_simpletipp_match th.logos i,
 .simpletipp_stat td.logos i,
 .mod_simpletipp_matches td.logos i {
@@ -17,6 +19,18 @@
     background-repeat: no-repeat;
     border:0.1em solid #aaaaaa;
     border-radius:0.5em;
+}
+
+.mod_simpletipp_ranking td.logo {
+    margin:0;
+    padding:0;
+    vertical-align: middle;
+}
+.mod_simpletipp_ranking td.logo i {
+    display:block;
+    width:1.2em;
+    height:1.2em;
+    border-radius:0.2em;
 }
 
 .mod_simpletipp td.goalData .goalEntry {
