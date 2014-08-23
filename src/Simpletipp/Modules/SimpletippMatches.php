@@ -436,7 +436,7 @@ class SimpletippMatches extends SimpletippModule {
             ->execute($this->simpletipp->leagueID, $matchEnd, 0);
 
         if ($result->numRows > 0) {
-            $this->import('SimpletippMatchUpdater');
+            $this->import('\Simpletipp\SimpletippMatchUpdater', 'SimpletippMatchUpdater');
             $this->SimpletippMatchUpdater->updateSimpletippMatches($this->simpletipp);
         }
 

@@ -30,13 +30,19 @@ use Simpletipp\Models\SimpletippMatchModel;
  */
 class SimpletippMatchUpdater extends \Backend {
     private static $lookupLockSeconds     = 180;
+    const RESULTTYPE_ENDERGEBNIS   = 'ENDERGEBNIS';
+    const RESULTTYPE_HALBZEIT      = 'HALBZEIT';
+    const RESULTTYPE_VERLAENGERUNG = 'VERLAENGERUNG';
+    const RESULTTYPE_11METER       = '11METER';
 
     // TODO Typen auswählbar machen in der Tipprunde
     // TODO Prioritäten festlegen d.h. die resultTypes in eine Reihenfolge bringen
-    private static $resultTypeNach11Meter = 4;
-    private static $resultTypeEndergebnis = 3;
-    private static $resultTypeHalbzeit    = 1;
-
+    public static $arrResultTypes = array(
+        1 => self::RESULTTYPE_HALBZEIT,
+        2 => self::RESULTTYPE_ENDERGEBNIS,
+        3 => self::RESULTTYPE_VERLAENGERUNG,
+        4 => self::RESULTTYPE_11METER,
+    );
 
     public function updateMatches() {
         $id     = (\Input::get('id') !== null) ? intval(\Input::get('id')) : 0;
@@ -247,10 +253,9 @@ class SimpletippMatchUpdater extends \Backend {
             $matchId      = $tmp['matchID'];
 
             // GroupName
-            $arrGroup    = Simpletipp::groupMapper($tmp);
+            $arrGroup     = Simpletipp::groupMapper($tmp);
 
             $results      = self::parseResults($tmp['matchResults']);
-
 
             $newMatch     = array(
                 'leagueID'        => $tmp['leagueID'],
@@ -271,8 +276,8 @@ class SimpletippMatchUpdater extends \Backend {
 
                 'isFinished'      => $tmp['matchIsFinished'],
                 'lastUpdate'      => strtotime($tmp['lastUpdate']),
-                'resultFirst'     => $results[0],
-                'result'          => $results[1],
+                'result'          => $results[self::RESULTTYPE_ENDERGEBNIS],
+                'resultFirst'     => $results[self::RESULTTYPE_HALBZEIT],
             );
             $newMatches[$matchId] = $newMatch;
         }
@@ -304,35 +309,21 @@ class SimpletippMatchUpdater extends \Backend {
     }
 
     private static function parseResults($matchResults) {
-        $rFirst = '';
-        $rFinal = '';
-
-        if ($matchResults->matchResult === null){
-            return array($rFirst, $rFinal);
-        }
-
+        // Init result array
         $arrResults = array();
-        foreach ($matchResults->matchResult as $res) {
-            $arrResults[$res->resultTypeId] = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+        foreach (static::$arrResultTypes as $type) {
+            $arrResults[$type] = '';
         }
 
-        // Halbzeitergebnis
-        if (array_key_exists(self::$resultTypeHalbzeit, $arrResults)) {
-            $rFirst = $arrResults[self::$resultTypeHalbzeit];
+        // Fill result array
+        if ($matchResults->matchResult !== null) {
+            foreach ($matchResults->matchResult as $res) {
+                $key = static::$arrResultTypes[$res->resultTypeId];
+                $arrResults[$key] = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+            }
         }
 
-        // Endergebnisse
-        if (array_key_exists(self::$resultTypeEndergebnis, $arrResults)) {
-            $rFinal = $arrResults[self::$resultTypeEndergebnis];
-        }
-
-        if (array_key_exists(self::$resultTypeNach11Meter, $arrResults)) {
-            $rFinal = $arrResults[self::$resultTypeNach11Meter];
-        }
-
-
-
-        return array($rFirst, $rFinal);
+        return $arrResults;
     }
 
 
