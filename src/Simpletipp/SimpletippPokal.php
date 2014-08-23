@@ -176,7 +176,7 @@ class SimpletippPokal extends \Backend {
             }
 
             // Gruppen auswerten und auslosen
-            $this->import('SimpletippModulePokal');
+            $this->import('\Simpletipp\Modules\SimpletippModulePokal', 'SimpletippModulePokal');
             $this->SimpletippModulePokal->setSimpletipp($this->simpletipp->id);
             $highscores = $this->SimpletippModulePokal->getGroupHighscores($this->finishedGroup);
             $arrUserIds = array();
