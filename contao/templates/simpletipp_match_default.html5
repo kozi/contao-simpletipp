@@ -75,7 +75,7 @@
                 </td>
 
                 <td class="tipp"><?php echo $tipp->tipp; ?></td>
-                <td class="points"><?php echo str_repeat('<span aria-hidden="true" class="icon-football"></span> ', $tipp->points); ?></td>
+                <td class="points points<?php echo $tipp->points; ?>"><?php echo str_repeat('<i class="icon-ball"></i>', $tipp->points); ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
