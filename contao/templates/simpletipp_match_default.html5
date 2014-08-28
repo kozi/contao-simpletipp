@@ -70,7 +70,7 @@
                 <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name">
                     <a href="<?php echo $tipp->link; ?>">
                         <?php echo $tipp->firstname.' '.$tipp->lastname; ?>
-                        <?php echo ($this->isMobile) ? '': ' ('.$tipp->username.')'; ?>
+                        <span class="username"><?php echo ' ('.$tipp->username.')'; ?></span>
                     </a>
                 </td>
 

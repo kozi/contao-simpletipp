@@ -17,7 +17,10 @@ $(document).ready(function() {
 
         $('table.ranking tr').removeClass('active');
         $('td.logos i', $row).each(function() {
-            $('table.ranking tr.'+this.className).addClass('active');
+
+            console.log(this.className);
+
+            $('table.ranking tr.' + this.className).addClass('active');
         });
     });
 

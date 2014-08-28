@@ -56,7 +56,6 @@ class SimpletippUserselect extends SimpletippModule {
         }
 
         $this->Template->action             = $this->addToUrl('user=');
-        $this->Template->isMobile           = $objPage->isMobile;
         $this->Template->participants       = $participants;
         $this->Template->simpletippUserId   = $this->simpletippUserId;
         $this->Template->simpletipp         = $this->simpletipp;

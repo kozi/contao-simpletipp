@@ -1,3 +1,10 @@
+<?php
+
+$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
+$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css||static';
+
+?>
+
 <div class="simpletipp_userselect">
     <form action="<?php echo $this->action; ?>" method="get">
         <select tabindex="-1" name="user" onchange="location.href= '<?php echo $this->action; ?>?user=' + this.value">
@@ -13,14 +20,9 @@
         </noscript>
     </form>
 </div>
-
-<?php if (!$this->isMobile):
-$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
-$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
-?>
 <script>
-$(document).ready(function() {
-    $('.simpletipp_userselect select').chosen();
-});
+    // TODO Wenn mobile dann kein chosen!
+    $(document).ready(function() {
+        $('.simpletipp_userselect select').chosen();
+    });
 </script>
-<?php endif;?>

@@ -55,7 +55,6 @@ class SimpletippHighscore extends SimpletippModule {
         $this->show = (\Input::get('show') !== null) ? urldecode(\Input::get('show')) : 'all';
 
         $this->Template->filter   = $this->generateFilter();
-        $this->Template->isMobile = $objPage->isMobile;
 
         if ($this->show === 'bestof') {
             $this->Template->avatarActive = $this->avatarActive;
@@ -152,8 +151,7 @@ class SimpletippHighscore extends SimpletippModule {
             );
 		}
 
-        $tmplStr = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';
-        $tmpl                 = new \FrontendTemplate($tmplStr);
+        $tmpl                 = new \FrontendTemplate('simpletipp_filter');
         $tmpl->special_filter = $special_options;
         $tmpl->group_filter   = $group_options;
 

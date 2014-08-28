@@ -47,10 +47,6 @@ class SimpletippMatches extends SimpletippModule {
 			return $this->Template->parse();
 		}
 
-        if ($this->isMobile) {
-            $this->strTemplate  = 'simpletipp_matches_mobile';
-        }
-
         $GLOBALS['TL_JAVASCRIPT'][] = "/system/modules/simpletipp/assets/simpletipp.js";
 		return parent::generate();
     }
@@ -77,7 +73,6 @@ class SimpletippMatches extends SimpletippModule {
 
         $this->Template->formId     = $this->formId;
         $this->Template->action     = ampersand(\Environment::get('request'));
-        $this->Template->isMobile   = $this->isMobile;
 
 		$this->Template->summary    = $this->pointSummary;
 		$this->Template->messages   = Simpletipp::getSimpletippMessages();
@@ -249,8 +244,7 @@ class SimpletippMatches extends SimpletippModule {
 	}
 
 	private function getMatchFilter() {
-        $tmplStr     = ($this->isMobile) ? 'simpletipp_filter_mobile' : 'simpletipp_filter';
-        $tmpl        = new \FrontendTemplate($tmplStr);
+        $tmpl        = new \FrontendTemplate('simpletipp_filter');
         $date_filter = array();
 
         $lastArr     = array(9);

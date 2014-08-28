@@ -27,7 +27,6 @@ use \Simpletipp\Models\SimpletippModel;
 
 abstract class SimpletippModule extends \Module {
     protected $now;
-    protected $isMobile;
     protected $simpletipp;
     protected $simpletippGroups;
 
@@ -64,9 +63,7 @@ abstract class SimpletippModule extends \Module {
         $this->loadLanguageFile('tl_simpletipp');
         $this->import('Database');
         $this->import('FrontendUser', 'User');
-        $this->now                  = time();
-        $this->isMobile             = $objPage->isMobile;
-
+        $this->now = time();
 
         // Get simpletipp_group from root page
         $objRootPage = \PageModel::findByPk($objPage->rootId);
