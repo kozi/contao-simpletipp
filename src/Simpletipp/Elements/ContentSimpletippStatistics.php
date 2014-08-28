@@ -137,11 +137,11 @@ class ContentSimpletippStatistics extends SimpletippModule {
     protected function statHighscoreTimeline() {
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css||static';
 
         $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.css';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.css||static';
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.canvasTextRenderer.min.js';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js';
@@ -159,9 +159,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
                 $objMember->highscorePositions = array(0);
-                $memberArray[$objMember->id]   = $objMember;
+                $memberArray[$objMember->username]   = $objMember;
             }
         }
+
         $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
             ->execute($this->simpletipp->leagueID, '1');
@@ -172,11 +173,16 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
         for ($i=1;$i <= count($groups);$i++) {
             $matchgroups = array_slice($groups, 0, $i);
-            $pos = 0;
-            foreach($this->getHighscore($matchgroups) as $tableEntry) {
-                $member = &$memberArray[$tableEntry->member_id];
-                $member->highscorePositions[] = intval($pos++) * (-1);
-                // $member->highscorePositions   = $this->getTestArray(34, 56);
+
+            $pos            = 0;
+            $highscoreTable = $this->getHighscore($matchgroups);
+            foreach($highscoreTable as $tableEntry) {
+                $highscorePos       = intval($pos++) * (-1);
+                $highscoreHistory   = $memberArray[$tableEntry->username]->highscorePositions;
+                $highscoreHistory[] = $highscorePos;
+                $memberArray[$tableEntry->username]->highscorePositions = $highscoreHistory;
+
+                //array_push($memberArray[$tableEntry->username]->highscorePositions, $highscorePos);
             }
         }
 
@@ -191,17 +197,19 @@ class ContentSimpletippStatistics extends SimpletippModule {
     protected function statPoints() {
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css||static';
 
         $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.css';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.css||static';
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.barRenderer.min.js';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.categoryAxisRenderer.min.js';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.pointLabels.min.js';
 
-        $memberArray = $this->cachedResult(static::$cache_key_points);
+        // $memberArray = $this->cachedResult(static::$cache_key_points);
+        $memberArray = null;
+
         if ($memberArray != null) {
             $this->statsTemplate->table = $memberArray;
             return true;
@@ -211,8 +219,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
-                $objMember->pointsArray        = array();
-                $memberArray[$objMember->id]   = $objMember;
+                $objMember->pointsArray            = array();
+                $memberArray[$objMember->username] = $objMember;
             }
         }
 
@@ -222,17 +230,21 @@ class ContentSimpletippStatistics extends SimpletippModule {
             ->execute($this->simpletipp->leagueID, '1');
 
         while($result->next()) {
-            $matchgroup = $result->groupName;
-            foreach($this->getHighscore($matchgroup) as $tableEntry) {
-                $member    = &$memberArray[$tableEntry->member_id];
+            $matchgroup     = $result->groupName;
+            $highscoreTable = $this->getHighscore($matchgroup);
+            foreach($highscoreTable as $tableEntry) {
 
-                $values = array(
+                $groupArray = array(
                     intval($tableEntry->points),
                     intval($tableEntry->sum_perfect) * $this->pointFactors->perfect,
                     intval($tableEntry->sum_difference) * $this->pointFactors->difference,
                     intval($tableEntry->sum_tendency) * $this->pointFactors->tendency,
                 );
-                $member->pointsArray[$result->groupName] = $values;
+
+                $pointsArray = $memberArray[$tableEntry->username]->pointsArray;
+
+                $pointsArray[$result->groupName]                 = $groupArray;
+                $memberArray[$tableEntry->username]->pointsArray = $pointsArray;
 
             }
         }

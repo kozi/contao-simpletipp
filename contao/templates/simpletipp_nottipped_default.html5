@@ -5,7 +5,13 @@
 <?php endif; ?>
 
 <p><strong><?php echo $this->match->title_short; ?></strong> haben folgende Tipper noch nicht getippt:
-    <em><?php echo implode(", ", $this->userArr); ?></em>
+    <em>
+        <?php $i=0; $max=count($this->userArr); foreach($this->userArr as $username => $name):
+            $tmpl  = ($this->user->username == $username) ? '<strong class="currentUser">%s</strong>' : '%s';
+            $tmpl .= (++$i != $max) ? ', ':'';
+            printf($tmpl, $name);
+        endforeach; ?>
+    </em>
 </p>
 
 </div>

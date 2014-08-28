@@ -51,10 +51,12 @@ class SimpletippNotTipped extends SimpletippModule {
         }
 
         foreach(Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
-            $userArr[] =  $u['firstname'].' '.$u['lastname'];
+            $key           = $u['username'];
+            $userArr[$key] = $u['firstname'].' '.$u['lastname'];
         }
 
         $this->Template->match   = $match;
+        $this->Template->user    = $this->User;
         $this->Template->userArr = $userArr;
 	}
 
