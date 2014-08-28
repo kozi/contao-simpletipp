@@ -207,8 +207,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.categoryAxisRenderer.min.js';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/plugins/jqplot.pointLabels.min.js';
 
-        // $memberArray = $this->cachedResult(static::$cache_key_points);
-        $memberArray = null;
+        $memberArray = $this->cachedResult(static::$cache_key_points);
 
         if ($memberArray != null) {
             $this->statsTemplate->table = $memberArray;
