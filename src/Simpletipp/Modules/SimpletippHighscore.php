@@ -201,12 +201,12 @@ class SimpletippHighscore extends SimpletippModule {
         // CSS Klassen setzen
         $i = 1;
         foreach($bestOf as &$row) {
-            $row->cssClass = 'pos'.$i++.' '.(($i %2 == 0) ? ' odd' : ' even');
+            $row->cssClass  = 'pos'.$i++.' '.(($i %2 == 0) ? ' odd' : ' even');
+            $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
         }
 
         // Ergebnis cachen
         $this->cachedResult(static::$cache_key_bestof, $bestOf);
-
 
         return $bestOf;
 	}
