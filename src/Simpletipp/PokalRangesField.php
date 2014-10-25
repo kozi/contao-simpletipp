@@ -23,6 +23,7 @@ class PokalRangesField extends \Widget {
 
 
     public function generate() {
+
         $this->leagueGroups  = Simpletipp::getLeagueGroups($this->activeRecord->leagueID);
         $this->varValue      = ($this->varValue === null) ? array() : $this->varValue;
 
