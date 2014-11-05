@@ -117,9 +117,12 @@ class SimpletippPokal extends \Backend {
                 $this->nextGroup->first, $this->nextGroup->last), 'TL_ERROR');
             $this->redirect(\Environment::get('script').'?do=simpletipp_group');
         }
+
+
         $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
             WHERE groupName IN ('".implode("','", $this->finishedGroup->matchgroups)."')
-                            AND (result = ? OR isFinished = ?)")->execute('', 0);
+                            AND leagueID = ?
+                            AND (result = ? OR isFinished = ?)")->execute($this->simpletipp->leagueID, '', 0);
 
         if ($result->numRows == 0) {
             if (\Input::get('confirm') == '1') {
