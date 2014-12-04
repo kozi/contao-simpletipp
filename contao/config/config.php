@@ -19,8 +19,8 @@ $GLOBALS['TL_CRON']['hourly'][]              = array('\Simpletipp\SimpletippMatc
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]    = array('\Simpletipp\SimpletippCallbacks', 'addCustomRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]  = array('\Simpletipp\SimpletippCallbacks', 'randomLine');
 
-$GLOBALS['BE_FFL']['pokalRanges']            = '\Simpletipp\PokalRangesField';
-
+$GLOBALS['BE_FFL']['pokalRanges']            = '\Simpletipp\Widgets\PokalRangesField';
+$GLOBALS['BE_FFL']['tippInserter']           = '\Simpletipp\Widgets\TippInserterField';
 
 $GLOBALS['TL_MODELS']['tl_simpletipp']       = '\Simpletipp\Models\SimpletippModel';
 $GLOBALS['TL_MODELS']['tl_simpletipp_match'] = '\Simpletipp\Models\SimpletippMatchModel';

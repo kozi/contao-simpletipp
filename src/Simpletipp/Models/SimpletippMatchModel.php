@@ -33,4 +33,8 @@ class SimpletippMatchModel extends \Model {
         $title_short = str_replace(array('ue', 'ae', 'oe'), array('ü','ä','ö'), $title_short);
         return self::findOneBy('title_short', $title_short);
    }
+
+
+
+
 }

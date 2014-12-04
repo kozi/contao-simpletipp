@@ -13,7 +13,10 @@
  * @filesource
  */
 
-namespace Simpletipp;
+namespace Simpletipp\Widgets;
+
+use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippPokal;
 
 class PokalRangesField extends \Widget {
 

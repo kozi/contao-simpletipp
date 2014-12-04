@@ -13,6 +13,8 @@
  * @filesource
  */
 use \Simpletipp\Simpletipp;
+use \Simpletipp\Models\SimpletippModel;
+use \Simpletipp\Models\SimpletippTippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 
@@ -22,11 +24,16 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 	'dataContainer'               => 'Table',
 	'notEditable'                 => false,
 	'closed'                      => false,
+    'onload_callback'             => array(
+        array('tl_simpletipp_tipp', 'changeInputType')
+    ),
+    'onsubmit_callback'           => array(
+        array('tl_simpletipp_tipp', 'processSubmittedTipps')
+    ),
 	'sql' => array(
 		'keys' => array('id' => 'primary')
 		// TODO UNIQUE KEY `one_tipp_for_user_per_match` (`member_id`, `match_id`)
-	)
-
+	),
 ),
 
 // List
@@ -39,6 +46,16 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
 	),
+    'global_operations' => array
+    (
+        'create' => array
+        (
+            'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['insert_tipp'],
+            'href'                => 'act=create',
+            'class'               => 'header_create',
+            'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="c"'
+        )
+    ),
 	'label' => array
 	(
 
@@ -76,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
             'foreignKey'              => 'tl_member.username',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
             'relation'                => array('type' => 'hasOne', 'load' => 'eager'),
-            'eval'                    => array('mandatory' => true),
+            'eval'                    => array('mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true),
 	),
 	'match_id' => array(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['match_id'],
@@ -161,6 +178,107 @@ class tl_simpletipp_tipp extends Backend {
 
 		return $args;
 	}
+
+    public function changeInputType(\DataContainer $dc) {
+
+        if ('edit' === \Input::get('act')) {
+
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['palettes']['default']         = '{simpletipp_legend}, member_id, simpletippGroups, leagueGroups, tipp';
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['label']     = array('Tipps', 'Hier die Tipps eintragen');
+
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['simpletippGroups'] = array(
+                'label'            => array('Tipprunde', 'Tipprunde wählen'),
+                'inputType'        => 'select',
+                'foreignKey'       => 'tl_simpletipp.title',
+                'load_callback'    => array(array('tl_simpletipp_tipp','loadCallbackSimpletippGroups')),
+                'eval'             => array('tl_class' => 'w50', 'submitOnChange' => true, 'includeBlankOption' => true, 'readonly' => true)
+            );
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['leagueGroups'] = array(
+                'label'            => array('Spieltag/Gruppe', 'Spieltag/Gruppe wählen'),
+                'inputType'        => 'select',
+                'options_callback' => array('tl_simpletipp_tipp','leagueGroupOptions'),
+                'load_callback'    => array(array('tl_simpletipp_tipp','loadCallbackLeagueGroups')),
+                'eval'             => array('tl_class' => 'w50', 'submitOnChange' => true, 'includeBlankOption' => true, 'readonly' => true)
+            );
+
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['inputType'] = 'tippInserter';
+        }
+        else {
+            //Cleanup
+            $this->Database->execute('DELETE FROM tl_simpletipp_tipp WHERE match_id = 0');
+
+        }
+    }
+
+    public function leagueGroupOptions(\DataContainer $dc) {
+        $options      = array();
+        $simpletippId = $this->handleSessionData('simpletippGroups');
+
+        if ($simpletippId) {
+            $simpletippObj = SimpletippModel::findByPk($simpletippId);
+            $leagueGroups  = Simpletipp::getLeagueGroups($simpletippObj->leagueID);
+            foreach ($leagueGroups as $id => $g) {
+                $options[$id] = $g->title;
+            }
+        }
+        return $options;
+    }
+
+    public function loadCallbackSimpletippGroups($varValue, \DataContainer $dc) {
+        return $this->emptyValueLoadCallback('simpletippGroups');
+    }
+
+    public function loadCallbackLeagueGroups($varValue, \DataContainer $dc) {
+        return $this->emptyValueLoadCallback('leagueGroups');
+    }
+
+
+    private function emptyValueLoadCallback($fieldName) {
+        if (\Input::post($fieldName)) {
+            $this->handleSessionData($fieldName, \Input::post($fieldName));
+        }
+        else {
+            $varValue = $this->handleSessionData($fieldName);
+        }
+        return $varValue;
+    }
+
+    private function handleSessionData($fieldName, $varValue=null) {
+        $sessionKey = 'tl_simpletipp_tipp.'.$fieldName;
+        $session    = \Session::getInstance();
+        if ($varValue === null) {
+            return $session->get($sessionKey);
+        }
+        else {
+            $session->set($sessionKey, $varValue);
+        }
+    }
+
+    public function processSubmittedTipps(\DataContainer $dc) {
+        $member_id = intval($dc->activeRecord->member_id);
+        $arrIds    = \Input::post('tippInserter_matchId');
+        $arrTipps  = \Input::post('tippInserter_tipp');
+        if (is_int($member_id) && $member_id != 0 && is_array($arrIds) && is_array($arrTipps) && count($arrIds) == count($arrTipps)) {
+
+            $arrIds   = array_map('intval', $arrIds);
+            $arrTipps = array_map('trim', $arrTipps);
+
+            for($i=0;$i<count($arrIds);$i++) {
+                if(strlen($arrTipps[$i]) > 0) {
+                    $objTipp = new SimpletippTippModel();
+                    $objTipp->setRow(array(
+                        'tstamp'     => time(),
+                        'member_id'  => $member_id,
+                        'match_id'   => intval($arrIds[$i]),
+                        'tipp'       => $arrTipps[$i]
+                    ));
+                    $objTipp->save();
+                }
+            }
+
+        }
+        // var_dump($dc->activeRecord);
+    }
 }
 
 

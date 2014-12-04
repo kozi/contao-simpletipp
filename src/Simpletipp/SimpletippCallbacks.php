@@ -15,8 +15,6 @@
 
 namespace Simpletipp;
 
-
-
 /**
  * Class SimpletippCallbacks
  *
@@ -121,6 +119,7 @@ class SimpletippCallbacks extends \Backend {
         // nicht unser Insert-Tag
         return false;
     }
+
 
 }
 
