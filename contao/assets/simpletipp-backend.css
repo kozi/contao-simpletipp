@@ -41,17 +41,8 @@ table.simpletipp_results input {
 	text-align:right;
 }
 
-.header_simpletipp_import,
-.header_simpletipp_settings {
-	padding: 2px 0 3px 20px;
-}
-
-.header_simpletipp_import {
-	background: url("/system/modules/simpletipp/assets/images/database-import.png") no-repeat scroll left center transparent;
-}
-
-.header_simpletipp_settings {
-    background: url("/system/themes/default/images/settings.gif") no-repeat scroll left center transparent;
+.header_simpletipp_reminder {
+	background:url("/system/modules/newsletter/assets/icon.gif") no-repeat scroll left center transparent;
 }
 
 .tl_box {
@@ -128,3 +119,5 @@ td.col_points i.wrong      { background-color: red;}
 td.col_points i.tendency   { background-color: gold;}
 td.col_points i.difference { background-color: skyblue;}
 td.col_points i.perfect    { background-color: green;}
+
+

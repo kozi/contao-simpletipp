@@ -20,13 +20,11 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend_questions']  = 'Extrafra
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_pokal_legend']      = 'Pokalrunden';
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_matches']           = 'Spiele';
 
-$GLOBALS['TL_LANG']['tl_simpletipp']['settings']     = array('Einstellungen', 'Einstellungen');
-$GLOBALS['TL_LANG']['tl_simpletipp']['import']       = array('Spiele importieren', 'Spiele importieren');
-$GLOBALS['TL_LANG']['tl_simpletipp']['settings_btn'] = 'Speichern';
-$GLOBALS['TL_LANG']['tl_simpletipp']['import_btn']   = 'Ausführen';
+// Global Button
+$GLOBALS['TL_LANG']['tl_simpletipp']['reminder']     = array('Email-Erinnerungen', 'Email-Erinnerungen abschicken');
 
 
-
+// Fields
 $GLOBALS['TL_LANG']['tl_simpletipp']['title']        = array("Titel", "Titel für diese Tipprunde");
 $GLOBALS['TL_LANG']['tl_simpletipp']['adminName']    = array("Admin Name","Name des Tipprundenadmins");
 $GLOBALS['TL_LANG']['tl_simpletipp']['adminEmail']   = array("Admin Email","Email des Tipprundenadmins");

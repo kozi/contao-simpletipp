@@ -25,6 +25,9 @@ namespace Simpletipp;
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */
+use Simpletipp\Models\SimpletippModel;
+
+
 class SimpletippEmailReminder extends \Backend {
 
     public function tippReminder() {
@@ -33,7 +36,7 @@ class SimpletippEmailReminder extends \Backend {
         $simpletippModel = SimpletippModel::findAll();
         $hours           = 24;
         $now             = time();
-
+        $arrMessages     = array();
         foreach ($simpletippModel as $simpletippObj) {
             $match = Simpletipp::getNextMatch($simpletippObj->leagueID);
 
@@ -41,7 +44,8 @@ class SimpletippEmailReminder extends \Backend {
                 || $simpletippObj->lastRemindedMatch == $match->id
                 || ($match->deadline > (($hours*3600)+$now))) {
                 // no next match found or already reminded or more than $hours to start
-                $message = sprintf('No next match found or already reminded or more than %s to start', $hours);
+                $message       = sprintf('No next match found or already reminded or more than %s to start', $hours);
+                $arrMessages[] = $message;
                 \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
             }
             else {
@@ -76,9 +80,21 @@ class SimpletippEmailReminder extends \Backend {
 
                 $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
                     $match->title, \Date::parse('d.m.Y H:i', $match->deadline));
+                $arrMessages[] = $message;
                 \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
             } // END else
+        } // END foreach
+
+
+        if ('reminder' === \Input::get('key')) {
+            foreach($arrMessages as $m) {
+                \Message::addInfo($m);
+            }
+            $this->redirect(\Environment::get('script').'?do=simpletipp_group');
         }
+
+
+
     }
 
     private function generateEmailObject($simpletippRes, $subject, $text = NULL) {

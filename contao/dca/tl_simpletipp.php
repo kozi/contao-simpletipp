@@ -58,6 +58,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 				'href'                => 'act=select',
 				'class'               => 'header_edit_all',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
+			'reminder' => array(
+				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['reminder'],
+				'href'                => 'key=reminder',
+				'class'               => 'header_icon header_simpletipp_reminder',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			)
 		),
 		'operations' => array
@@ -65,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'calculate' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['calculate'],
-                'href'                => 'key=calculate',
+				'href'                => 'key=calculate',
                 'icon'                => 'system/themes/default/images/modules.gif',
             ),
 

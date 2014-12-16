@@ -54,6 +54,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array(
                         'update'     => array('\Simpletipp\SimpletippMatchUpdater', 'updateMatches'),
                         'calculate'  => array('\Simpletipp\SimpletippMatchUpdater', 'calculateTipps'),
                         'pokal'      => array('\Simpletipp\SimpletippPokal', 'calculate'),
+                        'reminder'   => array('\Simpletipp\SimpletippEmailReminder', 'tippReminder'),
 				),
 				'simpletipp_match' => array
 				(
