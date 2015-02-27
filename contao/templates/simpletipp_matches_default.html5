@@ -66,7 +66,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
         <?php if ($match->isStarted): ?>
             <td class="tipp <?php echo $match->pointsClass; ?>"><?php echo $match->tipp; ?></td>
         <?php elseif($this->isPersonal): $hasTippableMatch = true; ?>
-            <td class="tipp" colspan="2">
+            <td class="tipp" colspan="3">
                 <input type="hidden" name="match_ids[]" value="<?php echo $match->id; ?>"/>
                 <input title="Beispieleingabe: 1:1 oder 1-2 oder 1,2 oder 3;2" class="tipp" tabindex="<?php echo $i++;?>" size="5" maxlength="5" type="text"<?php echo $onfocus; ?> name="tipps[]" value="<?php echo $match->tipp; ?>"/>
             </td>
@@ -78,7 +78,9 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
             <td class="result"><?php echo $match->result; ?></td>
         <?php endif; ?>
 
-        <td class="points points<?php echo $match->points; ?>"><?php echo str_repeat('<i class="icon-ball"></i>', $match->points); ?></td>
+        <?php if ($match->isStarted || !$this->isPersonal): ?>
+            <td class="points points<?php echo $match->points; ?>"><?php echo str_repeat('<i class="icon-ball"></i>', $match->points); ?></td>
+        <?php endif; ?>
     </tr>
 <?php endforeach; ?>
 </tbody>
