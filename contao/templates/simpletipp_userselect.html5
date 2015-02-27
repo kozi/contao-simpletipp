@@ -1,8 +1,6 @@
 <?php
-
-$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
-$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css||static';
-
+$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js';
+$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
 ?>
 
 <div class="simpletipp_userselect">
@@ -21,8 +19,14 @@ $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.mi
     </form>
 </div>
 <script>
-    // TODO Wenn mobile dann kein chosen!
+
     $(document).ready(function() {
-        $('.simpletipp_userselect select').chosen();
+        var isTouchDevice  = ('ontouchstart' in window || 'onmsgesturechange' in window);
+
+        // Wenn touch dann kein select2!
+        if (!isTouchDevice) {
+            $('.simpletipp_userselect select').select2();
+        }
+
     });
 </script>

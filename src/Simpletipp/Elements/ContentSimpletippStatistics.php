@@ -136,8 +136,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     protected function statHighscoreTimeline() {
 
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css||static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
 
         $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';
@@ -196,8 +196,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     protected function statPoints() {
 
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chosen/chosen.jquery.min.js';
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chosen/chosen.min.css||static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
 
         $GLOBALS['TL_HEAD'][]       = '<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="system/modules/simpletipp/assets/jqplot/excanvas.js"></script><![endif]-->';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/jqplot/jquery.jqplot.min.js';

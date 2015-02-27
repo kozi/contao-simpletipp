@@ -70,7 +70,7 @@ var highscorePlotOptions = {
 
 $(document).ready(function() {
 
-    $("#highscoreTimeline-select select").chosen();
+    $("#highscoreTimeline-select select").select2();
     $('#highscoreTimeline-select select').on('change', function(evt, params) {
 
         var newData         = [];

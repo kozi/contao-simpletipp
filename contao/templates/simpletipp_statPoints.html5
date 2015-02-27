@@ -74,7 +74,7 @@ var pointsPlotOptions = {
 $(document).ready(function() {
     $.jqplot.config.enablePlugins = true;
 
-    $("#pointstat-select").chosen();
+    $("#pointstat-select").select2();
 
     $('#pointstat-select').on('change', function(evt, params) {
         pointsPlot.replot({data: pointsObject[this.value] });
