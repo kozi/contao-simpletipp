@@ -77,6 +77,10 @@ $(document).ready(function() {
         var newSeries       = [];
         var selectedOptions = $(this).val();
 
+
+        // TODO TODO TODO TODO
+        // TODO DEFEKT weil jetzt select2 und nicht chosen benutzt wird
+
         if (selectedOptions == null) {
             return false;
         }
@@ -84,8 +88,6 @@ $(document).ready(function() {
         $('#highscoreTimeline-select .search-choice .search-choice-close').each(function(index) {
             var dataOptionIndex = $(this).attr('data-option-array-index');
             var optionKey = $('#highscoreTimeline-select').find('option').eq(dataOptionIndex).attr('value');
-
-
 
             if ($.inArray(optionKey, selectedOptions) != -1) {
                 $element = $(this.parentElement);
