@@ -11,7 +11,8 @@ define([
     var $search = $(
       '<li class="select2-search select2-search--inline">' +
         '<input class="select2-search__field" type="search" tabindex="-1"' +
-          ' role="textbox" />' +
+        ' autocomplete="off" autocorrect="off" autocapitalize="off"' +
+        ' spellcheck="false" role="textbox" />' +
       '</li>'
     );
 
@@ -38,6 +39,7 @@ define([
       self.$search.attr('tabindex', -1);
 
       self.$search.val('');
+      self.$search.focus();
     });
 
     container.on('enable', function () {
@@ -46,6 +48,14 @@ define([
 
     container.on('disable', function () {
       self.$search.prop('disabled', true);
+    });
+
+    this.$selection.on('focusin', '.select2-search--inline', function (evt) {
+      self.trigger('focus', evt);
+    });
+
+    this.$selection.on('focusout', '.select2-search--inline', function (evt) {
+      self.trigger('blur', evt);
     });
 
     this.$selection.on('keydown', '.select2-search--inline', function (evt) {
@@ -65,11 +75,22 @@ define([
           var item = $previousChoice.data('data');
 
           self.searchRemoveChoice(item);
+
+          evt.preventDefault();
         }
       }
     });
 
-    this.$selection.on('keyup', '.select2-search--inline', function (evt) {
+    // Workaround for browsers which do not support the `input` event
+    // This will prevent double-triggering of events for browsers which support
+    // both the `keyup` and `input` events.
+    this.$selection.on('input', '.select2-search--inline', function (evt) {
+      // Unbind the duplicated `keyup` event
+      self.$selection.off('keyup.search');
+    });
+
+    this.$selection.on('keyup.search input', '.select2-search--inline',
+        function (evt) {
       self.handleSearch(evt);
     });
   };

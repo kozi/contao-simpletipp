@@ -31,6 +31,8 @@ define([
   };
 
   Results.prototype.displayMessage = function (params) {
+    var escapeMarkup = this.options.get('escapeMarkup');
+
     this.clear();
     this.hideLoading();
 
@@ -40,7 +42,11 @@ define([
 
     var message = this.options.get('translations').get(params.message);
 
-    $message.text(message(params.args));
+    $message.append(
+      escapeMarkup(
+        message(params.args)
+      )
+    );
 
     this.$results.append($message);
   };
@@ -100,7 +106,11 @@ define([
 
         var item = $.data(this, 'data');
 
-        if (item.id != null && selectedIds.indexOf(item.id.toString()) > -1) {
+        // id needs to be converted to a string when comparing
+        var id = '' + item.id;
+
+        if ((item.element != null && item.element.selected) ||
+            (item.element == null && $.inArray(id, selectedIds) > -1)) {
           $option.attr('aria-selected', 'true');
         } else {
           $option.attr('aria-selected', 'false');
@@ -161,6 +171,10 @@ define([
 
     if (data._resultId != null) {
       option.id = data._resultId;
+    }
+
+    if (data.title) {
+      option.title = data.title;
     }
 
     if (data.children) {
@@ -271,6 +285,16 @@ define([
       self.$results.removeAttr('aria-activedescendant');
     });
 
+    container.on('results:toggle', function () {
+      var $highlighted = self.getHighlightedResults();
+
+      if ($highlighted.length === 0) {
+        return;
+      }
+
+      $highlighted.trigger('mouseup');
+    });
+
     container.on('results:select', function () {
       var $highlighted = self.getHighlightedResults();
 
@@ -281,13 +305,7 @@ define([
       var data = $highlighted.data('data');
 
       if ($highlighted.attr('aria-selected') == 'true') {
-        if (self.options.get('multiple')) {
-          self.trigger('unselect', {
-            data: data
-          });
-        } else {
-          self.trigger('close');
-        }
+        self.trigger('close');
       } else {
         self.trigger('select', {
           data: data
@@ -473,13 +491,16 @@ define([
 
   Results.prototype.template = function (result, container) {
     var template = this.options.get('templateResult');
+    var escapeMarkup = this.options.get('escapeMarkup');
 
     var content = template(result);
 
     if (content == null) {
       container.style.display = 'none';
+    } else if (typeof content === 'string') {
+      container.innerHTML = escapeMarkup(content);
     } else {
-      container.innerHTML = content;
+      $(container).append(content);
     }
   };
 

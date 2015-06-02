@@ -29,7 +29,7 @@ define([
 
     this._removeOldTags();
 
-    if (params.term == null || params.term === '' || params.page != null) {
+    if (params.term == null || params.page != null) {
       decorated.call(this, params, callback);
       return;
     }
@@ -71,7 +71,7 @@ define([
         var $option = self.option(tag);
         $option.attr('data-select2-tag', true);
 
-        self.$element.append($option);
+        self.addOptions([$option]);
 
         self.insertTag(data, tag);
       }
@@ -85,9 +85,15 @@ define([
   };
 
   Tags.prototype.createTag = function (decorated, params) {
+    var term = $.trim(params.term);
+
+    if (term === '') {
+      return null;
+    }
+
     return {
-      id: params.term,
-      text: params.term
+      id: term,
+      text: term
     };
   };
 

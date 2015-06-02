@@ -18,7 +18,7 @@ define(function () {
       return message;
     },
     inputTooShort: function (args) {
-      var remaningChars = args.minimum - args.input.length;
+      var remainingChars = args.minimum - args.input.length;
 
       var message = 'Por favor, introduzca ' + remainingChars + ' car';
 
@@ -33,7 +33,7 @@ define(function () {
     loadingMore: function () {
       return 'Cargando más resultados…';
     },
-    maximumSelection: function (args) {
+    maximumSelected: function (args) {
       var message = 'Sólo puede seleccionar ' + args.maximum + ' elemento';
 
       if (args.maximum != 1) {

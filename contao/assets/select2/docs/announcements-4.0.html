@@ -5,24 +5,6 @@ slug: announcements-4.0
 ---
 
 <div class="container">
-  <section id="pre-release">
-    <h1>Pre-release notes</h1>
-
-    <hr />
-
-    <p class="lead">
-      The 4.0 release is ready for early adopters interested in testing it out.
-      You can use the development version, available on GitHub, by getting the
-      source code available in the <code>select2-ng</code> branch. The source
-      code can be
-      <a href="https://github.com/select2/select2/archive/select2-ng.zip">
-        downloaded as a <code>zip</code> archive
-      </a> as well.
-    </p>
-  </section>
-
-  <hr />
-
   <section id="release">
     <h1>Select2 4.0.0</h1>
 
@@ -34,7 +16,7 @@ slug: announcements-4.0
     </p>
 
     <p>
-      This release contains many breaking changes, but easy-upgrade pathes have
+      This release contains many breaking changes, but easy-upgrade paths have
       been created as well as helper modules that will allow for backwards
       compatibility to be maintained with past versions of Select2. Upgrading
       <em>will</em> require you to read the release notes carefully, but the
@@ -157,7 +139,7 @@ slug: announcements-4.0
     <p>
       In Select2 4.0, the <code>&lt;select&gt;</code> element supports all core
       options, and support for the old
-      <code>&lt;input type="hidden" /&gt;</code> has been removed. This means
+      <code>&lt;input type="hidden" /&gt;</code> has been deprecated. This means
       that if you previously declared an AJAX field with some pre-selected
       options that looked like...
     </p>
@@ -167,7 +149,7 @@ slug: announcements-4.0
 </pre>
 
     <p>
-      Will need to be recreated as a <code>&lt;select&gt;</code> element with
+      It will need to be recreated as a <code>&lt;select&gt;</code> element with
       some <code>&lt;option&gt;</code> tags that have <code>value</code>
       attributes that match the old value.
     </p>
@@ -213,6 +195,57 @@ slug: announcements-4.0
       converted to the new style. You can retrieve the function from the
       <code>select2/compat/matcher</code> module, which should just wrap the old
       matcher function.
+    </p>
+
+    <p>
+      So if your old code used a matcher that only displayed options if they
+      started with the term that was entered, it would look something like...
+    </p>
+
+<pre class="prettyprint linenums">
+function matchStart (term, text) {
+  if (text.toUpperCase().indexOf(term.toUpperCase()) == 0) {
+    return true;
+  }
+
+  return false;
+}
+
+$("select").select2({
+  matcher: matchStart
+})
+</pre>
+
+    <p>
+      Then in Select2 4.0, you would need to wrap the <code>matchStart</code>
+      method (or the name of the matcher you created) with a
+      <code>oldMatcher</code> method that we have created.
+    </p>
+
+<pre class="prettyprint linenums">
+function matchStart (term, text) {
+  if (text.toUpperCase().indexOf(term.toUpperCase()) == 0) {
+    return true;
+  }
+
+  return false;
+}
+
+$.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
+  $("select").select2({
+    matcher: oldMatcher(matchStart)
+  })
+});
+</pre>
+
+    <p>
+      This will work for any matchers that only took in the search term and the
+      text of the option as parameters. If your matcher relied on the third
+      parameter containing the jQuery element representing the original
+      <code>&lt;option&gt;</code> tag, then you may need to slightly change
+      your matcher to expect the full JavaScript data object being passed in
+      instead. You can still retrieve the jQuery element from the data object
+      using the <code>data.element</code> property.
     </p>
 
     <h2 id="flexible-placeholders">More flexible placeholders</h2>
@@ -263,9 +296,9 @@ $("select").select2({
 
     <p>
       And Select2 will automatically display the placeholder when the value of
-      the select is <code>-1</code>, which it is by default. This does not break
-      the old functionality of Select2 where the placeholder option was blank by
-      default.
+      the select is <code>-1</code>, which it will be by default. This does not
+      break the old functionality of Select2 where the placeholder option was
+      blank by default.
     </p>
 
     <h2 id="value-ordering">Display reflects the actual order of the values</h2>
@@ -273,7 +306,7 @@ $("select").select2({
     <p>
       In past versions of Select2, choices were displayed in the order that
       they were selected. In cases where Select2 was used on a
-      <code>&lt;select&gt;</code> element, the order that the server recieved
+      <code>&lt;select&gt;</code> element, the order that the server received
       the selections did not always match the order that the choices were
       displayed, resulting in confusion in situations where the order is
       important.
@@ -374,17 +407,51 @@ function (ArrayData, Utils) {
     <p>
       The new <code>current</code> method of the data adapter works in a similar
       way to the old <code>initSelection</code> method, with three notable
-      differences. The first, and most important, is that <code>it is called
-        whenever the current selections are needed</code> to ensure that Select2
-        is always displaying the most accurate and up to date data. No matter
-        what type of element Select2 is attached to, whether it supports a
-        single or multiple selections, the data passed to the callback
-        <strong>must be an array, even if it contains one selection</strong>.
-        The last is that there is only one parameter, the callback to be
-        executed with the latest data, and the current element that Select2 is
-        attached to is available on the class itself as
-        <code>this.$element</code>.
+      differences. The first, and most important, is that <strong>it is called
+      whenever the current selections are needed</strong> to ensure that Select2
+      is always displaying the most accurate and up to date data. No matter
+      what type of element Select2 is attached to, whether it supports a
+      single or multiple selections, the data passed to the callback
+      <strong>must be an array, even if it contains one selection</strong>.
+      The last is that there is only one parameter, the callback to be
+      executed with the latest data, and the current element that Select2 is
+      attached to is available on the class itself as
+      <code>this.$element</code>.
     </p>
+
+    <p>
+      If you only need to load in the initial options once, and otherwise will
+      be letting Select2 handle the state of the selections, you don't need to
+      use a custom data adapter. You can just create the
+      <code>&lt;option&gt;</code> tags on your own, and Select2 will pick up
+      the changes.
+    </p>
+
+<pre class="prettyprint linenums">
+var $element = $('select').select2(); // the select element you are working with
+
+var $request = $.ajax({
+  url: '/my/remote/source' // wherever your data is actually coming from
+});
+
+$request.then(function (data) {
+  // This assumes that the data comes back as an array of data objects
+  // The idea is that you are using the same callback as the old `initSelection`
+
+  for (var d = 0; d < data.length; d++) {
+    var item = data[d];
+
+    // Create the DOM option that is pre-selected by default
+    var option = new Option(data.text, data.id, true, true);
+
+    // Append it to the select
+    $element.append(option);
+  }
+
+  // Update the selected options that are displayed
+  $element.trigger('change');
+});
+</pre>
 
     <h3 id="query-to-data-adapter">
       Custom data adapters instead of <code>query</code>
@@ -392,7 +459,7 @@ function (ArrayData, Utils) {
 
     <p>
       <a href="http://select2.github.io/select2/#data">In the past</a>, any time
-      you wanted to hook Select2 up to a diferent data source you would be
+      you wanted to hook Select2 up to a different data source you would be
       required to implement custom <code>query</code> and
       <code>initSelection</code> methods. This allowed Select2 to determine the
       initial selection and the list of results to display, and it would handle
@@ -489,7 +556,7 @@ function (ArrayData, Utils) {
 
     <p>
       You should refer to the updated
-      <a href="options.html#templates">documentation on templates</a> when
+      <a href="options.html#templating">documentation on templates</a> when
       migrating from previous versions of Select2.
     </p>
 
@@ -643,7 +710,7 @@ var data = $.map([
     </p>
 
 <pre class="prettyprint linenums">
-$("select").val("1"); // instead of $("select").select2("val", "1");
+$("select").val("1").trigger("change"); // instead of $("select").select2("val", "1");
 </pre>
 
     <h3>.select2("enable")</h3>

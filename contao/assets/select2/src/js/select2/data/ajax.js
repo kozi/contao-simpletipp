@@ -4,7 +4,7 @@ define([
   'jquery'
 ], function (ArrayAdapter, Utils, $) {
   function AjaxAdapter ($element, options) {
-    this.ajaxOptions = options.get('ajax');
+    this.ajaxOptions = this._applyDefaults(options.get('ajax'));
 
     if (this.ajaxOptions.processResults != null) {
       this.processResults = this.ajaxOptions.processResults;
@@ -15,6 +15,26 @@ define([
 
   Utils.Extend(AjaxAdapter, ArrayAdapter);
 
+  AjaxAdapter.prototype._applyDefaults = function (options) {
+    var defaults = {
+      data: function (params) {
+        return {
+          q: params.term
+        };
+      },
+      transport: function (params, success, failure) {
+        var $request = $.ajax(params);
+
+        $request.then(success);
+        $request.fail(failure);
+
+        return $request;
+      }
+    };
+
+    return $.extend({}, defaults, options, true);
+  };
+
   AjaxAdapter.prototype.processResults = function (results) {
     return results;
   };
@@ -23,8 +43,12 @@ define([
     var matches = [];
     var self = this;
 
-    if (this._request) {
-      this._request.abort();
+    if (this._request != null) {
+      // JSONP requests cannot always be aborted
+      if ($.isFunction(this._request.abort)) {
+        this._request.abort();
+      }
+
       this._request = null;
     }
 
@@ -41,12 +65,10 @@ define([
     }
 
     function request () {
-      var $request = $.ajax(options);
-
-      $request.success(function (data) {
+      var $request = options.transport(options, function (data) {
         var results = self.processResults(data, params);
 
-        if (console && console.error) {
+        if (self.options.get('debug') && window.console && console.error) {
           // Check to make sure that the response included a `results` key.
           if (!results || !results.results || !$.isArray(results.results)) {
             console.error(
@@ -57,6 +79,8 @@ define([
         }
 
         callback(results);
+      }, function () {
+        // TODO: Handle AJAX errors
       });
 
       self._request = $request;
