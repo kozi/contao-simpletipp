@@ -147,7 +147,8 @@ abstract class SimpletippModule extends \Module {
                 ." AND tblTipp.match_id in (".implode(',', $matches).")"
                 .$restrictToMember
                 ." GROUP BY tl_member.id"
-                ." ORDER BY points DESC, sum_perfect DESC, sum_difference DESC");
+                // Erst PUNKTE dann TENDENZEN dann DIFFERENZEN dann RICHTIGE
+                ." ORDER BY points DESC, sum_tendency DESC, sum_difference DESC, sum_perfect DESC");
 
             while($result->next()) {
                 $table[$result->member_id] = $this->getHighscoreRow($result->row());

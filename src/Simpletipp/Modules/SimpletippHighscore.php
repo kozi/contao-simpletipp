@@ -186,16 +186,25 @@ class SimpletippHighscore extends SimpletippModule {
         }
         // Sortieren
         usort($bestOf, function($a, $b) {
+
+            // Punkte überprüfen
             if ($a->points > $b->points) return -1;
             if ($a->points < $b->points) return 1;
 
-            if ($a->sum_perfect > $b->sum_perfect) return -1;
-            if ($a->sum_perfect < $b->sum_perfect) return 1;
+            // danach Tendenzen auswerten
+            if ($a->sum_tendency > $b->sum_tendency) return -1;
+            if ($a->sum_tendency < $b->sum_tendency) return 1;
 
+            // danach Differenzen auswerten
             if ($a->sum_difference > $b->sum_difference) return -1;
             if ($a->sum_difference < $b->sum_difference) return 1;
 
+            // danach Richtige auswerten (Kann eigentlich nicht eintreten!)
+            if ($a->sum_perfect > $b->sum_perfect) return -1;
+            if ($a->sum_perfect < $b->sum_perfect) return 1;
+
             return 0;
+
         });
 
         // CSS Klassen setzen
