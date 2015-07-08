@@ -9,10 +9,10 @@
 ?>
 
 <div class="inner">
-    <h4><?php echo $podcast->title; ?></h4>
-    <p class="description"><?php echo $podcast->desc; ?></p>
+    <h4><?=$podcast->title?></h4>
+    <p class="description"><?=$podcast->desc?></p>
     <audio preload="none" controls>
-        <source type="<?php echo $podcast->mime; ?>" src="<?php echo $podcast->path; ?>" title="<?php echo $podcast->title; ?>">
+        <source type="<?=$podcast->mime?>" src="<?=$podcast->path?>" title="<?=$podcast->title?>">
     </audio>
 </div>
 

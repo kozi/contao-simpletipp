@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2014 Leo Feyer
+ * Copyright (C) 2005-2015 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2015 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -21,7 +21,7 @@ namespace Simpletipp;
  * Class SimpletippEmailReminder
  *
  * Provide methods to for email reminder
- * @copyright  Martin Kozianka 2011-2014
+ * @copyright  Martin Kozianka 2011-2015
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */

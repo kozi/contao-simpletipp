@@ -1,73 +1,73 @@
-<div class="<?php echo $this->class; ?> block mod_simpletipp mod_simpletipp_questions"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?=$this->class?> block mod_simpletipp mod_simpletipp_questions"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
 
     <?php if ($this->headline): ?>
-    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-<?php endif; ?>
+    <<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
+<?php endif;?>
 
 
 <?php if($this->questions): ?>
 
 <?php if ($this->isPersonal && !$this->finished): ?>
 
-    <?php echo $this->messages; ?>
-    <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>_<?php echo $this->simpletipp->id; ?>" method="post">
-    <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+    <?=$this->messages?>
+    <form action="<?=$this->action?>" id="<?=$this->formId?>_<?=$this->simpletipp->id?>" method="post">
+    <input type="hidden" name="FORM_SUBMIT" value="<?=$this->formId?>">
     <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 
     <?php foreach($this->questions as $q): ?>
-        <fieldset class="question" id="<?php echo $q->key; ?>">
-            <legend><?php echo $q->points; ?> Punkt(e)</legend>
-            <label for="<?php echo $q->key; ?>"><?php echo $q->question; ?></label>
-            <select name="<?php echo $q->key; ?>">
-                <option value="<?php echo $q->emptyValue; ?>">Bitte wählen...</option>
+        <fieldset class="question" id="<?=$q->key?>">
+            <legend><?=$q->points?> Punkt(e)</legend>
+            <label for="<?=$q->key?>"><?=$q->question?></label>
+            <select name="<?=$q->key?>">
+                <option value="<?=$q->emptyValue?>">Bitte wählen...</option>
                 <?php foreach($q->answers as $a): ?>
-                    <option<?php echo ($q->userAnswer == $a->value) ? ' selected="selected"' : ''; ?> value="<?php echo $a->value; ?>"><?php echo $a->value; ?></option>
-                <?php endforeach; ?>
+                    <option<?php echo ($q->userAnswer == $a->value) ? ' selected="selected"' : '';?> value="<?=$a->value?>"><?=$a->value?></option>
+                <?php endforeach;?>
             </select>
         </fieldset>
-    <?php endforeach; ?>
+    <?php endforeach;?>
 
     <div class="submit_container">
-        <input tabindex="<?php echo $i;?>" type="submit" value="Abschicken" />
+        <input tabindex="<?=$i?>" type="submit" value="Abschicken" />
     </div>
     </form>
-<?php endif; ?>
+<?php endif;?>
 
 <?php if ($this->finished): ?>
 
 
-<h3>Antworten von <?php echo $this->member->firstname.' '.$this->member->lastname; ?></h3>
+<h3>Antworten von <?=$this->member->firstname.' '.$this->member->lastname?></h3>
 
 <?php foreach($this->questions as $q): ?>
-<div class="question" id="<?php echo $q->key; ?>">
+<div class="question" id="<?=$q->key?>">
     <p>
-        <?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]<br>
-        <strong><?php echo $q->currentMember->theAnswer; ?></strong>
+        <?=$q->question?> [<?=$q->points?> Punkt(e)]<br>
+        <strong><?=$q->currentMember->theAnswer?></strong>
     </p>
 
 </div>
-<?php endforeach; reset($this->questions); ?>
+<?php endforeach; reset($this->questions);?>
 
 <h3>Antworten</h3>
 
 <?php foreach($this->questions as $q): ?>
-    <h4><?php echo $q->question; ?> [<?php echo $q->points; ?> Punkt(e)]</h4>
-    <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; }); ?>
+    <h4><?=$q->question?> [<?=$q->points?> Punkt(e)]</h4>
+    <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; });?>
     <ul class="otherAnswers">
     <?php foreach($q->answers as $arrAnswer):?>
         <?php if ($arrAnswer->count > 0): ?>
             <li>
-                <strong><?php echo $arrAnswer->value; ?> (<?php echo $arrAnswer->count; ?>)</strong>
+                <strong><?=$arrAnswer->value?> (<?=$arrAnswer->count?>)</strong>
                 <ul class="member">
                     <?php foreach($arrAnswer->member as $m): ?>
-                        <li><?php echo $m->firstname; ?> <?php echo $m->lastname; ?> (<?php echo $m->username; ?>)</li>
-                    <?php endforeach; ?>
+                        <li><?=$m->firstname?> <?=$m->lastname?> (<?=$m->username?>)</li>
+                    <?php endforeach;?>
                 </ul>
             </li>
-        <?php endif; ?>
-    <?php endforeach; ?>
+        <?php endif;?>
+    <?php endforeach;?>
     </ul>
-<?php endforeach; ?>
+<?php endforeach;?>
 
 <h4>Rangliste</h4>
 <table class="questionRanking">
@@ -80,17 +80,17 @@
 
     <?php $i = 1; foreach($this->arrRanking as $m): ?>
         <tr>
-            <td class="rank"><?php echo $i++;?>. </td>
-            <td class="name"><?php echo $m->firstname;?> <?php echo $m->lastname;?> (<?php echo $m->username;?>)</td>
-            <td class="points"><?php echo $m->questionPoints;?></td>
+            <td class="rank"><?=$i++?>. </td>
+            <td class="name"><?=$m->firstname?> <?=$m->lastname?> (<?=$m->username?>)</td>
+            <td class="points"><?=$m->questionPoints?></td>
         </tr>
-    <?php endforeach; ?>
+    <?php endforeach;?>
 </tbody></table>
 
-<?php endif; ?>
+<?php endif;?>
 
 
 
 
-<?php endif; ?>
+<?php endif;?>
 </div>

@@ -1,29 +1,29 @@
 
 <select id="pointstat-select">
     <?php foreach($this->table as $row): ?>
-        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?php echo $row->username; ?>"><?php echo $row->firstname.' '.$row->lastname; ?></option>
-    <?php endforeach; ?>
+        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></option>
+    <?php endforeach;?>
 </select>
 
 <script>
 var labelArray = [];
 <?php foreach($this->table[0]->pointsArray as $title => $values): ?>
-labelArray.push('<?php echo $title; ?>');
-<?php endforeach; ?>
+labelArray.push('<?=$title?>');
+<?php endforeach;?>
 
 var pointsObject = new Object();
 <?php $maxPoints = 0; foreach($this->table as $row): ?>
-    pointsObject.user_<?php echo $row->username; ?> = new Array(3);
-    pointsObject.user_<?php echo $row->username; ?>[0] = new Array();
-    pointsObject.user_<?php echo $row->username; ?>[1] = new Array();
-    pointsObject.user_<?php echo $row->username; ?>[2] = new Array();
-    <?php foreach($row->pointsArray as $title => $values): $maxPoints = ($values[0] > $maxPoints) ? $values[0] : $maxPoints; ?>
-        pointsObject.user_<?php echo $row->username; ?>[0].push(<?php echo $values[1]; ?>);
-        pointsObject.user_<?php echo $row->username; ?>[1].push(<?php echo $values[2]; ?>);
-        pointsObject.user_<?php echo $row->username; ?>[2].push(<?php echo $values[3]; ?>);
-    <?php endforeach; ?>
+    pointsObject.user_<?=$row->username?> = new Array(3);
+    pointsObject.user_<?=$row->username?>[0] = new Array();
+    pointsObject.user_<?=$row->username?>[1] = new Array();
+    pointsObject.user_<?=$row->username?>[2] = new Array();
+    <?php foreach($row->pointsArray as $title => $values): $maxPoints = ($values[0] > $maxPoints) ? $values[0] : $maxPoints;?>
+        pointsObject.user_<?=$row->username?>[0].push(<?=$values[1]?>);
+        pointsObject.user_<?=$row->username?>[1].push(<?=$values[2]?>);
+        pointsObject.user_<?=$row->username?>[2].push(<?=$values[3]?>);
+    <?php endforeach;?>
 
-<?php endforeach; ?>
+<?php endforeach;?>
 </script>
 
 <div id="pointsPlot" style="height:400px;"></div>
@@ -60,7 +60,7 @@ var pointsPlotOptions = {
         },
         yaxis: {
             min: 0,
-            max: <?php echo ($maxPoints+1); ?>,
+            max: <?php echo ($maxPoints+1);?>,
             pad: 0,
             tickOptions: {
                 formatString: '%d'
@@ -81,7 +81,7 @@ $(document).ready(function() {
         $('#pointsPlotImage').empty();
     });
 
-    pointsPlotData = pointsObject.user_<?php echo  $this->user->username; ?>;
+    pointsPlotData = pointsObject.user_<?php echo  $this->user->username;?>;
     pointsPlot     = $.jqplot('pointsPlot', pointsPlotData, pointsPlotOptions);
 });
 </script>

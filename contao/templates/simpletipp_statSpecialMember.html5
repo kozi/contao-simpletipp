@@ -3,18 +3,18 @@
     <?php if($this->table): ?>
         <table>
             <?php foreach($this->table as $key => $row):
-                $key = ($key == 'minTore' || $key == 'maxTore') ? 'tore' : $key; ?>
+                $key = ($key == 'minTore' || $key == 'maxTore') ? 'tore' : $key;?>
                 <tr>
-                    <th colspan="2"><?php echo $row['title']; ?> (Realer Wert: <?php echo $row['realValue']; ?>)</th>
+                    <th colspan="2"><?=$row['title']?> (Realer Wert: <?=$row['realValue']?>)</th>
                 </tr>
                 <?php $i=1; foreach($row['member'] as $m): ?>
-                <tr class="<?php echo ($i++ %2 == 0) ? ' even':' odd'; ?>">
-                    <td><?php echo $m->firstname.' '.$m->lastname; ?></td>
-                    <td><?php echo $m->$key; ?></td>
+                <tr class="<?php echo ($i++ %2 == 0) ? ' even':' odd';?>">
+                    <td><?=$m->firstname.' '.$m->lastname?></td>
+                    <td><?=$m->$key?></td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endforeach;?>
 
-            <?php endforeach; ?>
+            <?php endforeach;?>
         </table>
-    <?php endif; ?>
+    <?php endif;?>
 </div>

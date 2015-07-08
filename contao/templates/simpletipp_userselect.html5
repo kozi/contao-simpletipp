@@ -4,14 +4,14 @@ $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css
 ?>
 
 <div class="simpletipp_userselect">
-    <form action="<?php echo $this->action; ?>" method="get">
-        <select tabindex="-1" name="user" onchange="location.href= '<?php echo $this->action; ?>?user=' + this.value">
-            <option value="<?php echo $this->resetOption->value;?>"><?php echo $this->resetOption->label;?></option>
+    <form action="<?=$this->action?>" method="get">
+        <select tabindex="-1" name="user" onchange="location.href= '<?=$this->action?>?user=' + this.value">
+            <option value="<?=$this->resetOption->value?>"><?=$this->resetOption->label?></option>
             <?php foreach($this->participants as $user):
                 $sel = ($user->id == $this->simpletippUserId) ? ' selected="selected"':'';
                 ?>
-                <option<?php echo $sel;?> value="<?php echo $user->username; ?>"><?php echo $user->lastname.', '.$user->firstname.' ('.$user->username.')'; ?></option>
-            <?php endforeach; ?>
+                <option<?=$sel?> value="<?=$user->username?>"><?=$user->lastname.', '.$user->firstname.' ('.$user->username.')'?></option>
+            <?php endforeach;?>
         </select>
         <noscript>
             <input value="OK" type="submit" />

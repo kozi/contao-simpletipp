@@ -2,19 +2,18 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2014 Leo Feyer
+ * Copyright (C) 2005-2015 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2011-2014 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2011-2015 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
  * @filesource
  */
 
-TemplateLoader::addFiles(array(
-
+TemplateLoader::addFiles([
     // Templates
     'simpletipp_highscore_default'	   => 'system/modules/simpletipp/templates',
     'simpletipp_match_default' 		   => 'system/modules/simpletipp/templates',
@@ -35,7 +34,7 @@ TemplateLoader::addFiles(array(
     'simpletipp_statBestTeams'         => 'system/modules/simpletipp/templates',
     'simpletipp_statHighscoreTimeline' => 'system/modules/simpletipp/templates',
     'simpletipp_statSpecialMember'     => 'system/modules/simpletipp/templates',
-));
+]);
 
 
 

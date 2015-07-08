@@ -9,16 +9,16 @@
         <tbody>
 
         <?php $i=1; foreach($this->matches as $match): ?>
-            <tr class="<?php echo ($i++ %2 == 0) ? ' even':' odd'; ?>">
+            <tr class="<?php echo ($i++ %2 == 0) ? ' even':' odd';?>">
                 <td class="logos">
-                    <i style="background-image:url('<?php echo Image::get($match['icon_h'], 50, 50, 'center_center'); ?>');"><?php echo $match['team_h_three']; ?></i>
-                    <i style="background-image:url('<?php echo Image::get($match['icon_a'], 50, 50, 'center_center'); ?>');"><?php echo $match['team_a_three']; ?></i>
+                    <i style="background-image:url('<?php echo Image::get($match['icon_h'], 50, 50, 'center_center');?>');"><?=$match['team_h_three']?></i>
+                    <i style="background-image:url('<?php echo Image::get($match['icon_a'], 50, 50, 'center_center');?>');"><?=$match['team_a_three']?></i>
                 </td>
-                <td class="title"><?php echo $match['title']; ?></td>
-                <td class="points"><?php echo $match['points']->perfect; ?>/<?php echo $match['points']->difference; ?>/<?php echo $match['points']->tendency; ?></td>
-                <td class="points"><?php echo $match['points']->points; ?></td>
+                <td class="title"><?=$match['title']?></td>
+                <td class="points"><?=$match['points']->perfect?>/<?=$match['points']->difference?>/<?=$match['points']->tendency?></td>
+                <td class="points"><?=$match['points']->points?></td>
             </tr>
-        <?php endforeach; ?>
+        <?php endforeach;?>
         </tbody>
     </table>
 </div>

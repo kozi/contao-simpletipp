@@ -1,9 +1,9 @@
-<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static"; ?>
+<?php $GLOBALS['TL_CSS'][] = "/system/modules/simpletipp/assets/simpletipp.css|screen|static";?>
 
-<div class="<?php echo $this->class; ?> block mod_simpletipp"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
     <?php if ($this->headline): ?>
-    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-<?php endif; ?>
+    <<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
+<?php endif;?>
 
 
 <?php if ($this->match): ?>
@@ -11,15 +11,15 @@
     <thead>
     <tr>
         <th class="matchtitle" colspan="2">
-            <span class="full"><?php echo $this->match->title; ?></span>
-            <span class="short"><?php echo $this->match->title_short; ?></span>
-            <span class="tiny"><?php echo $this->match->team_h_three.' - '.$this->match->team_a_three; ?></span>
+            <span class="full"><?=$this->match->title?></span>
+            <span class="short"><?=$this->match->title_short?></span>
+            <span class="tiny"><?=$this->match->team_h_three.' - '.$this->match->team_a_three?></span>
         </th>
         <th class="logos">
-            <i class="<?php echo $this->match->alias_h; ?>" style="background-image:url('<?php echo Image::get($this->match->icon_h, 0,32,'box'); ?>');"><?php echo $this->match->team_h_three; ?></i>
-            <i class="<?php echo $this->match->alias_a; ?>" style="background-image:url('<?php echo Image::get($this->match->icon_a, 0,32,'box'); ?>');"><?php echo $this->match->team_a_three; ?></i>
+            <i class="<?=$this->match->alias_h?>" style="background-image:url('<?php echo Image::get($this->match->icon_h, 0,32,'box');?>');"><?=$this->match->team_h_three?></i>
+            <i class="<?=$this->match->alias_a?>" style="background-image:url('<?php echo Image::get($this->match->icon_a, 0,32,'box');?>');"><?=$this->match->team_a_three?></i>
         </th>
-        <th class="result"><?php echo $this->match->result;?></th>
+        <th class="result"><?=$this->match->result?></th>
     </tr>
     <tr>
         <td class="goalData" colspan="4">
@@ -28,14 +28,14 @@
                 $team_icon  = Image::get(($goal->home) ? $this->match->icon_h: $this->match->icon_a, 16, 16, 'center_center');
                 ?>
             <span class="goalEntry">
-                <strong class="goalResult <?php echo $team_alias;?>"  style="background-image:url('<?php echo $team_icon; ?>');"><?php echo $goal->result; ?></strong>
-                <span class="goalName"><?php echo ucfirst($goal->name); ?></span>
+                <strong class="goalResult <?=$team_alias?>"  style="background-image:url('<?=$team_icon?>');"><?=$goal->result?></strong>
+                <span class="goalName"><?php echo ucfirst($goal->name);?></span>
                 (<span class="goalDetails"><?php echo $goal->minute
                     .(($goal->overtime === true) ? '+.': '.')
                     .(($goal->penalty === true) ? ', <abbr title="Elfmeter">EM</abbr>':'')
                     .(($goal->ownGoal === true) ? ', <abbr title="Eigentor">ET</abbr>':'');?></span>)
             </span>
-            <?php endforeach; ?>
+            <?php endforeach;?>
         </td>
     </tr>
 
@@ -44,52 +44,52 @@
     <tr>
         <td colspan="4">
             <div class="bar_wrapper">
-                <div title="Heimsieg" style="width:<?php echo $this->count->home->percent;?>%;" class="home"><?php echo $this->count->home->abs;?></div>
-                <div title="Unentschieden" style="width:<?php echo $this->count->draw->percent;?>%;" class="draw"><?php echo $this->count->draw->abs;?></div>
-                <div title="Auswärtssieg" style="width:<?php echo $this->count->away->percent;?>%;" class="away"><?php echo $this->count->away->abs;?></div>
+                <div title="Heimsieg" style="width:<?=$this->count->home->percent?>%;" class="home"><?=$this->count->home->abs?></div>
+                <div title="Unentschieden" style="width:<?=$this->count->draw->percent?>%;" class="draw"><?=$this->count->draw->abs?></div>
+                <div title="Auswärtssieg" style="width:<?=$this->count->away->percent?>%;" class="away"><?=$this->count->away->abs?></div>
             </div>
         </td>
     </tr>
     <?php endif;?>
 
     <tr>
-        <th colspan="2"><?php echo $GLOBALS['TL_LANG']['simpletipp']['name'][0]; ?></th>
-        <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['tipp'][0]; ?></th>
-        <th><?php echo $GLOBALS['TL_LANG']['simpletipp']['points'][0]; ?></th>
+        <th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
+        <th><?=$GLOBALS['TL_LANG']['simpletipp']['tipp'][0]?></th>
+        <th><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
     </tr>
     </thead>
     <?php if ($this->tipps): ?>
         <tbody>
         <?php foreach($this->tipps as $tipp): ?>
-            <tr class="<?php echo $tipp->cssClass; ?>">
+            <tr class="<?=$tipp->cssClass?>">
 
                 <?php if($this->avatarActive): ?>
-                    <td class="avatar"><a href="<?php echo $tipp->link; ?>">{{image::<?php echo $tipp->avatar;?>?width=24&height=24&mode=crop}}</a></td>
-                <?php endif; ?>
+                    <td class="avatar"><a href="<?=$tipp->link?>">{{image::<?=$tipp->avatar?>?width=24&height=24&mode=crop}}</a></td>
+                <?php endif;?>
 
-                <td<?php echo (!$this->avatarActive) ? ' colspan="2"':''; ?> class="name">
-                    <a href="<?php echo $tipp->link; ?>">
-                        <?php echo $tipp->firstname.' '.$tipp->lastname; ?>
-                        <span class="username"><?php echo ' ('.$tipp->username.')'; ?></span>
+                <td<?php echo (!$this->avatarActive) ? ' colspan="2"':'';?> class="name">
+                    <a href="<?=$tipp->link?>">
+                        <?=$tipp->firstname.' '.$tipp->lastname?>
+                        <span class="username"><?php echo ' ('.$tipp->username.')';?></span>
                     </a>
                 </td>
 
-                <td class="tipp"><?php echo $tipp->tipp; ?></td>
-                <td class="points points<?php echo $tipp->points; ?>"><?php echo str_repeat('<i class="icon-ball"></i>', $tipp->points); ?></td>
+                <td class="tipp"><?=$tipp->tipp?></td>
+                <td class="points points<?=$tipp->points?>"><?php echo str_repeat('<i class="icon-ball"></i>', $tipp->points);?></td>
             </tr>
-        <?php endforeach; ?>
+        <?php endforeach;?>
         </tbody>
-    <?php endif; ?>
+    <?php endif;?>
 
     <tfoot><tr>
         <td colspan="2">&nbsp;</td>
         <td class="details">
-            <?php echo $this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency; ?>
+            <?=$this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency?>
         </td>
-        <td class="points"><?php echo $this->summary->points; ?></td>
+        <td class="points"><?=$this->summary->points?></td>
     </tr>
     </tfoot>
 </table>
-<?php endif; ?>
+<?php endif;?>
 
 </div>

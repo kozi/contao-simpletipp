@@ -8,16 +8,16 @@
 </thead>
 <tbody>
     <?php $i=1; foreach($this->teams as $team): ?>
-    <tr class="<?php echo ($i++ %2 == 0) ? ' even':' odd'; ?>">
+    <tr class="<?php echo ($i++ %2 == 0) ? ' even':' odd';?>">
 
         <td class="logos">
-            <i style="background-image:url('<?php echo Image::get($team['icon'], 50, 50, 'center_center'); ?>');"><?php echo $team['name_short']; ?></i>
+            <i style="background-image:url('<?php echo Image::get($team['icon'], 50, 50, 'center_center');?>');"><?=$team['name_short']?></i>
         </td>
-        <td class="team"><?php echo $team['name']; ?></td>
-        <td class="points"><?php echo $team['points'][1]; ?>/<?php echo $team['points'][2]; ?>/<?php echo $team['points'][3]; ?></td>
-        <td class="points"><?php echo $team['points'][0]; ?></td>
+        <td class="team"><?=$team['name']?></td>
+        <td class="points"><?=$team['points'][1]?>/<?=$team['points'][2]?>/<?=$team['points'][3]?></td>
+        <td class="points"><?=$team['points'][0]?></td>
     </tr>
-    <?php endforeach; ?>
+    <?php endforeach;?>
 </tbody>
 </table>
 </div>

@@ -12,8 +12,8 @@ $verticalTicks = array_map(function($v) {
 <div id="highscoreTimeline-select">
 <select style="width:100%" multiple="multiple">
     <?php foreach($this->table as $row): ?>
-        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?php echo $row->username; ?>"><?php echo $row->firstname.' '.$row->lastname; ?></option>
-    <?php endforeach; ?>
+        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></option>
+    <?php endforeach;?>
 </select>
 </div>
 
@@ -21,12 +21,12 @@ $verticalTicks = array_map(function($v) {
 <div id="highscoreTimeline" style="height:400px;"></div>
 <script>
 var highscoreTimeline = new Array();
-<?php foreach($this->table as $row): $ticks = count($row->highscorePositions); ?>
-    highscoreTimeline['user_<?php echo $row->username; ?>'] = [];
+<?php foreach($this->table as $row): $ticks = count($row->highscorePositions);?>
+    highscoreTimeline['user_<?=$row->username?>'] = [];
     <?php $i=0; foreach($row->highscorePositions as $pos): ?>
-        highscoreTimeline['user_<?php echo $row->username; ?>'].push([<?php echo $i++;?>, <?php echo $pos;?>]);
-    <?php endforeach; ?>
-<?php endforeach; ?>
+        highscoreTimeline['user_<?=$row->username?>'].push([<?=$i++?>, <?=$pos?>]);
+    <?php endforeach;?>
+<?php endforeach;?>
 
 var highscorePlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
 var highscorePlotOptions = {
@@ -42,16 +42,16 @@ var highscorePlotOptions = {
         xaxis: {
             label: 'Spieltag',
             pad: 0,
-            ticks: <?php echo json_encode(range(0, $ticks)); ?>,
+            ticks: <?php echo json_encode(range(0, $ticks));?>,
             tickOptions: { formatString: '%u.'}
         },
         yaxis: {
             pad: 0,
             max: 0,
-            min: <?php echo $maxPos; ?>,
+            min: <?=$maxPos?>,
             label: 'Platzierung',
             tickRenderer: $.jqplot.AxisTickRenderer,
-            ticks: <?php echo json_encode($verticalTicks); ?>,
+            ticks: <?php echo json_encode($verticalTicks);?>,
             tickOptions: {
                 formatter: function(format, value) { return (Math.abs(value)+1)+'.'; }
             }
@@ -100,7 +100,7 @@ $(document).ready(function() {
         highscorePlot.replot({data:newData, series: newSeries});
     });
 
-highscorePlotData = [highscoreTimeline['user_<?php echo  $this->user->username; ?>']];
+highscorePlotData = [highscoreTimeline['user_<?php echo  $this->user->username;?>']];
 highscorePlot     = $.jqplot('highscoreTimeline', highscorePlotData, highscorePlotOptions);
 
 });

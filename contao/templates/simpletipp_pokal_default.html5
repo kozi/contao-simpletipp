@@ -1,15 +1,15 @@
-<div class="<?php echo $this->class; ?> block mod_simpletipp mod_simpletipp_pokal"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?=$this->class?> block mod_simpletipp mod_simpletipp_pokal"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
 
     <ul class="pokal_phases">
         <?php foreach ($this->groups as $group): ?>
-            <li class="<?php echo $group->cssClass; ?>"><strong><?php echo $group->name; ?>:</strong> <?php echo $group->first.' - '.$group->last; ?> <small>(<?php echo Date::parse("d.m.Y", $group->start); ?> - <?php echo Date::parse("d.m.Y", $group->end); ?>)</small></li>
-        <?php endforeach; ?>
+            <li class="<?=$group->cssClass?>"><strong><?=$group->name?>:</strong> <?=$group->first.' - '.$group->last?> <small>(<?php echo Date::parse("d.m.Y", $group->start);?> - <?php echo Date::parse("d.m.Y", $group->end);?>)</small></li>
+        <?php endforeach;?>
     </ul>
 
     <?php foreach (array_reverse($this->groups) as $group): if ($group->highscores && ($group->current || $group->finished || $group->next)) : ?>
-        <h3><?php echo $group->name; ?> <small>(<?php echo $group->first.' - '.$group->last; ?>)</small></h3>
+        <h3><?=$group->name?> <small>(<?=$group->first.' - '.$group->last?>)</small></h3>
         <?php foreach ($group->highscores as $highscore): ?>
-            <div class="pokal_highscore <?php echo $group->alias; ?>">
+            <div class="pokal_highscore <?=$group->alias?>">
                 <table>
                     <thead>
                     <tr>
@@ -20,18 +20,18 @@
                     </thead>
                     <tbody>
                     <?php $i = 1; foreach ($highscore as $row): ?>
-                        <tr class="<?php echo $row->cssClass; ?>">
-                            <td><?php echo $i++; ?>.</td>
-                            <td><?php echo $row->firstname.' '.$row->lastname; ?></td>
+                        <tr class="<?=$row->cssClass?>">
+                            <td><?=$i++?>.</td>
+                            <td><?=$row->firstname.' '.$row->lastname?></td>
 
                             <td class="points">
-                                <small>(<?php echo $row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency; ?>)</small>
-                                <?php echo $row->points; ?>
+                                <small>(<?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency?>)</small>
+                                <?=$row->points?>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach;?>
                     </tbody>
                 </table></div>
-        <?php endforeach; ?>
-    <?php endif; endforeach; ?>
+        <?php endforeach;?>
+    <?php endif; endforeach;?>
 </div>
