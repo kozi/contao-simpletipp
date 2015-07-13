@@ -2,7 +2,7 @@
     "name": "contao-simpletipp",
     "dependencies": {
         "select2": "~4",
-        "jqplot": "*"
+        "chartist": "*"
     }
 }
 

@@ -47,30 +47,23 @@ class SimpletippMatchUpdater extends \Backend {
     public function updateMatches() {
         $id     = (\Input::get('id') !== null) ? intval(\Input::get('id')) : 0;
 
-        if ($id === 0) {
+        if ($id === 0)
+        {
             $objSimpletippCollection =  SimpletippModel::findAll();
-            $manualUpdate            = false;
-        }
-        else {
-            $objSimpletippCollection = SimpletippModel::findBy('id', $id);
-            $manualUpdate            = true;
-        }
-
-
-
-
-        foreach($objSimpletippCollection as $objSimpletipp) {
-            $message       = $this->updateSimpletippMatches($objSimpletipp, $manualUpdate);
-            if ('update' === \Input::get('key')) {
-                \Message::add($message, TL_INFO);
-                $this->redirect(\Environment::get('script').'?do=simpletipp_group');
-            }
-            else {
+            foreach($objSimpletippCollection as $objSimpletipp)
+            {
+                $message = $this->updateSimpletippMatches($objSimpletipp, false);
                 \System::log(strip_tags($message), 'SimpletippCallbacks updateMatches()', TL_INFO);
             }
         }
+        else
+        {
+            $objSimpletipp = SimpletippModel::findByPk($id);
+            $message       = $this->updateSimpletippMatches($objSimpletipp, true);
+            \Message::add($message, TL_INFO);
+            $this->redirect(\Environment::get('script').'?do=simpletipp_group');
+        }
     }
-
 
     public function updateSimpletippMatches(&$simpletippObj, $forceUpdate = false) {
         $leagueInfos = unserialize($simpletippObj->leagueInfos);

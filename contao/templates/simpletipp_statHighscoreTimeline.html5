@@ -1,14 +1,3 @@
-<?php
-
-$maxPos = count($this->table);
-$maxPos = $maxPos + (5-($maxPos%5));
-
-$verticalTicks = array_map(function($v) {
-    return ($v != 0 )? (-($v-1)) : 0;
-}, range($maxPos, 0, 5));
-
-?>
-
 <div id="highscoreTimeline-select">
 <select style="width:100%" multiple="multiple">
     <?php foreach($this->table as $row): ?>
@@ -17,92 +6,51 @@ $verticalTicks = array_map(function($v) {
 </select>
 </div>
 
-
-<div id="highscoreTimeline" style="height:400px;"></div>
+<div id="highscoreTimeline"></div>
 <script>
-var highscoreTimeline = new Array();
-<?php foreach($this->table as $row): $ticks = count($row->highscorePositions);?>
-    highscoreTimeline['user_<?=$row->username?>'] = [];
-    <?php $i=0; foreach($row->highscorePositions as $pos): ?>
-        highscoreTimeline['user_<?=$row->username?>'].push([<?=$i++?>, <?=$pos?>]);
-    <?php endforeach;?>
-<?php endforeach;?>
-
+var highscoreChartist    = null;
+var highscoreTimeline    = [];
 var highscorePlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
+
 var highscorePlotOptions = {
-
-    animate: !$.jqplot.use_excanvas,
-    animateReplot: !$.jqplot.use_excanvas,
-
-    seriesColors: highscorePlotColors,
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-    },
-    axes: {
-        xaxis: {
-            label: 'Spieltag',
-            pad: 0,
-            ticks: <?php echo json_encode(range(0, $ticks));?>,
-            tickOptions: { formatString: '%u.'}
-        },
-        yaxis: {
-            pad: 0,
-            max: 0,
-            min: <?=$maxPos?>,
-            label: 'Platzierung',
-            tickRenderer: $.jqplot.AxisTickRenderer,
-            ticks: <?php echo json_encode($verticalTicks);?>,
-            tickOptions: {
-                formatter: function(format, value) { return (Math.abs(value)+1)+'.'; }
-            }
+    high: 0,
+    low: -<?=count($this->table)?>,
+    height: '400px',
+    fullWidth: true,
+    lineSmooth: Chartist.Interpolation.none(),
+    axisY: {
+        onlyInteger: true,
+        offset: 60,
+        labelInterpolationFnc: function(value) {
+            return (Math.abs(value)+1) + '.';
         }
-    },
-    seriesDefaults: {
-        showMarker: true,
-        pointLabels: {
-            show:true,
-            location:'s',
-            ypadding: 3
-        }
+
     }
+};
 
-}; // highscorePlotOptions
+var highscorePlotData = {
+    labels: [<?=implode(',', range(0, count($this->table[0]->highscorePositions)-1))?>],
+    series: []
+};
+
+<?php foreach($this->table as $row): ?>
+    highscoreTimeline['user_<?=$row->username?>'] = [<?=implode(',',$row->highscorePositions)?>];
+<?php endforeach;?>
 
 $(document).ready(function() {
 
     $("#highscoreTimeline-select select").select2();
+
+    highscorePlotData.series = [
+        highscoreTimeline['user_<?php echo  $this->user->username;?>']
+    ];
+    highscoreChartist = new Chartist.Line('#highscoreTimeline', highscorePlotData, highscorePlotOptions);
+
     $('#highscoreTimeline-select select').on('change', function(evt, params) {
-
-        var newData         = [];
-        var newSeries       = [];
-        var selectedOptions = $(this).val();
-
-
-        // TODO TODO TODO TODO
-        // TODO DEFEKT weil jetzt select2 und nicht chosen benutzt wird
-
-        if (selectedOptions == null) {
-            return false;
-        }
-
-        $('#highscoreTimeline-select .search-choice .search-choice-close').each(function(index) {
-            var dataOptionIndex = $(this).attr('data-option-array-index');
-            var optionKey = $('#highscoreTimeline-select').find('option').eq(dataOptionIndex).attr('value');
-
-            if ($.inArray(optionKey, selectedOptions) != -1) {
-                $element = $(this.parentElement);
-                $element.css('background', highscorePlotColors[newData.length]);
-                newData.push(highscoreTimeline[optionKey]);
-                console.log(highscorePlot, $element.text());
-                newSeries.push($element.text());
-            }
-        });
-        highscorePlot.replot({data:newData, series: newSeries});
+        console.log(highscoreChartist);
     });
 
-highscorePlotData = [highscoreTimeline['user_<?php echo  $this->user->username;?>']];
-highscorePlot     = $.jqplot('highscoreTimeline', highscorePlotData, highscorePlotOptions);
-
 });
+
 </script>
 

@@ -10,10 +10,10 @@
     width:auto;
 }
 
-.mod_simpletipp #pointsPlot .jqplot-series-0,
-.mod_simpletipp #pointsPlot .jqplot-series-1 {
-    color:#ffffff;
+.mod_simpletipp .ct-point {
+    stroke-linecap: square;
+    stroke-width: 5px;
 }
-.mod_simpletipp #pointsPlot .jqplot-series-2 {
-    color:#333333;
+.mod_simpletipp .ct-line {
+    stroke-width: 2px;
 }

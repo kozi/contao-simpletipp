@@ -24,8 +24,6 @@ $(document).ready(function() {
         });
     });
 
-
-
     $('table.matches td.matchgroup').add('table.matches td.deadline').click(function(event) {
         var id = this.parentElement.id.split("_match_")[1];
     });
@@ -51,8 +49,7 @@ $(document).ready(function() {
 		   input.attr('value', arr.join(':'));
 		   return true;
 	   }
-	   
-	   
+
 	   maximum = (this.className.indexOf('max') !=-1) ? 5 : 999;
 	   index   = (this.className.indexOf('home') != -1) ? 0 : 1;
 	   new_val = parseInt(arr[index]) + ((this.className.indexOf('up') != -1) ? 1 : -1);
