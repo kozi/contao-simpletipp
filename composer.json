@@ -19,11 +19,13 @@
         "source":"https://github.com/kozi/contao-simpletipp"
 
     },
-    "require":{
-        "php": ">=5.5",
-        "contao/core": ">=3.4",
+    "require": {
         "contao-community-alliance/composer-plugin": "~2",
         "kigkonsult/icalcreator": "*"
+    },
+    "require-dev": {
+        "php": ">=5.5",
+        "contao/core": ">=3.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
