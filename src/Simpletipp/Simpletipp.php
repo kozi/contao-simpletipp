@@ -79,82 +79,86 @@ class Simpletipp extends \System {
         }
     }
 
-    public static function groupMapper($arrMatch) {
+    public static function groupMapper($arrMatch)
+    {
         $leagueID = $arrMatch['leagueID'];
         $oneMio   = 1000000;
-        $arrGroup = array(
+        $arrGroup = [
             'id'    => $arrMatch['groupID'],
             'name'  => $arrMatch['groupName'],
             'short' => $arrMatch['groupName']
-        );
+        ];
 
-        if (array_key_exists($leagueID, $GLOBALS['simpletipp']['groupNames'])) {
+        if (is_array($GLOBALS['simpletipp']['groupNames']) && array_key_exists($leagueID, $GLOBALS['simpletipp']['groupNames']))
+        {
             $groupNames = $GLOBALS['simpletipp']['groupNames'][$leagueID];
 
-            if ($arrGroup['name'] ===  static::GROUPNAME_VORRUNDE) {
+            if ($arrGroup['name'] ===  static::GROUPNAME_VORRUNDE)
+            {
                 $i   = 1;
 
                 foreach($groupNames as $strGroupName => $arrTeams) {
-                    if (in_array($arrMatch['nameTeam1'], $arrTeams) || in_array($arrMatch['nameTeam2'], $arrTeams)){
+                    if (in_array($arrMatch['nameTeam1'], $arrTeams) || in_array($arrMatch['nameTeam2'], $arrTeams))
+                    {
                         $arrGroup['name'] = $strGroupName;
                         $arrGroup['id']   = $oneMio + $i;
                     }
-
                     $i++;
                 }
             }
         }
 
         $arrGroup['short'] = $strName = trim(str_replace(
-            array('Gruppe', '. Spieltag'),
-            array('', ''),
+            ['Gruppe', '. Spieltag'],
+            ['', ''],
             $arrGroup['name']));
 
         return $arrGroup;
     }
 
-
-
-    public static function iconUrl($teamName, $prefix = '', $suffix = '.png') {
+    public static function iconUrl($teamName, $prefix = '', $suffix = '.png')
+    {
         $team = self::teamShortener($teamName);
         return $prefix.standardize($team).$suffix;
     }
 
-    public static function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC') {
+    public static function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC')
+    {
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
         $objMembers     = \MemberModel::findBy(
-                                array('tl_member.groups LIKE ?'),
+                                ['tl_member.groups LIKE ?'],
                                 $participantStr,
-                                array(
-                                        'order' => $order
-                                )
+                                ['order' => $order]
                           );
         return $objMembers;
     }
 
-    public static function getGroupMemberIds($groupID) {
-        $arrIds     = array();
+    public static function getGroupMemberIds($groupID)
+    {
+        $arrIds     = [];
         $objMembers = static::getGroupMember($groupID);
-        if ($objMembers!== null) {
-            foreach($objMembers as $objMember) {
+        if ($objMembers!== null)
+        {
+            foreach($objMembers as $objMember)
+            {
                 $arrIds[] = $objMember->id;
             }
         }
         return $arrIds;
     }
 
-    public static function getNextMatch($leagueID) {
+    public static function getNextMatch($leagueID)
+    {
         $objMatch = SimpletippMatchModel::findOneBy(
-            array('leagueID = ?', 'deadline > ?'),
-            array($leagueID, time()),
-            array(
-                'order' => 'deadline ASC, id ASC'
-            )
+            ['leagueID = ?', 'deadline > ?'],
+            [$leagueID, time()],
+            ['order' => 'deadline ASC, id ASC']
         );
         return $objMatch;
     }
 
-    public static function getNotTippedUser($groupID, $match_id) {
+    public static function getNotTippedUser($groupID, $match_id)
+    {
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
 
         $result = \Database::getInstance()->prepare("SELECT tblu.*
@@ -165,45 +169,53 @@ class Simpletipp extends \System {
              AND CONVERT(tblu.groups USING utf8) LIKE ?
              ORDER BY tblu.lastname")->execute($match_id, $participantStr);
 
-        $arrUser = array();
-        while ($result->next()) {
+        $arrUser = [];
+        while ($result->next())
+        {
             $arrUser[] = $result->row();
         }
         return $arrUser;
     }
 
 
-    public static function getLeagueGroups($leagueID) {
-        $groups = array();
+    public static function getLeagueGroups($leagueID)
+    {
+        $groups = [];
         $result = \Database::getInstance()->prepare("SELECT DISTINCT groupID, groupName
           FROM tl_simpletipp_match WHERE leagueID = ? ORDER BY groupID")->execute($leagueID);
 
-        while($result->next()) {
-
+        while($result->next())
+        {
             $short = intval($result->groupName);
-            if ($short == 0) {
+            if ($short == 0)
+            {
                 $mg    = explode(". ", $result->groupName);
                 $short = $mg[0];
             }
 
-            $groups[$result->groupID] = (Object) array(
+            $groups[$result->groupID] = (Object) [
                 'title' => $result->groupName,
-                'short' => $short);
+                'short' => $short
+            ];
         }
         return $groups;
     }
 
-    public static function getSimpletippMessages() {
-        if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE'])) {
+    public static function getSimpletippMessages()
+    {
+        if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE']))
+        {
             $_SESSION['TL_SIMPLETIPP_MESSAGE'] = array();
         }
 
-        if (count($_SESSION['TL_SIMPLETIPP_MESSAGE']) == 0) {
+        if (count($_SESSION['TL_SIMPLETIPP_MESSAGE']) == 0)
+        {
             return '';
         }
 
         $messages = '';
-        foreach($_SESSION['TL_SIMPLETIPP_MESSAGE'] AS $message) {
+        foreach($_SESSION['TL_SIMPLETIPP_MESSAGE'] AS $message)
+        {
             $messages .= sprintf("	<div class=\"message\">%s</div>\n", $message);
         }
         // Reset
@@ -211,24 +223,29 @@ class Simpletipp extends \System {
         return sprintf("\n<div class=\"simpletipp_messages\">\n%s</div>\n", $message);
     }
 
-    public static function addSimpletippMessage($message) {
-        if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE'])) {
+    public static function addSimpletippMessage($message)
+    {
+        if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE']))
+        {
             $_SESSION['TL_SIMPLETIPP_MESSAGE'] = array();
         }
         $_SESSION['TL_SIMPLETIPP_MESSAGE'][] = $message;
     }
 
-    public static function cleanupTipp($tipp) {
+    public static function cleanupTipp($tipp)
+    {
         $t = preg_replace ('/[^0-9]/',' ', $tipp);
         $t = preg_replace ('/\s+/',self::$TIPP_DIVIDER, $t);
 
-        if (strlen($t) < 3) {
+        if (strlen($t) < 3)
+        {
             return '';
         }
 
         $tmp = explode(self::$TIPP_DIVIDER, $t);
 
-        if(strlen($tmp[0]) < 1 && strlen($tmp[1]) < 1) {
+        if(strlen($tmp[0]) < 1 && strlen($tmp[1]) < 1)
+        {
             return '';
         }
 
@@ -238,21 +255,28 @@ class Simpletipp extends \System {
     }
 
 
-    public static function cleanItem(&$item) {
-        if (is_object($item)) {
+    public static function cleanItem(&$item)
+    {
+        if (is_object($item))
+        {
             unset($item->password);
             unset($item->session);
             unset($item->autologin);
             unset($item->activation);
-            foreach($item as $property => $value)  {
-                if (is_string($value) && strlen($value) == 0) {
+            foreach($item as $property => $value)
+            {
+                if (is_string($value) && strlen($value) == 0)
+                {
                     unset($item->$property);
                 }
             }
         }
-        if (is_array($item)) {
-            foreach($item as $key => $value)  {
-                if (is_string($value) && strlen($value) == 0) {
+        if (is_array($item))
+        {
+            foreach($item as $key => $value)
+            {
+                if (is_string($value) && strlen($value) == 0)
+                {
                     unset($item[$key]);
                 }
             }
