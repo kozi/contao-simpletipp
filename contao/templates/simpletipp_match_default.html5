@@ -13,19 +13,19 @@
         <th class="matchtitle" colspan="2">
             <span class="full"><?=$this->match->title?></span>
             <span class="short"><?=$this->match->title_short?></span>
-            <span class="tiny"><?=$this->match->team_h_three.' - '.$this->match->team_a_three?></span>
+            <span class="tiny"><?=$this->match->teamHome->three.' - '.$this->match->teamAway->three?></span>
         </th>
         <th class="logos">
-            <i class="<?=$this->match->alias_h?>" style="background-image:url('<?php echo Image::get($this->match->icon_h, 0,32,'box');?>');"><?=$this->match->team_h_three?></i>
-            <i class="<?=$this->match->alias_a?>" style="background-image:url('<?php echo Image::get($this->match->icon_a, 0,32,'box');?>');"><?=$this->match->team_a_three?></i>
+            <i class="<?=$this->match->teamHome->alias?>" style="background-image:url('<?php echo Image::get($this->match->teamHome->logoPath(), 0,32,'box');?>');"><?=$this->match->teamHome->three?></i>
+            <i class="<?=$this->match->teamAway->alias?>" style="background-image:url('<?php echo Image::get($this->match->teamAway->logoPath(), 0,32,'box');?>');"><?=$this->match->teamAway->three?></i>
         </th>
         <th class="result"><?=$this->match->result?></th>
     </tr>
     <tr>
         <td class="goalData" colspan="4">
             <?php foreach($this->match->goalData->data as $goal):
-                $team_alias = ($goal->home) ? $this->match->alias_h: $this->match->alias_a;
-                $team_icon  = Image::get(($goal->home) ? $this->match->icon_h: $this->match->icon_a, 16, 16, 'center_center');
+                $team_alias = ($goal->home) ? $this->match->teamHome->alias : $this->match->teamAway->alias;
+                $team_icon  = Image::get(($goal->home) ? $this->match->teamHome->logoPath() : $this->match->teamAway->logoPath(), 16, 16, 'center_center');
                 ?>
             <span class="goalEntry">
                 <strong class="goalResult <?=$team_alias?>"  style="background-image:url('<?=$team_icon?>');"><?=$goal->result?></strong>

@@ -15,6 +15,8 @@
 
 namespace Simpletipp\Elements;
 
+use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\Models\SimpletippTeamModel;
 use Simpletipp\Simpletipp;
 use Simpletipp\SimpletippModule;
 
@@ -70,67 +72,72 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
 
     protected function statBestMatches() {
-        $matches = array();
-        $result  = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
-            WHERE leagueID = ? AND isFinished = ?")
-            ->execute($this->simpletipp->leagueID, '1');
 
-        while ($result->next()) {
-            $match           = $result->row();
-            $match['points'] = $this->getPointsForMatch($match);
-            $matches[]       = $match;
+        $arrMatches = [];
+        $objMatches = SimpletippMatchModel::findBy(
+            ['leagueID = ?', 'isFinished = ?'],
+            [$this->simpletipp->leagueID, '1']
+        );
+
+        foreach ($objMatches as $objMatch)
+        {
+            $objMatch->teamHome  = $objMatch->getRelated('team_h');
+            $objMatch->teamAway  = $objMatch->getRelated('team_a');
+            $objMatch->objPoints = $this->getPointsForMatch($objMatch);
+            $arrMatches[]        = $objMatch;
         }
 
-        usort($matches, function($match_a, $match_b) {
-            return ($match_b['points']->points - $match_a['points']->points);
+        usort($arrMatches, function($match_a, $match_b) {
+            return ($match_b->objPoints->points - $match_a->objPoints->points);
         });
-        $this->statsTemplate->matches = array_slice($matches, 0, 10);
+        $this->statsTemplate->matches = array_slice($arrMatches, 0, 10);
     }
 
     protected function statBestTeams() {
-        $teams   = array();
-        $result  = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
-            WHERE leagueID = ? AND isFinished = ?")
-            ->execute($this->simpletipp->leagueID, '1');
+        $arrTeams   = [];
+        $objMatches = SimpletippMatchModel::findBy(
+            ['leagueID = ?', 'isFinished = ?'],
+            [$this->simpletipp->leagueID, '1']
+        );
 
-        while ($result->next()) {
-            $match        = $result->row();
-            $tippPoints   = $this->getPointsForMatch($match);
-            $team_h       = $match['team_h'];
-            $team_a       = $match['team_a'];
-            $match_title  = explode(' - ', $match['title']);
-
-            if (!array_key_exists($team_h, $teams)) {
-                $teams[$team_h] = array(
-                    'name'       => $match_title[0],
-                    'icon'       => $match['icon_h'],
-                    'name_short' => $team_h,
-                    'points'     => array(0, 0 , 0, 0));
+        foreach ($objMatches as $objMatch)
+        {
+            $tippPoints   = $this->getPointsForMatch($objMatch);
+            $teamHome     = $objMatch->getRelated('team_h');
+            $teamAway     = $objMatch->getRelated('team_a');
+            if (!array_key_exists($teamHome->id, $arrTeams)) {
+                $arrTeams[$teamHome->id] = [
+                    'name'       => $teamHome->name,
+                    'icon'       => $teamHome->logoPath(),
+                    'name_short' => $teamHome->short,
+                    'points'     => [0, 0 , 0, 0]
+                ];
             }
-            if (!array_key_exists($team_a, $teams)) {
-                $teams[$team_a] = array(
-                    'name'       => $match_title[1],
-                    'icon'       => $match['icon_a'],
-                    'name_short' => $team_a,
-                    'points'     => array(0, 0 , 0, 0));
+            if (!array_key_exists($teamAway->id, $arrTeams)) {
+                $arrTeams[$teamAway->id] = [
+                    'name'       => $teamAway->name,
+                    'icon'       => $teamAway->logoPath(),
+                    'name_short' => $teamAway->short,
+                    'points'     => [0, 0 , 0, 0]
+                ];
             }
 
-            $teams[$team_h]['points'][0] += $tippPoints->points;
-            $teams[$team_h]['points'][1] += $tippPoints->perfect;
-            $teams[$team_h]['points'][2] += $tippPoints->difference;
-            $teams[$team_h]['points'][3] += $tippPoints->tendency;
+            $arrTeams[$teamHome->id]['points'][0] += $tippPoints->points;
+            $arrTeams[$teamHome->id]['points'][1] += $tippPoints->perfect;
+            $arrTeams[$teamHome->id]['points'][2] += $tippPoints->difference;
+            $arrTeams[$teamHome->id]['points'][3] += $tippPoints->tendency;
 
-            $teams[$team_a]['points'][0] += $tippPoints->points;
-            $teams[$team_a]['points'][1] += $tippPoints->perfect;
-            $teams[$team_a]['points'][2] += $tippPoints->difference;
-            $teams[$team_a]['points'][3] += $tippPoints->tendency;
+            $arrTeams[$teamAway->id]['points'][0] += $tippPoints->points;
+            $arrTeams[$teamAway->id]['points'][1] += $tippPoints->perfect;
+            $arrTeams[$teamAway->id]['points'][2] += $tippPoints->difference;
+            $arrTeams[$teamAway->id]['points'][3] += $tippPoints->tendency;
 
         }
 
-        usort($teams, function($team_a, $team_b) {
+        usort($arrTeams, function($team_a, $team_b) {
             return ($team_b['points'][0] - $team_a['points'][0]);
         });
-        $this->statsTemplate->teams = array_slice($teams, 0, 10);
+        $this->statsTemplate->teams = array_slice($arrTeams, 0, 10);
 
     }
 
@@ -337,10 +344,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $points->perfect    = 0;
         $points->difference = 0;
         $points->tendency   = 0;
-        $ergebnis   = $match['result'];
+        $ergebnis   = $match->result;
 
         $tippResult = $this->Database->prepare("SELECT tipp FROM tl_simpletipp_tipp
-                            WHERE match_id = ?")->execute($match['id']);
+                            WHERE match_id = ?")->execute($match->id);
         while ($tippResult->next()) {
 
             $tippPoints = Simpletipp::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);

@@ -15,6 +15,8 @@
 
 namespace Simpletipp\Models;
 
+use Simpletipp\OpenLigaDB;
+
 class SimpletippMatchModel extends \Model {
 
     /**
@@ -23,18 +25,84 @@ class SimpletippMatchModel extends \Model {
      */
     protected static $strTable = 'tl_simpletipp_match';
 
-    public static function findByShortNames($shortNames) {
-        $shorts = explode('-', $shortNames);
-        if (sizeof($shorts) !== 2) {
+    public static function findByShortNames($simpletipp, $strAliases)
+    {
+        $arrAlias = explode('-', $strAliases);
+        if (sizeof($arrAlias) !== 2) {
             return null;
         }
-        array_map('ucfirst', $shorts);
-        $title_short = $shorts[0].' - '.$shorts[1];
-        $title_short = str_replace(array('ue', 'ae', 'oe'), array('ü','ä','ö'), $title_short);
-        return self::findOneBy('title_short', $title_short);
-   }
+        $teamHome = SimpletippTeamModel::findBy('alias', $arrAlias[0]);
+        $teamAway = SimpletippTeamModel::findBy('alias', $arrAlias[1]);
 
+        $arrWhere  = [
+            'leagueID' => 'leagueID = ?',
+            'team_h'   => 'team_h = ?',
+            'team_a'   => 'team_a = ?',
+        ];
+        $arrValues = [$simpletipp->leagueID, $teamHome->id, $teamAway->id];
 
+        return self::findOneBy($arrWhere, $arrValues);
+    }
 
+    public function refreshGoalData($simpletipp)
+    {
+        $now = time();
+        if ($now < $this->deadline) {
+            return false;
+        }
+
+        $simpletippLastChanged = intval($simpletipp->lastChanged);
+
+        if ($this->goalData == NULL
+            || $this->goalData->lastUpdate < $simpletippLastChanged
+            || ($now - $this->deadline) < ($simpletipp->matchLength)) {
+
+            $oldb         = OpenLigaDB::getInstance();
+            $leagueInfos  = unserialize($simpletipp->leagueInfos);
+            $oldb->setLeague($leagueInfos);
+            $openligaLastChanged = strtotime($oldb->getLastLeagueChange());
+
+            if ($this->goalData->lastUpdate < $openligaLastChanged) {
+                // Update goalData
+                $this->goalData = serialize((object) [
+                    'lastUpdate' => $openligaLastChanged,
+                    'data'       => $this->convertGoalData($oldb->getMatchGoals($this->id))
+                ]);
+                
+                $this->save();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function convertGoalData($data) {
+        $goalData    = array();
+
+        if (is_object($data)) {
+            $goalObjects = array($data);
+        }
+        elseif (is_array($data)) {
+            $goalObjects = $data;
+        }
+        else {
+            $goalObjects = array();
+        }
+
+        $previousHome = 0;
+        foreach($goalObjects as $goalObj) {
+            $goalData[] = (Object) array(
+                'name'     => $goalObj->goalGetterName,
+                'minute'   => $goalObj->goalMatchMinute,
+                'result'   => $goalObj->goalScoreTeam1.':'.$goalObj->goalScoreTeam2,
+                'penalty'  => $goalObj->goalPenalty,
+                'ownGoal'  => $goalObj->goalOwnGoal,
+                'overtime' => $goalObj->goalOvertime,
+                'home'     => ($previousHome !== $goalObj->goalScoreTeam1),
+            );
+            $previousHome = $goalObj->goalScoreTeam1;
+        }
+        return $goalData;
+    }
 
 }

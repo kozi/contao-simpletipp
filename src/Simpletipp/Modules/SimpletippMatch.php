@@ -29,7 +29,12 @@ use \Simpletipp\Models\SimpletippMatchModel;
  */
  
 class SimpletippMatch extends SimpletippModule {
+
+    /**
+     * @var SimpletippMatchModel
+     */
 	private $match;
+
 	protected $strTemplate = 'simpletipp_match_default';
 
 	public function generate() {
@@ -47,15 +52,18 @@ class SimpletippMatch extends SimpletippModule {
 
         $matchAlias = \Input::get('match');
 
-        if (is_numeric($matchAlias)) {
+        if (is_numeric($matchAlias))
+        {
             $this->match = SimpletippMatchModel::findByPk($matchAlias);
         }
-        else {
+        else
+        {
             // get matchId from team short names
-            $this->match = SimpletippMatchModel::findByShortNames($matchAlias);
+            $this->match = SimpletippMatchModel::findByShortNames($this->simpletipp, $matchAlias);
         }
 
-        if ($this->match == null) {
+        if ($this->match == null)
+        {
             $this->Template->match   = null;
             $this->Template->message = 'No match found.';
             return;
@@ -64,9 +72,12 @@ class SimpletippMatch extends SimpletippModule {
         $this->isStarted = (time() > $this->match->deadline);
 
         // GoalData
-        $this->import('\Simpletipp\SimpletippMatchUpdater', 'matchUpdater');
+        $this->match->refreshGoalData($this->simpletipp);
+
         $this->match->goalData = unserialize($this->match->goalData);
-        $this->match = $this->matchUpdater->refreshGoalData($this->simpletipp, $this->match);
+
+        $this->match->teamHome = $this->match->getRelated('team_h');
+        $this->match->teamAway = $this->match->getRelated('team_a');
 
 
 		$result = $this->Database->prepare(
@@ -130,14 +141,6 @@ class SimpletippMatch extends SimpletippModule {
             $count->draw->percent = floor(($count->draw->abs / $summe) * 10000) / 100;
             $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;
         }
-
-
-
-
-		// Match
-        $teams = explode("-", $this->match->title_short);
-        $this->match->alias_h = standardize($teams[0]);
-        $this->match->alias_a = standardize($teams[1]);
 
         $this->Template->avatarActive = $this->avatarActive;
         $this->Template->match        = $this->match;

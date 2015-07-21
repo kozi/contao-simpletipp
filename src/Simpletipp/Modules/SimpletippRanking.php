@@ -15,6 +15,7 @@
 
 namespace Simpletipp\Modules;
 
+use Simpletipp\Models\SimpletippMatchModel;
 use \Simpletipp\SimpletippModule;
 /**
  * Class SimpletippRanking
@@ -33,54 +34,51 @@ class SimpletippRanking extends SimpletippModule {
 	}
 
 	protected function compile() {
-        $start   = microtime(true);
-        $result  = $this->Database->prepare(
-            "SELECT title, title_short, icon_h, icon_a, team_h, team_a, result, isFinished
-            FROM tl_simpletipp_match WHERE leagueID = ?")
-            ->execute($this->simpletipp->leagueID);
+
+        $collectionMatches = SimpletippMatchModel::findBy('leagueID', $this->simpletipp->leagueID);
 
         $ranking = array();
-        while($result->next()) {
+        foreach($collectionMatches as $match)
+        {
+            $match->teamHome = $match->getRelated('team_h');
+            $match->teamAway = $match->getRelated('team_a');
 
-            if ($ranking[$result->team_h] === null) {
-                $arr   = explode('-', $result->title);
-                $name  = trim($arr[0]);
-                $arr   = explode('-', $result->title_short);
-                $short = trim($arr[0]);
-                $ranking[$result->team_h] = new Team($name, $short, $result->team_h, $result->icon_h);
+            if ($ranking[$match->teamHome->id] === null)
+            {
+                $ranking[$match->teamHome->id] = clone $match->teamHome;
             }
-
-            if ($ranking[$result->team_a] === null) {
-                $arr   = explode('-', $result->title);
-                $name  = trim($arr[1]);
-                $arr   = explode('-', $result->title_short);
-                $short = trim($arr[1]);
-                $ranking[$result->team_a] = new Team($name, $short, $result->team_a, $result->icon_a);
+            if ($ranking[$match->teamAway->id] === null)
+            {
+                $ranking[$match->teamAway->id] = clone $match->teamAway;
             }
-            $team_h = &$ranking[$result->team_h];
-            $team_a = &$ranking[$result->team_a];
+            $teamHome = &$ranking[$match->teamHome->id];
+            $teamAway = &$ranking[$match->teamAway->id];
+            $erg      = array_map('intval', explode(':',$match->result));
 
-            $erg    = array_map('intval', explode(':',$result->result));
-            $team_h->addGoals($erg[0], $erg[1]);
-            $team_a->addGoals($erg[1], $erg[0]);
+            $teamHome->addGoals($erg[0], $erg[1]);
+            $teamAway->addGoals($erg[1], $erg[0]);
 
-            if ($result->isFinished === '1') {
-                if ($erg[0] === $erg[1]) {
-                    $team_h->draws += 1;
-                    $team_a->draws += 1;
+            if ($match->isFinished === '1')
+            {
+                if ($erg[0] === $erg[1])
+                {
+                    $teamHome->draws += 1;
+                    $teamAway->draws += 1;
                 }
-                elseif ($erg[0] > $erg[1]) {
-                    $team_h->wins   += 1;
-                    $team_a->losses += 1;
+                elseif ($erg[0] > $erg[1])
+                {
+                    $teamHome->wins   += 1;
+                    $teamAway->losses += 1;
                 }
-                else {
-                    $team_h->losses += 1;
-                    $team_a->wins   += 1;
+                else
+                {
+                    $teamHome->losses += 1;
+                    $teamAway->wins   += 1;
                 }
             }
-
 
         }
+
         // Sortieren
         usort($ranking, function($team_a, $team_b) {
             $a = $team_a->getPoints(); $b = $team_b->getPoints();

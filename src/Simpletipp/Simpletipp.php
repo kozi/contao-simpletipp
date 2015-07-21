@@ -59,26 +59,6 @@ class Simpletipp extends \System {
         return new SimpletippPoints($simpletippFactor, $perfect, $difference, $tendency);
     }
 
-
-    public static function teamShortener($teamName, $isThree = false) {
-        if (array_key_exists($teamName, $GLOBALS['simpletipp']['teamShortener'])) {
-            $index = ($isThree) ? 1 : 0;
-            return $GLOBALS['simpletipp']['teamShortener'][$teamName][$index];
-        }
-        else {
-            return $teamName;
-        }
-    }
-
-    public static function teamIcon($teamName) {
-        if (array_key_exists($teamName, $GLOBALS['simpletipp']['teamShortener']) && count($GLOBALS['simpletipp']['teamShortener'][$teamName]) > 2) {
-            return \Config::get('uploadPath') . '/'.$GLOBALS['simpletipp']['teamShortener'][$teamName][2];
-        }
-        else {
-            return false;
-        }
-    }
-
     public static function groupMapper($arrMatch)
     {
         $leagueID = $arrMatch['leagueID'];
@@ -114,12 +94,6 @@ class Simpletipp extends \System {
             $arrGroup['name']));
 
         return $arrGroup;
-    }
-
-    public static function iconUrl($teamName, $prefix = '', $suffix = '.png')
-    {
-        $team = self::teamShortener($teamName);
-        return $prefix.standardize($team).$suffix;
     }
 
     public static function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC')

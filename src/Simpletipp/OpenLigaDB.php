@@ -124,7 +124,7 @@ class OpenLigaDB {
             $params->leagueSaison   = $this->leagueSaison;
 
             $response = $this->client->GetTeamsByLeagueSaison($params);
-            $data     = $response->GetTeamsByLeagueSaisonResult;
+            $data     = $response->GetTeamsByLeagueSaisonResult->Team;
             return $data;
         }
         catch (SoapFault $e) {

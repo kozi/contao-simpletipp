@@ -19,20 +19,22 @@ use \Simpletipp\Models\SimpletippModel;
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
 	// Config
-	'config' => array
-	(
+	'config' => [
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_simpletipp_question'),
+		'ctable'                      => ['tl_simpletipp_question'],
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
-		'onsubmit_callback' => array(
-            array('tl_simpletipp', 'updateMatches'),
-            array('tl_simpletipp', 'saveLeagueInfos')
-		),
-		'sql' => array(
-			'keys' => array('id' => 'primary')
-		)
-	),
+		'onsubmit_callback' => [
+			['tl_simpletipp', 'updateTeamTable'],
+			['tl_simpletipp', 'updateMatches'],
+			['tl_simpletipp', 'saveLeagueInfos'],
+		],
+		'ondelete_callback' => [
+			['tl_simpletipp', 'updateTeamTable'],
+			['tl_simpletipp', 'updateMatches'],
+		],
+		'sql' => ['keys' => ['id' => 'primary']]
+	],
 		
 	// List
 	'list' => array
@@ -329,41 +331,47 @@ class tl_simpletipp extends \Backend {
 
     }
 
-    public function saveLeagueInfos(DataContainer $dc) {
+    public function saveLeagueInfos(DataContainer $dc)
+	{
         $leagueID  = intval($dc->activeRecord->leagueID);
 		$leagues   = $this->oldb->getAvailLeagues();
 		$leagueObj = null;
-		foreach($leagues as $league) {
-			if ($league->leagueID == $leagueID) {
+		foreach($leagues as $league)
+		{
+			if ($league->leagueID == $leagueID)
+			{
 				$leagueObj = $league;
-				break;
 			}
 		}
 
-        if ($leagueObj != null) {
+        if ($leagueObj != null)
+		{
             $objSimpletipp = SimpletippModel::findByPk($dc->activeRecord->id);
-            $objSimpletipp->leagueInfos = serialize(array(
+            $objSimpletipp->leagueInfos = serialize([
                 'name'     => $leagueObj->leagueName,
                 'shortcut' => $leagueObj->leagueShortcut,
                 'saison'   => $leagueObj->leagueSaison
-            ));
+			]);
             $objSimpletipp->save();
 		}
 
 	}
-		
-	public function updateMatches($dc) {
-		if ($dc->activeRecord->leagueInfos === null) {
-			return false;
-		}
+
+    public function updateMatches()
+	{
         $this->import('\Simpletipp\SimpletippMatchUpdater', 'SimpletippMatchUpdater');
         $this->SimpletippMatchUpdater->updateMatches();
-	}
+    }
 
-	private function cleanupMatches() {
+    public function updateTeamTable()
+	{
+        $this->import('\Simpletipp\SimpletippMatchUpdater', 'SimpletippMatchUpdater');
+        $this->SimpletippMatchUpdater->updateTeamTable();
+    }
+
+    private function cleanupMatches()
+	{
 		$this->Database->execute("DELETE FROM tl_simpletipp_match
 			WHERE leagueID NOT IN (SELECT tl_simpletipp.leagueID FROM tl_simpletipp)");
 	}
 }
-
-

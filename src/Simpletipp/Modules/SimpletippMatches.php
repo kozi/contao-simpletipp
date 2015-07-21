@@ -15,6 +15,7 @@
 
 namespace Simpletipp\Modules;
 
+use Simpletipp\Models\SimpletippTeamModel;
 use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippPoints;
 use \Simpletipp\SimpletippModule;
@@ -136,8 +137,11 @@ class SimpletippMatches extends SimpletippModule {
             }
             $currentGroup = $match->groupName_short;
 
+            $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
+            $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);
+
             if ($pageRow !== null) {
-                $alias = strtolower($match->team_h.'-'.$match->team_a);
+                $alias = strtolower($match->teamHome->short.'-'.$match->teamAway->short);
                 $alias = str_replace(array('ü','ä','ö'), array('ue', 'ae', 'oe'), $alias);
                 $match->matchLink = $this->generateFrontendUrl($pageRow, '/match/'.$alias);
             }
@@ -146,12 +150,8 @@ class SimpletippMatches extends SimpletippModule {
 			if (strlen($match->result) > 0) {
 				$match->pointsClass = $pointObj->getPointsClass();
 			}
-			
-			$teams = explode("-", $match->title_short);
-			$match->alias_h = standardize($teams[0]);
-			$match->alias_a = standardize($teams[1]);
 
-            $matches[] = $match;
+			$matches[]     = $match;
 
 			$this->updateSummary($pointObj);
 		}

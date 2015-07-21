@@ -52,14 +52,14 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
             </span>
         </td>
         <td class="logos">
-            <i class="<?=$match->alias_h?>" style="background-image:url('<?php echo Image::get($match->icon_h, 50, 50, 'center_center');?>');"><?=$match->team_h_three?></i>
-            <i class="<?=$match->alias_a?>" style="background-image:url('<?php echo Image::get($match->icon_a, 50, 50, 'center_center');?>');"><?=$match->team_a_three?></i>
+            <i class="<?=$match->teamHome->alias?>" style="background-image:url('<?php echo Image::get($match->teamHome->logoPath(), 50, 50, 'center_center');?>');"><?=$match->teamHome->three?></i>
+            <i class="<?=$match->teamAway->alias?>" style="background-image:url('<?php echo Image::get($match->teamAway->logoPath(), 50, 50, 'center_center');?>');"><?=$match->teamAway->three?></i>
         </td>
         <td class="matchtitle">
             <a href="<?=$match->matchLink?>">
                 <span class="full"><?=$match->title?></span>
                 <span class="short"><?=$match->title_short?></span>
-                <span class="tiny"><?=$match->team_h_three.' - '.$match->team_a_three?></span>
+                <span class="tiny"><?=$match->teamHome->three.' - '.$match->teamAway->three?></span>
             </a>
         </td>
 

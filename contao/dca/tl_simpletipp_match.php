@@ -96,24 +96,16 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
 	'title_short' => array(
 			'sql'                     => "varchar(255) NOT NULL default ''",
 	),
-	'icon_h' => array(
-			'sql'                     => "varchar(255) NOT NULL default ''",
-	),
-	'icon_a' => array(
-			'sql'                     => "varchar(255) NOT NULL default ''",
-	),
 	'team_h' => array(
-			'sql'                     => "varchar(255) NOT NULL default ''",
+			'foreignKey'              => 'tl_simpletipp_team.id',
+			'relation'                => array('type'=>'hasOne', 'load'=>'eager'),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 	),
 	'team_a' => array(
-			'sql'                     => "varchar(255) NOT NULL default ''",
+			'foreignKey'              => 'tl_simpletipp_team.id',
+			'relation'                => array('type'=>'hasOne', 'load'=>'eager'),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
 	),
-    'team_h_three' => array(
-            'sql'                     => "varchar(255) NOT NULL default ''",
-    ),
-    'team_a_three' => array(
-            'sql'                     => "varchar(255) NOT NULL default ''",
-    ),
 	'lastUpdate' => array(
 			'sql'                     => "int(10) unsigned NOT NULL"
 	),
@@ -174,10 +166,7 @@ class tl_simpletipp_match extends Backend {
 	}
 	
 	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
-		if ($args === null) {
-			return $label;
-		}
-		
+
 		$leagueID = $args[0];
 		$args[0]  = $this->leagueInfos[$leagueID]['shortcut'];
 

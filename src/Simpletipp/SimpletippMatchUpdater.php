@@ -17,9 +17,14 @@
 namespace Simpletipp;
 
 
-use Simpletipp\Simpletipp;
+use Contao\Config;
+use Contao\Dbafs;
+use Contao\File;
+use Contao\Input;
 use Simpletipp\Models\SimpletippModel;
 use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\Models\SimpletippTeamModel;
+
 /**
  * Class SimpletippMatchUpdater
  *
@@ -29,11 +34,26 @@ use Simpletipp\Models\SimpletippMatchModel;
  * @package    Controller
  */
 class SimpletippMatchUpdater extends \Backend {
+
     private static $lookupLockSeconds     = 180;
     const RESULTTYPE_ENDERGEBNIS   = 'ENDERGEBNIS';
     const RESULTTYPE_HALBZEIT      = 'HALBZEIT';
     const RESULTTYPE_VERLAENGERUNG = 'VERLAENGERUNG';
     const RESULTTYPE_11METER       = '11METER';
+
+    private $oldb   = null;
+    private $folder = null;
+
+    public function __construct()
+    {
+        $this->oldb   = OpenLigaDB::getInstance();
+        $this->folder = Config::get('uploadPath').'/simpletipp';
+        if (!file_exists($this->folder))
+        {
+            File::putContent($this->folder.'/.simpletipp', $this->now);
+        }
+        parent::__construct();
+    }
 
     // TODO Typen auswählbar machen in der Tipprunde
     // TODO Prioritäten festlegen d.h. die resultTypes in eine Reihenfolge bringen
@@ -61,12 +81,22 @@ class SimpletippMatchUpdater extends \Backend {
             $objSimpletipp = SimpletippModel::findByPk($id);
             $message       = $this->updateSimpletippMatches($objSimpletipp, true);
             \Message::add($message, TL_INFO);
-            $this->redirect(\Environment::get('script').'?do=simpletipp_group');
+
+            if ('update' === Input::get('key'))
+            {
+                $this->redirect(\Environment::get('script').'?do=simpletipp_group');
+            }
+
         }
     }
 
     public function updateSimpletippMatches(&$simpletippObj, $forceUpdate = false) {
         $leagueInfos = unserialize($simpletippObj->leagueInfos);
+
+        if(!is_array($leagueInfos))
+        {
+            return 'No league set.';
+        }
 
         if ($this->lastLookupOnlySecondsAgo($simpletippObj)) {
             $message = sprintf(
@@ -76,7 +106,6 @@ class SimpletippMatchUpdater extends \Backend {
             return $message;
         }
 
-        $this->oldb = OpenLigaDB::getInstance();
         $this->oldb->setLeague($leagueInfos);
 
         $openligaLastChanged    = strtotime($this->oldb->getLastLeagueChange());
@@ -97,6 +126,58 @@ class SimpletippMatchUpdater extends \Backend {
         return $message;
     }
 
+    public function updateTeamTable()
+    {
+        $objTeams    = SimpletippTeamModel::findAll();
+        $arrTeamIds  = [];
+        if ($objTeams !== null)
+        {
+            foreach($objTeams as $objTeam)
+            {
+                $arrTeamIds[] = intval($objTeam->id);
+            }
+        }
+        $collectionSimpletipp = SimpletippModel::findAll();
+        foreach($collectionSimpletipp as $objSimpletipp)
+        {
+
+            $leagueInfos = unserialize($objSimpletipp->leagueInfos);
+
+            if(!is_array($leagueInfos))
+            {
+                break;
+            }
+
+            $strLeague = $leagueInfos['shortcut'];
+            $this->oldb->setLeague($leagueInfos);
+
+            $arrTeams = $this->oldb->getLeagueTeams();
+
+            foreach($arrTeams as $team)
+            {
+                if(!in_array($team->teamID, $arrTeamIds))
+                {
+                    $objTeam          = $this->getTeamModel($team);
+                    $objTeam->leagues = $strLeague;
+                    $objTeam->save();
+
+                    $arrTeamIds[] = $team->teamID;
+                }
+                else
+                {
+                    $objTeam = SimpletippTeamModel::findByPk($team->teamID);
+                    if ($objTeam !== null && strpos($objTeam->leagues, $strLeague) === false)
+                    {
+                        $objTeam->leagues .= ', '.$strLeague;
+                        $objTeam->save();
+                    }
+                }
+
+            }
+
+        }
+        // $this->oldb->getLeagueTeams();
+    }
 
     public function calculateTipps() {
         $id = intval(\Input::get('id'));
@@ -155,67 +236,6 @@ class SimpletippMatchUpdater extends \Backend {
         }
     }
 
-
-    public function refreshGoalData($simpletipp, $match) {
-        $now = time();
-
-        if ($now < $this->match->deadline) {
-            return $match;
-        }
-
-        $simpletippLastChanged = intval($simpletipp->lastChanged);
-
-        if ($match->goalData == NULL
-            || $match->goalData->lastUpdate < $simpletippLastChanged
-            || ($now - $match->deadline) < ($simpletipp->matchLength)) {
-
-            $this->oldb = OpenLigaDB::getInstance();
-            $leagueInfos  = unserialize($simpletipp->leagueInfos);
-            $this->oldb->setLeague($leagueInfos);
-            $openligaLastChanged   = strtotime($this->oldb->getLastLeagueChange());
-
-            if ($match->goalData->lastUpdate < $openligaLastChanged) {
-                // Update goalData
-                $match->goalData             = new \stdClass();
-                $match->goalData->lastUpdate = $openligaLastChanged;
-                $match->goalData->data       = $this->convertGoalData($this->oldb->getMatchGoals($match->id));
-            }
-
-            $this->Database->prepare("UPDATE tl_simpletipp_match SET goalData = ? WHERE id = ? ")
-                ->execute(serialize($match->goalData), $match->id);
-        }
-        return $match;
-    }
-
-    private function convertGoalData($data) {
-        $goalData    = array();
-
-        if (is_object($data)) {
-            $goalObjects = array($data);
-        }
-        elseif (is_array($data)) {
-            $goalObjects = $data;
-        }
-        else {
-            $goalObjects = array();
-        }
-
-        $previousHome = 0;
-        foreach($goalObjects as $goalObj) {
-            $goalData[] = (Object) array(
-                'name'     => $goalObj->goalGetterName,
-                'minute'   => $goalObj->goalMatchMinute,
-                'result'   => $goalObj->goalScoreTeam1.':'.$goalObj->goalScoreTeam2,
-                'penalty'  => $goalObj->goalPenalty,
-                'ownGoal'  => $goalObj->goalOwnGoal,
-                'overtime' => $goalObj->goalOvertime,
-                'home'     => ($previousHome !== $goalObj->goalScoreTeam1),
-            );
-            $previousHome = $goalObj->goalScoreTeam1;
-        }
-        return $goalData;
-    }
-
     private function lastLookupOnlySecondsAgo(&$objSimpletipp) {
 
         return false;
@@ -250,22 +270,28 @@ class SimpletippMatchUpdater extends \Backend {
 
             $results      = self::parseResults($tmp['matchResults']);
 
+
+            $teamHome      = SimpletippTeamModel::findByPk($tmp['idTeam1']);
+            $teamAway      = SimpletippTeamModel::findByPk($tmp['idTeam2']);
+            $strTitle      = $tmp['nameTeam1'].' - '.$tmp['nameTeam2'];
+            $strTitleShort = $strTitle;
+            if ($teamHome !== null && $teamAway !== null)
+            {
+                $strTitleShort = $teamHome->short.' - '.$teamAway->short;
+            }
+
             $newMatch     = array(
                 'leagueID'        => $tmp['leagueID'],
                 'groupID'         => $arrGroup['id'],
                 'deadline'        => strtotime($tmp['matchDateTimeUTC']),
-                'title'           => sprintf("%s - %s", $tmp['nameTeam1'], $tmp['nameTeam2']),
-                'title_short'     => sprintf("%s - %s", Simpletipp::teamShortener($tmp['nameTeam1']), Simpletipp::teamShortener($tmp['nameTeam2'])),
+                'title'           => $strTitle,
+                'title_short'     => $strTitleShort,
 
                 'groupName'       => $arrGroup['name'],
                 'groupName_short' => $arrGroup['short'],
 
-                'team_h'          => Simpletipp::teamShortener($tmp['nameTeam1']),
-                'team_a'          => Simpletipp::teamShortener($tmp['nameTeam2']),
-                'team_h_three'    => Simpletipp::teamShortener($tmp['nameTeam1'], true),
-                'team_a_three'    => Simpletipp::teamShortener($tmp['nameTeam2'], true),
-                'icon_h'          => (Simpletipp::teamIcon($tmp['nameTeam1'])) ? Simpletipp::teamIcon($tmp['nameTeam1']) : $tmp['iconUrlTeam1'],
-                'icon_a'          => (Simpletipp::teamIcon($tmp['nameTeam2'])) ? Simpletipp::teamIcon($tmp['nameTeam2']) : $tmp['iconUrlTeam2'],
+                'team_h'          => $tmp['idTeam1'],
+                'team_a'          => $tmp['idTeam2'],
 
                 'isFinished'      => $tmp['matchIsFinished'],
                 'lastUpdate'      => strtotime($tmp['lastUpdate']),
@@ -281,9 +307,12 @@ class SimpletippMatchUpdater extends \Backend {
             $matchId = intval($objMatch->id);
 
             if (array_key_exists($objMatch->id, $newMatches)) {
+                var_dump($newMatches[$matchId]);
                 foreach($newMatches[$matchId] as $key => $value) {
                     $objMatch->$key = $value;
                 }
+
+
                 $objMatch->save();
                 unset($newMatches[$matchId]);
             }
@@ -319,5 +348,36 @@ class SimpletippMatchUpdater extends \Backend {
         return $arrResults;
     }
 
+    private function getTeamModel($team)
+    {
+        $objTeam          = new SimpletippTeamModel();
+        $objTeam->id      = $team->teamID;
+        $objTeam->tstamp  = time();
+        $objTeam->name    = $team->teamName;
 
+        if (is_array($GLOBALS['simpletipp']['teamData']) && array_key_exists($team->teamID, $GLOBALS['simpletipp']['teamData']))
+        {
+            $arr = $GLOBALS['simpletipp']['teamData'][$team->teamID];
+            $objTeam->short    = $arr[0];
+            $objTeam->alias    = standardize($objTeam->short);
+            $objTeam->three    = $arr[1];
+
+            if (count($arr[2]) > 0)
+            {
+                $ext = pathinfo ($arr[2], PATHINFO_EXTENSION);
+                $fn  = Config::get('uploadPath').'/simpletipp/'.standardize($team->teamName).'.'.$ext;
+                if (!file_exists($fn))
+                {
+                    file_put_contents(TL_ROOT.'/'.$fn, fopen($arr[2], 'r'));
+                }
+                $filesModel = Dbafs::addResource($fn);
+
+                if ($filesModel !== null)
+                {
+                    $objTeam->logo = $filesModel->uuid;
+                }
+            }
+        }
+        return $objTeam;
+    }
 }
