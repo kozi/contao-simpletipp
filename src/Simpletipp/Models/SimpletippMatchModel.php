@@ -17,8 +17,8 @@ namespace Simpletipp\Models;
 
 use Simpletipp\OpenLigaDB;
 
-class SimpletippMatchModel extends \Model {
-
+class SimpletippMatchModel extends \Model
+{
     /**
      * Table name
      * @var string
@@ -28,7 +28,8 @@ class SimpletippMatchModel extends \Model {
     public static function findByShortNames($simpletipp, $strAliases)
     {
         $arrAlias = explode('-', $strAliases);
-        if (sizeof($arrAlias) !== 2) {
+        if (sizeof($arrAlias) !== 2)
+        {
             return null;
         }
         $teamHome = SimpletippTeamModel::findBy('alias', $arrAlias[0]);
@@ -47,7 +48,8 @@ class SimpletippMatchModel extends \Model {
     public function refreshGoalData($simpletipp)
     {
         $now = time();
-        if ($now < $this->deadline) {
+        if ($now < $this->deadline)
+        {
             return false;
         }
 
@@ -55,14 +57,16 @@ class SimpletippMatchModel extends \Model {
 
         if ($this->goalData == NULL
             || $this->goalData->lastUpdate < $simpletippLastChanged
-            || ($now - $this->deadline) < ($simpletipp->matchLength)) {
+            || ($now - $this->deadline) < ($simpletipp->matchLength))
+        {
 
             $oldb         = OpenLigaDB::getInstance();
             $leagueInfos  = unserialize($simpletipp->leagueInfos);
             $oldb->setLeague($leagueInfos);
             $openligaLastChanged = strtotime($oldb->getLastLeagueChange());
 
-            if ($this->goalData->lastUpdate < $openligaLastChanged) {
+            if ($this->goalData->lastUpdate < $openligaLastChanged)
+            {
                 // Update goalData
                 $this->goalData = serialize((object) [
                     'lastUpdate' => $openligaLastChanged,
@@ -76,11 +80,13 @@ class SimpletippMatchModel extends \Model {
         return false;
     }
 
-    private function convertGoalData($data) {
-        $goalData    = array();
+    private function convertGoalData($data)
+    {
+        $goalData    = [];
 
-        if (is_object($data)) {
-            $goalObjects = array($data);
+        if (is_object($data))
+        {
+            $goalObjects = [$data];
         }
         elseif (is_array($data)) {
             $goalObjects = $data;
@@ -90,8 +96,9 @@ class SimpletippMatchModel extends \Model {
         }
 
         $previousHome = 0;
-        foreach($goalObjects as $goalObj) {
-            $goalData[] = (Object) array(
+        foreach($goalObjects as $goalObj)
+        {
+            $goalData[] = (Object) [
                 'name'     => $goalObj->goalGetterName,
                 'minute'   => $goalObj->goalMatchMinute,
                 'result'   => $goalObj->goalScoreTeam1.':'.$goalObj->goalScoreTeam2,
@@ -99,7 +106,7 @@ class SimpletippMatchModel extends \Model {
                 'ownGoal'  => $goalObj->goalOwnGoal,
                 'overtime' => $goalObj->goalOvertime,
                 'home'     => ($previousHome !== $goalObj->goalScoreTeam1),
-            );
+            ];
             $previousHome = $goalObj->goalScoreTeam1;
         }
         return $goalData;

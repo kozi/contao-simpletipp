@@ -26,13 +26,16 @@ use \Simpletipp\SimpletippModule;
  * @package    Controller
  */
  
-class SimpletippQuestions extends SimpletippModule {
+class SimpletippQuestions extends SimpletippModule
+{
     private $questions     = null;
     private $formId        = 'tl_simpletipp_questions';
 	protected $strTemplate = 'simpletipp_questions_default';
 
-	public function generate() {
-		if (TL_MODE == 'BE') {
+	public function generate()
+    {
+		if (TL_MODE == 'BE')
+        {
 			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard = '### SimpletippQuestions ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
@@ -44,40 +47,44 @@ class SimpletippQuestions extends SimpletippModule {
 		return parent::generate();
 	}
 	
-	protected function compile() {
-
+	protected function compile()
+    {
         $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_question"
             ." WHERE pid = ? ORDER BY sorting ASC")->execute($this->simpletipp->id);
 
-		$this->questions = array();
-		while($result->next()) {
+		$this->questions = [];
+		while($result->next())
+        {
 			$q = new \stdClass;
             $q->id             = $result->id;
             $q->key            = "question_".$result->id;
 			$q->question       = $result->question;
             $q->points         = $result->points;
-            $q->results        = ($result->results == '') ? array() : unserialize($result->results);
-            $q->answers        = array();
-            foreach (unserialize($result->answers) as $val) {
-                $q->answers[$val] = (object) array(
+            $q->results        = ($result->results == '') ? [] : unserialize($result->results);
+            $q->answers        = [];
+            foreach (unserialize($result->answers) as $val)
+            {
+                $q->answers[$val] = (object) [
                     'value'  => $val,
                     'count'  => 0,
-                    'member' => array(),
-                );
+                    'member' => [],
+                ];
             }
 
             $q->emptyValue     = '-';
-            $q->arrUserAnswers = array();
+            $q->arrUserAnswers = [];
 
             $this->questions[$q->id] = $q;
 		}
 
-        if (count($this->questions > 0)) {
-
-            $participants = array();
+        if (count($this->questions > 0))
+        {
+            $participants = [];
             $objMembers   = Simpletipp::getGroupMember($this->simpletipp->participant_group);
-            if ($objMembers != null) {
-                foreach ($objMembers as $objMember) {
+            if ($objMembers != null)
+            {
+                foreach ($objMembers as $objMember)
+                {
                     $objM                 = (object) $objMember->row();
                     $objM->questionPoints = 0;
 
@@ -87,24 +94,28 @@ class SimpletippQuestions extends SimpletippModule {
 
             $ids    = implode(',', array_keys($this->questions));
             $result = $this->Database->execute("SELECT * FROM tl_simpletipp_answer WHERE pid IN(".$ids.")");
-            while($result->next()) {
+            while($result->next())
+            {
                 $question             = &$this->questions[$result->pid];
                 $objMember            = &$participants[$result->member];
 
-                if ($objMember === null) {
+                if ($objMember === null)
+                {
                     continue;
                 }
 
                 $objMember->theAnswer = $result->answer;
 
-                if (in_array($objMember->theAnswer, $question->results)) {
+                if (in_array($objMember->theAnswer, $question->results))
+                {
                     $objMember->questionPoints += $question->points;
                 }
 
                 $question->answers[$objMember->theAnswer]->member[] = clone $objMember;
                 $question->answers[$objMember->theAnswer]->count++;
 
-                if ($result->member == $this->simpletippUserId) {
+                if ($result->member == $this->simpletippUserId)
+                {
                     $question->currentMember = clone $objMember;
                 }
             }
@@ -113,7 +124,8 @@ class SimpletippQuestions extends SimpletippModule {
         $quizFinished = time() > $this->simpletipp->quizDeadline;
 
         // Die übergebenen Antworten eintragen
-        if (!$quizFinished && $this->Input->post('FORM_SUBMIT') === $this->formId) {
+        if (!$quizFinished && $this->Input->post('FORM_SUBMIT') === $this->formId)
+        {
             $this->processAnswers();
             $this->redirect($this->addToUrl(''));
         }
@@ -127,18 +139,24 @@ class SimpletippQuestions extends SimpletippModule {
         $this->Template->member     = $participants[$this->simpletippUserId];
 		$this->Template->questions  = $this->questions;
 
-        usort($participants, function($a , $b) { return $b->questionPoints - $a->questionPoints; });
-        $this->Template->arrRanking = $participants;
+        usort($participants, function($a , $b)
+        {
+            return $b->questionPoints - $a->questionPoints;
+        });
 
+        $this->Template->arrRanking = $participants;
     }
 
-    private function processAnswers() {
+    private function processAnswers()
+    {
         $message = 'Folgende Antworten wurden eingetragen:<ul>'."\n";
         $tmpl    = '<li><span class="question">%s</span> <span class="anwer">%s</span></li>'."\n";
-        foreach($this->questions as $question) {
+        foreach($this->questions as $question)
+        {
             $userAnswer = \Input::post($question->key);
 
-            if($userAnswer != $question->emptyValue) {
+            if($userAnswer != $question->emptyValue)
+            {
                 $this->Database->prepare("DELETE FROM tl_simpletipp_answer WHERE pid = ? AND member = ?")
                     ->execute($question->id, $this->User->id);
 
@@ -155,7 +173,8 @@ class SimpletippQuestions extends SimpletippModule {
         $content = strip_tags($message);
 
         // Send to user
-        if ($this->User->simpletipp_email_confirmation == '1') {
+        if ($this->User->simpletipp_email_confirmation == '1')
+        {
             $email           = new \Email();
             $email->from     = $this->simpletipp->adminEmail;
             $email->fromName = $this->simpletipp->adminName;
@@ -179,5 +198,3 @@ class SimpletippQuestions extends SimpletippModule {
     }
 
 } // END class SimpletippQuestions
-
-

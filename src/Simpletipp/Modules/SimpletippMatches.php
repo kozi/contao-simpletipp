@@ -15,10 +15,10 @@
 
 namespace Simpletipp\Modules;
 
-use Simpletipp\Models\SimpletippTeamModel;
 use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippPoints;
 use \Simpletipp\SimpletippModule;
+use \Simpletipp\Models\SimpletippTeamModel;
 
 
 /**
@@ -41,7 +41,8 @@ class SimpletippMatches extends SimpletippModule {
         // So maybe the current result is not the final one
         $this->finishedMatches();
 
-		if (TL_MODE == 'BE') {
+		if (TL_MODE == 'BE')
+        {
 			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippMatches ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
@@ -53,10 +54,10 @@ class SimpletippMatches extends SimpletippModule {
     }
 
     protected function compile() {
-        global $objPage;
 
 		// Die übergebenen Tipps eintragen
-		if (\Input::post('FORM_SUBMIT') === $this->formId) {
+		if (\Input::post('FORM_SUBMIT') === $this->formId)
+        {
 			$this->processTipps();
 			$this->redirect($this->addToUrl(''));
 		}
@@ -79,8 +80,9 @@ class SimpletippMatches extends SimpletippModule {
 		$this->Template->messages   = Simpletipp::getSimpletippMessages();
 	}
 
-	private function getMatches() {
-		$matches = array();
+	private function getMatches()
+    {
+		$matches = [];
 
 		$sql = "SELECT
 				matches.*,
@@ -95,8 +97,8 @@ class SimpletippMatches extends SimpletippModule {
 
 		$this->order_by = ' ORDER BY deadline, matches.id ASC';
 
-		if ($this->matches_filter->active) {
-			
+		if ($this->matches_filter->active)
+        {
 			$params = array_merge(
 				array($this->simpletippUserId, $this->simpletipp->leagueID, $this->simpletippUserId),
 				$this->matches_filter->params
@@ -104,9 +106,9 @@ class SimpletippMatches extends SimpletippModule {
 
 			$result = $this->Database->prepare($sql.$this->matches_filter->stmt.$this->matches_filter->order_by)
 				->limit($this->matches_filter->limit)->execute($params);
-		} else {
-			
-			
+		}
+        else
+        {
 			$result = $this->Database->prepare($sql.$this->order_by)
 				->execute($this->simpletippUserId, $this->simpletipp->leagueID, $this->simpletippUserId);
 		}
@@ -116,7 +118,8 @@ class SimpletippMatches extends SimpletippModule {
         $pageRow      = ($pageObj !=null) ? $pageObj->row() : null;
         $currentGroup = 0;
 
-        while ($result->next()) {
+        while ($result->next())
+        {
 
             $match              = (Object) $result->row();
 
@@ -131,7 +134,8 @@ class SimpletippMatches extends SimpletippModule {
             $match->cssClass   .= ($i == $result->numRows) ? ' last' : '';
             $match->cssClass   .= ($match->isFinished) ? ' finished' : '';
 
-            if (count($matches) > 0 && $match->groupName_short != $currentGroup) {
+            if (count($matches) > 0 && $match->groupName_short != $currentGroup)
+			{
                 $prevMatch = &$matches[(count($matches)-1)];
                 $prevMatch->cssClass .= ($currentGroup != 0) ? ' break' : '';
             }
@@ -140,14 +144,16 @@ class SimpletippMatches extends SimpletippModule {
             $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
             $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);
 
-            if ($pageRow !== null) {
+            if ($pageRow !== null)
+			{
                 $alias = strtolower($match->teamHome->short.'-'.$match->teamAway->short);
                 $alias = str_replace(array('ü','ä','ö'), array('ue', 'ae', 'oe'), $alias);
                 $match->matchLink = $this->generateFrontendUrl($pageRow, '/match/'.$alias);
             }
 
             $match->pointsClass = '';
-			if (strlen($match->result) > 0) {
+			if (strlen($match->result) > 0)
+            {
 				$match->pointsClass = $pointObj->getPointsClass();
 			}
 
@@ -172,11 +178,13 @@ class SimpletippMatches extends SimpletippModule {
 		$date    = \Input::get('date');
 		$matches = \Input::get('matches');
 
-		if ($group === null && $date === null && $matches === null) {
+		if ($group === null && $date === null && $matches === null)
+        {
 			$this->redirect($this->addToUrl('matches=current&date=&group='));
 		}
 		
-		if (strlen($matches) > 0 && $matches == 'current') {
+		if (strlen($matches) > 0 && $matches == 'current')
+        {
 			$this->matches_filter->type     = 'current';
 			$this->matches_filter->active   = true;
 
@@ -185,7 +193,8 @@ class SimpletippMatches extends SimpletippModule {
 						AND deadline < ? ORDER BY deadline DESC")
 						->limit(1)->execute($this->simpletipp->leagueID, $this->now);
 
-			if ($result->numRows == 1) {
+			if ($result->numRows == 1)
+            {
 				$this->matches_filter->params[] = $result->groupID;
 			}
 				
@@ -194,33 +203,36 @@ class SimpletippMatches extends SimpletippModule {
 					AND deadline > ? ORDER BY deadline ASC")
 					->limit(1)->execute($this->simpletipp->leagueID, $this->now);
 
-			if ($result->numRows == 1) {
+			if ($result->numRows == 1)
+            {
 				$this->matches_filter->params[] = $result->groupID;
 			}
 
-			if (count($this->matches_filter->params) == 1) {
+			if (count($this->matches_filter->params) == 1)
+            {
 				$this->matches_filter->params[] = $this->matches_filter->params[0];
 			}
 
-			
-			$this->matches_filter->stmt     =
-				' AND (matches.groupID = ? OR matches.groupID = ?)';
+			$this->matches_filter->stmt = ' AND (matches.groupID = ? OR matches.groupID = ?)';
 			return;
 		}
 		
 		
-		if (strlen($matches) > 0 && $matches == 'all') {
+		if (strlen($matches) > 0 && $matches == 'all')
+        {
 			$this->matches_filter->type   = 'all';
 			return;
 		}
 
-		if (strlen($date) > 0) {
+		if (strlen($date) > 0)
+        {
 			$this->matches_filter->type   = $date;
 			$this->matches_filter->active = true;
 
 			$this->matches_filter->stmt   = ' AND matches.deadline > ?';
 			
-			if (strpos($date, 'last') !== false) {
+			if (strpos($date, 'last') !== false)
+            {
 				$this->matches_filter->stmt     = ' AND matches.deadline < ?';
 				$this->matches_filter->order_by = ' ORDER BY deadline DESC, matches.id ASC';
 			}
@@ -233,7 +245,8 @@ class SimpletippMatches extends SimpletippModule {
 			return;
 		}
 		
-		if (strlen($group) > 0) {
+		if (strlen($group) > 0)
+        {
 			$this->matches_filter->type     = $group;
 			$this->matches_filter->active   = true;
 			$this->matches_filter->stmt     = ' AND matches.groupName = ?';
@@ -243,12 +256,13 @@ class SimpletippMatches extends SimpletippModule {
 		
 	}
 
-	private function getMatchFilter() {
+	private function getMatchFilter()
+    {
         $tmpl        = new \FrontendTemplate('simpletipp_filter');
-        $date_filter = array();
+        $date_filter = [];
 
-        $lastArr     = array(9);
-        $nextArr     = array(9);
+        $lastArr     = [9];
+        $nextArr     = [9];
 
         foreach ($lastArr as $l) {
             $date_filter['last-'.$l] = array(
@@ -277,13 +291,15 @@ class SimpletippMatches extends SimpletippModule {
 
         $i     = 0;
         $count = count($date_filter);
-        foreach($date_filter as $key => &$entry) {
+        foreach($date_filter as $key => &$entry)
+        {
             $cssClasses = 'date_filter count'.$count.' pos'.$i;
             $cssClasses .= ($i == 0) ? ' first' : '';
             $cssClasses .= ($count === $i+1) ? ' last' : '';
             $entry['selected'] = '';
 
-            if ($this->matches_filter->type == $key) {
+            if ($this->matches_filter->type == $key)
+            {
                 $cssClasses       .= ' active';
                 $entry['selected'] = ' selected="selected"';
             }
@@ -293,11 +309,14 @@ class SimpletippMatches extends SimpletippModule {
 
         $tmpl->special_filter = $date_filter;
 
-        if ($this->simpletippGroups !== null) {
+        if ($this->simpletippGroups !== null)
+        {
             $i           = 0;
             $count       = count($this->simpletippGroups);
             $prefix      = ' class="group_filter count'.$count;
-            foreach($this->simpletippGroups as $mg) {
+
+            foreach($this->simpletippGroups as $mg)
+            {
                 $cssClass  = $prefix.(($i == 0) ? ' first' : '');
                 $cssClass .= ($i+1 == $count) ? ' last %s"' : ' %s"';
                 $act = ($this->matches_filter->type == $mg->title);
@@ -318,10 +337,10 @@ class SimpletippMatches extends SimpletippModule {
 		return $tmpl->parse();
 	}
 
-	private function processTipps() {
-		global $objPage;
-		
-		if (!FE_USER_LOGGED_IN) {
+	private function processTipps()
+    {
+		if (!FE_USER_LOGGED_IN)
+        {
 			return false;
 		}
         $ids   = \Input::post('match_ids');
@@ -330,13 +349,15 @@ class SimpletippMatches extends SimpletippModule {
 		$to_db = array();
 		
 		if (is_array($ids) && is_array($tipps)
-			&& count($ids) === count($tipps) && count($ids) > 0) {
-		
-			for ($i=0;$i < count($ids);$i++) {
+			&& count($ids) === count($tipps) && count($ids) > 0)
+        {
+			for ($i=0;$i < count($ids);$i++)
+            {
 				$id    = intval($ids[$i]);
 				$tipp  = Simpletipp::cleanupTipp($tipps[$i]);
 
-				if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp)) {
+				if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp))
+                {
 					$to_db[$id] = $tipp;
 				}
 			}
@@ -346,29 +367,36 @@ class SimpletippMatches extends SimpletippModule {
 			$insertSql = "INSERT INTO tl_simpletipp_tipp(tstamp, member_id, match_id, tipp) VALUES(?, ?, ?, ?)";
 			$memberId  = $this->User->id;
 
-			foreach($to_db as $id=>$tipp) {
+			foreach($to_db as $id=>$tipp)
+            {
 				$result = $this->Database->prepare($checkSql)->execute($memberId, $id);
 
-				if ($result->numRows > 0) {
+				if ($result->numRows > 0)
+                {
 					$this->Database->prepare($updateSql)->execute($tipp, $result->id);
 				}
-				else {
+				else
+                {
 					$this->Database->prepare($insertSql)->execute(time(), $memberId, $id, $tipp);
 				}
 			}
 		}
 
-        if (count(array_keys($to_db)) == 0) {
+        if (count(array_keys($to_db)) == 0)
+        {
             // TODO translation
             $message = "Es wurden keine Tipps eingetragen!";
         }
-        else {
+        else
+        {
             $this->sendTippEmail($to_db);
 
-            if ($this->User->simpletipp_email_confirmation == '1') {
+            if ($this->User->simpletipp_email_confirmation == '1')
+            {
                 $message = sprintf($GLOBALS['TL_LANG']['simpletipp']['message_inserted_email'], $this->User->email);
             }
-            else {
+            else
+            {
                 $message = $GLOBALS['TL_LANG']['simpletipp']['message_inserted'];
             }
         }
@@ -376,9 +404,10 @@ class SimpletippMatches extends SimpletippModule {
         return true;
 	}
 
-	private function sendTippEmail($matches) {
-
-        if (!is_array($matches) || count(array_keys($matches)) == 0){
+	private function sendTippEmail($matches)
+    {
+        if (!is_array($matches) || count(array_keys($matches)) == 0)
+        {
             // Nothing to send
             return false;
         }
@@ -387,7 +416,8 @@ class SimpletippMatches extends SimpletippModule {
 			.' WHERE id in ('.implode(',', array_keys($matches)).')');
 		
 		$content = $GLOBALS['TL_LANG']['simpletipp']['email_text'];
-		while($result->next()) {
+		while($result->next())
+        {
             $content .= sprintf("%s %s = %s\n",
 					date('d.m.Y H:i', $result->deadline),
 					$result->title,
@@ -400,7 +430,8 @@ class SimpletippMatches extends SimpletippModule {
                        date('d.m.Y H:i:s'), $this->User->firstname.' '.$this->User->lastname);
 
         // Send to user
-        if ($this->User->simpletipp_email_confirmation == '1') {
+        if ($this->User->simpletipp_email_confirmation == '1')
+        {
             $email           = new \Email();
             $email->from     = $this->simpletipp->adminEmail;
             $email->fromName = $this->simpletipp->adminName;
@@ -422,14 +453,15 @@ class SimpletippMatches extends SimpletippModule {
         return true;
 	}
 
-    private function finishedMatches() {
-
+    private function finishedMatches()
+    {
         $matchEnd = time() - $this->simpletipp->matchLength;
         $result   = $this->Database->prepare("SELECT * FROM tl_simpletipp_match
                WHERE leagueID = ? AND deadline < ? AND isFinished = ?")
             ->execute($this->simpletipp->leagueID, $matchEnd, 0);
 
-        if ($result->numRows > 0) {
+        if ($result->numRows > 0)
+        {
             $this->import('\Simpletipp\SimpletippMatchUpdater', 'SimpletippMatchUpdater');
             $this->SimpletippMatchUpdater->updateSimpletippMatches($this->simpletipp);
         }
@@ -438,5 +470,3 @@ class SimpletippMatches extends SimpletippModule {
 
 
 } // END class SimpletippMatches
-
-

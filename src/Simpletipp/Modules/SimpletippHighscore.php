@@ -30,13 +30,16 @@ use \Simpletipp\SimpletippModule;
 
 // Idee: HallOfFame
 
-class SimpletippHighscore extends SimpletippModule {
+class SimpletippHighscore extends SimpletippModule
+{
     private $filter        = null;
 
 	protected $strTemplate = 'simpletipp_highscore_default';
 
-	public function generate() {
-		if (TL_MODE == 'BE') {
+	public function generate()
+    {
+		if (TL_MODE == 'BE')
+        {
 			$this->Template            = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippHighscore ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
@@ -48,15 +51,16 @@ class SimpletippHighscore extends SimpletippModule {
 		return parent::generate();
 	}
 	
-	protected function compile() {
-        global $objPage;
+	protected function compile()
+    {
 
         // Filter
         $this->show = (\Input::get('show') !== null) ? urldecode(\Input::get('show')) : 'all';
 
         $this->Template->filter   = $this->generateFilter();
 
-        if ($this->show === 'bestof') {
+        if ($this->show === 'bestof')
+        {
             $this->Template->avatarActive = $this->avatarActive;
             $this->Template->tableClass   = 'highscore_bestof';
             $this->Template->table        = $this->bestOfTable();
@@ -64,7 +68,8 @@ class SimpletippHighscore extends SimpletippModule {
         }
 
         $matchgroupName = null;
-        if ($this->show === 'current') {
+        if ($this->show === 'current')
+        {
             $this->Template->tableClass  = 'highscore_current';
 
             // get current matchgroup
@@ -72,22 +77,26 @@ class SimpletippHighscore extends SimpletippModule {
                WHERE leagueID = ? AND result != '' ORDER BY deadline DESC")->limit(1)
                 ->execute($this->simpletipp->leagueID);
 
-            if ($result->numRows == 0) {
+            if ($result->numRows == 0)
+            {
                 $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
                    WHERE leagueID = ? ORDER BY deadline ASC")->limit(1)
                    ->execute($this->simpletipp->leagueID);
             }
 
-            if ($result->numRows == 1) {
+            if ($result->numRows == 1)
+            {
                 $matchgroupName = $result->groupName;
             }
         }
-        elseif($this->show !== 'all') {
+        elseif($this->show !== 'all')
+        {
             $this->Template->tableClass  = 'highscore_matchgroup';
             // show is matchgroupName
             $matchgroupName = $this->show;
         }
-        else {
+        else
+        {
             $this->Template->tableClass  = 'highscore_complete';
         }
 
@@ -98,25 +107,27 @@ class SimpletippHighscore extends SimpletippModule {
 
 	}
 	
-	private function generateFilter() {
-        $special_options   = array(
-            'current' => array(
+	private function generateFilter()
+    {
+        $specialOptions   = [
+            'current' => [
                 'href'     => $this->addToUrl('show=current'),
                 'active'   => ($this->show == 'current')
-            ),
-            'all' => array(
+            ],
+            'all' => [
                 'href'     => $this->addToUrl('show='),
                 'active'   => (!$this->show || $this->show == 'all')
-            ),
-            'bestof' => array(
+            ],
+            'bestof' => [
                 'href'     => $this->addToUrl('show=bestof'),
                 'active'   => ($this->show == 'bestof')
-            )
-        );
+            ]
+        ];
 
         $i     = 0;
-        $count = count($special_options);
-        foreach($special_options as $key => &$entry) {
+        $count = count($specialOptions);
+        foreach($specialOptions as $key => &$entry)
+        {
             $entry['title'] = $GLOBALS['TL_LANG']['simpletipp']['highscore_'.$key][0];
             $entry['desc']  = $GLOBALS['TL_LANG']['simpletipp']['highscore_'.$key][1];
 
@@ -125,7 +136,8 @@ class SimpletippHighscore extends SimpletippModule {
             $cssClasses .= ($count === $i+1) ? ' last' : '';
             $entry['selected'] = '';
 
-            if ($entry['active']) {
+            if ($entry['active'])
+            {
                 $cssClasses       .= ' active';
                 $entry['selected'] = ' selected="selected"';
             }
@@ -133,27 +145,27 @@ class SimpletippHighscore extends SimpletippModule {
             $i++;
         }
 
-        $group_options = array();
-        $i           = 0;
-        $count       = count($this->simpletippGroups);
-        $prefix      = ' class="matchgroup count'.$count;
+        $groupOptions = [];
+        $i            = 0;
+        $count        = count($this->simpletippGroups);
+        $prefix       = ' class="matchgroup count'.$count;
 		foreach($this->simpletippGroups as $mg) {
             $act       = ($this->show == $mg->title);
             $cssClass  = $prefix.(($i == 0) ? ' first' : '');
             $cssClass .= ($i+1 == $count) ? ' last %s"' : ' %s"';
 
-            $group_options[] = array(
+            $groupOptions[] = [
                     'title'    => $mg->short,
 					'desc'     => $mg->title,
 					'href'     => $this->addToUrl('show='.$mg->title),
 					'cssClass' => ($act) ? sprintf($cssClass, 'pos'.$i++.' active') : sprintf($cssClass, 'pos'.$i++),
                     'selected' => ($act) ? ' selected="selected"':''
-            );
+            ];
 		}
 
         $tmpl                 = new \FrontendTemplate('simpletipp_filter');
-        $tmpl->special_filter = $special_options;
-        $tmpl->group_filter   = $group_options;
+        $tmpl->special_filter = $specialOptions;
+        $tmpl->group_filter   = $groupOptions;
 
         return $tmpl->parse();
 	}

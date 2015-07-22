@@ -16,8 +16,8 @@
 namespace Simpletipp\Models;
 
 
-class SimpletippTippModel extends \Model {
-
+class SimpletippTippModel extends \Model
+{
     /**
      * Table name
      * @var string

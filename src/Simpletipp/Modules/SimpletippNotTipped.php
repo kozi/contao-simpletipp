@@ -25,7 +25,8 @@ use Simpletipp\Simpletipp;
  * @package    Controller
  */
 
-class SimpletippNotTipped extends SimpletippModule {
+class SimpletippNotTipped extends SimpletippModule
+{
 	protected $strTemplate = 'simpletipp_nottipped_default';
 
 	public function generate() {
@@ -42,15 +43,18 @@ class SimpletippNotTipped extends SimpletippModule {
 	}
 
 	protected function compile() {
-        $userArr = array();
+        $userArr = [];
 
         $match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
-        if ($match == null) {
+        if ($match == null)
+		{
             // no next match
             return;
         }
 
-        foreach(Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id) as $u) {
+		$arrUser = Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id);
+        foreach($arrUser as $u)
+		{
             $key           = $u['username'];
             $userArr[$key] = $u['firstname'].' '.$u['lastname'];
         }

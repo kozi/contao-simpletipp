@@ -16,7 +16,8 @@
 namespace Simpletipp\Models;
 
 
-class SimpletippModel extends \Model {
+class SimpletippModel extends \Model
+{
 
     /**
      * Table name
@@ -24,7 +25,8 @@ class SimpletippModel extends \Model {
      */
     protected static $strTable = 'tl_simpletipp';
 
-    public function getPointFactors() {
+    public function getPointFactors()
+    {
         $factor = explode(',', $this->factor);
         $pointFactors = new \stdClass;
         $pointFactors->perfect    = intval($factor[0]);

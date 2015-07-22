@@ -16,8 +16,9 @@
 namespace Simpletipp\Modules;
 
 
-use \Simpletipp\SimpletippModule;
 use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippModule;
+
 
 /**
  * Class SimpletippUserselect
@@ -27,14 +28,15 @@ use \Simpletipp\Simpletipp;
  * @package    Controller
  */
 
-class SimpletippUserselect extends SimpletippModule {
+class SimpletippUserselect extends SimpletippModule
+{
 	protected $strTemplate = 'simpletipp_userselect';
     private $participants  = null;
-    private $selectedUser  = null;
 
-	public function generate() {
-
-		if (TL_MODE == 'BE') {
+	public function generate()
+    {
+		if (TL_MODE == 'BE')
+        {
 			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard  = '### SimpletippUserselect ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
@@ -43,13 +45,15 @@ class SimpletippUserselect extends SimpletippModule {
 		return parent::generate();
 	}
 	
-	protected function compile() {
-        global $objPage;
-        $participants = array();
+	protected function compile()
+    {
+        $participants = [];
 
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
-        if ($objMembers != null) {
-            foreach ($objMembers as $objMember) {
+        if ($objMembers != null)
+        {
+            foreach ($objMembers as $objMember)
+            {
                 $objMember->link              = $this->addToUrl('user='.$objMember->username);
                 $participants[$objMember->id] = $objMember;
             }
@@ -60,10 +64,10 @@ class SimpletippUserselect extends SimpletippModule {
         $this->Template->simpletippUserId   = $this->simpletippUserId;
         $this->Template->simpletipp         = $this->simpletipp;
         $this->Template->now                = $this->now;
-        $this->Template->resetOption        = (Object) array(
+        $this->Template->resetOption        = (Object) [
                 'value' => $this->User->username,
                 'label' => 'Eigene Daten anzeigen ('.$this->User->username.')'
-        );
+        ];
 
     }
 

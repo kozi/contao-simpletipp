@@ -32,16 +32,19 @@ class SimpletippTeamModel extends Model {
     protected static $strTable = 'tl_simpletipp_team';
 
 
-    public function addGoals($plus, $minus) {
+    public function addGoals($plus, $minus)
+    {
         $this->goalsPlus  += $plus;
         $this->goalsMinus += $minus;
     }
 
-    public function getPoints() {
+    public function getPoints()
+    {
         return (($this->wins * 3) + $this->draws);
     }
 
-    public function goalDiff() {
+    public function goalDiff()
+    {
         return ($this->goalsPlus - $this->goalsMinus);
     }
 

@@ -15,11 +15,9 @@
 
 namespace Simpletipp\Elements;
 
-use Simpletipp\Models\SimpletippMatchModel;
-use Simpletipp\Models\SimpletippTeamModel;
-use Simpletipp\Simpletipp;
-use Simpletipp\SimpletippModule;
-
+use \Simpletipp\Simpletipp;
+use \Simpletipp\SimpletippModule;
+use \Simpletipp\Models\SimpletippMatchModel;
 
 /**
  * Class SimpletippStatistics
@@ -32,34 +30,32 @@ use Simpletipp\SimpletippModule;
 
 class ContentSimpletippStatistics extends SimpletippModule {
     protected $strTemplate = 'ce_simpletipp_statistics';
-    public static $types = array(
+    public static $types   = [
         'statBestMatches'       => 'Die 10 punktereichsten Spiele',
         'statBestTeams'         => 'Die 10 punktereichsten Mannschaften',
         'statPoints'            => 'Punkte pro Spieltag',
         'statHighscoreTimeline' => 'Tabellenplatzverlauf',
         'statSpecialMember'     => 'Tippanalyse',
-    );
+    ];
 
     public function generate() {
 
-        if (!method_exists($this, $this->simpletipp_statistics_type)) {
+        if (!method_exists($this, $this->simpletipp_statistics_type))
+        {
             return sprintf('%s method does not exist!', $this->simpletipp_statistics_type);
         }
 
         return parent::generate();
     }
 
-    protected function compile() {
-
+    protected function compile()
+    {
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/simpletipp-statistics.js';
 
         $microtime                  = microtime(true);
         $stats_type                 = $this->simpletipp_statistics_type;
         $this->Template->stats_type = $stats_type;
         $this->Template->title      = static::$types[$stats_type];
-
-
-
 
         $this->statsTemplate        = new \FrontendTemplate('simpletipp_'.$stats_type);
 
@@ -71,7 +67,16 @@ class ContentSimpletippStatistics extends SimpletippModule {
     }
 
 
-    protected function statBestMatches() {
+    protected function statBestMatches()
+    {
+        // Cached result?
+        $arrBestMatches = $this->cachedResult(static::$cache_key_bestMatches);
+        if ($arrBestMatches != null)
+        {
+            $this->statsTemplate->matches = $arrBestMatches;
+            return true;
+        }
+
 
         $arrMatches = [];
         $objMatches = SimpletippMatchModel::findBy(
@@ -90,10 +95,22 @@ class ContentSimpletippStatistics extends SimpletippModule {
         usort($arrMatches, function($match_a, $match_b) {
             return ($match_b->objPoints->points - $match_a->objPoints->points);
         });
-        $this->statsTemplate->matches = array_slice($arrMatches, 0, 10);
+
+        $arrBestMatches = array_slice($arrMatches, 0, 10);
+        $this->cachedResult(static::$cache_key_bestMatches, $arrBestMatches, true);
+        $this->statsTemplate->matches = $arrBestMatches;
     }
 
-    protected function statBestTeams() {
+    protected function statBestTeams()
+    {
+        // Cached result?
+        $arrBestTeams = $this->cachedResult(static::$cache_key_bestTeams);
+        if ($arrBestTeams != null)
+        {
+            $this->statsTemplate->teams = $arrBestTeams;
+            return true;
+        }
+
         $arrTeams   = [];
         $objMatches = SimpletippMatchModel::findBy(
             ['leagueID = ?', 'isFinished = ?'],
@@ -137,20 +154,24 @@ class ContentSimpletippStatistics extends SimpletippModule {
         usort($arrTeams, function($team_a, $team_b) {
             return ($team_b['points'][0] - $team_a['points'][0]);
         });
-        $this->statsTemplate->teams = array_slice($arrTeams, 0, 10);
+
+        $arrBestTeams = array_slice($arrTeams, 0, 10);
+        $this->cachedResult(static::$cache_key_bestTeams, $arrBestTeams, true);
+        $this->statsTemplate->teams = $arrBestTeams;
 
     }
 
-    protected function statHighscoreTimeline() {
-
+    protected function statHighscoreTimeline()
+    {
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js|static';
 
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.css||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.js|static';
 
-        $memberArray = $this->cachedResult(static::$cache_key_highscore);
 
+        // Cached result?
+        $memberArray = $this->cachedResult(static::$cache_key_highscore);
         if ($memberArray != null) {
             $this->statsTemplate->table = $memberArray;
             return true;
@@ -195,7 +216,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $this->statsTemplate->table  = $memberArray;
     }
 
-    protected function statPoints() {
+    protected function statPoints()
+    {
 
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js|static';
@@ -251,8 +273,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $this->statsTemplate->table = $memberArray;
     }
 
-    protected function statSpecialMember() {
-
+    protected function statSpecialMember()
+    {
         $table = $this->cachedResult(static::$cache_key_special);
         if ($table != null) {
             $this->statsTemplate->table = $table;
@@ -338,7 +360,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     }
 
-    private function getPointsForMatch($match) {
+    private function getPointsForMatch($match)
+    {
         $points     = new \stdClass();
         $points->points     = 0;
         $points->perfect    = 0;
@@ -359,7 +382,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
         return $points;
     }
 
-    private function getTestArray($count, $rangeMax, $factor = -1) {
+    private function getTestArray($count, $rangeMax, $factor = -1)
+    {
         $arr   = array();
         $value = 0;
         $arr[] = $value;

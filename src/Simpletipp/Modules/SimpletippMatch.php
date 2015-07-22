@@ -28,8 +28,8 @@ use \Simpletipp\Models\SimpletippMatchModel;
  * @package    Controller
  */
  
-class SimpletippMatch extends SimpletippModule {
-
+class SimpletippMatch extends SimpletippModule
+{
     /**
      * @var SimpletippMatchModel
      */
@@ -37,8 +37,10 @@ class SimpletippMatch extends SimpletippModule {
 
 	protected $strTemplate = 'simpletipp_match_default';
 
-	public function generate() {
-		if (TL_MODE == 'BE') {
+	public function generate()
+    {
+		if (TL_MODE == 'BE')
+        {
 			$this->Template = new \BackendTemplate('be_wildcard');
 			$this->Template->wildcard = '### SimpletippMatch ###';
 			$this->Template->wildcard .= '<br/>'.$this->headline;
@@ -48,8 +50,8 @@ class SimpletippMatch extends SimpletippModule {
 		return parent::generate();
 	}
 	
-	protected function compile() {
-
+	protected function compile()
+    {
         $matchAlias = \Input::get('match');
 
         if (is_numeric($matchAlias))
@@ -91,11 +93,11 @@ class SimpletippMatch extends SimpletippModule {
         $pageRow       = ($objPage !== null) ? $objPage->row() : null;
 
 
-        $count = (Object) array(
-            'home' => (Object) array('abs' => 0, 'percent' => 0),
-            'draw' => (Object) array('abs' => 0, 'percent' => 0),
-            'away' => (Object) array('abs' => 0, 'percent' => 0),
-        );
+        $count = (Object) [
+            'home' => (Object) ['abs' => 0, 'percent' => 0],
+            'draw' => (Object) ['abs' => 0, 'percent' => 0],
+            'away' => (Object) ['abs' => 0, 'percent' => 0],
+        ];
         $i     = 0;
         $tipps = array();
 		while ($result->next()) {
@@ -117,14 +119,15 @@ class SimpletippMatch extends SimpletippModule {
 
             $this->updateSummary($pointObj);
 
-            if ($pageRow != null) {
-
+            if ($pageRow != null)
+            {
                 $tipp->link = $this->generateFrontendUrl($pageRow,
                     '/group/'.$tipp->groupName.'/user/'.$tipp->username);
             }
 
 			// Alle Tipps bis auf den eigenen vor Spielstart ausblenden
-            if (!$this->isStarted && $tipp->member_id != $this->User->id) {
+            if (!$this->isStarted && $tipp->member_id != $this->User->id)
+            {
 				$tipp->tipp = "?:?";
 			}
 
@@ -136,7 +139,8 @@ class SimpletippMatch extends SimpletippModule {
 		}
 
         $summe = count($tipps);
-        if ($summe > 0) {
+        if ($summe > 0)
+        {
             $count->home->percent = floor(($count->home->abs / $summe) * 10000) / 100;
             $count->draw->percent = floor(($count->draw->abs / $summe) * 10000) / 100;
             $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;

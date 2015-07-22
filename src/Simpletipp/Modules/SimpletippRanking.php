@@ -15,8 +15,9 @@
 
 namespace Simpletipp\Modules;
 
-use Simpletipp\Models\SimpletippMatchModel;
 use \Simpletipp\SimpletippModule;
+use \Simpletipp\Models\SimpletippMatchModel;
+
 /**
  * Class SimpletippRanking
  *
@@ -25,19 +26,21 @@ use \Simpletipp\SimpletippModule;
  * @package    Controller
  */
 
-class SimpletippRanking extends SimpletippModule {
+class SimpletippRanking extends SimpletippModule
+{
 	protected $strTemplate = 'simpletipp_ranking_default';
 
-	public function generate() {
+	public function generate()
+    {
 		$this->strTemplate = $this->simpletipp_template;
 		return parent::generate();
 	}
 
-	protected function compile() {
-
+	protected function compile()
+    {
         $collectionMatches = SimpletippMatchModel::findBy('leagueID', $this->simpletipp->leagueID);
 
-        $ranking = array();
+        $ranking = [];
         foreach($collectionMatches as $match)
         {
             $match->teamHome = $match->getRelated('team_h');
@@ -80,7 +83,8 @@ class SimpletippRanking extends SimpletippModule {
         }
 
         // Sortieren
-        usort($ranking, function($team_a, $team_b) {
+        usort($ranking, function($team_a, $team_b)
+        {
             $a = $team_a->getPoints(); $b = $team_b->getPoints();
             if ($a > $b) return -1;
             if ($a < $b) return 1;
@@ -104,44 +108,5 @@ class SimpletippRanking extends SimpletippModule {
 
         $this->Template->ranking = $ranking;
     }
-} // END class SimpletippRanking
-
-
-
-class Team {
-    public $alias;
-    public $icon;
-    public $matches    = 0;
-    public $wins       = 0;
-    public $draws      = 0;
-    public $losses     = 0;
-    public $goalsPlus  = 0;
-    public $goalsMinus = 0;
-
-    public function __construct($name, $short, $alias, $icon) {
-        $this->name  = $name;
-        $this->short = $short;
-        $this->icon  = $icon;
-        $this->alias = standardize($alias);
-    }
-
-    public function addGoals($plus, $minus) {
-        $this->goalsPlus  += $plus;
-        $this->goalsMinus += $minus;
-    }
-
-    public function getPoints() {
-        return (($this->wins * 3) + $this->draws);
-    }
-
-    public function goalDiff() {
-        return ($this->goalsPlus - $this->goalsMinus);
-    }
-
-    public function __toString() {
-        $diff    = ($this->goalDiff() > 0) ? '+'.$this->goalDiff(): $this->goalDiff();
-        $attribs = array($this->getPoints(), $this->wins, $this->draws, $this->losses, $diff);
-        return $this->name.' ['.$this->short.', '.$this->alias.'] ('.implode(', ', $attribs).')';
-    }
-
 }
+

@@ -27,14 +27,15 @@ use \Simpletipp\SimpletippModule;
  */
 
 
-class SimpletippModulePokal extends SimpletippModule {
+class SimpletippModulePokal extends SimpletippModule
+{
     protected $strTemplate = 'simpletipp_pokal_default';
-    private $groups        = array();
+    private $groups        = [];
 
-	public function generate() {
-
-
-        if (TL_MODE == 'BE') {
+	public function generate()
+    {
+        if (TL_MODE == 'BE')
+        {
             $this->Template            = new \BackendTemplate('be_wildcard');
             $this->Template->wildcard  = '### SimpletippPokal ###';
             $this->Template->wildcard .= '<br/>'.$this->headline;
@@ -48,25 +49,30 @@ class SimpletippModulePokal extends SimpletippModule {
         return parent::generate();
 	}
 
-	protected function compile() {
-
-        foreach($this->groups as &$group) {
+	protected function compile()
+    {
+        foreach($this->groups as &$group)
+        {
             $group->highscores = $this->getGroupHighscores($group);
         }
-        $this->Template->groups       = $this->groups;
+        $this->Template->groups = $this->groups;
     }
 
-    public function getGroupHighscores($group) {
-        if ($group->pairings === null) {
+    public function getGroupHighscores($group)
+    {
+        if ($group->pairings === null)
+        {
             return null;
         }
-        $highscores = array();
+        $highscores = [];
 
-        if ($group->pairings === false) {
+        if ($group->pairings === false)
+        {
             return $highscores;
         }
 
-        foreach ($group->pairings as $memberArr) {
+        foreach ($group->pairings as $memberArr)
+        {
             $highscores[] = $this->getHighscore($group->matchgroups, $memberArr);
         }
         return $highscores;
