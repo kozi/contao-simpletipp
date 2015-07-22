@@ -303,23 +303,23 @@ class SimpletippMatchUpdater extends \Backend {
 
         $arrMatchIds = array_keys($newMatches);
         // update existing matches
-        foreach(SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch) {
+        foreach(SimpletippMatchModel::findMultipleByIds($arrMatchIds) as $objMatch)
+        {
             $matchId = intval($objMatch->id);
-
-            if (array_key_exists($objMatch->id, $newMatches)) {
-                var_dump($newMatches[$matchId]);
-                foreach($newMatches[$matchId] as $key => $value) {
+            if (array_key_exists($objMatch->id, $newMatches))
+            {
+                foreach($newMatches[$matchId] as $key => $value)
+                {
                     $objMatch->$key = $value;
                 }
-
-
                 $objMatch->save();
                 unset($newMatches[$matchId]);
             }
         }
 
         // add new matches
-        foreach($newMatches as $matchId => $arrMatch) {
+        foreach($newMatches as $matchId => $arrMatch)
+        {
             $objMatch       = new SimpletippMatchModel();
             $arrMatch['id'] = $matchId;
 
@@ -330,16 +330,20 @@ class SimpletippMatchUpdater extends \Backend {
         return $arrMatchIds;
     }
 
-    private static function parseResults($matchResults) {
+    private static function parseResults($matchResults)
+    {
         // Init result array
-        $arrResults = array();
-        foreach (static::$arrResultTypes as $type) {
+        $arrResults = [];
+        foreach (static::$arrResultTypes as $type)
+        {
             $arrResults[$type] = '';
         }
 
         // Fill result array
-        if ($matchResults->matchResult !== null) {
-            foreach ($matchResults->matchResult as $res) {
+        if ($matchResults->matchResult !== null)
+        {
+            foreach ($matchResults->matchResult as $res)
+            {
                 $key = static::$arrResultTypes[$res->resultTypeId];
                 $arrResults[$key] = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
             }
