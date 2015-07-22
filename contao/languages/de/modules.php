@@ -4,6 +4,7 @@ $GLOBALS['TL_LANG']['MOD']['simpletipp']               = 'Tippspiel';
 $GLOBALS['TL_LANG']['MOD']['simpletipp_group']         = ['Tipprunden', 'Tipprunden'];
 $GLOBALS['TL_LANG']['MOD']['simpletipp_match']         = ['Spiele', 'Spiele'];
 $GLOBALS['TL_LANG']['MOD']['simpletipp_tipp']          = ['Tipps', 'Tipps'];
+$GLOBALS['TL_LANG']['MOD']['simpletipp_team']          = ['Teams', 'Teams'];
 
 $GLOBALS['TL_LANG']['FMD']['simpletipp']               = 'Simpletipp';
 $GLOBALS['TL_LANG']['FMD']['simpletipp_matches']       = ['Simpletipp Spiele', 'Simpletipp Spiele'];
