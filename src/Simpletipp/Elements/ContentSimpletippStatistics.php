@@ -84,6 +84,11 @@ class ContentSimpletippStatistics extends SimpletippModule {
             [$this->simpletipp->leagueID, '1']
         );
 
+        if ($objMatches === null)
+        {
+            return true;
+        }
+
         foreach ($objMatches as $objMatch)
         {
             $objMatch->teamHome  = $objMatch->getRelated('team_h');
@@ -116,6 +121,11 @@ class ContentSimpletippStatistics extends SimpletippModule {
             ['leagueID = ?', 'isFinished = ?'],
             [$this->simpletipp->leagueID, '1']
         );
+
+        if ($objMatches === null)
+        {
+            return true;
+        }
 
         foreach ($objMatches as $objMatch)
         {
