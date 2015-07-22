@@ -13,17 +13,6 @@
  * @filesource
  */
 
-/*
-CREATE TABLE `tl_simpletipp_answer` (
-`id` int(10) unsigned NOT NULL auto_increment,
-`pid` int(10) unsigned NOT NULL default '0',
-`tstamp` int(10) unsigned NOT NULL default '0',
-`member_id` int(10) unsigned NOT NULL default '0',
-`answer` varchar(128) NOT NULL default '',
-PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-*/
-
 $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 
 	// Config

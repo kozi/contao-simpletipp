@@ -44,35 +44,33 @@ array_insert($GLOBALS['TL_CTE']['simpletipp'], 0, [
 ]);
 
 array_insert($GLOBALS['BE_MOD'], 1, [
-		'simpletipp' => [
-				'simpletipp_group' => [
-						'tables'     => ['tl_simpletipp', 'tl_simpletipp_question'],
-						'icon'       => 'system/modules/simpletipp/assets/images/soccer.png',
-						'javascript' => 'system/modules/simpletipp/assets/simpletipp-backend.js',
-						'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-                        'update'     => ['\Simpletipp\SimpletippMatchUpdater', 'updateMatches'],
-                        'calculate'  => ['\Simpletipp\SimpletippMatchUpdater', 'calculateTipps'],
-                        'pokal'      => ['\Simpletipp\SimpletippPokal', 'calculate'],
-                        'reminder'   => ['\Simpletipp\SimpletippEmailReminder', 'tippReminder'],
-				],
-				'simpletipp_match' => [
-						'tables'     => ['tl_simpletipp_match'],
-						'icon'       => 'system/themes/default/images/tablewizard.gif',
-                        'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-				],
-				'simpletipp_tipp' => [
-						'tables'     => ['tl_simpletipp_tipp'],
-						'icon'       => 'system/themes/default/images/tablewizard.gif',
-                        'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-				],
-                'simpletipp_team' => [
-                    'tables'     => ['tl_simpletipp_team'],
-                    'icon'       => 'system/themes/default/images/tablewizard.gif',
-                    'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
-                ],
-
-				
-		]
+    'simpletipp' => [
+        'simpletipp_group' => [
+            'tables'     => ['tl_simpletipp', 'tl_simpletipp_question'],
+            'icon'       => 'system/modules/simpletipp/assets/images/soccer.png',
+            'javascript' => 'system/modules/simpletipp/assets/simpletipp-backend.js',
+            'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
+            'update'     => ['\Simpletipp\SimpletippMatchUpdater', 'updateMatches'],
+            'calculate'  => ['\Simpletipp\SimpletippMatchUpdater', 'calculateTipps'],
+            'pokal'      => ['\Simpletipp\SimpletippPokal', 'calculate'],
+            'reminder'   => ['\Simpletipp\SimpletippEmailReminder', 'tippReminder'],
+        ],
+        'simpletipp_match' => [
+            'tables'     => ['tl_simpletipp_match'],
+            'icon'       => 'system/themes/default/images/tablewizard.gif',
+            'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
+        ],
+        'simpletipp_tipp' => [
+            'tables'     => ['tl_simpletipp_tipp'],
+            'icon'       => 'system/themes/default/images/tablewizard.gif',
+            'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
+        ],
+        'simpletipp_team' => [
+            'tables'     => ['tl_simpletipp_team'],
+            'icon'       => 'system/themes/default/images/tablewizard.gif',
+            'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
+        ],
+    ]
 ]);
 
 // Bundesliga Teams

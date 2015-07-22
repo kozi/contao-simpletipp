@@ -12,9 +12,6 @@
  * @license    LGPL
  * @filesource
  */
-use \Simpletipp\OpenLigaDB;
-use \Simpletipp\Simpletipp;
-use \Simpletipp\Models\SimpletippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 
@@ -254,6 +251,10 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 );
 
 
+use \Simpletipp\OpenLigaDB;
+use \Simpletipp\Simpletipp;
+use \Simpletipp\Models\SimpletippModel;
+
 /**
  * Class tl_simpletipp
  *
@@ -263,10 +264,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
  * @package    simpletipp
  */
 
-class tl_simpletipp extends \Backend {
-    private $memberGroups       = array();
-    private $matchGroupOptions  = array();
-	public function __construct() {
+class tl_simpletipp extends \Backend
+{
+    private $memberGroups       = [];
+    private $matchGroupOptions  = [];
+
+	public function __construct()
+    {
 		parent::__construct();
 		$this->cleanupMatches();
 		$this->import('BackendUser', 'User');
@@ -274,19 +278,19 @@ class tl_simpletipp extends \Backend {
 
 		// Mitgliedergruppen holen		
 		$result = $this->Database->execute("SELECT id, name FROM tl_member_group ORDER BY id");
-		while($result->next()) {
+		while($result->next())
+        {
 			$this->memberGroups[$result->id] = $result->name;
 		}
-		
-
-		
 	}
 
-	public function getLeagues(DataContainer $dc) {
+	public function getLeagues(DataContainer $dc)
+    {
 		$leagues = $this->oldb->getAvailLeagues();
-		$options = array();
+		$options = [];
         $tmpl    = '%s [%s, %s]';
-		foreach ($leagues as $league) {
+		foreach ($leagues as $league)
+        {
             $options[$league->leagueID] = sprintf($tmpl,
                 $league->leagueName,
                 \String::substr($league->leagueShortcut, 10),
@@ -297,8 +301,10 @@ class tl_simpletipp extends \Backend {
         return $options;
 	}	
 
-	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
-		if ($args === null) {
+	public function labelCallback($row, $label, DataContainer $dc, $args = null)
+    {
+		if ($args === null)
+        {
 			return $label;
 		}
 
@@ -318,17 +324,19 @@ class tl_simpletipp extends \Backend {
 		return $args;
 	}
 
-    public function getMatchgroups(DataContainer $dc) {
-        if (count($this->matchGroupOptions) == 0) {
+    public function getMatchgroups(DataContainer $dc)
+    {
+        if (count($this->matchGroupOptions) == 0)
+        {
             $this->matchGroupOptions[''] = '-';
             $leagueID = intval($dc->activeRecord->leagueID);
             $groups   = Simpletipp::getLeagueGroups($leagueID);
-            foreach ($groups as $g) {
+            foreach ($groups as $g)
+            {
                 $this->matchGroupOptions[$g->title] = $g->title;
             }
         }
         return $this->matchGroupOptions;
-
     }
 
     public function saveLeagueInfos(DataContainer $dc)

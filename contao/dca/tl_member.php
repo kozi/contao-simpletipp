@@ -42,19 +42,18 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = array
     'exclude'                 => true,
     'inputType'               => 'text',
     'sql'                     => "varchar(255) NOT NULL default '1'",
-    'load_callback'           => array
-    (
-        array('tl_member_simpletipp', 'generateUniqid')
-    ),
-    'eval'                    => array(),
+    'load_callback'           => [['tl_member_simpletipp', 'generateUniqid']],
+    'eval'                    => [],
 
 );
 
 
 class tl_member_simpletipp {
 
-    public function generateUniqid($varValue) {
-        if ($varValue == '') {
+    public function generateUniqid($varValue)
+    {
+        if ($varValue == '')
+        {
             $varValue = str_replace('.', 'cal', uniqid('', true));
         }
         return $varValue;

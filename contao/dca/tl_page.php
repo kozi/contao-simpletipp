@@ -12,22 +12,21 @@
  * @license    LGPL
  * @filesource
  */
-use \Simpletipp\Models\SimpletippModel;
 
 // simpletipp_group
-$GLOBALS['TL_DCA']['tl_page']['palettes']['root']                   .= ';{simpletipp_legend:hide},simpletipp_group';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['root']          .= ';{simpletipp_legend:hide},simpletipp_group';
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['simpletipp_group'] = array
-(
+$GLOBALS['TL_DCA']['tl_page']['fields']['simpletipp_group'] = [
 'label'                   => &$GLOBALS['TL_LANG']['tl_page']['simpletipp_group'],
 'exclude'                 => true,
 'inputType'               => 'select',
-'options_callback'        => array('tl_page_simpletipp', 'getSimpletippGroups'),
-'eval'                    => array('multiple' => false, 'mandatory' => false, 'tl_class'=>'w50'),
+'options_callback'        => ['tl_page_simpletipp', 'getSimpletippGroups'],
+'eval'                    => ['multiple' => false, 'mandatory' => false, 'tl_class'=>'w50'],
 'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);
+];
 
 
+use \Simpletipp\Models\SimpletippModel;
 /**
  * Class tl_module_simpletipp
  *
@@ -36,17 +35,20 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['simpletipp_group'] = array
  * @author     Martin Kozianka <http://kozianka.de>
  * @package    Controller
  */
-class tl_page_simpletipp extends Backend {
+class tl_page_simpletipp extends Backend
+{
+    public function getSimpletippGroups()
+    {
+        $arrGroups = [];
+        $objModels = SimpletippModel::findAll(['order' => 'title DESC']);
 
-    public function getSimpletippGroups() {
-        $arrGroups = array();
-        $objModels = SimpletippModel::findAll(array('order' => 'title DESC'));
-
-        if ($objModels === null) {
+        if ($objModels === null)
+        {
             return $arrGroups;
         }
 
-        foreach($objModels as $objSimpletippModel) {
+        foreach($objModels as $objSimpletippModel)
+        {
             $arrGroups[$objSimpletippModel->id] = $objSimpletippModel->title;
         }
         return $arrGroups;
