@@ -1,3 +1,4 @@
+<?php if ($this->matches): ?>
 <div class="simpletipp_stat">
     <table>
         <thead>
@@ -22,3 +23,4 @@
         </tbody>
     </table>
 </div>
+<?php endif; ?>

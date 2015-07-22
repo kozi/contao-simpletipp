@@ -16,9 +16,9 @@
 namespace Simpletipp;
 
 
-class OpenLigaDB {
+class OpenLigaDB
+{
     const SOAP_URL = 'http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL';
-
 
     /**
      * @var OpenLigaDB
