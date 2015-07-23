@@ -57,17 +57,17 @@ array_insert($GLOBALS['BE_MOD'], 1, [
         ],
         'simpletipp_match' => [
             'tables'     => ['tl_simpletipp_match'],
-            'icon'       => 'system/themes/default/images/tablewizard.gif',
+            'icon'       => 'system/modules/simpletipp/assets/images/chain.png',
             'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
         ],
         'simpletipp_tipp' => [
             'tables'     => ['tl_simpletipp_tipp'],
-            'icon'       => 'system/themes/default/images/tablewizard.gif',
+            'icon'       => 'system/modules/simpletipp/assets/images/light-bulb.png',
             'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
         ],
         'simpletipp_team' => [
             'tables'     => ['tl_simpletipp_team'],
-            'icon'       => 'system/themes/default/images/tablewizard.gif',
+            'icon'       => 'system/modules/simpletipp/assets/images/clipboard-list.png',
             'stylesheet' => 'system/modules/simpletipp/assets/simpletipp-backend.css',
         ],
     ]
