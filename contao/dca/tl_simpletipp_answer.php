@@ -18,14 +18,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 	// Config
 	'config' => array
 	(
-		'dataContainer'               => 'Table',
-		'ptable'                      => 'tl_simpletipp_question',
-	    'dataContainer'               => 'Table',
-	    'sql' => array(
-            'keys' => array('id' => 'primary')
-        ),
-	    'notEditable'                 => true,
-	    'closed'                      => true,
+		'dataContainer'    => 'Table',
+		'ptable'           => 'tl_simpletipp_question',
+	    'dataContainer'    => 'Table',
+	    'sql'              => ['keys' => ['id' => 'primary']],
+	    'notEditable'      => true,
+	    'closed'           => true,
     ),
 
 	// List
@@ -34,13 +32,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 		'sorting' => array
 		(
 			'mode'                    => 4,
-			'fields'                  => array('pid'),
+			'fields'                  => ['pid'],
 			'flag'                    => 1,
 			'panelLayout'             => 'limit',
 		),
 		'label' => array
 		(
-			'fields'                  => array('pid', 'ans'),
+			'fields'                  => ['pid', 'ans'],
 			'showColumns'             => true,
 		),
 		'global_operations' => array
@@ -83,9 +81,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp_answer'] = array(
 	(
 		'default'					=> '{legend}, question, points, answers;{legend_importer}, importer;',
 	),
-
-
-
 
     // Fields
 	'fields' => array

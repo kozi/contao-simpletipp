@@ -27,7 +27,7 @@ use \Simpletipp\Models\SimpletippModel;
 
 class SimpletippPokal extends \Backend {
     public static $groupAliases  = array('pokal_group', 'pokal_16', 'pokal_8', 'pokal_4', 'pokal_2', 'pokal_finale');
-    private $groups              = array();
+    private $groups              = [];
     private $nextGroup           = null;
     private $currentGroup        = null;
     private $finishedGroup       = null;
@@ -42,7 +42,7 @@ class SimpletippPokal extends \Backend {
             $group->alias         = $alias;
             $group->name          = $GLOBALS['TL_LANG']['tl_simpletipp'][$alias][0];
             $group->cssClass      = $alias;
-            $group->matchgroups   = array();
+            $group->matchgroups   = [];
             $this->groups[$alias] = $group;
         }
     }
@@ -54,7 +54,7 @@ class SimpletippPokal extends \Backend {
                 FROM tl_simpletipp_match WHERE leagueID = ? GROUP BY groupName")
             ->execute($simpletippObj->leagueID);
 
-        $deadlines = array();
+        $deadlines = [];
         while($result->next()) {
             $deadlines[$result->groupName] = $result->row();
         }
@@ -143,7 +143,7 @@ class SimpletippPokal extends \Backend {
 
     private function calculatePairs() {
 
-        $pairings = array();
+        $pairings = [];
         if ($this->finishedGroup === null) {
             // 8 Gruppen auslosen
             $arrUserIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
@@ -157,13 +157,13 @@ class SimpletippPokal extends \Backend {
             $total    = count($arrUserIds);
             $minSize  = floor($total / 8);
             $rest     = $total % 8;
-            $oneGroup = array();
+            $oneGroup = [];
             foreach($arrUserIds as $userId) {
                 $oneGroup[] = $userId;
                 if((count($oneGroup) == ($minSize+1) && $rest > 0) || (count($oneGroup) == $minSize && $rest <= 0)) {
                     $rest--;
                     $pairings[] = $oneGroup;
-                    $oneGroup   = array();
+                    $oneGroup   = [];
                 }
             }
             if(count($oneGroup) > 0) {
@@ -182,7 +182,7 @@ class SimpletippPokal extends \Backend {
             $this->import('\Simpletipp\Modules\SimpletippModulePokal', 'SimpletippModulePokal');
             $this->SimpletippModulePokal->setSimpletipp($this->simpletipp->id);
             $highscores = $this->SimpletippModulePokal->getGroupHighscores($this->finishedGroup);
-            $arrUserIds = array();
+            $arrUserIds = [];
             foreach($highscores as $highscore) {
                 // Nur die memberIDs speichern
                 $highscore  = array_map(function($row) { return $row->id; }, $highscore);

@@ -35,8 +35,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_reminder'] = array(
     'sql'                     => "char(1) NOT NULL default ''"
 );
 
-$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = array
-(
+$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_calendar'],
     'default'                 => '',
     'exclude'                 => true,
@@ -45,11 +44,10 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = array
     'load_callback'           => [['tl_member_simpletipp', 'generateUniqid']],
     'eval'                    => [],
 
-);
+];
 
-
-class tl_member_simpletipp {
-
+class tl_member_simpletipp
+{
     public function generateUniqid($varValue)
     {
         if ($varValue == '')
@@ -58,5 +56,4 @@ class tl_member_simpletipp {
         }
         return $varValue;
     }
-
 }

@@ -13,7 +13,7 @@
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_simpletipp'] = array(
+$GLOBALS['TL_DCA']['tl_simpletipp'] = [
 
 	// Config
 	'config' => [
@@ -39,15 +39,15 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		'sorting' => array
 		(
 			'mode'                    => 2,
-			'fields'                  => array('tstamp DESC'),
+			'fields'                  => ['tstamp DESC'],
 			'flag'                    => 1,
 			'panelLayout'             => 'limit'
 		),
 		'label' => array
 		(
-			'fields'                  => array('title', 'leagueObject', 'participant_group', 'tstamp'),
+			'fields'                  => ['title', 'leagueObject', 'participant_group', 'tstamp'],
 			'showColumns'             => true,
-			'label_callback'          => array('tl_simpletipp', 'labelCallback')
+			'label_callback'          => ['tl_simpletipp', 'labelCallback']
 		),
 		'global_operations' => array
 		(
@@ -217,17 +217,17 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
 		),
         'lastChanged' => array
         (
-            'label'        => array('lastChanged', 'lastChanged'),
+            'label'        => ['lastChanged', 'lastChanged'],
             'sql'          => "int(10) unsigned NOT NULL default '0'",
         ),
         'lastLookup' => array
         (
-            'label'        => array('lastLookup', 'lastLookup'),
+            'label'        => ['lastLookup', 'lastLookup'],
             'sql'          => "int(10) unsigned NOT NULL default '0'",
         ),
         'lastRemindedMatch' => array
         (
-            'label'        => array('lastRemindedMatch', 'lastRemindedMatch'),
+            'label'        => ['lastRemindedMatch', 'lastRemindedMatch'],
             'sql'          => "int(10) unsigned NOT NULL default '0'",
         ),
 
@@ -236,19 +236,19 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = array(
             'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'],
             'exclude'          => true,
             'inputType'        => 'pokalRanges',
-            'eval'             => array('tl_class' => 'tl_long'),
+            'eval'             => ['tl_class' => 'tl_long'],
             'sql'              => "blob NULL",
         ),
 
-        'pokal_group'  => array('sql' => "blob NULL"),
-        'pokal_16'     => array('sql' => "blob NULL"),
-        'pokal_8'      => array('sql' => "blob NULL"),
-        'pokal_4'      => array('sql' => "blob NULL"),
-        'pokal_2'      => array('sql' => "blob NULL"),
-        'pokal_finale' => array('sql' => "blob NULL"),
+        'pokal_group'  => ['sql' => "blob NULL"],
+        'pokal_16'     => ['sql' => "blob NULL"],
+        'pokal_8'      => ['sql' => "blob NULL"],
+        'pokal_4'      => ['sql' => "blob NULL"],
+        'pokal_2'      => ['sql' => "blob NULL"],
+        'pokal_finale' => ['sql' => "blob NULL"],
 
 	)
-);
+];
 
 
 use \Simpletipp\OpenLigaDB;

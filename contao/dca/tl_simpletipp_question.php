@@ -17,15 +17,12 @@
 $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 
 	// Config
-	'config' => array
-	(
-		'dataContainer'               => 'Table',
-		'ptable'                      => 'tl_simpletipp',
-		'enableVersioning'            => true,
-	    'sql' => array(
-            'keys' => array('id' => 'primary')
-        )
-	),
+	'config' => [
+		'dataContainer'        => 'Table',
+		'ptable'               => 'tl_simpletipp',
+		'enableVersioning'     => true,
+	    'sql'                  => ['keys' => ['id' => 'primary']]
+	],
 
 	// List
 	'list' => array
@@ -193,28 +190,33 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
  * @package    simpletipp
  */
 
-class tl_simpletipp_question extends Backend {
+class tl_simpletipp_question extends Backend
+{
 
-	public function __construct() {
+	public function __construct()
+    {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
 
-	public function toggleIcon($row, $href, $label, $title, $icon, $attributes) {
-		
-		if (strlen($this->Input->get('tid'))) {
+	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+		if (strlen($this->Input->get('tid')))
+        {
 			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
 			$this->redirect($this->getReferer());
 		}
 	
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_simpletipp_question::published', 'alexf')) {
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_simpletipp_question::published', 'alexf'))
+        {
 			return '';
 		}
 	
 		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 	
-		if (!$row['published']) {
+		if (!$row['published'])
+        {
 			$icon = 'invisible.gif';
 		}
 		
@@ -222,8 +224,8 @@ class tl_simpletipp_question extends Backend {
 	}
 
 	
-	public function toggleVisibility($intId, $blnVisible) {
-
+	public function toggleVisibility($intId, $blnVisible)
+	{
 		// Check permissions to publish
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_simpletipp_question::published', 'alexf'))
 		{
@@ -242,20 +244,25 @@ class tl_simpletipp_question extends Backend {
         $objVersions->create();
 	}
 	
-	public function clearImporter($varValue, DataContainer $dc) {
+	public function clearImporter($varValue, DataContainer $dc)
+	{
 		return '';
 	}
 	
-	public function importAnswers($varValue, DataContainer $dc) {
-		if (strlen($varValue) === 0) {
+	public function importAnswers($varValue, DataContainer $dc)
+	{
+		if (strlen($varValue) === 0)
+		{
 			return '';
 		}
 		
 		$arr = explode("\n", $varValue);
-		if (count($arr) <= 2) {
+		if (count($arr) <= 2)
+		{
 			// values seperated by , or ;
 			$arr = explode(",", $varValue);
-			if (count($arr) <= 2) {
+			if (count($arr) <= 2)
+			{
 				$arr = explode(";", $varValue);
 			}
 		}
@@ -273,10 +280,12 @@ class tl_simpletipp_question extends Backend {
 		return '';
 	}
 	
-	public function addQuestions($arrRow) {
+	public function addQuestions($arrRow)
+	{
 		$a = implode(", ", unserialize($arrRow['answers']));
 		
-		if (strlen($a) > 30) {
+		if (strlen($a) > 30)
+		{
 			$a = substr($a, 0, 30).'...';
 		}
 			

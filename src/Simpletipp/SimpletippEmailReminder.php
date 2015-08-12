@@ -36,7 +36,7 @@ class SimpletippEmailReminder extends \Backend {
         $simpletippModel = SimpletippModel::findAll();
         $hours           = 24;
         $now             = time();
-        $arrMessages     = array();
+        $arrMessages     = [];
         foreach ($simpletippModel as $simpletippObj) {
             $match = Simpletipp::getNextMatch($simpletippObj->leagueID);
 
@@ -50,7 +50,7 @@ class SimpletippEmailReminder extends \Backend {
             }
             else {
                 $pageObj         = \PageModel::findByIdOrAlias('spiele');
-                $userNamesArr    = array();
+                $userNamesArr    = [];
                 $emailSubject    = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
                 $emailText       = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
                     $hours, $match->title, \Date::parse('d.m.Y H:i', $match->deadline),

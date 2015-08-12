@@ -114,8 +114,8 @@ class SimpletippCalendar extends SimpletippModule
 		}
 
 
-		$events       = array();
-		$tmpMatches   = array();
+		$events       = [];
+		$tmpMatches   = [];
 		$lastDeadline = null;
 		
 		while($matches->next())

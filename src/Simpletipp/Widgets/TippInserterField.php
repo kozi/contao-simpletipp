@@ -19,53 +19,55 @@ use Contao\Date;
 use Simpletipp\Models\SimpletippMatchModel;
 use Simpletipp\Models\SimpletippTippModel;
 
-class TippInserterField extends \Widget {
-
+class TippInserterField extends \Widget
+{
     protected $strTemplate     = 'be_widget';
     protected $blnSubmitInput  = true;
-    protected $varValue        = array();
+    protected $varValue        = [];
 
 
-    public function generate() {
-
-        $this->varValue      = ($this->varValue === null) ? array() : $this->varValue;
+    public function generate()
+    {
+        $this->varValue = ($this->varValue === null) ? array() : $this->varValue;
 
         // Initialize the tab index
-        if (!\Cache::has('tabindex')) {
+        if (!\Cache::has('tabindex'))
+        {
             \Cache::set('tabindex', 1);
         }
         $tabindex = \Cache::get('tabindex');
 
 
-        if ($this->activeRecord->member_id === '0') {
+        if ($this->activeRecord->member_id === '0')
+        {
             return '<p>Bitte zunächst ein Mitglied wählen!</p>';
         }
 
-        if ($this->activeRecord->leagueGroups) {
-
-            $arrMatches        = array();
+        if ($this->activeRecord->leagueGroups)
+        {
+            $arrMatches        = [];
             $collectionMatches = SimpletippMatchModel::findBy('groupID', $this->activeRecord->leagueGroups, array(
                 'order'  => 'deadline ASC')
             );
-            foreach($collectionMatches as $objMatch) {
-
-                $arrMatches[$objMatch->id] =array(
+            foreach($collectionMatches as $objMatch)
+            {
+                $arrMatches[$objMatch->id] = [
                     'id'       => $objMatch->id,
                     'title'    => $objMatch->title,
                     'deadline' => Date::parse("d.m.Y H:i", $objMatch->deadline),
                     'tipp'     => false
-                );
+                ];
             }
         }
 
         $collectionTipps = SimpletippTippModel::findBy('member_id', $this->activeRecord->member_id);
-        foreach($collectionTipps as $objTipp) {
-            if(array_key_exists($objTipp->match_id, $arrMatches)) {
+        foreach($collectionTipps as $objTipp)
+        {
+            if(array_key_exists($objTipp->match_id, $arrMatches))
+            {
                 $arrMatches[$objTipp->match_id]['tipp'] = $objTipp->tipp;
             }
         }
-
-
 
         $strReturn = '<table id="ctrl_'.$this->strId.'" class="tl_pokalRanges" data-tabindex="'.$tabindex++.'"><tbody>';
         $tmpl      = '<tr>
@@ -75,7 +77,8 @@ class TippInserterField extends \Widget {
                       </tr>';
         $tmplInput = '<input type="hidden" name="tippInserter_matchId[]" value="%s"><input style="width:64px;" type="text" class="tl_text" name="tippInserter_tipp[]" onfocus="Backend.getScrollOffset()">';
 
-        foreach($arrMatches as $arrM) {
+        foreach($arrMatches as $arrM)
+        {
             $tipp       = ($arrM['tipp'] === false) ? sprintf($tmplInput, $arrM['id']) : $arrM['tipp'];
             $strReturn .= sprintf($tmpl,
                     $arrM['deadline'],
@@ -89,21 +92,25 @@ class TippInserterField extends \Widget {
         return $strReturn;
     }
 
-    private  function getGroupOptions($value) {
+    private  function getGroupOptions($value)
+    {
         $options = '<option value="-">Bitte wählen...</option>';
         $tmpl    = '<option%s value="%s">%s</option>';
-        foreach ($this->leagueGroups as $g) {
-                $sel = ($value == $g->title) ? ' selected="selected"': '';
-                $options .= sprintf($tmpl, $sel, $g->title, $g->title);
-            }
+        foreach ($this->leagueGroups as $g)
+        {
+            $sel = ($value == $g->title) ? ' selected="selected"': '';
+            $options .= sprintf($tmpl, $sel, $g->title, $g->title);
+        }
         return $options;
     }
 
-    public function validate() {
+    public function validate()
+    {
 
     }
 
-    protected function validator($varInput) {
+    protected function validator($varInput)
+    {
         return $varInput;
     }
 

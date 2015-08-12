@@ -1,3 +1,20 @@
+v0.9.4 - 06 Aug 2015
+--------------------
+- Added axes to all events where they are available in context to provide better API convenience when developing plugins
+- Consider additional parameters of SVG elem when called with DOM node
+
+v0.9.3 - 05 Aug 2015
+--------------------
+- Added better check for undefined values in bar chart, fixes #400
+- Fixed issue with SVG feature check within Svg module (Thanks to Markus Gruber !)
+
+v0.9.2 - 02 Aug 2015
+--------------------
+- Enabled bar charts to use dynamic axes fixes #363, fixes #355
+- Added axis title plugin to plugins page (Thanks to @alexstanbury !)
+- Added a label group for Pie charts to prevent occlusion by slices (Thanks to Anthony Jimenez!)
+- Added better handling for multi values when writing custom attributes, fixes #379
+
 v0.9.1 - 24 Jun 2015
 --------------------
 - Fixed bug with areaBase narrowing process in area charts, fixes #364

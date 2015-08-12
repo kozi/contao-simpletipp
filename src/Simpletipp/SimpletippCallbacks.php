@@ -62,7 +62,7 @@ class SimpletippCallbacks extends \Backend {
             $this->Database->prepare("DELETE FROM tl_newsletter_recipients WHERE pid = ?")
                 ->execute($channel_id);
 
-            $emails     = array();
+            $emails     = [];
             $objMembers = Simpletipp::getGroupMember($simpletipp['participant_group']);
             if ($objMembers !== null) {
                 foreach($objMembers as $objMember) {

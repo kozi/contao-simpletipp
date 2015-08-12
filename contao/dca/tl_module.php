@@ -61,33 +61,30 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_nottipped'] =
 /**
  * Add fields to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_match_page'] = array
-(
+$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_match_page'] = [
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_match_page'],
 		'exclude'                 => true,
 		'inputType'               => 'pageTree',
-		'eval'                    => array('fieldType'=>'radio', 'tl_class' => 'long'),
+		'eval'                    => ['fieldType'=>'radio', 'tl_class' => 'long'],
 		'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);
+];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_matches_page'] = array
-(
+$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_matches_page'] = [
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_matches_page'],
 		'exclude'                 => true,
 		'inputType'               => 'pageTree',
-		'eval'                    => array('fieldType'=>'radio', 'tl_class' => 'long'),
+		'eval'                    => ['fieldType'=>'radio', 'tl_class' => 'long'],
 		'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);
+];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = array
-(
+$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = [
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_template'],
 		'exclude'                 => true,
 		'inputType'               => 'select',
-		'options_callback'        => array('tl_module_simpletipp', 'getSimpletippTemplates'),
-		'eval'                    => array('tl_class'=>'w50'),
+		'options_callback'        => ['tl_module_simpletipp', 'getSimpletippTemplates'],
+		'eval'                    => ['tl_class'=>'w50'],
 		'sql'                     => "varchar(255) NOT NULL default ''"
-);
+];
 
 /**
  * Class tl_module_simpletipp
@@ -97,24 +94,24 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = array
  * @author     Martin Kozianka <http://kozianka.de>
  * @package    Controller
  */
-class tl_module_simpletipp extends Backend {
-
+class tl_module_simpletipp extends Backend
+{
 	/**
 	 * Return all simpletipp_matches templates as array
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getSimpletippTemplates(DataContainer $dc) {
+	public function getSimpletippTemplates(DataContainer $dc)
+	{
 		$intPid = $dc->activeRecord->pid;
 		$prefix = $dc->activeRecord->type.'_';
 		
-		if ($this->Input->get('act') == 'overrideAll') {
+		if ($this->Input->get('act') == 'overrideAll')
+		{
 			$intPid = $this->Input->get('id');
 			$prefix = 'simpletipp_';
 		}
-		
 		return $this->getTemplateGroup($prefix, $intPid);
 	}
-
 }
 

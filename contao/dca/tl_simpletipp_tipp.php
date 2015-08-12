@@ -133,15 +133,18 @@ $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
 );
 
 
-class tl_simpletipp_tipp extends Backend {
-	private $matches     = array();
+class tl_simpletipp_tipp extends Backend
+{
+	private $matches     = [];
 
-	public function __construct() {
+	public function __construct()
+    {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 
 		$result = $this->Database->execute('SELECT id, title, result, groupName FROM tl_simpletipp_match ORDER BY deadline');
-		while($result->next()) {
+		while($result->next())
+        {
 			$match = new \stdClass;
 			$match->id     = $result->id;
 			$match->title  = $result->title;
@@ -153,17 +156,20 @@ class tl_simpletipp_tipp extends Backend {
 
 	}
 
-    public function getMatchOptions(DataContainer $dc) {
-        $options = array();
-        foreach($this->matches as $match) {
+    public function getMatchOptions(DataContainer $dc)
+    {
+        $options = [];
+        foreach($this->matches as $match)
+        {
             $options[$match->id] = '['.intval($match->group).'] '.$match->title;
         }
         return $options;
     }
 
-	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
-
-        if ($args === null) {
+	public function labelCallback($row, $label, DataContainer $dc, $args = null)
+    {
+        if ($args === null)
+        {
             return $label;
 		}
 
@@ -179,10 +185,10 @@ class tl_simpletipp_tipp extends Backend {
 		return $args;
 	}
 
-    public function changeInputType(\DataContainer $dc) {
-
-        if ('edit' === \Input::get('act')) {
-
+    public function changeInputType(\DataContainer $dc)
+    {
+        if ('edit' === \Input::get('act'))
+        {
             $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['palettes']['default']         = '{simpletipp_legend}, member_id, simpletippGroups, leagueGroups, tipp';
             $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['label']     = array('Tipps', 'Hier die Tipps eintragen');
 
@@ -203,68 +209,83 @@ class tl_simpletipp_tipp extends Backend {
 
             $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['inputType'] = 'tippInserter';
         }
-        else {
+        else
+        {
             //Cleanup
             $this->Database->execute('DELETE FROM tl_simpletipp_tipp WHERE match_id = 0');
 
         }
     }
 
-    public function leagueGroupOptions(\DataContainer $dc) {
-        $options      = array();
+    public function leagueGroupOptions(\DataContainer $dc)
+    {
+        $options      = [];
         $simpletippId = $this->handleSessionData('simpletippGroups');
 
-        if ($simpletippId) {
+        if ($simpletippId)
+        {
             $simpletippObj = SimpletippModel::findByPk($simpletippId);
             $leagueGroups  = Simpletipp::getLeagueGroups($simpletippObj->leagueID);
-            foreach ($leagueGroups as $id => $g) {
+            foreach ($leagueGroups as $id => $g)
+            {
                 $options[$id] = $g->title;
             }
         }
         return $options;
     }
 
-    public function loadCallbackSimpletippGroups($varValue, \DataContainer $dc) {
+    public function loadCallbackSimpletippGroups($varValue, \DataContainer $dc)
+    {
         return $this->emptyValueLoadCallback('simpletippGroups');
     }
 
-    public function loadCallbackLeagueGroups($varValue, \DataContainer $dc) {
+    public function loadCallbackLeagueGroups($varValue, \DataContainer $dc)
+    {
         return $this->emptyValueLoadCallback('leagueGroups');
     }
 
 
-    private function emptyValueLoadCallback($fieldName) {
-        if (\Input::post($fieldName)) {
+    private function emptyValueLoadCallback($fieldName)
+    {
+        if (\Input::post($fieldName))
+        {
             $this->handleSessionData($fieldName, \Input::post($fieldName));
         }
-        else {
+        else
+        {
             $varValue = $this->handleSessionData($fieldName);
         }
         return $varValue;
     }
 
-    private function handleSessionData($fieldName, $varValue=null) {
+    private function handleSessionData($fieldName, $varValue=null)
+    {
         $sessionKey = 'tl_simpletipp_tipp.'.$fieldName;
         $session    = \Session::getInstance();
-        if ($varValue === null) {
+        if ($varValue === null)
+        {
             return $session->get($sessionKey);
         }
-        else {
+        else
+        {
             $session->set($sessionKey, $varValue);
         }
     }
 
-    public function processSubmittedTipps(\DataContainer $dc) {
+    public function processSubmittedTipps(\DataContainer $dc)
+    {
         $member_id = intval($dc->activeRecord->member_id);
         $arrIds    = \Input::post('tippInserter_matchId');
         $arrTipps  = \Input::post('tippInserter_tipp');
-        if (is_int($member_id) && $member_id != 0 && is_array($arrIds) && is_array($arrTipps) && count($arrIds) == count($arrTipps)) {
-
+        if (is_int($member_id) && $member_id != 0 && is_array($arrIds) && is_array($arrTipps) && count($arrIds) == count($arrTipps))
+        {
             $arrIds   = array_map('intval', $arrIds);
             $arrTipps = array_map('trim', $arrTipps);
 
-            for($i=0;$i<count($arrIds);$i++) {
-                if(strlen($arrTipps[$i]) > 0) {
+            for($i=0;$i<count($arrIds);$i++)
+            {
+                if(strlen($arrTipps[$i]) > 0)
+                {
                     $objTipp = new SimpletippTippModel();
                     $objTipp->setRow(array(
                         'tstamp'     => time(),

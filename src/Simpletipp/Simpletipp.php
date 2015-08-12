@@ -179,7 +179,7 @@ class Simpletipp extends \System {
     {
         if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE']))
         {
-            $_SESSION['TL_SIMPLETIPP_MESSAGE'] = array();
+            $_SESSION['TL_SIMPLETIPP_MESSAGE'] = [];
         }
 
         if (count($_SESSION['TL_SIMPLETIPP_MESSAGE']) == 0)
@@ -193,7 +193,7 @@ class Simpletipp extends \System {
             $messages .= sprintf("	<div class=\"message\">%s</div>\n", $message);
         }
         // Reset
-        $_SESSION['TL_SIMPLETIPP_MESSAGE'] = array();
+        $_SESSION['TL_SIMPLETIPP_MESSAGE'] = [];
         return sprintf("\n<div class=\"simpletipp_messages\">\n%s</div>\n", $message);
     }
 
@@ -201,7 +201,7 @@ class Simpletipp extends \System {
     {
         if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE']))
         {
-            $_SESSION['TL_SIMPLETIPP_MESSAGE'] = array();
+            $_SESSION['TL_SIMPLETIPP_MESSAGE'] = [];
         }
         $_SESSION['TL_SIMPLETIPP_MESSAGE'][] = $message;
     }

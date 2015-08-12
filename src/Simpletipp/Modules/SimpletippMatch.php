@@ -99,7 +99,7 @@ class SimpletippMatch extends SimpletippModule
             'away' => (Object) ['abs' => 0, 'percent' => 0],
         ];
         $i     = 0;
-        $tipps = array();
+        $tipps = [];
 		while ($result->next()) {
 
             $tipp         = (Object) $result->row();

@@ -136,8 +136,8 @@ class tl_simpletipp_match extends Backend {
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 
-        $this->leagueInfos = array();
-        $this->groups      = array();
+        $this->leagueInfos = [];
+        $this->groups      = [];
 
 		$result = $this->Database->execute('SELECT leagueID, leagueInfos FROM tl_simpletipp');
 		while($result->next()) {
@@ -153,7 +153,7 @@ class tl_simpletipp_match extends Backend {
 	}
 
 	public function getLeagues(DataContainer $dc) {
-        $leagueOptions = array();
+        $leagueOptions = [];
         foreach($this->leagueInfos as $leagueID => $info) {
             $leagueOptions[$leagueID] = $info['name'];
         }

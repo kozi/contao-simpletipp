@@ -38,6 +38,13 @@ class SimpletippRanking extends SimpletippModule
 
 	protected function compile()
     {
+        // Cached result?
+        $ranking = $this->cachedResult(static::$cache_key_ranking);
+        if ($ranking != null) {
+            $this->Template->ranking = $ranking;
+            return true;
+        }
+
         $collectionMatches = SimpletippMatchModel::findBy('leagueID', $this->simpletipp->leagueID);
 
         $ranking = [];
@@ -106,6 +113,7 @@ class SimpletippRanking extends SimpletippModule
             return 0;
         });
 
+        $this->cachedResult(static::$cache_key_ranking, $ranking);
         $this->Template->ranking = $ranking;
     }
 }

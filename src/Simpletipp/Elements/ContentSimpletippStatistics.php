@@ -190,7 +190,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
-                $objMember->highscorePositions = array(0);
+                $objMember->highscorePositions = [0];
                 $memberArray[$objMember->username]   = $objMember;
             }
         }
@@ -198,17 +198,20 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
             ->execute($this->simpletipp->leagueID, '1');
-        $groups = array();
-        while($result->next()) {
+        $groups = [];
+        while($result->next())
+        {
             $groups[] = $result->groupName;
         }
 
-        for ($i=1;$i <= count($groups);$i++) {
+        for ($i=1;$i <= count($groups);$i++)
+        {
             $matchgroups = array_slice($groups, 0, $i);
 
             $pos            = 0;
             $highscoreTable = $this->getHighscore($matchgroups);
-            foreach($highscoreTable as $tableEntry) {
+            foreach($highscoreTable as $tableEntry)
+            {
                 $highscorePos       = intval($pos++) * (-1);
                 $highscoreHistory   = $memberArray[$tableEntry->username]->highscorePositions;
                 $highscoreHistory[] = $highscorePos;
@@ -218,7 +221,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
             }
         }
 
-        usort($memberArray, function($a, $b) {
+        usort($memberArray, function($a, $b)
+        {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
 
@@ -237,16 +241,19 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
         $memberArray = $this->cachedResult(static::$cache_key_points);
 
-        if ($memberArray != null) {
+        if ($memberArray != null)
+        {
             $this->statsTemplate->table = $memberArray;
             return true;
         }
 
 
         $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
-        if ($objMembers !== null) {
-            foreach($objMembers as $objMember) {
-                $objMember->pointsArray            = array();
+        if ($objMembers !== null)
+        {
+            foreach($objMembers as $objMember)
+            {
+                $objMember->pointsArray            = [];
                 $memberArray[$objMember->username] = $objMember;
             }
         }
@@ -256,17 +263,18 @@ class ContentSimpletippStatistics extends SimpletippModule {
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
             ->execute($this->simpletipp->leagueID, '1');
 
-        while($result->next()) {
+        while($result->next())
+        {
             $matchgroup     = $result->groupName;
             $highscoreTable = $this->getHighscore($matchgroup);
-            foreach($highscoreTable as $tableEntry) {
-
-                $groupArray = array(
+            foreach($highscoreTable as $tableEntry)
+            {
+                $groupArray = [
                     intval($tableEntry->points),
                     intval($tableEntry->sum_perfect) * $this->pointFactors->perfect,
                     intval($tableEntry->sum_difference) * $this->pointFactors->difference,
                     intval($tableEntry->sum_tendency) * $this->pointFactors->tendency,
-                );
+                ];
 
                 $pointsArray = $memberArray[$tableEntry->username]->pointsArray;
 
@@ -275,7 +283,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
             }
         }
-        usort($memberArray, function($a, $b) {
+        usort($memberArray, function($a, $b)
+        {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
         $this->cachedResult(static::$cache_key_points, $memberArray, true);
@@ -291,19 +300,19 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
-        $table = array(
-            'maxTore' => array('realValue' => 0, 'title' => 'Die meisten Tore'),
-            'minTore' => array('realValue' => 0, 'title' => 'Die wenigsten Tore'),
-            'home'    => array('realValue' => 0, 'title' => 'Die meisten Heimsiege'),
-            'draw'    => array('realValue' => 0, 'title' => 'Die meisten Unentschieden'),
-            'away'    => array('realValue' => 0, 'title' => 'Die meisten Auswärtssiege'),
-            'two_one' => array('realValue' => 0, 'title' => 'Die meisten 2:1 Tipps')
-        );
+        $table = [
+            'maxTore' => ['realValue' => 0, 'title' => 'Die meisten Tore'],
+            'minTore' => ['realValue' => 0, 'title' => 'Die wenigsten Tore'],
+            'home'    => ['realValue' => 0, 'title' => 'Die meisten Heimsiege'],
+            'draw'    => ['realValue' => 0, 'title' => 'Die meisten Unentschieden'],
+            'away'    => ['realValue' => 0, 'title' => 'Die meisten Auswärtssiege'],
+            'two_one' => ['realValue' => 0, 'title' => 'Die meisten 2:1 Tipps']
+        ];
 
         $result = $this->Database->prepare("SELECT id,result FROM tl_simpletipp_match
             WHERE leagueID = ? AND isFinished = ?")
             ->execute($this->simpletipp->leagueID, '1');
-        $arrMatchIds = array();
+        $arrMatchIds = [];
 
         while ($result->next()) {
             $arrMatchIds[] = $result->id;
@@ -327,7 +336,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
                     tl_member.id = tl_simpletipp_tipp.member_id
                     AND match_id IN (".implode(',', $arrMatchIds).")");
 
-        $memberArray = array();
+        $memberArray = [];
         while ($result->next()) {
             if (!array_key_exists($result->member_id, $memberArray )) {
                 $member       = (Object) $result->row();
@@ -394,7 +403,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     private function getTestArray($count, $rangeMax, $factor = -1)
     {
-        $arr   = array();
+        $arr   = [];
         $value = 0;
         $arr[] = $value;
         for ($i=1;$i<$count;$i++) {

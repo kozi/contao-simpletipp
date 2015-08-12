@@ -175,7 +175,7 @@ class SimpletippHighscore extends SimpletippModule
         if ($bestOf != null) {
             return $bestOf;
         }
-        $bestOf = array();
+        $bestOf = [];
 
         // Alle bisher gespielten Gruppen holen
         $mgResult = $this->Database->prepare("SELECT DISTINCT groupName FROM tl_simpletipp_match WHERE

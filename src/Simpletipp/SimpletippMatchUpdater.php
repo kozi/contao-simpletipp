@@ -193,7 +193,7 @@ class SimpletippMatchUpdater extends \Backend {
         )->execute($id, '1');
 
         $leagueInfos = null;
-        $match_ids = array();
+        $match_ids = [];
 
         while ($result->next()) {
 
@@ -259,7 +259,7 @@ class SimpletippMatchUpdater extends \Backend {
             return false;
         }
 
-        $newMatches = array();
+        $newMatches = [];
 
         foreach($matches as $match) {
             $tmp          = get_object_vars($match);

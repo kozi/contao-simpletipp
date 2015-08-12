@@ -22,7 +22,7 @@ class PokalRangesField extends \Widget {
 
     protected $strTemplate     = 'be_widget';
     protected $blnSubmitInput  = true;
-    protected $varValue        = array();
+    protected $varValue        = [];
 
 
     public function generate() {
@@ -70,13 +70,13 @@ class PokalRangesField extends \Widget {
     }
 
     public function validate() {
-        $def = array();
+        $def = [];
         foreach(SimpletippPokal::$groupAliases as $groupAlias) {
             $def[$groupAlias]['start'] = $this->getPost($groupAlias.'_start');
             $def[$groupAlias]['end']   = $this->getPost($groupAlias.'_end');
         }
 
-        $valueArr     = array();
+        $valueArr     = [];
         $i            = 0;
         $addGroup     = false;
         $currentAlias = SimpletippPokal::$groupAliases[$i];

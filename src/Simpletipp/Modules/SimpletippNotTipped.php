@@ -15,8 +15,9 @@
 
 namespace Simpletipp\Modules;
 
-use Simpletipp\SimpletippModule;
 use Simpletipp\Simpletipp;
+use Simpletipp\SimpletippModule;
+
 /**
  * Class SimpletippNotTipped
  *

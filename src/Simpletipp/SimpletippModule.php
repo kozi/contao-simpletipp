@@ -15,6 +15,7 @@
 
 namespace Simpletipp;
 
+use \Contao\ModuleLoader;
 use \Simpletipp\Models\SimpletippModel;
 
 /**
@@ -55,7 +56,7 @@ abstract class SimpletippModule extends \Module
     protected static $cache_key_special     = 'special';
     protected static $cache_key_bestTeams   = 'bestTeams';
     protected static $cache_key_bestMatches = 'bestMatches';
-
+    protected static $cache_key_ranking     = 'ranking';
 
     public function __construct($objModule = null, $strColumn='main')
     {
@@ -105,7 +106,7 @@ abstract class SimpletippModule extends \Module
 
         if ($this->Config)
         {
-            $this->avatarActive = (in_array('avatar', $this->Config->getActiveModules()));
+            $this->avatarActive = (in_array('avatar', ModuleLoader::getActive()));
             $this->avatarSql    = ($this->avatarActive) ? ' tl_member.avatar AS avatar,' : '';
         }
 
@@ -264,3 +265,4 @@ abstract class SimpletippModule extends \Module
 
 
 } // END class Simpletipp
+

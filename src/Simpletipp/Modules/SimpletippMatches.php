@@ -169,7 +169,7 @@ class SimpletippMatches extends SimpletippModule {
         $this->matches_filter           = new \stdClass;
 		$this->matches_filter->type     = '';
 		$this->matches_filter->stmt     = '';
-		$this->matches_filter->params   = array();
+		$this->matches_filter->params   = [];
 		$this->matches_filter->limit    = 0;
 		$this->matches_filter->order_by = ' ORDER BY deadline, matches.id ASC';
 
@@ -346,7 +346,7 @@ class SimpletippMatches extends SimpletippModule {
         $ids   = \Input::post('match_ids');
         $tipps = \Input::post('tipps');
 
-		$to_db = array();
+		$to_db = [];
 		
 		if (is_array($ids) && is_array($tipps)
 			&& count($ids) === count($tipps) && count($ids) > 0)

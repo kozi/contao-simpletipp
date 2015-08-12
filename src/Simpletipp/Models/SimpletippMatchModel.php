@@ -92,7 +92,7 @@ class SimpletippMatchModel extends \Model
             $goalObjects = $data;
         }
         else {
-            $goalObjects = array();
+            $goalObjects = [];
         }
 
         $previousHome = 0;
