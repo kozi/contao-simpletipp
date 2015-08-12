@@ -98,7 +98,7 @@ $GLOBALS['simpletipp']['teamData'] = [
      31 => ['Paderborn',    'SCP', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/SC_Paderborn_07_Logo.svg/1000px-SC_Paderborn_07_Logo.svg.png'],
      65 => ['Köln',         '1FC', 'https://upload.wikimedia.org/wikipedia/de/thumb/1/16/1._FC_K%C3%B6ln.svg/1000px-1._FC_K%C3%B6ln.svg.png'],
     171 => ['Ingolstadt',   'FCI', 'https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/1000px-FC-Ingolstadt_logo.svg.png'],
-    118 => ['Darmstadt',    'SCD', 'https://upload.wikimedia.org/wikipedia/de/thumb/8/87/Svdarmstadt98.svg/1000px-Svdarmstadt98.svg.png'],
+    118 => ['Darmstadt',    'SVD', 'https://upload.wikimedia.org/wikipedia/de/thumb/8/87/Svdarmstadt98.svg/1000px-Svdarmstadt98.svg.png'],
 ];
 
 
