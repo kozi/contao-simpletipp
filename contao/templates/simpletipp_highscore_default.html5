@@ -1,24 +1,24 @@
-<div class="<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?> block mod_simpletipp"<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?><?php if ($this->style): ?> style="<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?>"<?php endif;?>>
+<div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif; ?>>
 
-<?php if ($this->headline): ?>
-<<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?>><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?>>
-<?php endif;?>
+	<?php if ($this->headline): ?>
+	<<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
+<?php endif; ?>
 
-<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?>
+<?php echo $this->filter; ?>
 
-<table class="<?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?>">
+<table class="<?=$this->tableClass?>">
 	<thead><tr>
-		<th><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
-		
+		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['position'][0]?></th>
+
 		<?php if($this->avatarActive): ?>
 			<th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
 		<?php else: ?>
 			<th><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
-		<?php endif;?>
-		
+		<?php endif; ?>
+
 		<th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
 	</tr></thead>
-	<tbody>	
+	<tbody>
 
 <?php $i = 1; foreach($this->table as $row): ?>
 	<tr class="<?=$row->cssClass?>">
