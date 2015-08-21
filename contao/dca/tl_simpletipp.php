@@ -34,211 +34,180 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 	],
 		
 	// List
-	'list' => array
-	(
-		'sorting' => array
-		(
+	'list' => [
+		'sorting' => [
+
 			'mode'                    => 2,
 			'fields'                  => ['tstamp DESC'],
 			'flag'                    => 1,
 			'panelLayout'             => 'limit'
-		),
-		'label' => array
-		(
+		],
+		'label' => [
 			'fields'                  => ['title', 'leagueObject', 'participant_group', 'tstamp'],
 			'showColumns'             => true,
 			'label_callback'          => ['tl_simpletipp', 'labelCallback']
-		),
-		'global_operations' => array
-		(
-			'all' => array
-			(
+		],
+		'global_operations' => [
+			'all' => [
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
 				'href'                => 'act=select',
 				'class'               => 'header_edit_all',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),
-			'reminder' => array(
+			],
+			'reminder' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['reminder'],
 				'href'                => 'key=reminder',
 				'class'               => 'header_icon header_simpletipp_reminder',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			)
-		),
-		'operations' => array
-		(
-            'calculate' => array
-            (
+			]
+		],
+		'operations' => [
+            'calculate' => [
                 'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['calculate'],
 				'href'                => 'key=calculate',
                 'icon'                => 'system/themes/default/images/modules.gif',
-            ),
-
-			'update' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['update'],
-					'href'                => 'key=update',
-					'icon'                => 'system/themes/default/images/reload.gif',
-			),
-            'pokal' => array
-            (
+            ],
+			'update' => [
+				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['update'],
+				'href'                => 'key=update',
+				'icon'                => 'system/themes/default/images/reload.gif',
+			],
+            'pokal' => [
                 'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal'],
                 'href'                => 'key=pokal',
                 'icon'                => 'system/modules/simpletipp/assets/images/pokal.png',
-            ),
-			'questions' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
-					'href'                => 'table=tl_simpletipp_question',
-					'icon'                => 'system/modules/simpletipp/assets/images/question-balloon.png'
-			),
-			'edit' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['edit'],
-					'href'                => 'act=edit',
-					'icon'                => 'edit.gif'
-			),
-			'delete' => array
-			(
+            ],
+			'questions' => [
+				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
+				'href'                => 'table=tl_simpletipp_question',
+				'icon'                => 'system/modules/simpletipp/assets/images/question-balloon.png'
+			],
+			'edit' => [
+				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['edit'],
+				'href'                => 'act=edit',
+				'icon'                => 'edit.gif'
+			],
+			'delete' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-			)
-		)
-	),
+			]
+		]
+	],
 
 	// Palettes
-	'palettes' => array
-	(
+	'palettes' => [
 		'default'                     => '{simpletipp_legend}, title, leagueID, factor, matchLength, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend}, pokal_ranges',
-	),
+	],
 
 
 	// Fields
-	'fields' => array
-	(
-		'id' => array
-		(
+	'fields' => [
+		'id' => [
 				'sql'                     => "int(10) unsigned NOT NULL auto_increment"
-		),
-		'tstamp' => array
-		(
+		],
+		'tstamp' => [
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp'],
 				'sql'                     => "int(10) unsigned NOT NULL default '0'"
-		),
-		'title' => array
-		(
+		],
+		'title' => [
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['title'],
 				'exclude'                 => true,
 				'flag'                    => 1,
 				'inputType'               => 'text',
-				'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50', 'maxlength' => 48),
+				'eval'                    => ['mandatory'=>true, 'tl_class' => 'w50', 'maxlength' => 48],
 				'sql'                     => "varchar(64) NOT NULL default ''",
-		),
-        'adminName' => array
-        (
+		],
+        'adminName' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['adminName'],
             'exclude'                 => true,
             'flag'                    => 1,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
+            'eval'                    => ['mandatory'=>true, 'tl_class' => 'w50'],
             'sql'                     => "varchar(255) NOT NULL default ''",
-        ),
-        'adminEmail' => array
-        (
+        ],
+        'adminEmail' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['adminEmail'],
             'exclude'                 => true,
             'flag'                    => 1,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
+            'eval'                    => ['mandatory'=>true, 'tl_class' => 'w50'],
             'sql'                     => "varchar(255) NOT NULL default ''",
-        ),
-        'factor' => array
-        (
+        ],
+        'factor' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['factor'],
             'exclude'                 => true,
             'default'                 => '3,2,1',
             'flag'                    => 1,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'eval'                    => ['mandatory'=>true, 'tl_class'=>'w50'],
             'sql'                     => "varchar(255) NOT NULL default ''",
-        ),
-        'quizDeadline' => array
-        (
+        ],
+        'quizDeadline' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['quizDeadline'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'eval'                    => ['rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'],
             'sql'                     => "varchar(10) NOT NULL default ''",
-        ),
-        'matchLength' => array
-        (
+        ],
+        'matchLength' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['matchLength'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'eval'                    => ['rgxp'=>'digit', 'tl_class'=>'w50'],
             'sql'                     => "int(10) unsigned NOT NULL default '6300'"
-        ),
-        //'matchResultType'   => array(
+        ],
+        //'matchResultType'   => [
         // TODO
-        // ),
-		'leagueID'     => array
-		(
+        // ],
+		'leagueID'     => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueID'],
 			'exclude'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'select',
-			'options_callback'        => array('tl_simpletipp', 'getLeagues'),
-			'eval'                    => array('mandatory'=> true, 'tl_class' => 'w50', 'submitOnChange' => true, 'chosen' => true),
+			'options_callback'        => ['tl_simpletipp', 'getLeagues'],
+			'eval'                    => ['mandatory'=> true, 'tl_class' => 'w50', 'submitOnChange' => true, 'chosen' => true],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-		),
-		'leagueInfos' => array
-		(
+		],
+		'leagueInfos' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueInfos'],
 			'sql'                     => "blob NULL"
-		),
-		'teaser' => array
-		(
+		],
+		'teaser' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['teaser'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'		              => array('tl_class' => 'long clr' ,'style' => ' height:28px;', 'mandatory'=>false),
+			'eval'		              => ['tl_class' => 'long clr' ,'style' => ' height:28px;', 'mandatory'=>false],
 			'sql'                     => "text NULL",
-		),
-		'participant_group' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participant_group'],
-				'exclude'                 => true,
-				'inputType'               => 'radio',
-				'foreignKey'              => 'tl_member_group.name',
-				'eval'					  => array('mandatory'=>false, 'tl_class' => 'clr', 'mandatory' => true),
-				'sql'                     => "int(10) unsigned NOT NULL default '0'",
-		),
-        'lastChanged' => array
-        (
-            'label'        => ['lastChanged', 'lastChanged'],
-            'sql'          => "int(10) unsigned NOT NULL default '0'",
-        ),
-        'lastLookup' => array
-        (
-            'label'        => ['lastLookup', 'lastLookup'],
-            'sql'          => "int(10) unsigned NOT NULL default '0'",
-        ),
-        'lastRemindedMatch' => array
-        (
-            'label'        => ['lastRemindedMatch', 'lastRemindedMatch'],
-            'sql'          => "int(10) unsigned NOT NULL default '0'",
-        ),
-
-        'pokal_ranges' => array
-        (
+		],
+		'participant_group' => [
+            'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['participant_group'],
+            'exclude'                 => true,
+            'inputType'               => 'radio',
+            'foreignKey'              => 'tl_member_group.name',
+            'eval'					  => ['mandatory'=>false, 'tl_class' => 'clr', 'mandatory' => true],
+            'sql'                     => "int(10) unsigned NOT NULL default '0'",
+		],
+        'lastChanged' => [
+            'label'      => ['lastChanged', 'lastChanged'],
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'lastLookup' => [
+            'label'      => ['lastLookup', 'lastLookup'],
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'lastRemindedMatch' => [
+            'label'      => ['lastRemindedMatch', 'lastRemindedMatch'],
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'pokal_ranges' => [
             'label'            => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'],
             'exclude'          => true,
             'inputType'        => 'pokalRanges',
             'eval'             => ['tl_class' => 'tl_long'],
             'sql'              => "blob NULL",
-        ),
+        ],
 
         'pokal_group'  => ['sql' => "blob NULL"],
         'pokal_16'     => ['sql' => "blob NULL"],
@@ -246,8 +215,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
         'pokal_4'      => ['sql' => "blob NULL"],
         'pokal_2'      => ['sql' => "blob NULL"],
         'pokal_finale' => ['sql' => "blob NULL"],
-
-	)
+	]
 ];
 
 

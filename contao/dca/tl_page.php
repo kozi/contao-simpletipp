@@ -37,6 +37,7 @@ use \Simpletipp\Models\SimpletippModel;
  */
 class tl_page_simpletipp extends Backend
 {
+
     public function getSimpletippGroups()
     {
         $arrGroups = [];

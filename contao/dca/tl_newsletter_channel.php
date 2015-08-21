@@ -13,5 +13,5 @@
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_newsletter_channel']['config']['onload_callback'][] = ['Simpletipp\SimpletippCallbacks', 'createNewsletterChannel'];
-$GLOBALS['TL_DCA']['tl_newsletter_channel']['fields']['simpletipp']        = ['sql'   => "char(1) NOT NULL default ''"];
+$GLOBALS['TL_DCA']['tl_newsletter_channel']['config']['onload_callback'][]  = ['Simpletipp\SimpletippCallbacks', 'createNewsletterChannel'];
+$GLOBALS['TL_DCA']['tl_newsletter_channel']['fields']['simpletipp']         = ['sql'   => "char(1) NOT NULL default ''"];

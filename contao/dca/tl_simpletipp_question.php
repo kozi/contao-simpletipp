@@ -14,7 +14,7 @@
  */
 
 
-$GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
+$GLOBALS['TL_DCA']['tl_simpletipp_question'] = [
 
 	// Config
 	'config' => [
@@ -25,160 +25,124 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = array(
 	],
 
 	// List
-	'list' => array
-	(
-		'sorting' => array
-		(
+	'list' => [
+		'sorting' => [
+
 			'mode'                    => 4,
-			'fields'                  => array('sorting'),
+			'fields'                  => ['sorting'],
 			'flag'                    => 1,
 			'panelLayout'             => 'limit',
-			'child_record_callback'   => array('tl_simpletipp_question', 'addQuestions'),
-			'headerFields'            => array('title', 'teaser', 'tstamp')
-		),
-		'label' => array
-		(
-			'fields'                  => array('question', 'points'),
+			'child_record_callback'   => ['tl_simpletipp_question', 'addQuestions'],
+			'headerFields'            => ['title', 'teaser', 'tstamp'],
+		],
+		'label' => [
+			'fields'                  => ['question', 'points'],
 			'showColumns'             => true,
-		),
-		'global_operations' => array
-		(
-			'all' => array
-			(
+		],
+		'global_operations' => [
+			'all' => [
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
 				'href'                => 'act=select',
 				'class'               => 'header_edit_all',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			)
-		),
-		'operations' => array
-		(
-			'toggle' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['toggle'],
-					'icon'                => 'visible.gif',
-					'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-					'button_callback'     => array('tl_simpletipp_question', 'toggleIcon')
-			),
-			'edit' => array
-			(
-					'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['edit'],
-					'href'                => 'act=edit',
-					'icon'                => 'edit.gif'
-			),
-			'delete' => array
-			(
+			],
+		],
+		'operations' => [
+			'toggle' => [
+				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['toggle'],
+				'icon'                => 'visible.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+				'button_callback'     => ['tl_simpletipp_question', 'toggleIcon'],
+			],
+			'edit' => [
+				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['edit'],
+				'href'                => 'act=edit',
+				'icon'                => 'edit.gif',
+			],
+			'delete' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-			)
-		)
-	),
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+			]
+		]
+	],
 
 	// Palettes
-	'palettes' => array
-	(
+	'palettes' => [
 		'default'					=> '{legend}, question, points, multiple;{legend_answers}, answers;{legend_results}, results;{legend_importer}, importer;',
-	),
+	],
 
     // Fields
-	'fields' => array
-	(
-        'id' => array
-        (
-            'label'                   => array('ID'),
-            'search'                  => false,
+	'fields' => [
+        'id' => [
             'sql'                     => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'pid' => array
-        (
-            'label'                   => array('PID'),
-            'search'                  => false,
+        ],
+        'pid' => [
             'sql'                     => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'tstamp' => array
-        (
-            'label'                   => array('TSTAMP'),
-            'search'                  => false,
+        ],
+        'tstamp' => [
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-        ),
-        'sorting' => array
-        (
-            'label'                   => array('SORTING'),
-            'search'                  => false,
+        ],
+        'sorting' => [
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-        ),
-		'question' => array
-		(
+        ],
+		'question' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['question'],
 			'exclude'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'tl_class' => 'long'),
+			'eval'                    => ['mandatory'=>true, 'tl_class' => 'long'],
             'sql'                     => "text NULL",
-		),
-		'points' => array
-		(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['points'],
-				'exclude'                 => true,
-				'inputType'               => 'text',
-				'default'				  => 1,
-				'eval'					  => array('rgxp' => 'number','mandatory'=>true, 'tl_class' => 'w50'),
+		],
+		'points' => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['points'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'default'				  => 1,
+			'eval'					  => ['rgxp' => 'number','mandatory'=>true, 'tl_class' => 'w50'],
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-		),
-        'multiple' => array
-        (
+		],
+        'multiple' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['multiple'],
             'exclude'                 => true,
             'inputType'               => 'checkbox',
-            'eval'                    => array('doNotCopy'=>true, 'tl_class' => 'w50'),
+            'eval'                    => ['doNotCopy'=>true, 'tl_class' => 'w50'],
             'sql'                     => "char(1) NOT NULL default ''",
-        ),
-		'published' => array
-		(
+        ],
+		'published' => [
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['published'],
 				'exclude'                 => true,
 				'inputType'               => 'checkbox',
-				'eval'                    => array('doNotCopy'=>true, 'tl_class' => 'w50'),
+				'eval'                    => ['doNotCopy'=>true, 'tl_class' => 'w50'],
                 'sql'                     => "char(1) NOT NULL default ''",
-		),
-		'importer' => array
-		(
+		],
+		'importer' => [
 				'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['importer'],
 				'inputType'               => 'textarea',
 				'exclude'                 => true,
-				'eval'                    => array('doNotShow'=>true, 'decodeEntities' => true),
-				'load_callback'           => array(
-						array('tl_simpletipp_question', 'clearImporter')
-				),
-				'save_callback'           => array(
-						array('tl_simpletipp_question', 'importAnswers')
-				),
+				'eval'                    => ['doNotShow'=>true, 'decodeEntities' => true],
+				'load_callback'           => [['tl_simpletipp_question', 'clearImporter']],
+				'save_callback'           => [['tl_simpletipp_question', 'importAnswers']],
                 'sql'                     => "char(1) NOT NULL default ''",
-				
-		),
-		'answers' => array
-		(
+		],
+		'answers' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['answers'],
 			'exclude'                 => true,
 			'inputType'               => 'listWizard',
-			'eval'					  => array('tl_class' => 'long clr' , 'mandatory' => false),
+			'eval'					  => ['tl_class' => 'long clr' , 'mandatory' => false],
             'sql'                     => "blob NULL",
-		),
+		],
 
-        'results' => array
-		(
+        'results' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_question']['results'],
 			'exclude'                 => true,
 			'inputType'               => 'listWizard',
-			'eval'					  => array('tl_class' => 'long clr' , 'mandatory' => false),
+			'eval'					  => ['tl_class' => 'long clr' , 'mandatory' => false],
             'sql'                     => "blob NULL",
-		),
-		
-		
-	)
-);
+		],
+	]
+];
 
 
 /**

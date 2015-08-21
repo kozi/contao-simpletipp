@@ -17,23 +17,23 @@
 
 $GLOBALS['TL_DCA']['tl_member']['palettes']['default'] .= ';{simpletipp_legend},simpletipp_calendar, simpletipp_email_reminder, simpletipp_email_confirmation';
 
-$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_confirmation'] = array(
+$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_confirmation'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_email_confirmation'],
     'default'                 => '1',
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'                    => array('tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'),
+    'eval'                    => ['tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'],
     'sql'                     => "char(1) NOT NULL default '1'"
-);
+];
 
-$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_reminder'] = array(
+$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_reminder'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_email_reminder'],
     'default'                 => '1',
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'                    => array('tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'),
+    'eval'                    => ['tl_class'=>'w50', 'feEditable'=>true, 'feGroup'=>'simpletipp'],
     'sql'                     => "char(1) NOT NULL default ''"
-);
+];
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['simpletipp_calendar'],
@@ -43,7 +43,6 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = [
     'sql'                     => "varchar(255) NOT NULL default '1'",
     'load_callback'           => [['tl_member_simpletipp', 'generateUniqid']],
     'eval'                    => [],
-
 ];
 
 class tl_member_simpletipp

@@ -16,121 +16,106 @@ use \Simpletipp\Simpletipp;
 use \Simpletipp\Models\SimpletippModel;
 use \Simpletipp\Models\SimpletippTippModel;
 
-$GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = array(
+$GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = [
 
 // Config
-'config' => array
-(
+'config' => [
 	'dataContainer'               => 'Table',
 	'notEditable'                 => false,
 	'closed'                      => false,
-    'onload_callback'             => array(
-        array('tl_simpletipp_tipp', 'changeInputType')
-    ),
-    'onsubmit_callback'           => array(
-        array('tl_simpletipp_tipp', 'processSubmittedTipps')
-    ),
-	'sql' => array(
-		'keys' => array('id' => 'primary')
+    'onload_callback'             => [['tl_simpletipp_tipp', 'changeInputType']],
+    'onsubmit_callback'           => [['tl_simpletipp_tipp', 'processSubmittedTipps']],
+	'sql' => [
+		'keys' => ['id' => 'primary'],
 		// TODO UNIQUE KEY `one_tipp_for_user_per_match` (`member_id`, `match_id`)
-	),
-),
+	],
+],
 
 // List
-'list' => array
-(
-	'sorting' => array
-	(
+'list' => [
+	'sorting' => [
 		'mode'                    => 2,
-		'fields'                  => array('tstamp DESC'),
+		'fields'                  => ['tstamp DESC'],
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
-	),
-    'global_operations' => array
-    (
-        'create' => array
-        (
+	],
+    'global_operations' => [
+        'create' => [
             'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['insert_tipp'],
             'href'                => 'act=create',
             'class'               => 'header_create',
             'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="c"'
-        )
-    ),
-	'label' => array
-	(
-
-		'fields'                  => array('member_id:tl_member.username', 'match_id:tl_simpletipp_match.title', 'match_id:tl_simpletipp_match.result', 'points'),
+        ],
+    ],
+	'label' => [
+		'fields'                  => ['member_id:tl_member.username', 'match_id:tl_simpletipp_match.title', 'match_id:tl_simpletipp_match.result', 'points'],
 		'showColumns'             => true,
-		'label_callback'          => array('tl_simpletipp_tipp', 'labelCallback')
-	),
-),
+		'label_callback'          => ['tl_simpletipp_tipp', 'labelCallback'],
+	],
+],
 
 // Palettes
-'palettes' => array
-(
+'palettes' => [
     'default'                     => '{simpletipp_legend}, member_id, match_id, tipp',
-),
+],
 
 // Fields
-'fields' => array
-(
-	'id' => array
-	(
-			'label'                   => array('ID'),
+'fields' => [
+	'id' => [
+			'label'                   => ['ID'],
 			'search'                  => false,
 			'sql'                     => "int(10) unsigned NOT NULL auto_increment"
-	),
-	'tstamp' => array
-	(
+	],
+	'tstamp' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['tstamp'],
 			'search'                  => false,
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
-	'member_id' => array(
+	],
+	'member_id' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['member_id'],
             'filter'                  => true,
             'inputType'               => 'select',
             'foreignKey'              => 'tl_member.username',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type' => 'hasOne', 'load' => 'eager'),
-            'eval'                    => array('mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true),
-	),
-	'match_id' => array(
+            'relation'                => ['type' => 'hasOne', 'load' => 'eager'],
+            'eval'                    => ['mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true],
+	],
+	'match_id' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['match_id'],
             'filter'                  => true,
             'inputType'               => 'select',
 			'foreignKey'              => 'tl_simpletipp_match.title',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type' => 'hasOne', 'load' => 'eager'),
-            'eval'                    => array('mandatory' => true),
-	),
-    'tipp' => array(
+            'relation'                => ['type' => 'hasOne', 'load' => 'eager'],
+            'eval'                    => ['mandatory' => true],
+	],
+    'tipp' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['tipp'],
             'inputType'               => 'text',
 			'sql'                     => "varchar(9) NOT NULL default ''",
-            'eval'                    => array('mandatory' => true, 'maxlength' => 5),
-	),
-	'perfect' => array(
+            'eval'                    => ['mandatory' => true, 'maxlength' => 5],
+	],
+	'perfect' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['perfect'],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
-	'difference' => array(
+	],
+	'difference' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['difference'],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
-	'tendency' => array(
+	],
+	'tendency' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['tendency'],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
-	'wrong' => array(
+	],
+	'wrong' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_tipp']['wrong'],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
+	],
 
 
-) //fields
+] //fields
 
-);
+];
 
 
 class tl_simpletipp_tipp extends Backend
@@ -190,22 +175,22 @@ class tl_simpletipp_tipp extends Backend
         if ('edit' === \Input::get('act'))
         {
             $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['palettes']['default']         = '{simpletipp_legend}, member_id, simpletippGroups, leagueGroups, tipp';
-            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['label']     = array('Tipps', 'Hier die Tipps eintragen');
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['label']     = ['Tipps', 'Hier die Tipps eintragen'];
 
-            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['simpletippGroups'] = array(
-                'label'            => array('Tipprunde', 'Tipprunde wählen'),
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['simpletippGroups'] = [
+                'label'            => ['Tipprunde', 'Tipprunde wählen'],
                 'inputType'        => 'select',
                 'foreignKey'       => 'tl_simpletipp.title',
-                'load_callback'    => array(array('tl_simpletipp_tipp','loadCallbackSimpletippGroups')),
-                'eval'             => array('tl_class' => 'w50', 'submitOnChange' => true, 'includeBlankOption' => true, 'readonly' => true)
-            );
-            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['leagueGroups'] = array(
-                'label'            => array('Spieltag/Gruppe', 'Spieltag/Gruppe wählen'),
+                'load_callback'    => [['tl_simpletipp_tipp','loadCallbackSimpletippGroups']],
+                'eval'             => ['tl_class' => 'w50', 'submitOnChange' => true, 'includeBlankOption' => true, 'readonly' => true],
+            ];
+            $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['leagueGroups'] = [
+                'label'            => ['Spieltag/Gruppe', 'Spieltag/Gruppe wählen'],
                 'inputType'        => 'select',
-                'options_callback' => array('tl_simpletipp_tipp','leagueGroupOptions'),
-                'load_callback'    => array(array('tl_simpletipp_tipp','loadCallbackLeagueGroups')),
-                'eval'             => array('tl_class' => 'w50', 'submitOnChange' => true, 'includeBlankOption' => true, 'readonly' => true)
-            );
+                'options_callback' => ['tl_simpletipp_tipp','leagueGroupOptions'],
+                'load_callback'    => [['tl_simpletipp_tipp','loadCallbackLeagueGroups']],
+                'eval'             => ['tl_class' => 'w50', 'submitOnChange' => true, 'includeBlankOption' => true, 'readonly' => true],
+            ];
 
             $GLOBALS['TL_DCA']['tl_simpletipp_tipp']['fields']['tipp']['inputType'] = 'tippInserter';
         }
@@ -287,12 +272,12 @@ class tl_simpletipp_tipp extends Backend
                 if(strlen($arrTipps[$i]) > 0)
                 {
                     $objTipp = new SimpletippTippModel();
-                    $objTipp->setRow(array(
+                    $objTipp->setRow([
                         'tstamp'     => time(),
                         'member_id'  => $member_id,
                         'match_id'   => intval($arrIds[$i]),
                         'tipp'       => $arrTipps[$i]
-                    ));
+                    ]);
                     $objTipp->save();
                 }
             }

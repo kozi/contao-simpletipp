@@ -103,9 +103,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp_team'] = [
             'sql'                     => "binary(16) NULL",
         ],
 
-
-
-
 	] // fields END
 ];
 

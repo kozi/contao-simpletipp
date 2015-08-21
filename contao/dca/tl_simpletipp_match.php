@@ -13,126 +13,114 @@
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_simpletipp_match'] = array(
+$GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 
 // Config
-'config' => array
-(
-	'dataContainer'               => 'Table',
-	'notEditable'                 => true,
-	'closed'                      => true,
-	'sql' => array(
-		'keys' => array(
-            'id'    => 'primary',
-            'title' => 'index'
-        )
-	)
-		
-),
+'config' => [
+	'dataContainer'   => 'Table',
+	'notEditable'     => true,
+	'closed'          => true,
+	'sql'             => ['keys' => ['id' => 'primary', 'title' => 'index']]
+],
 		
 // List
-'list' => array
-(
-	'sorting' => array
-	(
+'list' => [
+	'sorting' => [
 		'mode'                    => 2,
-		'fields'                  => array('groupID ASC, deadline ASC'),
+		'fields'                  => ['groupID ASC, deadline ASC'],
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
-	),
-	'label' => array
-	(
-		'fields'                  => array('leagueID', 'groupID', 'deadline', 'title', 'result'),
+	],
+	'label' => [
+		'fields'                  => ['leagueID', 'groupID', 'deadline', 'title', 'result'],
 		'showColumns'             => true,
-		'label_callback'          => array('tl_simpletipp_match', 'labelCallback')
-	),
-),
+		'label_callback'          => ['tl_simpletipp_match', 'labelCallback'],
+	],
+],
 
 // Fields
-'fields' => array
-(
-	'id' => array
-	(
-			'label'                   => array('ID'),
+'fields' => [
+	'id' => [
+			'label'                   => ['ID'],
 			'search'                  => false,
             'sql'                     => "int(10) unsigned NOT NULL",
-	),
-    'tstamp' => array
-    (
+	],
+    'tstamp' => [
             'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['tstamp'],
             'sql'                     => "int(10) unsigned NOT NULL default '0'"
-    ),
-	'deadline' => array
-	(
+    ],
+	'deadline' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['deadline'],
 			'search'                  => false,
             'inputType'               => 'text',
-            'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'eval'                    => ['rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'],
 			'sql'                     => "int(10) unsigned NOT NULL"
-	),
-	'leagueID' => array(
+	],
+	'leagueID' => [
 			'label'                   => $GLOBALS['TL_LANG']['tl_simpletipp_match']['leagueName'],
 			'sql'                     => "int(10) unsigned NOT NULL",
-			'options_callback'        => array('tl_simpletipp_match', 'getLeagues'),
+			'options_callback'        => ['tl_simpletipp_match', 'getLeagues'],
 			'filter'                  => true,
-	),
-	'groupID' => array(
+	],
+	'groupID' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['groupName'],
-			'options_callback'        => array('tl_simpletipp_match', 'getGroups'),
+			'options_callback'        => ['tl_simpletipp_match', 'getGroups'],
 			'sql'                     => "int(10) unsigned NOT NULL",
 			'filter'                  => true,
-	),
-	'groupName' => array(
+	],
+	'groupName' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['groupName'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
-	),
-    'groupName_short' => array(
+	],
+    'groupName_short' => [
             'sql'                     => "varchar(255) NOT NULL default ''",
-    ),
-	'title' => array(
+    ],
+	'title' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['title'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
-	),
-	'title_short' => array(
+	],
+	'title_short' => [
 			'sql'                     => "varchar(255) NOT NULL default ''",
-	),
-	'team_h' => array(
+	],
+	'team_h' => [
 			'foreignKey'              => 'tl_simpletipp_team.id',
-			'relation'                => array('type'=>'hasOne', 'load'=>'eager'),
+			'relation'                => ['type'=>'hasOne', 'load'=>'eager'],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
-	'team_a' => array(
+	],
+	'team_a' => [
 			'foreignKey'              => 'tl_simpletipp_team.id',
-			'relation'                => array('type'=>'hasOne', 'load'=>'eager'),
+			'relation'                => ['type'=>'hasOne', 'load'=>'eager'],
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-	),
-	'lastUpdate' => array(
+	],
+	'lastUpdate' => [
 			'sql'                     => "int(10) unsigned NOT NULL"
-	),
-	'isFinished' => array(
+	],
+	'isFinished' => [
 			'sql'                     => "char(1) NOT NULL default ''"
-	),
-	'resultFirst' => array(
+	],
+	'resultFirst' => [
 			'sql'                     => "varchar(32) NOT NULL default ''",
-	),
-	'result' => array(
+	],
+	'result' => [
 			'label'                   => $GLOBALS['TL_LANG']['tl_simpletipp_match']['result'],
 			'sql'                     => "varchar(32) NOT NULL default ''",
-	),
-    'goalData' => array(
+	],
+    'goalData' => [
             'sql'                     => "blob NULL",
-    ),
-	
-) //fields
+    ],
 
-);
+] //fields
+
+];
 
 
-class tl_simpletipp_match extends Backend {
+class tl_simpletipp_match extends Backend
+{
 	private $leagueInfos;
 	private $groups;
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 
@@ -140,33 +128,38 @@ class tl_simpletipp_match extends Backend {
         $this->groups      = [];
 
 		$result = $this->Database->execute('SELECT leagueID, leagueInfos FROM tl_simpletipp');
-		while($result->next()) {
+		while($result->next())
+		{
             $leagueInfos = unserialize($result->leagueInfos);
             $this->leagueInfos[$result->leagueID] = $leagueInfos;
 		}
 
 		$result = $this->Database->execute('SELECT groupID, groupName FROM tl_simpletipp_match GROUP BY groupID ORDER BY groupID');
-		while($result->next()) {
+		while($result->next())
+		{
             $this->groups[$result->groupID] = $result->groupName;
 		}
 
 	}
 
-	public function getLeagues(DataContainer $dc) {
+	public function getLeagues(DataContainer $dc)
+	{
         $leagueOptions = [];
-        foreach($this->leagueInfos as $leagueID => $info) {
+        foreach($this->leagueInfos as $leagueID => $info)
+		{
             $leagueOptions[$leagueID] = $info['name'];
         }
 		return $leagueOptions;
 	}
 
-	public function getGroups(DataContainer $dc) {
+	public function getGroups(DataContainer $dc)
+	{
 		//var_dump($dc);
 		return $this->groups;
 	}
 	
-	public function labelCallback($row, $label, DataContainer $dc, $args = null) {
-
+	public function labelCallback($row, $label, DataContainer $dc, $args = null)
+	{
 		$leagueID = $args[0];
 		$args[0]  = $this->leagueInfos[$leagueID]['shortcut'];
 
@@ -176,7 +169,6 @@ class tl_simpletipp_match extends Backend {
 
         // Anstoss
         $args[2]  = Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $args[2]);
-
 
         return $args;
 	}
