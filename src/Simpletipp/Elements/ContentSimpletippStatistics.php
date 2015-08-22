@@ -247,17 +247,18 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
+        $objMembers  = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $memberArray = [];
 
-        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
         if ($objMembers !== null)
         {
             foreach($objMembers as $objMember)
             {
-                $objMember->pointsArray            = [];
-                $memberArray[$objMember->username] = $objMember;
+                $memberArray[$objMember->username] = $objMember->row();
+                $memberArray[$objMember->username]['pointsArray'] = [[],[],[]];
+                $memberArray[$objMember->username]['punkte']      = [];
             }
         }
-
 
         $result = $this->Database->prepare("SELECT groupName FROM tl_simpletipp_match
         WHERE leagueID = ? AND isFinished = ? GROUP BY groupName ORDER BY deadline")
@@ -265,28 +266,21 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
         while($result->next())
         {
-            $matchgroup     = $result->groupName;
-            $highscoreTable = $this->getHighscore($matchgroup);
-            foreach($highscoreTable as $tableEntry)
+            $mgShort   = intval($result->groupName).'.';
+            $highscore = $this->getHighscore($result->groupName);
+            foreach($highscore as $e)
             {
-                $groupArray = [
-                    intval($tableEntry->points),
-                    intval($tableEntry->sum_perfect) * $this->pointFactors->perfect,
-                    intval($tableEntry->sum_difference) * $this->pointFactors->difference,
-                    intval($tableEntry->sum_tendency) * $this->pointFactors->tendency,
-                ];
-
-                $pointsArray = $memberArray[$tableEntry->username]->pointsArray;
-
-                $pointsArray[$result->groupName]                 = $groupArray;
-                $memberArray[$tableEntry->username]->pointsArray = $pointsArray;
-
+                $memberArray[$e->username]['punkte'][$mgShort]         = intval($e->points);
+                $memberArray[$e->username]['pointsArray'][0][$mgShort] = intval($e->sum_perfect) * $this->pointFactors->perfect;
+                $memberArray[$e->username]['pointsArray'][1][$mgShort] = intval($e->sum_difference) * $this->pointFactors->difference;
+                $memberArray[$e->username]['pointsArray'][2][$mgShort] = intval($e->sum_tendency) * $this->pointFactors->tendency;
             }
         }
         usort($memberArray, function($a, $b)
         {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
+
         $this->cachedResult(static::$cache_key_points, $memberArray, true);
 
         $this->statsTemplate->table = $memberArray;

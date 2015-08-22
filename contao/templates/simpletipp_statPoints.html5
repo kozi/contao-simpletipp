@@ -1,91 +1,34 @@
 
 <select id="pointstat-select">
-    <?php foreach($this->table as $row): ?>
-        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></option>
+    <?php foreach($this->table as $key => $row): ?>
+        <option <?php echo ($row['username'] == $this->user->username) ? 'selected="selected" ':''?>value="user_<?=$row['username']?>"><?=$row['firstname'].' '.$row['lastname']?></option>
     <?php endforeach;?>
 </select>
 
 <script>
-var labelArray = [];
-<?php foreach($this->table[0]->pointsArray as $title => $values): ?>
-labelArray.push('<?=$title?>');
-<?php endforeach;?>
-
-var pointsObject = new Object();
-<?php $maxPoints = 0; foreach($this->table as $row): ?>
-    pointsObject.user_<?=$row->username?> = new Array(3);
-    pointsObject.user_<?=$row->username?>[0] = new Array();
-    pointsObject.user_<?=$row->username?>[1] = new Array();
-    pointsObject.user_<?=$row->username?>[2] = new Array();
-    <?php foreach($row->pointsArray as $title => $values): $maxPoints = ($values[0] > $maxPoints) ? $values[0] : $maxPoints;?>
-        pointsObject.user_<?=$row->username?>[0].push(<?=$values[1]?>);
-        pointsObject.user_<?=$row->username?>[1].push(<?=$values[2]?>);
-        pointsObject.user_<?=$row->username?>[2].push(<?=$values[3]?>);
-    <?php endforeach;?>
-
+var pointsObj  = [];
+<?php foreach($this->table as $row): ?>
+pointsObj['user_<?=$row['username']?>'] = <?=json_encode(array_map('array_values', $row['pointsArray'])); ?>;
 <?php endforeach;?>
 </script>
 
 <div id="pointsPlot" style="height:400px;"></div>
+
 <script>
-
 var pointsPlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
-/*
+/* Dreier, Differenz, Tendenz */
+
+var pointsPlotData = {
+    labels: <?=json_encode( array_keys($this->table[0]['pointsArray'][0]) ); ?>,
+    series: pointsObj['user_<?=$this->user->username?>']
+};
+
 var pointsPlotOptions = {
-
-    animate: !$.jqplot.use_excanvas,
-    animateReplot: !$.jqplot.use_excanvas,
-
-    seriesColors: pointsPlotColors,
-    stackSeries: true,
-    legend: {
-        show: true,
-        location: 'ne',
-        placement: 'inside'
-    },
-    series:[
-        {label:'Dreier'},
-        {label:'Differenz'},
-        {label:'Tendenz'}
-    ],
-    seriesDefaults:{
-        renderer:$.jqplot.BarRenderer,
-        pointLabels: { show: true, stackedValue: true }
-    },
-    axes: {
-        xaxis: {
-            renderer: $.jqplot.CategoryAxisRenderer,
-            ticks: labelArray
-        },
-        yaxis: {
-            min: 0,
-            max: <?php echo ($maxPoints+1);?>,
-            pad: 0,
-            tickOptions: {
-                formatString: '%d'
-            }
-
-        }
-    },
-    highlighter: { show: false }
-}; // pointsPlotOptions
-*/
-
-
+    stackBars: true
+};
 
 $(document).ready(function() {
-    /*
-    $.jqplot.config.enablePlugins = true;
-
-    $("#pointstat-select").select2();
-
-    $('#pointstat-select').on('change', function(evt, params) {
-        pointsPlot.replot({data: pointsObject[this.value] });
-        $('#pointsPlotImage').empty();
-    });
-
-    pointsPlotData = pointsObject.user_<?php echo  $this->user->username;?>;
-    pointsPlot     = $.jqplot('pointsPlot', pointsPlotData, pointsPlotOptions);
-     */
+    pointsPlotChart = new Chartist.Bar('#pointsPlot', pointsPlotData, pointsPlotOptions);
 });
+
 </script>

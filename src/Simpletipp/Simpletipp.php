@@ -96,6 +96,12 @@ class Simpletipp extends \System {
         return $arrGroup;
     }
 
+
+    /**
+     * @param $groupID
+     * @param string $order
+     * @return \MemberModel|\Model\Collection
+     */
     public static function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC')
     {
         $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';

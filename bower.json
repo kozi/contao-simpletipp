@@ -1,7 +1,7 @@
 {
-    "name": "contao-simpletipp",
-    "dependencies": {
-        "select2": "~4",
-        "chartist": "*"
-    }
+  "name": "contao-simpletipp",
+  "dependencies": {
+    "select2": "~4",
+    "chartist": "*"
+  }
 }
