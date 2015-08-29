@@ -126,7 +126,7 @@ abstract class SimpletippModule extends \Module
         {
             $this->simpletippGroups = Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
             $this->pointFactors     = $this->simpletipp->getPointFactors();
-            $this->pointSummary     = (Object) array('points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0);
+            $this->pointSummary     = (Object) ['points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0];
         }
     }
 

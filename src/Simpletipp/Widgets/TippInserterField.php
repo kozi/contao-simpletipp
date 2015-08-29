@@ -28,7 +28,7 @@ class TippInserterField extends \Widget
 
     public function generate()
     {
-        $this->varValue = ($this->varValue === null) ? array() : $this->varValue;
+        $this->varValue = ($this->varValue === null) ? [] : $this->varValue;
 
         // Initialize the tab index
         if (!\Cache::has('tabindex'))
@@ -37,7 +37,6 @@ class TippInserterField extends \Widget
         }
         $tabindex = \Cache::get('tabindex');
 
-
         if ($this->activeRecord->member_id === '0')
         {
             return '<p>Bitte zunächst ein Mitglied wählen!</p>';
@@ -45,11 +44,9 @@ class TippInserterField extends \Widget
 
         if ($this->activeRecord->leagueGroups)
         {
-            $arrMatches        = [];
-            $collectionMatches = SimpletippMatchModel::findBy('groupID', $this->activeRecord->leagueGroups, array(
-                'order'  => 'deadline ASC')
-            );
-            foreach($collectionMatches as $objMatch)
+            $arrMatches  = [];
+            $collectionM = SimpletippMatchModel::findBy('groupID', $this->activeRecord->leagueGroups, ['order'  => 'deadline ASC']);
+            foreach($collectionM as $objMatch)
             {
                 $arrMatches[$objMatch->id] = [
                     'id'       => $objMatch->id,
@@ -60,8 +57,8 @@ class TippInserterField extends \Widget
             }
         }
 
-        $collectionTipps = SimpletippTippModel::findBy('member_id', $this->activeRecord->member_id);
-        foreach($collectionTipps as $objTipp)
+        $collectionT = SimpletippTippModel::findBy('member_id', $this->activeRecord->member_id);
+        foreach($collectionT as $objTipp)
         {
             if(array_key_exists($objTipp->match_id, $arrMatches))
             {

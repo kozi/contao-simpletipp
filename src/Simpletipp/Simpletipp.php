@@ -25,34 +25,39 @@ use \Simpletipp\Models\SimpletippMatchModel;
  * @package    Controller
  */
 
-class Simpletipp extends \System {
+class Simpletipp extends \System
+{
     public static $TIPP_DIVIDER       = ':';
     public static $SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
 
     const GROUPNAME_VORRUNDE          = 'Vorrunde';
 
-    public static function getPoints($result, $tipp, $simpletippFactor = null) {
-
+    public static function getPoints($result, $tipp, $simpletippFactor = null)
+    {
         $perfect    = 0;
         $difference = 0;
         $tendency   = 0;
 
-        if (strlen($result) === 0 || strlen($tipp) === 0) {
+        if (strlen($result) === 0 || strlen($tipp) === 0)
+        {
             return new SimpletippPoints($simpletippFactor, 0, 0, 0);
         }
         $tmp = explode(self::$TIPP_DIVIDER, $result);
-        $rh = intval($tmp[0], 10); $ra = intval($tmp[1], 10);
+        $rh  = intval($tmp[0], 10); $ra = intval($tmp[1], 10);
 
         $tmp = explode(self::$TIPP_DIVIDER, $tipp);
-        $th = intval($tmp[0], 10); $ta = intval($tmp[1], 10);
+        $th  = intval($tmp[0], 10); $ta = intval($tmp[1], 10);
 
-        if ($rh === $th && $ra === $ta) {
+        if ($rh === $th && $ra === $ta)
+        {
             $perfect = 1;
         }
-        elseif (($rh-$ra) === ($th-$ta)) {
+        elseif (($rh-$ra) === ($th-$ta))
+        {
             $difference = 1;
         }
-        elseif (($rh < $ra && $th < $ta) || ($rh > $ra && $th > $ta)) {
+        elseif (($rh < $ra && $th < $ta) || ($rh > $ra && $th > $ta))
+        {
             $tendency = 1;
         }
 
@@ -77,7 +82,8 @@ class Simpletipp extends \System {
             {
                 $i   = 1;
 
-                foreach($groupNames as $strGroupName => $arrTeams) {
+                foreach($groupNames as $strGroupName => $arrTeams)
+                {
                     if (in_array($arrMatch['nameTeam1'], $arrTeams) || in_array($arrMatch['nameTeam2'], $arrTeams))
                     {
                         $arrGroup['name'] = $strGroupName;

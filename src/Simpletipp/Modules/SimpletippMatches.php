@@ -41,6 +41,7 @@ class SimpletippMatches extends SimpletippModule {
         // So maybe the current result is not the final one
         $this->finishedMatches();
 
+
 		if (TL_MODE == 'BE')
         {
 			$this->Template = new \BackendTemplate('be_wildcard');
@@ -72,7 +73,6 @@ class SimpletippMatches extends SimpletippModule {
 
         $this->Template->filter     = $this->getMatchFilter();
         $this->Template->matches    = $this->getMatches();
-
         $this->Template->formId     = $this->formId;
         $this->Template->action     = ampersand(\Environment::get('request'));
 

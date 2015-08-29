@@ -28,27 +28,31 @@ namespace Simpletipp;
 use Simpletipp\Models\SimpletippModel;
 
 
-class SimpletippEmailReminder extends \Backend {
-
-    public function tippReminder() {
+class SimpletippEmailReminder extends \Backend
+{
+    public function tippReminder()
+    {
         \System::loadLanguageFile('default');
 
         $simpletippModel = SimpletippModel::findAll();
         $hours           = 24;
         $now             = time();
         $arrMessages     = [];
-        foreach ($simpletippModel as $simpletippObj) {
+        foreach ($simpletippModel as $simpletippObj)
+        {
             $match = Simpletipp::getNextMatch($simpletippObj->leagueID);
 
             if ($match == null
                 || $simpletippObj->lastRemindedMatch == $match->id
-                || ($match->deadline > (($hours*3600)+$now))) {
+                || ($match->deadline > (($hours*3600)+$now)))
+            {
                 // no next match found or already reminded or more than $hours to start
                 $message       = sprintf('No next match found or already reminded or more than %s to start', $hours);
                 $arrMessages[] = $message;
                 \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
             }
-            else {
+            else
+            {
                 $pageObj         = \PageModel::findByIdOrAlias('spiele');
                 $userNamesArr    = [];
                 $emailSubject    = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
@@ -57,10 +61,11 @@ class SimpletippEmailReminder extends \Backend {
                     \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
                 $emailCount = 0;
-                foreach(Simpletipp::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u) {
-
+                foreach(Simpletipp::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u)
+                {
                     $emailSent = '';
-                    if ($u['simpletipp_email_reminder'] == '1') {
+                    if ($u['simpletipp_email_reminder'] == '1')
+                    {
                         $email = $this->generateEmailObject($simpletippObj, $emailSubject, $emailText);
                         $email->sendTo($u['email']);
                         $emailSent = '@ ';
@@ -86,23 +91,24 @@ class SimpletippEmailReminder extends \Backend {
         } // END foreach
 
 
-        if ('reminder' === \Input::get('key')) {
-            foreach($arrMessages as $m) {
+        if ('reminder' === \Input::get('key'))
+        {
+            foreach($arrMessages as $m)
+            {
                 \Message::addInfo($m);
             }
             $this->redirect(\Environment::get('script').'?do=simpletipp_group');
         }
-
-
-
     }
 
-    private function generateEmailObject($simpletippRes, $subject, $text = NULL) {
+    private function generateEmailObject($simpletippRes, $subject, $text = NULL)
+    {
         $email           = new \Email();
         $email->from     = $simpletippRes->adminEmail;
         $email->fromName = $simpletippRes->adminName;
         $email->subject  = $subject;
-        if ($text != NULL) {
+        if ($text != NULL)
+        {
             $email->text  = $text;
             $email->html  = $text;
         }
