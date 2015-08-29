@@ -25,3 +25,10 @@ $GLOBALS['TL_LANG']['simpletipp']['last']                    = ['Letzten %s', 'Z
 $GLOBALS['TL_LANG']['simpletipp']['highscore_all']           = ['Gesamttabelle', 'Tabelle basierend auf den Tipps aller Spiele'];
 $GLOBALS['TL_LANG']['simpletipp']['highscore_bestof']        = ['Best Of Spieltage', 'Tabelle der besten Spieltage'];
 $GLOBALS['TL_LANG']['simpletipp']['highscore_current']       = ['Aktueller Spieltag', 'Tabelle des aktuellen Spieltags'];
+
+$GLOBALS['TL_LANG']['simpletipp']['alarmText']               = 'Tippen!';
+$GLOBALS['TL_LANG']['simpletipp']['match']                   = 'Spiel';
+$GLOBALS['TL_LANG']['simpletipp']['matches']                 = 'Spiele';
+
+
+

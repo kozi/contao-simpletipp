@@ -29,69 +29,69 @@ use \Simpletipp\SimpletippModule;
 
 class SimpletippCalendar extends SimpletippModule
 {
-    private $title         = 'Tippspiel';
-    private $matchesPage   = null;
+	private $title         = 'Tippspiel';
+	private $matchesPage   = null;
 
-    public function generate()
+	public function generate()
 	{
-        if (TL_MODE == 'BE')
+		if (TL_MODE == 'BE')
 		{
-            $this->Template = new \BackendTemplate('be_wildcard');
-            $this->Template->wildcard  = '### SimpletippCalendar ###<br>';
-            $this->Template->wildcard .= $GLOBALS['TL_LANG']['FMD']['simpletipp_calendar_info'];
-            return $this->Template->parse();
-        }
-        return parent::generate();
-    }
+			$this->Template = new \BackendTemplate('be_wildcard');
+			$this->Template->wildcard  = '### SimpletippCalendar ###<br>';
+			$this->Template->wildcard .= $GLOBALS['TL_LANG']['FMD']['simpletipp_calendar_info'];
+			return $this->Template->parse();
+		}
+		return parent::generate();
+	}
 
-    protected function compile()
+	protected function compile()
 	{
-        global $objPage;
+		global $objPage;
 
-        $isDebug              = (\Input::get('debug') == '1');
-        $calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), \Input::get('cal')));
-        $this->User           = \MemberModel::findBy('simpletipp_calendar', $calId);
+		$isDebug              = (\Input::get('debug') == '1');
+		$calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), \Input::get('cal')));
+		$this->User           = \MemberModel::findBy('simpletipp_calendar', $calId);
 
-        if (strlen($calId) > 0 && $this->User === null && $calId !== 'common')
+		if (strlen($calId) > 0 && $this->User === null && $calId !== 'common')
 		{
-            echo 'Calendar not found! '.$calId;
-            exit();
-        }
+			echo 'Calendar not found! '.$calId;
+			exit();
+		}
 
 
-        $pageObj           = \PageModel::findByPk($this->simpletipp_matches_page);
-        $this->matchesPage = ($pageObj !== null) ? $objPage->row() : null;
+		$pageObj           = \PageModel::findByPk($this->simpletipp_matches_page);
+		$this->matchesPage = ($pageObj !== null) ? $objPage->row() : null;
 
-        $v = new \vcalendar();
-        $v->setConfig('unique_id', \Environment::get('base'));
-        $v->setProperty('method', 'PUBLISH');
-        $v->setProperty("X-WR-CALNAME",  $this->title);
-        $v->setProperty("X-WR-CALDESC",  $this->title);
-        $v->setProperty("X-WR-TIMEZONE", $GLOBALS['TL_CONFIG']['timeZone']);
+		$v = new \vcalendar();
+		$v->setConfig('unique_id', \Environment::get('base'));
+		$v->setProperty('method', 'PUBLISH');
+		$v->setProperty("X-WR-CALNAME",  $this->title);
+		$v->setProperty("X-WR-CALDESC",  $this->title);
+		$v->setProperty("X-WR-TIMEZONE", $GLOBALS['TL_CONFIG']['timeZone']);
 
-        foreach($this->getMatchEvents() as $event)
+		foreach($this->getMatchEvents() as $event)
 		{
-            $v->setComponent($event);
-        }
+			$v->setComponent($event);
+		}
 
 
-        /* DEBUG -----------------------------------------------------------*/
-        if ($isDebug)
+		/* DEBUG -----------------------------------------------------------*/
+		if ($isDebug)
 		{
-            $xml   = iCal2XML($v);
-            $dom   = new \DOMDocument('1.0', 'UTF-8');
-            $dom->preserveWhiteSpace = false;
-            $dom->formatOutput = true;
-            $dl = @$dom->loadXML($xml);
-            echo '<pre>'.htmlentities($dom->saveXML()).'</pre>';
-            exit;
-        }
-         /*------------------------------------------------------------------*/
+			$xml   = iCal2XML($v);
+			$dom   = new \DOMDocument('1.0', 'UTF-8');
+			$dom->preserveWhiteSpace = false;
+			$dom->formatOutput = true;
+			$dl = @$dom->loadXML($xml);
+			echo '<pre>'.htmlentities($dom->saveXML()).'</pre>';
+			exit;
+		}
+		/*------------------------------------------------------------------*/
 
 
-        $v->returnCalendar();
-        exit;
-    }
+		$v->returnCalendar();
+		exit;
+	}
 
 	private function getMatchEvents()
 	{
@@ -117,10 +117,10 @@ class SimpletippCalendar extends SimpletippModule
 		$events       = [];
 		$tmpMatches   = [];
 		$lastDeadline = null;
-		
+
 		while($matches->next())
 		{
-            $m = (Object) $matches->row();
+			$m = (Object) $matches->row();
 
 			if ($m->deadline === $lastDeadline)
 			{
@@ -129,60 +129,60 @@ class SimpletippCalendar extends SimpletippModule
 			else
 			{
 				$lastDeadline = $m->deadline;
-	
+
 				// save previous entries
 				if (sizeof($tmpMatches) > 0)
 				{
 					$events[] = $this->getNewEvent($tmpMatches);
 				}
-	
+
 				// generate new entries array
 				$tmpMatches   = [];
 				$tmpMatches[] = $m;
-	
+
 			} // if ($m->deadline === $lastDeadline)
-	
+
 		} // foreach($matches as $m)
-	
+
 		if (sizeof($tmpMatches) > 0)
 		{
 			$events[] = $this->getNewEvent($tmpMatches);
 		}
-	
+
 		return $events;
 	}
 
 	private function getNewEvent($matches)
 	{
-        $ev             = new \vevent();
-        $now            = time();
-        $url            = '';
+		$ev             = new \vevent();
+		$now            = time();
+		$url            = '';
 		$timestamp      = $matches[0]->deadline;
 		$timestamp_ende = $timestamp + $this->simpletipp->matchLength;
 
 		if ($this->matchesPage !== null)
 		{
-            $url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
+			$url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
 					"/group/".urlencode($matches[0]->groupName));
-        }
-        // TODO translation
-		$title              = $matches[0]->groupName.' ('.sizeof($matches).' Spiele)';
+		}
+
+		$title              = $matches[0]->groupName.' ('.sizeof($matches).' '.$GLOBALS['TL_LANG']['simpletipp']['matches'].')';
 		$description        = $url."\n";
 		$pointsSum          = 0;
 		$all_matches_tipped = true;
-		
+
 		foreach($matches as $m)
 		{
-			$info  = " ".date("H:i", $timestamp);
-			$info2 = "";
-			
+			$info  = ' '.date('H:i', $timestamp);
+			$info2 = '';
+
 			// Ist das Ergebnis schon eingetragen und das Spiel angefangen?
 			if ($m->result && $now > $m->deadline)
 			{
-				$info = ' '.$m->result;
+				$info = ' ('.$m->result.') T['.$m->tipp.']';
 				// $info = sprintf(' %s (%s)', $m->result, $m->resultFirst);
 			}
-	
+
 			if ($this->User !== null)
 			{
 				// Hat der Benutzer die Spiele schon getippt?
@@ -192,21 +192,21 @@ class SimpletippCalendar extends SimpletippModule
 				}
 				else if ($now < $m->deadline)
 				{
-					$info2 = " *OK*"; // TODO translation
+					$info2 = ' *OK*';
 				}
 				else
 				{
-                    $p          = Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
-                    $pointsSum  = $pointsSum + $p->points;
-					$info2      = " ".$p->getPointsString();
+					$p          = Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
+					$pointsSum  = $pointsSum + $p->points;
+					$info2      = ' # '.$p->getPointsString();
 				}
-	
+
 			} // if ($this->User !== null)
-				
+
 			$description .= $m->title.$info.$info2."\n";
-			
+
 		} // foreach($matches as $m)
-	
+
 		// Only 1 match
 		if (sizeof($matches) === 1)
 		{
@@ -220,14 +220,17 @@ class SimpletippCalendar extends SimpletippModule
 			// Alarm hinzufügen
 			$alarm = new \valarm();
 			$alarm->setProperty('action', 'DISPLAY');
-			$alarm->setProperty('description', 'Tippen!'); // TODO translation
+			$alarm->setProperty('description', $GLOBALS['TL_LANG']['simpletipp']['alarmText']);
 			$alarm->setProperty('trigger', array('hour' => 2));
 			$ev->setComponent($alarm);
-			$location = "TIPPEN!"; // TODO translation
+			$location = strtoupper($GLOBALS['TL_LANG']['simpletipp']['alarmText']);
 		}
+
+
 		else
 		{
-			$location = $pointsSum." Punkt(e)"; // TODO translation
+			$key      = ($pointsSum === 1) ?  'point' : 'points';
+			$location = $pointsSum.' '.$GLOBALS['TL_LANG']['simpletipp'][$key][0];
 		}
 
 		$ev->setProperty('dtstart', self::getDateArr($timestamp));

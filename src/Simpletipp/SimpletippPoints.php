@@ -47,7 +47,7 @@ class SimpletippPoints
     public function getPointsString()
     {
         $key = ($this->points === 1) ?  'point' : 'points';
-        return $this->points.' '.$GLOBALS['TL_LANG']['simpletipp'][$key];
+        return $this->points.' '.$GLOBALS['TL_LANG']['simpletipp'][$key][0];
     }
 
     public function getPointsClass()
