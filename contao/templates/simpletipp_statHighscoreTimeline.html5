@@ -47,7 +47,13 @@ $(document).ready(function() {
     highscoreChartist = new Chartist.Line('#highscoreTimeline', highscorePlotData, highscorePlotOptions);
 
     $('#highscoreTimeline-select select').on('change', function(evt, params) {
-        console.log(highscoreChartist);
+        var arrOptions = $(this).val();
+        var arrData    = [];
+        $.each(arrOptions, function(index, value) {
+            arrData.push(highscoreTimeline[value]);
+        });
+        highscorePlotData.series = arrData;
+        highscoreChartist.update(highscorePlotData);
     });
 
 });

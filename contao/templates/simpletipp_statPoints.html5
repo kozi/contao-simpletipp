@@ -5,30 +5,33 @@
     <?php endforeach;?>
 </select>
 
-<script>
-var pointsObj  = [];
-<?php foreach($this->table as $row): ?>
-pointsObj['user_<?=$row['username']?>'] = <?=json_encode(array_map('array_values', $row['pointsArray'])); ?>;
-<?php endforeach;?>
-</script>
-
 <div id="pointsPlot" style="height:400px;"></div>
 
 <script>
-var pointsPlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
-/* Dreier, Differenz, Tendenz */
+    var pointsPlotChart   = null;
+    var pointsPlotOptions = {stackBars: true};
 
-var pointsPlotData = {
-    labels: <?=json_encode( array_keys($this->table[0]['pointsArray'][0]) ); ?>,
-    series: pointsObj['user_<?=$this->user->username?>']
-};
+    var pointsObj = {
+        <?php foreach($this->table as $row): ?>
+            'user_<?=$row['username']?>' : <?=json_encode(array_map('array_values', $row['pointsArray'])); ?>,
+        <?php endforeach;?>
+    };
 
-var pointsPlotOptions = {
-    stackBars: true
-};
+    var pointsPlotData = {
+        labels: <?=json_encode( array_keys($this->table[0]['pointsArray'][0]) ); ?>,
+        series: pointsObj.user_<?=$this->user->username?>
+    };
 
-$(document).ready(function() {
-    pointsPlotChart = new Chartist.Bar('#pointsPlot', pointsPlotData, pointsPlotOptions);
-});
+    $(document).ready(function() {
+        pointsPlotChart = new Chartist.Bar('#pointsPlot', pointsPlotData, pointsPlotOptions);
+    });
+
+
+    $('#pointstat-select').on('change', function(evt, params) {
+        var key = $(this).val();
+        pointsPlotData.series = pointsObj[key];
+        console.log(pointsPlotData.series);
+        pointsPlotChart.update(pointsPlotData);
+    });
 
 </script>
