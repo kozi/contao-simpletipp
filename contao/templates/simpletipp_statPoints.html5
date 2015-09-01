@@ -23,6 +23,7 @@
     };
 
     $(document).ready(function() {
+        $("#pointstat-select").select2();
         pointsPlotChart = new Chartist.Bar('#pointsPlot', pointsPlotData, pointsPlotOptions);
     });
 
