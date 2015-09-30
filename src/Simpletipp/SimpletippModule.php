@@ -57,6 +57,7 @@ abstract class SimpletippModule extends \Module
     protected static $cache_key_bestTeams   = 'bestTeams';
     protected static $cache_key_bestMatches = 'bestMatches';
     protected static $cache_key_ranking     = 'ranking';
+    protected static $cache_key_notTipped   = 'notTipped';
 
     public function __construct($objModule = null, $strColumn='main')
     {
@@ -262,7 +263,6 @@ abstract class SimpletippModule extends \Module
         }
         return unserialize($objFile->getContent());
     }
-
 
 } // END class Simpletipp
 

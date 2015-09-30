@@ -23,5 +23,4 @@ class SimpletippTippModel extends \Model
      * @var string
      */
     protected static $strTable = 'tl_simpletipp_tipp';
-
 }

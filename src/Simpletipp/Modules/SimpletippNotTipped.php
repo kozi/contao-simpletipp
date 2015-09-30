@@ -15,6 +15,7 @@
 
 namespace Simpletipp\Modules;
 
+use Simpletipp\Models\SimpletippTippModel;
 use Simpletipp\Simpletipp;
 use Simpletipp\SimpletippModule;
 
@@ -44,27 +45,32 @@ class SimpletippNotTipped extends SimpletippModule
 	}
 
 	protected function compile() {
-        $userArr = [];
 
-        $match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
+		$match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
         if ($match == null)
 		{
             // no next match
             return;
         }
 
-		$arrUser = Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id);
-        foreach($arrUser as $u)
-		{
-            $key           = $u['username'];
-            $userArr[$key] = $u['firstname'].' '.$u['lastname'];
-        }
+		$tippCount = SimpletippTippModel::countBy('match_id', $match->id);
+		$arrUser   = $this->cachedResult(static::$cache_key_notTipped.$tippCount);
 
-        $this->Template->match   = $match;
+		if ($arrUser === null)
+		{
+			$arrUser = [];
+			$arr     = Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id);
+			foreach($arr as $u)
+			{
+				$key           = $u['username'];
+				$arrUser[$key] = $u['firstname'].' '.$u['lastname'];
+			}
+			$this->cachedResult(static::$cache_key_notTipped.$tippCount, $arrUser);
+		}
+
+		$this->Template->match   = $match;
         $this->Template->user    = $this->User;
-        $this->Template->userArr = $userArr;
+        $this->Template->userArr = $arrUser;
 	}
 
 } // END class SimpletippQuestions
-
-
