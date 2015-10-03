@@ -20,10 +20,14 @@
 
     },
     "require": {
+        "php": ">=5.5",
+        "contao/core": ">=3.4",
         "contao-community-alliance/composer-plugin": "~2",
         "kigkonsult/icalcreator": "*",
-        "php": ">=5.5",
-        "contao/core": ">=3.4"
+        "irazasyed/telegram-bot-sdk": "~1",
+        "fxp/composer-asset-plugin": "~1.0",
+        "bower-asset/select2": "~4",
+        "bower-asset/chartist": ">0.9"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -36,6 +40,9 @@
         }
     },
     "extra": {
+        "asset-installer-paths": {
+            "bower-asset-library": "contao/assets/"
+        },
         "contao": {
             "sources": {
                 "contao": "system/modules/simpletipp"
@@ -43,5 +50,3 @@
         }
     }
 }
-
-

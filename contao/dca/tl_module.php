@@ -54,9 +54,15 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_pokal'] =
     .'{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_nottipped'] =
-    '{title_legend},name,headline,type;'
-    .'{simpletipp_legend},simpletipp_template;'
-    .'{expert_legend:hide},guests,cssID,space';
+	'{title_legend},name,headline,type;'
+	.'{simpletipp_legend},simpletipp_template;'
+	.'{expert_legend:hide},guests,cssID,space';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_telegram'] =
+	'{title_legend},name,headline,type;'
+	.'{simpletipp_legend},simpletipp_telegram_bot_key;'
+	.'{expert_legend:hide},guests,cssID,space';
+
 
 /**
  * Add fields to tl_module
@@ -84,6 +90,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = [
 		'options_callback'        => ['tl_module_simpletipp', 'getSimpletippTemplates'],
 		'eval'                    => ['tl_class'=>'w50'],
 		'sql'                     => "varchar(255) NOT NULL default ''"
+];
+
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_telegram_bot_key'] = [
+    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_bot_key'],
+    'exclude'                 => true,
+    'inputType'               => 'text',
+    'eval'                    => ['tl_class'=>'w50'],
+    'sql'                     => "varchar(255) NOT NULL default ''"
 ];
 
 /**

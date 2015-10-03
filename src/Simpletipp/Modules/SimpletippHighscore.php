@@ -171,7 +171,7 @@ class SimpletippHighscore extends SimpletippModule
 	}
 
     private function bestOfTable() {
-        $bestOf = $this->cachedResult(static::$cache_key_bestof);
+        $bestOf = $this->cache(static::$cache_key_bestof);
         if ($bestOf != null) {
             return $bestOf;
         }
@@ -227,7 +227,7 @@ class SimpletippHighscore extends SimpletippModule
         }
 
         // Ergebnis cachen
-        $this->cachedResult(static::$cache_key_bestof, $bestOf);
+        $this->cache(static::$cache_key_bestof, $bestOf);
 
         return $bestOf;
 	}

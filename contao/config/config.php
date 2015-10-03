@@ -36,7 +36,8 @@ array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, [
     'simpletipp_highscore'  => '\Simpletipp\Modules\SimpletippHighscore',
     'simpletipp_ranking'    => '\Simpletipp\Modules\SimpletippRanking',
     'simpletipp_pokal'      => '\Simpletipp\Modules\SimpletippModulePokal',
-    'simpletipp_nottipped'  => '\Simpletipp\Modules\SimpletippNotTipped'
+    'simpletipp_nottipped'  => '\Simpletipp\Modules\SimpletippNotTipped',
+    'simpletipp_telegram'   => '\Simpletipp\Modules\SimpletippTelegram'
 ]);
 
 array_insert($GLOBALS['TL_CTE']['simpletipp'], 0, [

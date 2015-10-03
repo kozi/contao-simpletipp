@@ -237,7 +237,7 @@ abstract class SimpletippModule extends \Module
     }
 
 
-    protected function cachedResult($key, $data = null, $cleanEntries = false)
+    protected function cache($key, $data = null, $cleanEntries = false)
     {
         $fn = static::$cache_key_prefix.'_'.$key.'_'.$this->simpletipp->id
             .'_'.$this->simpletipp->lastChanged.static::$cache_key_suffix;

@@ -30,5 +30,9 @@ $GLOBALS['TL_LANG']['simpletipp']['alarmText']               = 'Tippen!';
 $GLOBALS['TL_LANG']['simpletipp']['match']                   = 'Spiel';
 $GLOBALS['TL_LANG']['simpletipp']['matches']                 = 'Spiele';
 
+$GLOBALS['TL_LANG']['simpletipp']['point_details']           = 'Richtig: %s, Differenz: %s, Tendenz: %s';
+
+
+
 
 

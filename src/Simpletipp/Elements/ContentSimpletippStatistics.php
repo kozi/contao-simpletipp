@@ -70,7 +70,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
     protected function statBestMatches()
     {
         // Cached result?
-        $arrBestMatches = $this->cachedResult(static::$cache_key_bestMatches);
+        $arrBestMatches = $this->cache(static::$cache_key_bestMatches);
         if ($arrBestMatches != null)
         {
             $this->statsTemplate->matches = $arrBestMatches;
@@ -102,14 +102,14 @@ class ContentSimpletippStatistics extends SimpletippModule {
         });
 
         $arrBestMatches = array_slice($arrMatches, 0, 10);
-        $this->cachedResult(static::$cache_key_bestMatches, $arrBestMatches, true);
+        $this->cache(static::$cache_key_bestMatches, $arrBestMatches, true);
         $this->statsTemplate->matches = $arrBestMatches;
     }
 
     protected function statBestTeams()
     {
         // Cached result?
-        $arrBestTeams = $this->cachedResult(static::$cache_key_bestTeams);
+        $arrBestTeams = $this->cache(static::$cache_key_bestTeams);
         if ($arrBestTeams != null)
         {
             $this->statsTemplate->teams = $arrBestTeams;
@@ -166,7 +166,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         });
 
         $arrBestTeams = array_slice($arrTeams, 0, 10);
-        $this->cachedResult(static::$cache_key_bestTeams, $arrBestTeams, true);
+        $this->cache(static::$cache_key_bestTeams, $arrBestTeams, true);
         $this->statsTemplate->teams = $arrBestTeams;
 
     }
@@ -181,7 +181,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
 
         // Cached result?
-        $memberArray = $this->cachedResult(static::$cache_key_highscore);
+        $memberArray = $this->cache(static::$cache_key_highscore);
         if ($memberArray != null) {
             $this->statsTemplate->table = $memberArray;
             return true;
@@ -226,7 +226,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
 
-        $this->cachedResult(static::$cache_key_highscore, $memberArray, true);
+        $this->cache(static::$cache_key_highscore, $memberArray, true);
         $this->statsTemplate->table  = $memberArray;
     }
 
@@ -239,7 +239,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.css||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.js|static';
 
-        $memberArray = $this->cachedResult(static::$cache_key_points);
+        $memberArray = $this->cache(static::$cache_key_points);
 
         if ($memberArray != null)
         {
@@ -281,14 +281,14 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
 
-        $this->cachedResult(static::$cache_key_points, $memberArray, true);
+        $this->cache(static::$cache_key_points, $memberArray, true);
 
         $this->statsTemplate->table = $memberArray;
     }
 
     protected function statSpecialMember()
     {
-        $table = $this->cachedResult(static::$cache_key_special);
+        $table = $this->cache(static::$cache_key_special);
         if ($table != null) {
             $this->statsTemplate->table = $table;
             return true;
@@ -368,7 +368,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $table['two_one']['member'] = array_slice($memberArray, 0, 3);
 
 
-        $this->cachedResult(static::$cache_key_special, $table);
+        $this->cache(static::$cache_key_special, $table);
         $this->statsTemplate->table = $table;
 
     }

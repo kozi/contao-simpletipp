@@ -54,7 +54,7 @@ class SimpletippNotTipped extends SimpletippModule
         }
 
 		$tippCount = SimpletippTippModel::countBy('match_id', $match->id);
-		$arrUser   = $this->cachedResult(static::$cache_key_notTipped.$tippCount);
+		$arrUser   = $this->cache(static::$cache_key_notTipped.$tippCount);
 
 		if ($arrUser === null)
 		{
@@ -65,7 +65,7 @@ class SimpletippNotTipped extends SimpletippModule
 				$key           = $u['username'];
 				$arrUser[$key] = $u['firstname'].' '.$u['lastname'];
 			}
-			$this->cachedResult(static::$cache_key_notTipped.$tippCount, $arrUser);
+			$this->cache(static::$cache_key_notTipped.$tippCount, $arrUser);
 		}
 
 		$this->Template->match   = $match;

@@ -29,9 +29,9 @@
 		<?php endif;?>
 
 		<td class="name"><a href="<?=$row->memberLink?>"><?=$row->firstname.' '.$row->lastname?><span class="username"><?php echo ' ('.$row->username.')';?></span></a></td>
-		<td class="details" title="TODO explain details">
-			<?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency?>
-		</td>
+        <td class="details" title="<?=sprintf($GLOBALS['TL_LANG']['simpletipp']['point_details'], $row->sum_perfect, $row->sum_difference, $row->sum_tendency)?>">
+            <?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency?>
+        </td>
 		<td class="points"><?=$row->points?></td>
 	</tr>
 <?php endforeach;?>
