@@ -52,19 +52,17 @@ class SimpletippTelegram extends SimpletippModule
             die('Missing token');
             exit;
         }
-        
+
         $telegram = new Api($this->simpletipp_telegram_bot_key);
 
-        $telegram->addCommands([
-            HighscoreCommand::class,
-            TippCommand::class,
-            HelpCommand::class
-        ]);
+        $telegram->addCommand(new HighscoreCommand($this->simpletipp));
+        $telegram->addCommand(new TippCommand($this->simpletipp));
+        $telegram->addCommand(new HelpCommand($this->simpletipp));
 
         $telegram->commandsHandler(true);
 
         $update  = $telegram->getWebhookUpdates();
-        file_put_contents('log.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
+        file_put_contents('telegram-log.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
 
 
         exit;

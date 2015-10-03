@@ -5,7 +5,7 @@ namespace Simpletipp\BotCommands;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 
-class TippCommand extends Command
+class TippCommand extends BasicCommand
 {
     /**
      * @var string Command Name
