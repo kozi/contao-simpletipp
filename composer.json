@@ -24,7 +24,9 @@
         "contao/core": ">=3.4",
         "contao-community-alliance/composer-plugin": "~2",
         "kigkonsult/icalcreator": "*",
-        "irazasyed/telegram-bot-sdk": "~1",
+        "irazasyed/telegram-bot-sdk": "~1"
+    },
+    "require-dev": {
         "fxp/composer-asset-plugin": "~1.0",
         "bower-asset/select2": "~4",
         "bower-asset/chartist": ">0.9"
