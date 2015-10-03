@@ -2,20 +2,24 @@
 
 namespace Simpletipp\BotCommands;
 
-use Telegram\Bot\Actions;
+use Simpletipp\SimpletippModule;
 use Telegram\Bot\Commands\Command;
 
 abstract class BasicCommand extends Command
 {
-    protected $simpletipp = null;
+
+    /**
+     * @var SimpletippModule
+     */
+    protected $simpletippModule = null;
 
     /**
      * BasicCommand constructor.
-     * @param $simpletipp
+     * @param $simpletippModule
      *
      */
-    public function __construct($simpletipp)
+    public function __construct($simpletippModule)
     {
-        $this->simpletipp = $simpletipp;
+        $this->simpletippModule = $simpletippModule;
     }
 }

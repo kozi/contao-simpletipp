@@ -56,9 +56,9 @@ class SimpletippTelegram extends SimpletippModule
 
         $telegram = new Api($this->simpletipp_telegram_bot_key);
 
-        $telegram->addCommand(new HighscoreCommand($this->simpletipp));
-        $telegram->addCommand(new TippCommand($this->simpletipp));
-        $telegram->addCommand(new StartCommand($this->simpletipp));
+        $telegram->addCommand(new HighscoreCommand($this));
+        $telegram->addCommand(new TippCommand($this));
+        $telegram->addCommand(new StartCommand($this));
 
         $telegram->commandsHandler(true);
 

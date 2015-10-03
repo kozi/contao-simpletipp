@@ -26,16 +26,34 @@ class StartCommand extends BasicCommand
 
         $botSecret = trim($arguments);
 
-        // Search for key in tl_member
-        MemberModel::findOneBy('simpletipp_bot_secret', $botSecret);
-
-
         // This will update the chat status to typing...
         $this->replyWithChatAction(Actions::TYPING);
 
-        $commands = $this->getTelegram()->getCommands();
+        if (strlen($botSecret) === 0)
+        {
+            $this->replyWithMessage('Missing secret key. Use link on Homepage to start chat.');
+            return false;
+        }
+
+        // Search for key in tl_member
+        $objMember = MemberModel::findOneBy('simpletipp_bot_secret', $botSecret);
+
+        if ($objMember === null)
+        {
+            $this->replyWithMessage('Key not found.');
+            return false;
+        }
+
+        $chat_id = $this->update->getMessage()->getChat()->getId();
+        $objMember->telegram_chat_id      = $chat_id;
+        $objMember->simpletipp_bot_secret = '';
+        $objMember->save();
+
+        $tmpl = 'Chat registered for %s (%s).';
+        $this->replyWithMessage(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
 
         // Build the list
+        $commands = $this->getTelegram()->getCommands();
         $response = '';
         foreach ($commands as $name => $command) {
             $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());

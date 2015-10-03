@@ -131,7 +131,7 @@ abstract class SimpletippModule extends \Module
         }
     }
 
-    protected function getHighscore($matchgroup = null, $arrMemberIds = null)
+    public function getHighscore($matchgroup = null, $arrMemberIds = null)
     {
         if ($arrMemberIds != null)
         {
