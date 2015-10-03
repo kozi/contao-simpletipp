@@ -15,8 +15,13 @@
 
 namespace Simpletipp\Modules;
 
-use \Simpletipp\SimpletippModule;
-use \Telegram\Bot\Api;
+use Contao\Input;
+use Telegram\Bot\Api;
+use Telegram\Bot\Commands\HelpCommand;
+
+use Simpletipp\SimpletippModule;
+use Simpletipp\BotCommands\HighscoreCommand;
+use Simpletipp\BotCommands\TippCommand;
 
 /**
  * Class SimpletippTelegram
@@ -42,24 +47,26 @@ class SimpletippTelegram extends SimpletippModule
 
 	protected function compile()
     {
-        $telegram = new Api($key);
-
-        // $response = $telegram->removeWebhook();
-        // $response = $telegram->setWebhook($link);
-        // var_dump($response);
+        if ($this->simpletipp_telegram_url_token !== Input::get('token'))
+        {
+            die('Missing token');
+            exit;
+        }
+        
+        $telegram = new Api($this->simpletipp_telegram_bot_key);
 
         $telegram->addCommands([
-            TippspielBot\Commands\HighscoreCommand::class,
-            TippspielBot\Commands\TippCommand::class,
-            Telegram\Bot\Commands\HelpCommand::class
+            HighscoreCommand::class,
+            TippCommand::class,
+            HelpCommand::class
         ]);
-
-        $update = $telegram->getWebhookUpdates();
-
-        $message = json_encode($update);
-        file_put_contents('log.txt', $message."\n --- \n",  FILE_APPEND);
 
         $telegram->commandsHandler(true);
 
+        $update  = $telegram->getWebhookUpdates();
+        file_put_contents('log.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
+
+
+        exit;
     }
 }

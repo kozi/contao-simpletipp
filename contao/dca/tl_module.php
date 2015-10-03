@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_nottipped'] =
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_telegram'] =
 	'{title_legend},name,headline,type;'
-	.'{simpletipp_legend},simpletipp_telegram_bot_key;'
+	.'{simpletipp_legend},simpletipp_telegram_bot_key, simpletipp_telegram_url_token;'
 	.'{expert_legend:hide},guests,cssID,space';
 
 
@@ -95,6 +95,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = [
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_telegram_bot_key'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_bot_key'],
+    'exclude'                 => true,
+    'inputType'               => 'text',
+    'eval'                    => ['tl_class'=>'w50'],
+    'sql'                     => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_telegram_url_token'] = [
+    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_url_token'],
     'exclude'                 => true,
     'inputType'               => 'text',
     'eval'                    => ['tl_class'=>'w50'],
