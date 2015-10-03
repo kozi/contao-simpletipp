@@ -17,10 +17,11 @@ namespace Simpletipp\Modules;
 
 use Contao\Input;
 use Telegram\Bot\Api;
-use Telegram\Bot\Commands\HelpCommand;
 
 use Simpletipp\SimpletippModule;
+
 use Simpletipp\BotCommands\HighscoreCommand;
+use Simpletipp\BotCommands\StartCommand;
 use Simpletipp\BotCommands\TippCommand;
 
 /**
@@ -57,7 +58,7 @@ class SimpletippTelegram extends SimpletippModule
 
         $telegram->addCommand(new HighscoreCommand($this->simpletipp));
         $telegram->addCommand(new TippCommand($this->simpletipp));
-        $telegram->addCommand(new HelpCommand($this->simpletipp));
+        $telegram->addCommand(new StartCommand($this->simpletipp));
 
         $telegram->commandsHandler(true);
 

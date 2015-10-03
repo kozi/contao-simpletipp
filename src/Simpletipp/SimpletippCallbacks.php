@@ -15,6 +15,8 @@
 
 namespace Simpletipp;
 
+use Contao\MemberModel;
+
 /**
  * Class SimpletippCallbacks
  *
@@ -91,6 +93,27 @@ class SimpletippCallbacks extends \Backend
                 $recipient->save();
             }
         }
+    }
+    public function telegramChatLink($strTag)
+    {
+        $arr = explode('::', $strTag);
+        if ($arr[0] == 'telegram_chat')
+        {
+            $tmpl = 'https://telegram.me/%s?start=%s';
+            $name = trim($arr[1]);
+
+            // Generate new secrect key
+            $secretKey = Simpletipp::generateBotSecret();
+
+            // Save key in tl_member table
+            $this->import('FrontendUser', 'User');
+            $this->User->simpletipp_bot_secret = $secretKey;
+            $this->User->save();
+
+            return sprintf($tmpl, $name, $secretKey);
+        }
+        // nicht unser Insert-Tag
+        return false;
     }
 
     public function randomLine($strTag)

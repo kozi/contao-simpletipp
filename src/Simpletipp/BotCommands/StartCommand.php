@@ -2,6 +2,7 @@
 
 namespace Simpletipp\BotCommands;
 
+use Contao\MemberModel;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 
@@ -22,6 +23,12 @@ class StartCommand extends BasicCommand
      */
     public function handle($arguments)
     {
+
+        $botSecret = trim($arguments);
+
+        // Search for key in tl_member
+        MemberModel::findOneBy('simpletipp_bot_secret', $botSecret);
+
 
         // This will update the chat status to typing...
         $this->replyWithChatAction(Actions::TYPING);
