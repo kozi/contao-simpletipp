@@ -25,6 +25,7 @@ use Simpletipp\BotCommands\StartCommand;
 use Simpletipp\BotCommands\TippCommand;
 use Simpletipp\BotCommands\SpieleCommand;
 use Simpletipp\BotCommands\ZitatCommand;
+use Simpletipp\BotCommands\ZeiglerCommand;
 
 /**
  * Class SimpletippTelegram
@@ -63,6 +64,7 @@ class SimpletippTelegram extends SimpletippModule
         $telegram->addCommand(new StartCommand($this));
         $telegram->addCommand(new SpieleCommand($this));
         $telegram->addCommand(new ZitatCommand($this));
+        $telegram->addCommand(new ZeiglerCommand($this));
 
         $telegram->commandsHandler(true);
 
