@@ -32,15 +32,30 @@ class ZeiglerCommand extends BasicCommand
             $this->replyWithMessage('Chat not registered.');
         }
 
-        $this->replyWithMessage($cache);
-        $this->replyWithMessage($url);
-
         $feed = new SimplePie();
         $feed->set_cache_location(TL_ROOT.'/system/tmp');
         $feed->set_feed_url($url);
         $feed->init();
 
-        $item = $feed->get_item();
+        $filename = null;
+        if ($item = $feed->get_item())
+        {
+            $filename = 'zeigler-'.$item->get_date('Y-m-d').'.mp3';
+            if ($enclosure = $item->get_enclosure())
+            {
+                if (!file_exists(TL_ROOT.'/system/tmp/'.$filename))
+                {
+                    file_put_contents(TL_ROOT.'/system/tmp/'.$filename, fopen($enclosure->get_link(), 'r'));
+                }
+            }
+        }
+
+
+        if (file_exists('system/tmp/'.$filename))
+        {
+            // TODO Save file_id
+            $this->replyWithAudio('system/tmp/'.$filename);
+        }
 
     }
 }
