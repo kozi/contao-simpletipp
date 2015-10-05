@@ -31,8 +31,14 @@ class ZitatCommand extends BasicCommand
         $filename = 'files/zitate.txt';
         $fileArr  = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $index    = array_rand($fileArr);
-        $str      = trim($fileArr[$index]);
+        $message  = trim($fileArr[$index]);
 
-        $this->replyWithMessage($str);
+        $arr = explode(';', $message);
+        if (count($arr) == 2)
+        {
+            $message = "»".$arr[0]."« (".$arr[1].")\n";
+        }
+
+        $this->replyWithMessage($message);
     }
 }
