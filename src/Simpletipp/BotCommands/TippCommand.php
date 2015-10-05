@@ -24,7 +24,12 @@ class TippCommand extends BasicCommand
     {
         // This will update the chat status to typing...
         $this->replyWithChatAction(Actions::TYPING);
-        
+
+        if (!$this->access())
+        {
+            $this->replyWithMessage('Chat not registered.');
+        }
+
 
         // This will send a message using `sendMessage` method behind the scenes to
         // the user/chat id who triggered this command.

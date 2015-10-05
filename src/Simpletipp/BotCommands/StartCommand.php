@@ -23,7 +23,6 @@ class StartCommand extends BasicCommand
      */
     public function handle($arguments)
     {
-
         $botSecret = trim($arguments);
 
         // This will update the chat status to typing...

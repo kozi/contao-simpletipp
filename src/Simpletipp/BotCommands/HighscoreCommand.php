@@ -23,14 +23,26 @@ class HighscoreCommand extends BasicCommand
      */
     public function handle($arguments)
     {
+        $this->replyWithChatAction(Actions::TYPING);
 
-        // TODO find chat_id in tl_member to restrict access
+        if (!$this->access())
+        {
+            $this->replyWithMessage('Chat not registered.');
+        }
 
         $highscore = $this->simpletippModule->getHighscore();
-        ob_start();
-        var_dump($highscore);
-        $result = ob_get_clean();
+        $result    = '';
+        $i         = 1;
+
+        foreach($highscore as $r)
+        {
+            $result .=
+                str_pad($i++, 2, '0', STR_PAD_LEFT).'. '
+                .$r->firstname.' '.$r->lastname.' '
+                .$r->points.' ['.$r->sum_perfect.', '.$r->sum_difference.', '.$r->sum_tendency.']'
+                ."\n";
+        }
+
         $this->replyWithMessage($result);
-        
     }
 }
