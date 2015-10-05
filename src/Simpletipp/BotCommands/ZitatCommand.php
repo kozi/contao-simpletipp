@@ -2,7 +2,6 @@
 
 namespace Simpletipp\BotCommands;
 
-use Simpletipp\SimpletippCallbacks;
 use Telegram\Bot\Actions;
 
 class ZitatCommand extends BasicCommand
@@ -33,7 +32,7 @@ class ZitatCommand extends BasicCommand
         $fileArr  = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $index    = array_rand($fileArr);
         $str      = trim($fileArr[$index]);
-        
+
         $this->replyWithMessage($str);
     }
 }
