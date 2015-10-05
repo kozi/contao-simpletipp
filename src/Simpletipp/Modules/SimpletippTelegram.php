@@ -59,6 +59,7 @@ class SimpletippTelegram extends SimpletippModule
         $telegram->addCommand(new HighscoreCommand($this));
         $telegram->addCommand(new TippCommand($this));
         $telegram->addCommand(new StartCommand($this));
+        $telegram->addCommand(new SpieleCommand($this));
 
         $telegram->commandsHandler(true);
 

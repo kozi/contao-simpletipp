@@ -2,9 +2,7 @@
 
 namespace Simpletipp\BotCommands;
 
-use Simpletipp\Simpletipp;
 use Telegram\Bot\Actions;
-use Telegram\Bot\Commands\Command;
 
 class SpieleCommand extends BasicCommand
 {
