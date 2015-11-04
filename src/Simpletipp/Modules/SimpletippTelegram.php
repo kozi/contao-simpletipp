@@ -59,6 +59,13 @@ class SimpletippTelegram extends SimpletippModule
 
         $telegram = new Api($this->simpletipp_telegram_bot_key);
 
+        /*
+        highscore - Tabelle anzeigen
+        tipp - Tipps für den aktuellen Spieltag abgeben
+        spiele - Den aktuellen Spieltag anzeigen
+        zitat -  Zufälliges Zitat abrufen
+        zeigler -  Aktuelle Zeigler Ausgabe abrufen
+        */
         $telegram->addCommand(new HighscoreCommand($this));
         $telegram->addCommand(new TippCommand($this));
         $telegram->addCommand(new StartCommand($this));

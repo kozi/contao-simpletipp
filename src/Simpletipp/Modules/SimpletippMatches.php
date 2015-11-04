@@ -15,6 +15,7 @@
 
 namespace Simpletipp\Modules;
 
+use Simpletipp\Models\SimpletippMatchModel;
 use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippPoints;
 use \Simpletipp\SimpletippModule;
@@ -56,7 +57,7 @@ class SimpletippMatches extends SimpletippModule {
 
     protected function compile() {
 
-		// Die übergebenen Tipps eintragen
+        // Die übergebenen Tipps eintragen
 		if (\Input::post('FORM_SUBMIT') === $this->formId)
         {
 			$this->processTipps();

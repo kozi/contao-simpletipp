@@ -25,6 +25,36 @@ class SimpletippMatchModel extends \Model
      */
     protected static $strTable = 'tl_simpletipp_match';
 
+    public static function findLastMatchgroup($simpletipp)
+    {
+        $arrWhere  = ['leagueID = ?','deadline < ?'];
+        $arrValues = [$simpletipp->leagueID, time()];
+        $objGroup  = self::findBy($arrWhere, $arrValues, ['order'=>'deadline DESC', 'limit'=>'1']);
+
+        if ($objGroup !== null)
+        {
+            $arrWhere  = ['leagueID = ?','groupID = ?'];
+            $arrValues = [$simpletipp->leagueID, $objGroup->groupID];
+            return self::findBy($arrWhere, $arrValues, ['order'=>'deadline ASC']);
+        }
+        return null;
+    }
+
+    public static function findCurrent($simpletipp)
+    {
+        $arrWhere  = ['leagueID = ?','deadline > ?'];
+        $arrValues = [$simpletipp->leagueID, time()];
+        $objGroup  = self::findBy($arrWhere, $arrValues, ['order'=>'deadline ASC', 'limit'=>'1']);
+
+        if ($objGroup !== null)
+        {
+            $arrWhere  = ['leagueID = ?','groupID = ?'];
+            $arrValues = [$simpletipp->leagueID, $objGroup->groupID];
+            return self::findBy($arrWhere, $arrValues, ['order'=>'deadline ASC']);
+        }
+        return null;
+    }
+
     public static function findByShortNames($simpletipp, $strAliases)
     {
         $arrAlias = explode('-', $strAliases);
