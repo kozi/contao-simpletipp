@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2015 Leo Feyer
+ * Copyright (C) 2005-2016 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2011-2015 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2014-2016 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -114,7 +114,7 @@ use \Simpletipp\Models\SimpletippModel;
  * Class tl_simpletipp_team
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2011-2015
+ * @copyright  Martin Kozianka 2014-2016
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */
