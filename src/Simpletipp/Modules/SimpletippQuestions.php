@@ -49,11 +49,13 @@ class SimpletippQuestions extends SimpletippModule
 	
 	protected function compile()
     {
+        $this->questions = [];
+        $participants = [];
+
         $result = $this->Database->prepare("SELECT * FROM tl_simpletipp_question"
             ." WHERE pid = ? ORDER BY sorting ASC")->execute($this->simpletipp->id);
 
-		$this->questions = [];
-		while($result->next())
+        while($result->next())
         {
 			$q = new \stdClass;
             $q->id             = $result->id;
@@ -77,9 +79,8 @@ class SimpletippQuestions extends SimpletippModule
             $this->questions[$q->id] = $q;
 		}
 
-        if (count($this->questions > 0))
+        if (count($this->questions) > 0)
         {
-            $participants = [];
             $objMembers   = Simpletipp::getGroupMember($this->simpletipp->participant_group);
             if ($objMembers != null)
             {

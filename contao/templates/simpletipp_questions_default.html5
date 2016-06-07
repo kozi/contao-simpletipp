@@ -21,7 +21,7 @@
             <select name="<?=$q->key?>">
                 <option value="<?=$q->emptyValue?>">Bitte wählen...</option>
                 <?php foreach($q->answers as $a): ?>
-                    <option<?php echo ($q->userAnswer == $a->value) ? ' selected="selected"' : '';?> value="<?=$a->value?>"><?=$a->value?></option>
+                    <option<?php echo ($q->currentMember->theAnswer == $a->value) ? ' selected="selected"' : '';?> value="<?=$a->value?>"><?=$a->value?></option>
                 <?php endforeach;?>
             </select>
         </fieldset>
