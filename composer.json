@@ -29,7 +29,8 @@
     "require-dev": {
         "fxp/composer-asset-plugin": "~1",
         "bower-asset/select2": "~4",
-        "bower-asset/chartist": ">0.9"
+        "bower-asset/chartist": ">0.9",
+        "bower-asset/chartjs": "~2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
