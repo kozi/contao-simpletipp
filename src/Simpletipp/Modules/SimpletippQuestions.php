@@ -120,6 +120,21 @@ class SimpletippQuestions extends SimpletippModule
                     $question->currentMember = clone $objMember;
                 }
             }
+
+
+            foreach($this->questions as $q) {
+                $q->arrLabel = [];
+                $q->arrCount = [];
+
+
+                foreach($q->answers as $a) {
+                    if ($a->count > 0) {
+                        $q->arrLabel[] = $a->value;
+                        $q->arrCount[] = $a->count;
+                    }
+                }
+
+            }
         }
 
         $quizFinished = time() > $this->simpletipp->quizDeadline;
@@ -132,7 +147,7 @@ class SimpletippQuestions extends SimpletippModule
         }
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/dist/Chart.min.js|static';
-        
+
         $this->Template->finished   = $quizFinished;
         $this->Template->formId     = $this->formId;
         $this->Template->action     = ampersand(\Environment::get('request'));

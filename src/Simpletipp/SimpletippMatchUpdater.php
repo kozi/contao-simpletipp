@@ -35,7 +35,7 @@ use Simpletipp\Models\SimpletippTeamModel;
  */
 class SimpletippMatchUpdater extends \Backend
 {
-    private static $lookupLockSeconds     = 180;
+    private static $lookupLockSeconds     = 0;
     const RESULTTYPE_ENDERGEBNIS   = 'ENDERGEBNIS';
     const RESULTTYPE_HALBZEIT      = 'HALBZEIT';
     const RESULTTYPE_VERLAENGERUNG = 'VERLAENGERUNG';
@@ -59,9 +59,9 @@ class SimpletippMatchUpdater extends \Backend
     // TODO Prioritäten festlegen d.h. die resultTypes in eine Reihenfolge bringen
     public static $arrResultTypes = [
         1 => self::RESULTTYPE_HALBZEIT,
-        2 => self::RESULTTYPE_ENDERGEBNIS,
-        3 => self::RESULTTYPE_VERLAENGERUNG,
-        4 => self::RESULTTYPE_11METER,
+        3 => self::RESULTTYPE_ENDERGEBNIS,
+        // 3 => self::RESULTTYPE_VERLAENGERUNG,
+        //4 => self::RESULTTYPE_11METER,
     ];
 
     public function updateMatches()
@@ -308,6 +308,8 @@ class SimpletippMatchUpdater extends \Backend
                 'result'          => $results[self::RESULTTYPE_ENDERGEBNIS],
                 'resultFirst'     => $results[self::RESULTTYPE_HALBZEIT],
             ];
+
+
             $newMatches[$matchId] = $newMatch;
         }
 
@@ -358,6 +360,7 @@ class SimpletippMatchUpdater extends \Backend
                 $arrResults[$key] = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
             }
         }
+
 
         return $arrResults;
     }
