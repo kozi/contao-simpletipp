@@ -117,7 +117,7 @@ class SimpletippQuestions extends SimpletippModule
 
                 if ($result->member == $this->simpletippUserId)
                 {
-                    $question->currentMember = clone $objMember;
+                    $question->currentMember = $objMember;
                 }
             }
 
