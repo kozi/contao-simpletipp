@@ -23,7 +23,7 @@
     </tr>
     <tr>
         <td class="goalData" colspan="4">
-            <?php foreach($this->match->goalData->data as $goal):
+            <?php if($this->match->goalData): foreach($this->match->goalData->data as $goal):
                 $team_alias = ($goal->home) ? $this->match->teamHome->alias : $this->match->teamAway->alias;
                 $team_icon  = Image::get(($goal->home) ? $this->match->teamHome->logoPath() : $this->match->teamAway->logoPath(), 16, 16, 'center_center');
                 ?>
@@ -35,7 +35,7 @@
                     .(($goal->penalty === true) ? ', <abbr title="Elfmeter">EM</abbr>':'')
                     .(($goal->ownGoal === true) ? ', <abbr title="Eigentor">ET</abbr>':'');?></span>)
             </span>
-            <?php endforeach;?>
+            <?php endforeach; endif;?>
         </td>
     </tr>
 
