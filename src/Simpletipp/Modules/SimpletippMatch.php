@@ -85,9 +85,8 @@ class SimpletippMatch extends SimpletippModule
 		$result = $this->Database->prepare(
 				"SELECT *, tl_member.id AS memberId FROM tl_simpletipp_tipp, tl_simpletipp_match, tl_member"
 				." WHERE match_id = ? AND match_id = tl_simpletipp_match.id"
-				." AND member_id = tl_member.id")
+				." AND member_id = tl_member.id ORDER BY tl_member.name")
 				->execute($this->match->id);
-
 
         $objPage       = \PageModel::findByPk($this->simpletipp_matches_page);
         $pageRow       = ($objPage !== null) ? $objPage->row() : null;
@@ -106,7 +105,6 @@ class SimpletippMatch extends SimpletippModule
 
             $pointObj     = new SimpletippPoints($this->pointFactors, $tipp->perfect, $tipp->difference, $tipp->tendency);
 			$tipp->points = $pointObj->points;
-
 
             $tipp->cssClass    = ($i++ % 2 === 0 ) ? 'odd':'even';
             $tipp->cssClass    .= ($result->numRows == $i) ? ' last':'';
