@@ -334,6 +334,11 @@ class SimpletippMatches extends SimpletippModule {
                 );
 		    }
 
+            usort($groups, function($a, $b)
+            {
+                return strcmp($a['title'], $b['title']);
+            });
+
             $tmpl->group_filter = $groups;
         }
 
