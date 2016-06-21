@@ -118,7 +118,8 @@ TODO :: less verwenden?
 }
 
 .mod_simpletipp_questions .otherAnswers .member li {
+	background:#eee;
     display:inline-block;
-    margin:5px;
-    padding:5px;    
+    margin:2px;
+    padding:3px;    
 }
