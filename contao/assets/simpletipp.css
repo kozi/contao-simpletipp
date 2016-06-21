@@ -92,3 +92,18 @@
     margin:0;
     outline: none;
 }
+
+.mod_simpletipp_questions .question {
+    margin:1em 0;
+}
+
+.mod_simpletipp_questions .question .title {
+    font-size:150%;
+    display:block;
+    font-weight:700;
+}
+
+.mod_simpletipp_questions .question .answer {
+    display:block;
+    text-align:right
+}

@@ -1,4 +1,4 @@
-<div class="<?=$this->class?> block mod_simpletipp mod_simpletipp_questions"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
+<div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
 
     <?php if ($this->headline): ?>
     <<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
@@ -41,8 +41,8 @@
 <?php foreach($this->questions as $q): ?>
 <div class="question" id="<?=$q->key?>">
     <p>
-        <?=$q->question?> [<?=$q->points?> Punkt(e)]<br>
-        <strong><?=$q->currentMemberAnswer?></strong>
+        <span class="title"><?=$q->question?> [<?=$q->points?> Punkt(e)]</span><br>
+        <strong class="answer"><?=$q->currentMemberAnswer?></strong>
     </p>
 
 </div>
