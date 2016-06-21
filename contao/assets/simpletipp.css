@@ -107,3 +107,15 @@
     display:block;
     text-align:right
 }
+
+.otherAnswers .member {
+    list-style: none;
+    margin:0;
+    padding:0;    
+}
+
+.otherAnswers .member li {
+    display:inline-block;
+    margin:5px;
+    padding:5px;    
+}
