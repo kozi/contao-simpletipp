@@ -21,7 +21,7 @@
             <select name="<?=$q->key?>">
                 <option value="<?=$q->emptyValue?>">Bitte wählen...</option>
                 <?php foreach($q->answers as $a): ?>
-                    <option<?php echo ($q->currentMember->theAnswer == $a->value) ? ' selected="selected"' : '';?> value="<?=$a->value?>"><?=$a->value?></option>
+                    <option<?php echo ($q->currentMemberAnswer == $a->value) ? ' selected="selected"' : '';?> value="<?=$a->value?>"><?=$a->value?></option>
                 <?php endforeach;?>
             </select>
         </fieldset>
@@ -42,7 +42,7 @@
 <div class="question" id="<?=$q->key?>">
     <p>
         <?=$q->question?> [<?=$q->points?> Punkt(e)]<br>
-        <strong><?=$q->currentMember->theAnswer?></strong>
+        <strong><?=$q->currentMemberAnswer?></strong>
     </p>
 
 </div>

@@ -85,7 +85,7 @@ class SimpletippMatch extends SimpletippModule
 		$result = $this->Database->prepare(
 				"SELECT *, tl_member.id AS memberId FROM tl_simpletipp_tipp, tl_simpletipp_match, tl_member"
 				." WHERE match_id = ? AND match_id = tl_simpletipp_match.id"
-				." AND member_id = tl_member.id ORDER BY tl_member.name")
+				." AND member_id = tl_member.id ORDER BY tl_member.lastname")
 				->execute($this->match->id);
 
         $objPage       = \PageModel::findByPk($this->simpletipp_matches_page);

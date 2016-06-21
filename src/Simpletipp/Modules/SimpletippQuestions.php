@@ -112,12 +112,13 @@ class SimpletippQuestions extends SimpletippModule
                     $objMember->questionPoints += $question->points;
                 }
 
-                $question->answers[$objMember->theAnswer]->member[] = clone $objMember;
+                $question->answers[$objMember->theAnswer]->member[] = $objMember;
                 $question->answers[$objMember->theAnswer]->count++;
 
                 if ($result->member == $this->simpletippUserId)
                 {
                     $question->currentMember = $objMember;
+                    $question->currentMemberAnswer = $objMember->theAnswer;                    
                 }
             }
 
