@@ -1,4 +1,9 @@
+/*
 
+TODO :: Kommentare einfügen
+TODO :: less verwenden?
+
+*/
 
 .mod_simpletipp table {
 	width:100%;
@@ -108,13 +113,13 @@
     text-align:right
 }
 
-.otherAnswers .member {
+.mod_simpletipp_questions .otherAnswers .member {
     list-style: none;
     margin:0;
     padding:0;    
 }
 
-.otherAnswers .member li {
+.mod_simpletipp_questions .otherAnswers .member li {
     display:inline-block;
     margin:5px;
     padding:5px;    
