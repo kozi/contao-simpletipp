@@ -39,13 +39,12 @@
 <h3>Antworten von <?=$this->member->firstname.' '.$this->member->lastname?></h3>
 
 <?php foreach($this->questions as $q): ?>
-<div class="question" id="<?=$q->key?>">
-    <p>
-        <span class="title"><?=$q->question?> [<?=$q->points?> Punkt(e)]</span><br>
-        <strong class="answer"><?=$q->currentMemberAnswer?></strong>
-    </p>
-
-</div>
+<ul class="question" id="<?=$q->key?>">
+    <li>
+        <span class="title"><?=$q->question?> [<?=$q->points?> Punkt(e)]</span>
+        <span class="answer"><?=$q->currentMemberAnswer?></span>
+    </li>
+</ul>
 <?php endforeach; reset($this->questions);?>
 
 <h3>Antworten</h3>
