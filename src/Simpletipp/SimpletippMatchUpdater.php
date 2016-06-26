@@ -35,11 +35,7 @@ use Simpletipp\Models\SimpletippTeamModel;
  */
 class SimpletippMatchUpdater extends \Backend
 {
-    private static $lookupLockSeconds     = 0;
-    const RESULTTYPE_ENDERGEBNIS   = 'ENDERGEBNIS';
-    const RESULTTYPE_HALBZEIT      = 'HALBZEIT';
-    const RESULTTYPE_VERLAENGERUNG = 'VERLAENGERUNG';
-    const RESULTTYPE_11METER       = '11METER';
+    private static $lookupLockSeconds = 0;
 
     private $oldb   = null;
     private $folder = null;
@@ -54,15 +50,6 @@ class SimpletippMatchUpdater extends \Backend
         }
         parent::__construct();
     }
-
-    // TODO Typen auswählbar machen in der Tipprunde
-    // TODO Prioritäten festlegen d.h. die resultTypes in eine Reihenfolge bringen
-    public static $arrResultTypes = [
-        1 => self::RESULTTYPE_HALBZEIT,
-        3 => self::RESULTTYPE_ENDERGEBNIS,
-        // 3 => self::RESULTTYPE_VERLAENGERUNG,
-        //4 => self::RESULTTYPE_11METER,
-    ];
 
     public function updateMatches()
     {
@@ -305,8 +292,9 @@ class SimpletippMatchUpdater extends \Backend
 
                 'isFinished'      => $tmp['matchIsFinished'],
                 'lastUpdate'      => strtotime($tmp['lastUpdate']),
-                'result'          => $results[self::RESULTTYPE_ENDERGEBNIS],
-                'resultFirst'     => $results[self::RESULTTYPE_HALBZEIT],
+
+                'resultFirst'     => array_key_exists('Halbzeit', $results) ? $results['Halbzeit'] : '' ,
+                'result'          => (count($results) > 0 ) ? $results[0]->result: '',
             ];
 
 
@@ -344,24 +332,29 @@ class SimpletippMatchUpdater extends \Backend
 
     private static function parseResults($matchResults)
     {
-        // Init result array
         $arrResults = [];
-        foreach (static::$arrResultTypes as $type)
-        {
-            $arrResults[$type] = '';
-        }
 
         // Fill result array
         if ($matchResults->matchResult !== null)
         {
             foreach ($matchResults->matchResult as $res)
             {
-                $key = static::$arrResultTypes[$res->resultTypeId];
-                $arrResults[$key] = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+                $resultObj = new \stdClass;
+                $resultObj->name   = $res->resultTypeName;
+                $resultObj->id     = intval($res->resultTypeId);
+                $resultObj->order  = intval($res->resultOrderID);
+                $resultObj->result = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+
+                $resultObj->pointsTeam1 = intval($res->pointsTeam1);
+                $resultObj->pointsTeam2 = intval($res->pointsTeam2);
+
+                $arrResults[$resultObj->name] = $resultObj;
             }
         }
-
-
+        usort($arrResults, function($a, $b)
+        {
+            return ($b->order - $a->order);
+        });
         return $arrResults;
     }
 
