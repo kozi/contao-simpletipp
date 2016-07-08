@@ -27,10 +27,10 @@
         "irazasyed/telegram-bot-sdk": "~2"
     },
     "require-dev": {
-        "fxp/composer-asset-plugin": "~1",
         "bower-asset/select2": "~4",
         "bower-asset/chartist": ">0.9",
-        "bower-asset/chartjs": "~2"
+        "bower-asset/chartjs": "~2",
+        "fxp/composer-asset-plugin": "~1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
