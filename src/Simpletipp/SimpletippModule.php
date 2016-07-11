@@ -176,6 +176,7 @@ abstract class SimpletippModule extends \Module
             // Add points from questions (do not show in matchgroup highscores)
             if ($matchgroup === null) 
             {
+                
                 $arrQuestionPoints = $this->getQuestionHighscore();
                 if (is_array($arrQuestionPoints) && count($arrQuestionPoints) > 0)
                 {
@@ -186,6 +187,7 @@ abstract class SimpletippModule extends \Module
                         {
                             $rowObj = &$table[$qEntry->memberId];
                             $rowObj->points = $rowObj->points + $qEntry->questionPoints;
+                            $rowObj->questionPoints = $qEntry->questionPoints;
                             $rowObj->questionDetails = $qEntry->questionDetails;                             
                         }
                     }
@@ -206,6 +208,16 @@ abstract class SimpletippModule extends \Module
                         $intCmp = $b->questionPoints - $b->questionPoints;
                         return $intCmp;
                     });
+
+                    // recalculate cssClass attribute
+                    $i = 1;
+                    foreach($table as $row) {
+                        $row->cssClass  = (($i % 2 === 0 ) ? 'odd':'even') . ' pos'.$i++;
+                        $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
+                    }
+                    
+                    
+                     
                 }
             }
 
@@ -241,8 +253,10 @@ abstract class SimpletippModule extends \Module
             IN(SELECT id FROM tl_simpletipp_question WHERE tl_simpletipp_question.pid = ?)
             AND tl_simpletipp_question.id = tl_simpletipp_answer.pid
             AND tl_member.id = tl_simpletipp_answer.member"
-        )->execute($this->simpletipp->leagueID);
-        
+        )->execute($this->simpletipp->id);
+
+
+
         while ($result->next())
         {
             $row = $result->row();
@@ -250,14 +264,14 @@ abstract class SimpletippModule extends \Module
             if(!array_key_exists($result->memberId, $arrResult))
             {
                 $m = (object) $row; 
-                $m->totalPoints = 0;
-                $m->pointDetails = []; 
+                $m->questionPoints = 0;
+                $m->questionDetails = []; 
                 $arrResult[$result->memberId] = $m;
             }
             $memberObj = &$arrResult[$result->memberId];
             if (in_array($row['answer'], $row['results']))
             {
-                $memberObj->questionPoints = $memberObj->totalPoints + $row['points'];
+                $memberObj->questionPoints = $memberObj->questionPoints + $row['points'];
                 $memberObj->questionDetails[] = (object) [
                     'question' => $row['question'],
                     'answer'   => $row['answer'],
@@ -265,7 +279,6 @@ abstract class SimpletippModule extends \Module
                 ];
             };
         }
-
         return $arrResult;
     }
 
