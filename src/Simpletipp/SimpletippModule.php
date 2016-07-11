@@ -173,6 +173,43 @@ abstract class SimpletippModule extends \Module
                 $table[$result->member_id] = $this->getHighscoreRow($result->row());
             }
 
+            // Add points from questions (do not show in matchgroup highscores)
+            if ($matchgroup === null) 
+            {
+                $arrQuestionPoints = $this->getQuestionHighscore();
+                if (is_array($arrQuestionPoints) && count($arrQuestionPoints) > 0)
+                {
+                    // Fill table with points
+                    foreach($arrQuestionPoints as $qEntry)
+                    {
+                        if (array_key_exists($qEntry->memberId, $table)) 
+                        {
+                            $rowObj = &$table[$qEntry->memberId];
+                            $rowObj->points = $rowObj->points + $qEntry->questionPoints;
+                            $rowObj->questionDetails = $qEntry->questionDetails;                             
+                        }
+                    }
+
+                    uasort($table, function($a, $b) {
+                        $intCmp = $b->points - $a->points; 
+                        if($intCmp !== 0) return $intCmp;
+
+                        $intCmp = $b->sum_tendency - $a->sum_tendency;
+                        if($intCmp !== 0) return $intCmp;
+                        
+                        $intCmp = $b->sum_difference - $a->sum_difference;
+                        if($intCmp !== 0) return $intCmp;
+
+                        $intCmp = $b->sum_perfect - $a->sum_perfect;
+                        if($intCmp !== 0) return $intCmp;
+
+                        $intCmp = $b->questionPoints - $b->questionPoints;
+                        return $intCmp;
+                    });
+                }
+            }
+
+
         }
 
         if ($arrParticipantIds !== null)
@@ -191,6 +228,46 @@ abstract class SimpletippModule extends \Module
         return $table;
     }
 
+    public function getQuestionHighscore() 
+    {
+        $arrResult = [];
+        $result = $this->Database->prepare("SELECT
+            tl_simpletipp_question.id as questionId, tl_simpletipp_question.question,
+            tl_simpletipp_question.points, tl_simpletipp_question.results,
+            tl_simpletipp_answer.id as answerId, tl_simpletipp_answer.answer,
+            tl_member.id as memberId, tl_member.*
+            FROM tl_simpletipp_answer,tl_simpletipp_question, tl_member
+            WHERE tl_simpletipp_answer.pid 
+            IN(SELECT id FROM tl_simpletipp_question WHERE tl_simpletipp_question.pid = ?)
+            AND tl_simpletipp_question.id = tl_simpletipp_answer.pid
+            AND tl_member.id = tl_simpletipp_answer.member"
+        )->execute($this->simpletipp->leagueID);
+        
+        while ($result->next())
+        {
+            $row = $result->row();
+            $row['results'] = unserialize($row['results']);
+            if(!array_key_exists($result->memberId, $arrResult))
+            {
+                $m = (object) $row; 
+                $m->totalPoints = 0;
+                $m->pointDetails = []; 
+                $arrResult[$result->memberId] = $m;
+            }
+            $memberObj = &$arrResult[$result->memberId];
+            if (in_array($row['answer'], $row['results']))
+            {
+                $memberObj->questionPoints = $memberObj->totalPoints + $row['points'];
+                $memberObj->questionDetails[] = (object) [
+                    'question' => $row['question'],
+                    'answer'   => $row['answer'],
+                    'points'   => $row['points'],
+                ];
+            };
+        }
+
+        return $arrResult;
+    }
 
     private function getHighscoreRow($memberRow, $params = '')
     {
