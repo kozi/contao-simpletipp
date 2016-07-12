@@ -98,6 +98,9 @@ TODO :: less verwenden?
     outline: none;
 }
 
+/* Questions
+-----------------------------------------------------------------------------*/
+
 .mod_simpletipp_questions .question {
     margin:1em 0 0 0;
 }
@@ -114,12 +117,41 @@ TODO :: less verwenden?
 .mod_simpletipp_questions .otherAnswers .member {
     list-style: none;
     margin:0;
-    padding:0;    
+    padding:0;
 }
 
 .mod_simpletipp_questions .otherAnswers .member li {
 	background:#eee;
     display:inline-block;
     margin:2px;
-    padding:3px;    
+    padding:3px;
+}
+
+/* Highscore Details
+-----------------------------------------------------------------------------*/
+
+.mod_simpletipp .pointExplanation {
+	display: none;
+}
+
+.mod_simpletipp .pointExplanation table {
+	background-color:transparent;
+	border-spacing:0;
+	float:right;
+	text-align:right;
+	width:auto;
+}
+
+.mod_simpletipp .pointExplanation table tr {
+	border:none;
+}
+
+.mod_simpletipp tr.pointExplanation table tr td {
+	font-size:13px;
+	font-weight:normal !important;
+	text-align:right;
+	white-space:normal;
+	border:none;
+	padding:0 0 0 20px;
+	margin:0;
 }

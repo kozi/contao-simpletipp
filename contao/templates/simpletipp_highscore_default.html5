@@ -5,35 +5,6 @@
 <?php endif; ?>
 
 <?=$this->filter; ?>
-<style>
-.pointExplanation {
-	display: none;
-}
-
-.pointExplanation table {
-	background-color:transparent;
-	border-spacing:0;
-	float:right;
-	text-align:right;
-	width:auto;
-}
-
-.pointExplanation table tr {
-	border:none;
-}
-
-tr.pointExplanation table tr td {
-	font-size:13px;
-	font-weight:normal !important;
-	text-align:right;
-	white-space:normal;
-	border:none;
-	padding:0 0 0 20px;
-	margin:0;
-}
-
-</style>
-
 <table class="<?=$this->tableClass?>">
 	<thead><tr>
 		<th><?=$GLOBALS['TL_LANG']['simpletipp']['position'][0]?></th>
