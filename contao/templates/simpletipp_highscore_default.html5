@@ -4,11 +4,39 @@
 	<<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
 <?php endif; ?>
 
-<?php echo $this->filter; ?>
+<?=$this->filter; ?>
+<style>
+.pointExplanation {
+	display: none;
+}
+
+.pointExplanation table {
+	background-color:transparent;
+	border-spacing:0;
+	float:right;
+	text-align:right;
+	width:auto;
+}
+
+.pointExplanation table tr {
+	border:none;
+}
+
+tr.pointExplanation table tr td {
+	font-size:13px;
+	font-weight:normal !important;
+	text-align:right;
+	white-space:normal;
+	border:none;
+	padding:0 0 0 20px;
+	margin:0;
+}
+
+</style>
 
 <table class="<?=$this->tableClass?>">
 	<thead><tr>
-		<th><?php echo $GLOBALS['TL_LANG']['simpletipp']['position'][0]?></th>
+		<th><?=$GLOBALS['TL_LANG']['simpletipp']['position'][0]?></th>
 
 		<?php if($this->avatarActive): ?>
 			<th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
@@ -16,7 +44,8 @@
 			<th><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
 		<?php endif; ?>
 
-		<th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
+		<th><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
+		<th style="text-align:right;"><button onclick="$('tr.pointExplanation').toggle();">Details</button></th>
 	</tr></thead>
 	<tbody>
 
@@ -26,12 +55,28 @@
 		<?php if($this->avatarActive): ?>
 			<td class="avatar"><a href="<?=$row->memberLink?>">{{image::<?=$row->avatar?>?width=24&height=24&mode=crop}}</a></td>
 		<?php endif;?>
-		<td class="name"><a href="<?=$row->memberLink?>"><?=$row->firstname.' '.$row->lastname?><span class="username"><?php echo ' ('.$row->username.')';?></span></a></td>
+		<td class="name"><a href="<?=$row->memberLink?>"><?=$row->firstname.' '.$row->lastname?><span class="username"><?=' ('.$row->username.')';?></span></a></td>
         <td class="details" title="<?=sprintf($GLOBALS['TL_LANG']['simpletipp']['point_details'], $row->sum_perfect, $row->sum_difference, $row->sum_tendency)?>">
             <?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency.(($row->questionPoints) ? '/'.$row->questionPoints : '')?>
         </td>
 		<td class="points"><?=$row->points?></td>
 	</tr>
+	<tr class="pointExplanation <?=$row->cssClass?>">
+		<td colspan="4">
+			<table>
+				<tr><td>Richtige:</td><td><?=$row->sum_perfect?> x 3</td><td><?=($row->sum_perfect* 3)?></td></tr>
+				<tr><td>Differenzen:</td><td><?=$row->sum_difference?> x 2</td><td><?=($row->sum_difference* 2)?></td></tr>
+				<tr><td>Tendenzen:</td><td><?=$row->sum_tendency?> x 1</td><td><?=($row->sum_tendency* 1)?></td></tr>
+
+				<?php if($row->questionPoints && $row->questionPoints > 0): ?>
+					<?php foreach($row->questionDetails as $q): ?>
+						<tr><td><?=$q->question?></td><td><?=$q->answer?></td><td><?=$q->points?></td></tr>
+					<?php endforeach;?>
+				<?php endif; ?>
+			</table>
+		</td>
+	</tr>
+
 <?php endforeach;?>
 	</tbody>
 </table>
