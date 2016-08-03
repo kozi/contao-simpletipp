@@ -335,7 +335,9 @@ class SimpletippMatches extends SimpletippModule {
 
             usort($groups, function($a, $b)
             {
-                return strcmp($a['title'], $b['title']);
+		// TODO Configure sorting string or int
+		// return strcmp($a['title'], $b['title']);
+		return ((int) $a['title']) - ((int) $b['title']);            	
             });
 
             $tmpl->group_filter = $groups;
