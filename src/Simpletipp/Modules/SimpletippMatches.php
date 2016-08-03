@@ -436,7 +436,7 @@ class SimpletippMatches extends SimpletippModule {
 				); 
 		}
 
-        $content .= "\n\n--\n".\Contao\Environment::get("base")."\n".$GLOBALS['TL_ADMIN_EMAIL'];
+        $content .= "\n\n--\n".\Contao\Environment::get("base")."\n".$this->simpletipp->adminEmail;
         $subject  = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_subject'],
                        date('d.m.Y H:i:s'), $this->User->firstname.' '.$this->User->lastname);
 
@@ -459,7 +459,7 @@ class SimpletippMatches extends SimpletippModule {
         $email->subject  = $subject;
         $email->text     = base64_encode($content);
         $email->replyTo($this->User->email);
-        $email->sendTo($GLOBALS['TL_ADMIN_EMAIL']);
+        $email->sendTo($this->simpletipp->adminEmail);
 
         return true;
 	}
