@@ -28,7 +28,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
     <tr>
         <th class="matchgroup"><span class="content"><?=$GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup'][0]?></span></th>
         <th colspan="2"><?=$GLOBALS['TL_LANG']['tl_simpletipp']['match'][0]?></th>
-        <th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['tipp'][0]?>/<abbr title="Ergebnis">Erg.</abbr></th>
+        <th colspan="2"><abbr title="<?=$GLOBALS['TL_LANG']['simpletipp']['tipp'][0]?>"><?=substr($GLOBALS['TL_LANG']['simpletipp']['tipp'][0],0,1)?></abbr>/<abbr title="Ergebnis">E</abbr></th>
         <th><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
     </tr>
 </thead>
