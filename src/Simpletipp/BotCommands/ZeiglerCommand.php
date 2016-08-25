@@ -25,11 +25,11 @@ class ZeiglerCommand extends BasicCommand
         $cache = TL_ROOT.'/system/tmp';
         $url   = 'http://www.radiobremen.de/podcast/zeigler/';
 
-        $this->replyWithChatAction(Actions::TYPING);
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         if (!$this->access())
         {
-            $this->replyWithMessage('Chat not registered.');
+            return;
         }
 
         $feed = new SimplePie();
@@ -54,7 +54,7 @@ class ZeiglerCommand extends BasicCommand
         if (file_exists('system/tmp/'.$filename))
         {
             // TODO Save file_id
-            $this->replyWithAudio('system/tmp/'.$filename);
+            $this->replyWithAudio(['audio' => 'system/tmp/'.$filename]);
         }
 
     }
