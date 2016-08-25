@@ -21,11 +21,11 @@ class ZitatCommand extends BasicCommand
      */
     public function handle($arguments)
     {
-        $this->replyWithChatAction(Actions::TYPING);
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         if (!$this->access())
         {
-            $this->replyWithMessage('Chat not registered.');
+            return;
         }
 
         $filename = 'files/zitate.txt';
@@ -39,6 +39,6 @@ class ZitatCommand extends BasicCommand
             $message = "»".$arr[0]."« (".$arr[1].")\n";
         }
 
-        $this->replyWithMessage($message);
+        $this->replyWithMessage(['text' => $message]);
     }
 }
