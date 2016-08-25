@@ -25,11 +25,11 @@ class StartCommand extends BasicCommand
         $botSecret = trim($arguments);
 
         // This will update the chat status to typing...
-        $this->replyWithChatAction(Actions::TYPING);
+        $this->replyWithChatAction(['action'=> Actions::TYPING]);
 
         if (strlen($botSecret) === 0)
         {
-            $this->replyWithMessage('Missing secret key. Use link on Homepage to start chat.');
+            $this->replyWithMessage(['text' => 'Missing secret key. Use link on settings page to start chat.']);
             return false;
         }
 
@@ -38,7 +38,7 @@ class StartCommand extends BasicCommand
 
         if ($objMember === null)
         {
-            $this->replyWithMessage('Key not found.');
+            $this->replyWithMessage(['text' => 'Key not found.']);
             return false;
         }
 
@@ -48,7 +48,7 @@ class StartCommand extends BasicCommand
         $objMember->save();
 
         $tmpl = 'Chat registered for %s (%s).';
-        $this->replyWithMessage(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
+        $this->replyWithMessage(['text' => sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username)]);
 
         // Build the list
         $commands = $this->getTelegram()->getCommands();
@@ -58,6 +58,6 @@ class StartCommand extends BasicCommand
         }
 
         // Reply with the commands list
-        $this->replyWithMessage($response);
+        $this->replyWithMessage(['text' => $response]);
     }
 }
