@@ -21,7 +21,7 @@ class HighscoreCommand extends BasicCommand
      */
     public function handle($arguments)
     {
-        $this->replyWithChatAction(Actions::TYPING);
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         if (!$this->access())
         {
