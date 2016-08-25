@@ -25,7 +25,7 @@ class SpieleCommand extends BasicCommand
 
         if (!$this->access())
         {
-            $this->replyWithMessage('Chat not registered.');
+            return;
         }
 
         $highscore = $this->simpletippModule->getHighscore();
@@ -41,6 +41,6 @@ class SpieleCommand extends BasicCommand
                 ."\n";
         }
 
-        $this->replyWithMessage("Spiele");
+        $this->replyWithMessage(['text' => "Spiele"]);
     }
 }
