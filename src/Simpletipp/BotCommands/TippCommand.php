@@ -22,11 +22,11 @@ class TippCommand extends BasicCommand
     public function handle($arguments)
     {
         // This will update the chat status to typing...
-        $this->replyWithChatAction(Actions::TYPING);
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         if (!$this->access())
         {
-            $this->replyWithMessage('Chat not registered.');
+            return;
         }
 
 
@@ -36,7 +36,6 @@ class TippCommand extends BasicCommand
         // handled when you replace `send<Method>` with `replyWith` and use all their parameters except chat_id.
         // $this->replyWithPhoto('kunstrasen.jpg');
 
-
         $arrRows = ['Bayern München - Borussia Dortmund',
                     'Bisheriger Tipp: 1:2'];
 
@@ -45,10 +44,17 @@ class TippCommand extends BasicCommand
             ['1:0', '2:1', '2:0', '3:0', '3:1', '3:2'],
             ['0:1', '1:2', '0:2', '0:3', '1:3', '2:3'],
         ];
-        $reply_markup = $this->telegram->replyKeyboardMarkup($keyboard, true, true);
-
-
-        $this->replyWithMessage(implode(PHP_EOL, $arrRows), false, null, $reply_markup);
+        
+        $reply_markup = $this->telegram->replyKeyboardMarkup([
+            'keyboard' => $keyboard, 
+            'resize_keyboard' => true, 
+            'one_time_keyboard' => true            
+        ]);
+        
+        $this->replyWithMessage([
+            'text' => implode(PHP_EOL, $arrRows),
+            'reply_markup' => $reply_markup
+        ]);
 
     }
 }
