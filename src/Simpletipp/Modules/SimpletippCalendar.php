@@ -46,8 +46,6 @@ class SimpletippCalendar extends SimpletippModule
 
 	protected function compile()
 	{
-		global $objPage;
-
 		$isDebug              = (\Input::get('debug') == '1');
 		$calId                = trim(str_replace(array('.ics', '.ical'), array('', ''), \Input::get('cal')));
 		$this->User           = \MemberModel::findBy('simpletipp_calendar', $calId);
@@ -60,7 +58,7 @@ class SimpletippCalendar extends SimpletippModule
 
 
 		$pageObj           = \PageModel::findByPk($this->simpletipp_matches_page);
-		$this->matchesPage = ($pageObj !== null) ? $objPage->row() : null;
+		$this->matchesPage = ($pageObj !== null) ? $pageObj->row() : null;
 
 		$v = new \vcalendar();
 		$v->setConfig('unique_id', \Environment::get('base'));
