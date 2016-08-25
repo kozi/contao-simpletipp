@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['simpletipp_group'] = [
 'exclude'                 => true,
 'inputType'               => 'select',
 'options_callback'        => ['tl_page_simpletipp', 'getSimpletippGroups'],
-'eval'                    => ['multiple' => false, 'mandatory' => false, 'tl_class'=>'w50'],
+'eval'                    => ['multiple' => false, 'mandatory' => false, 'tl_class' => 'w50', 'includeBlankOption' => true],
 'sql'                     => "int(10) unsigned NOT NULL default '0'"
 ];
 
