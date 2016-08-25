@@ -25,7 +25,7 @@ class HighscoreCommand extends BasicCommand
 
         if (!$this->access())
         {
-            $this->replyWithMessage('Chat not registered.');
+            $this->replyWithMessage(['text' => 'Chat not registered.']);
         }
 
         $highscore = $this->simpletippModule->getHighscore();
@@ -42,6 +42,6 @@ class HighscoreCommand extends BasicCommand
                 .(($isU) ? " ★\n" : "\n");
         }
 
-        $this->replyWithMessage($result);
+        $this->replyWithMessage(['text' => $result]);
     }
 }
