@@ -41,6 +41,7 @@ abstract class BasicCommand extends Command
 
         if ($objMember === null)
         {
+            $this->replyWithMessage(['text' => 'Chat not registered.']);
             return false;
         }
 
