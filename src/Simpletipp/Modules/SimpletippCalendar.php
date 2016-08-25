@@ -162,7 +162,7 @@ class SimpletippCalendar extends SimpletippModule
 
 		if ($this->matchesPage !== null)
 		{
-			$url = \Environment::get('base').Controller::generateFrontendUrl($this->matchesPage,
+			$url = \Environment::get('base').\Controller::generateFrontendUrl($this->matchesPage,
 					"/group/".urlencode($matches[0]->groupName));
 		}
 
