@@ -12,14 +12,15 @@ Eine Tippspiel-Erweiterung für das CMS [Contao][] auf Basis von [OpenLigaDB][].
 
 Nach der Installation der Erweiterung muss über den Menüpunkt **Tipprunden** eine neue Tipprunde erstellt werden.
 In der Tipprunde wird festgelegt welche Liga getippt wird und welche Mitglieder teilnehmen.
-Hat man noch keine Mitgliedergruppe erstellt so muss man dies noch vorher erledigen.
+Hat man noch keine Mitgliedergruppe erstellt so muss man dies noch vorher erledigen.  
+In der Seitenstruktur muss man dann im _Startpunkt der Webseite_ die erstellte Tipprunde auswählen. Diese Tipprunde wird dann für alle Module, die sich auf den Seiten dieser Webseite befinden, verwendet. 
 
 Mit den folgenden Modulen kann man nun beginnen eine Seite für die Tipprunden zu erstellen.
 
 * **Simpletipp Benutzerauswahl**:
     Mit diesem Modul kann man eine Benutzerauswahl generieren. Benötigt wird diese um einen Benutzer
     auszuwählen, dessen Daten angezeigt werden sollen. Die Anzeige der anderen Module wird damit
-    also beeinflusst.
+    also beeinflusst. Im Moment ist dies nur für das Modul _Simpletipp Spiele_ relevant.
 
 * **Simpletipp Kalender**:
     Mit diesem Modul kann ein iCal Kalender mit den Spielen einer Tipprunde erstellt werden.
