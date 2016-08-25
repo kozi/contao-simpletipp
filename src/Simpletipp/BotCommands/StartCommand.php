@@ -25,7 +25,7 @@ class StartCommand extends BasicCommand
         $botSecret = trim($arguments);
 
         // This will update the chat status to typing...
-        $this->replyWithChatAction(['action'=> Actions::TYPING]);
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         if (strlen($botSecret) === 0)
         {
