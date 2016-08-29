@@ -43,6 +43,8 @@ class SimpletippCallbacks extends \Backend
 
     public function createNewsletterChannel()
     {
+    	
+    	$allSimpletippEmails = [];
         $result = $this->Database->execute("SELECT * FROM tl_simpletipp");
         while($result->next())
         {
@@ -75,6 +77,7 @@ class SimpletippCallbacks extends \Backend
                 foreach($objMembers as $objMember)
                 {
                     $emails[] = $objMember->email;
+                    $allSimpletippEmails[] = $objMember->email;
                 }
             }
 
@@ -93,6 +96,41 @@ class SimpletippCallbacks extends \Backend
                 $recipient->save();
             }
         }
+        
+        // Create global newsletter channel with the users from all simpletipp configurations
+        $globalChannel = $this->Database->prepare("SELECT * FROM tl_newsletter_channel WHERE simpletipp = ?")->execute('-1');
+        if ($globalChannel->numRows == 0) {
+			$nlc = new \NewsletterChannelModel();
+			$nlc->setRow([
+        		'simpletipp' => -1,
+	        	'title'      => 'SIMPLETIPP ALL',
+            	'jumpTo'     => 1, // TODO
+            	'tstamp'     => time(),
+			]);
+        	$nlc->save();
+        	$globalChannel_id = $nlc->id;
+        }
+        else {
+        	$globalChannel_id = $globalChannel->id;
+        }
+		$this->Database->prepare("DELETE FROM tl_newsletter_recipients WHERE pid = ?")->execute($globalChannel_id);
+        
+
+		$allSimpletippEmails[] = array_unique($allSimpletippEmails);
+        foreach($allSimpletippEmails as $email)
+        {
+            $recipient = new \NewsletterRecipientsModel();
+            $recipient->setRow([
+                'pid'       => $globalChannel_id,
+                'email'     => $email,
+                'tstamp'    => time(),
+                'addedOn'   => time(),
+                'confirmed' => time(),
+                'active'    => '1'
+            ]);
+            $recipient->save();
+        }
+        
     }
     public function telegramChatLink($strTag)
     {
