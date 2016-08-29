@@ -16,8 +16,8 @@
             <span class="tiny"><?=$this->match->teamHome->three.' - '.$this->match->teamAway->three?></span>
         </th>
         <th class="logos">
-            <i class="<?=$this->match->teamHome->alias?>" style="background-image:url('<?php echo Image::get($this->match->teamHome->logoPath(),100,100,'box');?>');"><?=$this->match->teamHome->three?></i>
-            <i class="<?=$this->match->teamAway->alias?>" style="background-image:url('<?php echo Image::get($this->match->teamAway->logoPath(),100,100,'box');?>');"><?=$this->match->teamAway->three?></i>
+            <i class="<?=$this->match->teamHome->alias?>" style="background-image:url('<?php echo Image::get($this->match->teamHome->logoPath(),100,100,'center_center');?>');"><?=$this->match->teamHome->three?></i>
+            <i class="<?=$this->match->teamAway->alias?>" style="background-image:url('<?php echo Image::get($this->match->teamAway->logoPath(),100,100,'center_center');?>');"><?=$this->match->teamAway->three?></i>
         </th>
         <th class="result"><?=$this->match->result?></th>
     </tr>
