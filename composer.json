@@ -24,6 +24,7 @@
         "contao/core": ">=3.4",
         "contao-community-alliance/composer-plugin": "~2",
         "kigkonsult/icalcreator": "*",
+        "phpfastcache/phpfastcache": "~5",
         "irazasyed/telegram-bot-sdk": "~2"
     },
     "require-dev": {
