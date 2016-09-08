@@ -126,15 +126,10 @@ class SimpletippMatch extends SimpletippModule
 			// Alle Tipps bis auf den eigenen vor Spielstart ausblenden
             if (!$this->isStarted && $tipp->member_id != $this->User->id)
             {
-				$tipp->tipp = "?:?";
-			}
-
-            $tipp->avatar = ($tipp->avatar != null) ? $tipp->avatar : $this->avatarFallback;
-			$tipps[]      = $tipp;
-
-
-
-		}
+		$tipp->tipp = "?:?";
+	    }
+	    $tipps[]      = $tipp;
+	}
 
         $summe = count($tipps);
         if ($summe > 0)
@@ -143,8 +138,7 @@ class SimpletippMatch extends SimpletippModule
             $count->draw->percent = floor(($count->draw->abs / $summe) * 10000) / 100;
             $count->away->percent = floor(($count->away->abs / $summe) * 10000) / 100;
         }
-
-        $this->Template->avatarActive = $this->avatarActive;
+        
         $this->Template->match        = $this->match;
         $this->Template->isStarted    = $this->isStarted;
         $this->Template->count        = $count;
