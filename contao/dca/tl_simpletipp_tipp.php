@@ -12,7 +12,6 @@
  * @license    LGPL
  * @filesource
  */
-use \Simpletipp\Simpletipp;
 use \Simpletipp\Models\SimpletippModel;
 use \Simpletipp\Models\SimpletippTippModel;
 
@@ -160,7 +159,7 @@ class tl_simpletipp_tipp extends Backend
 
         $tipp     = $row['tipp'];
         $result   = $args[2];
-        $points   = Simpletipp::getPoints($result, $tipp);
+        $points   = SimpletippTippModel::getPoints($result, $tipp);
         $pClass   = $points->getPointsClass();
 
         $args[2]  = (strlen($result)>0) ? $tipp.' ['.$result.']' : $tipp;
@@ -210,7 +209,7 @@ class tl_simpletipp_tipp extends Backend
         if ($simpletippId)
         {
             $simpletippObj = SimpletippModel::findByPk($simpletippId);
-            $leagueGroups  = Simpletipp::getLeagueGroups($simpletippObj->leagueID);
+            $leagueGroups  = SimpletippModel::getLeagueGroups($simpletippObj->leagueID);
             foreach ($leagueGroups as $id => $g)
             {
                 $options[$id] = $g->title;

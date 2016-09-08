@@ -24,6 +24,7 @@ use Contao\Input;
 use Simpletipp\Models\SimpletippModel;
 use Simpletipp\Models\SimpletippMatchModel;
 use Simpletipp\Models\SimpletippTeamModel;
+use Simpletipp\Models\SimpletippTippModel;
 
 /**
  * Class SimpletippMatchUpdater
@@ -35,6 +36,8 @@ use Simpletipp\Models\SimpletippTeamModel;
  */
 class SimpletippMatchUpdater extends \Backend
 {
+    const GROUPNAME_VORRUNDE          = 'Vorrunde';
+
     private static $lookupLockSeconds = 0;
 
     private $oldb   = null;
@@ -224,7 +227,7 @@ class SimpletippMatchUpdater extends \Backend
             ." WHERE match_id in (".implode(',', $ids).")");
         while($result->next())
         {
-            $points = Simpletipp::getPoints($match_results[$result->match_id], $result->tipp);
+            $points = SimpletippTippModel::getPoints($match_results[$result->match_id], $result->tipp);
 
             $this->Database->prepare("UPDATE tl_simpletipp_tipp"
                 ." SET perfect = ?, difference = ?, tendency = ?, wrong = ? WHERE id = ?")
@@ -264,9 +267,9 @@ class SimpletippMatchUpdater extends \Backend
             $matchId      = $tmp['matchID'];
 
             // GroupName
-            $arrGroup     = Simpletipp::groupMapper($tmp);
+            $arrGroup     = $this->groupMapper($tmp);
 
-            $results      = self::parseResults($tmp['matchResults']);
+            $results      = $this->parseResults($tmp['matchResults']);
 
             $teamHome      = SimpletippTeamModel::findByPk($tmp['idTeam1']);
             $teamAway      = SimpletippTeamModel::findByPk($tmp['idTeam2']);
@@ -296,7 +299,6 @@ class SimpletippMatchUpdater extends \Backend
                 'resultFirst'     => array_key_exists('Halbzeit', $results) ? $results['Halbzeit'] : '' ,
                 'result'          => (count($results) > 0 ) ? $results[0]->result: '',
             ];
-
 
             $newMatches[$matchId] = $newMatch;
         }
@@ -330,7 +332,45 @@ class SimpletippMatchUpdater extends \Backend
         return $arrMatchIds;
     }
 
-    private static function parseResults($matchResults)
+    private function groupMapper($arrMatch)
+    {
+        $leagueID = $arrMatch['leagueID'];
+        $oneMio   = 1000000;
+        $arrGroup = [
+            'id'    => $arrMatch['groupID'],
+            'name'  => $arrMatch['groupName'],
+            'short' => $arrMatch['groupName']
+        ];
+
+        if (is_array($GLOBALS['simpletipp']['groupNames']) && array_key_exists($leagueID, $GLOBALS['simpletipp']['groupNames']))
+        {
+            $groupNames = $GLOBALS['simpletipp']['groupNames'][$leagueID];
+
+            if ($arrGroup['name'] ===  static::GROUPNAME_VORRUNDE)
+            {
+                $i   = 1;
+
+                foreach($groupNames as $strGroupName => $arrTeams)
+                {
+                    if (in_array($arrMatch['nameTeam1'], $arrTeams) || in_array($arrMatch['nameTeam2'], $arrTeams))
+                    {
+                        $arrGroup['name'] = $strGroupName;
+                        $arrGroup['id']   = $oneMio + $i;
+                    }
+                    $i++;
+                }
+            }
+        }
+
+        $arrGroup['short'] = $strName = trim(str_replace(
+            ['Gruppe', '. Spieltag'],
+            ['', ''],
+            $arrGroup['name']));
+
+        return $arrGroup;
+    }
+
+    private function parseResults($matchResults)
     {
         $arrResults = [];
 
@@ -343,7 +383,7 @@ class SimpletippMatchUpdater extends \Backend
                 $resultObj->name   = $res->resultTypeName;
                 $resultObj->id     = intval($res->resultTypeId);
                 $resultObj->order  = intval($res->resultOrderID);
-                $resultObj->result = $res->pointsTeam1.Simpletipp::$TIPP_DIVIDER.$res->pointsTeam2;
+                $resultObj->result = $res->pointsTeam1.SimpletippTippModel::TIPP_DIVIDER.$res->pointsTeam2;
 
                 $resultObj->pointsTeam1 = intval($res->pointsTeam1);
                 $resultObj->pointsTeam2 = intval($res->pointsTeam2);

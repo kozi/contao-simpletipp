@@ -27,6 +27,8 @@ use \Simpletipp\Models\SimpletippModel;
 
 abstract class SimpletippModule extends \Module
 {
+    const SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
+
     protected $now;
     protected $simpletipp;
     protected $simpletippGroups;
@@ -84,13 +86,13 @@ abstract class SimpletippModule extends \Module
             if ($userObj != null)
             {
                 $this->simpletippUserId = $userObj->id;
-                $_SESSION[Simpletipp::$SIMPLETIPP_USER_ID] = $this->simpletippUserId;
+                $_SESSION[self::SIMPLETIPP_USER_ID] = $this->simpletippUserId;
                 $this->redirect($this->addToUrl('user='));
             }
         }
         if($this->simpletippUserId == null)
         {
-            $this->simpletippUserId = $_SESSION[Simpletipp::$SIMPLETIPP_USER_ID];
+            $this->simpletippUserId = $_SESSION[self::SIMPLETIPP_USER_ID];
             if ($this->simpletippUserId == null)
             {
                 $this->simpletippUserId = $this->User->id;
@@ -106,7 +108,7 @@ abstract class SimpletippModule extends \Module
         $this->simpletipp = SimpletippModel::findByPk($simpletippId);
         if($this->simpletipp !== null)
         {
-            $this->simpletippGroups = Simpletipp::getLeagueGroups($this->simpletipp->leagueID);
+            $this->simpletippGroups = SimpletippModel::getLeagueGroups($this->simpletipp->leagueID);
             $this->pointFactors     = $this->simpletipp->getPointFactors();
             $this->pointSummary     = (Object) ['points' => 0, 'perfect'  => 0, 'difference' => 0, 'tendency' => 0];
         }
@@ -122,7 +124,7 @@ abstract class SimpletippModule extends \Module
         else
         {
             $restrictToMember  = '';
-            $arrParticipantIds = Simpletipp::getGroupMemberIds($this->simpletipp->participant_group);
+            $arrParticipantIds = $this->getGroupMemberIds($this->simpletipp->participant_group);
         }
 
         $this->i = 1;
@@ -306,6 +308,34 @@ abstract class SimpletippModule extends \Module
     }
 
 
+    /**
+     * @param $groupID
+     * @param string $order
+     * @return \MemberModel|\Model\Collection
+     */
+    protected function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC')
+    {
+        $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
+        $objMembers     = \MemberModel::findBy(
+                                ['tl_member.groups LIKE ?'],
+                                $participantStr,
+                                ['order' => $order]
+                          );
+        return $objMembers;
+    }
+
+    protected function getGroupMemberIds($groupID)
+    {
+        $arrIds     = [];
+        $objMembers = $this->getGroupMember($groupID);
+        if ($objMembers!== null)
+        {
+            $arrIds = array_map(function($objMember) { return $objMember->id; }, $objMembers);
+        }
+        return $arrIds;
+    }
+    
+
     protected function cache($key, $data = null, $cleanEntries = false)
     {
         $fn = static::$cache_key_prefix.'_'.$key.'_'.$this->simpletipp->id
@@ -318,7 +348,7 @@ abstract class SimpletippModule extends \Module
             {
                 foreach ($data as &$item)
                 {
-                    Simpletipp::cleanItem($item);
+                    $this->cleanItem($item);
                 }
             }
             $objFile->write(serialize($data));
@@ -332,6 +362,68 @@ abstract class SimpletippModule extends \Module
         }
         return unserialize($objFile->getContent());
     }
+
+    private function cleanItem(&$item)
+    {
+        if (is_object($item))
+        {
+            unset($item->password);
+            unset($item->session);
+            unset($item->autologin);
+            unset($item->activation);
+            foreach($item as $property => $value)
+            {
+                if (is_string($value) && strlen($value) == 0)
+                {
+                    unset($item->$property);
+                }
+            }
+        }
+        if (is_array($item))
+        {
+            foreach($item as $key => $value)
+            {
+                if (is_string($value) && strlen($value) == 0)
+                {
+                    unset($item[$key]);
+                }
+            }
+        }
+    }
+
+
+
+    protected function getSimpletippMessages()
+    {
+        if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE']))
+        {
+            $_SESSION['TL_SIMPLETIPP_MESSAGE'] = [];
+        }
+
+        if (count($_SESSION['TL_SIMPLETIPP_MESSAGE']) == 0)
+        {
+            return '';
+        }
+
+        $messages = '';
+        foreach($_SESSION['TL_SIMPLETIPP_MESSAGE'] AS $message)
+        {
+            $messages .= sprintf("	<div class=\"message\">%s</div>\n", $message);
+        }
+        // Reset
+        $_SESSION['TL_SIMPLETIPP_MESSAGE'] = [];
+        return sprintf("\n<div class=\"simpletipp_messages\">\n%s</div>\n", $message);
+    }
+
+    protected function addSimpletippMessage($message)
+    {
+        if (!is_array($_SESSION['TL_SIMPLETIPP_MESSAGE']))
+        {
+            $_SESSION['TL_SIMPLETIPP_MESSAGE'] = [];
+        }
+        $_SESSION['TL_SIMPLETIPP_MESSAGE'][] = $message;
+    }
+
 
 } // END class Simpletipp
 

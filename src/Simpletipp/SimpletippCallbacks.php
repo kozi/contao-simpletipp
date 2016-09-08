@@ -71,7 +71,8 @@ class SimpletippCallbacks extends \Backend
                 ->execute($channel_id);
 
             $emails     = [];
-            $objMembers = Simpletipp::getGroupMember($simpletipp['participant_group']);
+            $groupID    = $simpletipp['participant_group'];
+            $objMembers = \MemberModel::findBy(['tl_member.groups LIKE ?'], '%s:'.strlen($groupID).':"'.$groupID.'"%');
             if ($objMembers !== null)
             {
                 foreach($objMembers as $objMember)
@@ -80,7 +81,7 @@ class SimpletippCallbacks extends \Backend
                     $allSimpletippEmails[] = $objMember->email;
                 }
             }
-
+            
             $emails = array_unique($emails);
             foreach($emails as $email)
             {
@@ -132,6 +133,7 @@ class SimpletippCallbacks extends \Backend
         }
         
     }
+
     public function telegramChatLink($strTag)
     {
         $arr = explode('::', $strTag);
@@ -141,7 +143,7 @@ class SimpletippCallbacks extends \Backend
             $name = trim($arr[1]);
 
             // Generate new secrect key
-            $secretKey = Simpletipp::generateBotSecret();
+            $secretKey = $this->generateBotSecret();
 
             // Save key in tl_member table
             $this->import('FrontendUser', 'User');
@@ -153,6 +155,22 @@ class SimpletippCallbacks extends \Backend
         // nicht unser Insert-Tag
         return false;
     }
+
+    private function generateBotSecret($length = 52)
+    {
+        $index          = 0;
+        $use_random_int = (function_exists('random_int'));
+        $codeAlphabet   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $lengthAlphabet = strlen($codeAlphabet);
+        $token          = '';
+        for($i = 0;$i < $length;$i++)
+        {
+            $index  = ($use_random_int) ? random_int(0,$lengthAlphabet) : mt_rand(0,$lengthAlphabet);
+            $token .= $codeAlphabet[$index];
+        }
+        return $token;
+    }
+
 
     public function randomLine($strTag)
     {

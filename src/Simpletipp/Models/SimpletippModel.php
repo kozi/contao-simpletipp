@@ -36,4 +36,28 @@ class SimpletippModel extends \Model
         return $pointFactors;
     }
 
+    public static function getLeagueGroups($leagueID)
+    {
+        $groups = [];
+        $result = \Database::getInstance()->prepare("SELECT DISTINCT groupID, groupName
+          FROM tl_simpletipp_match WHERE leagueID = ? ORDER BY groupID")->execute($leagueID);
+
+        while($result->next())
+        {
+            $short = intval($result->groupName);
+            if ($short == 0)
+            {
+                $mg    = explode(". ", $result->groupName);
+                $short = $mg[0];
+            }
+
+            $groups[$result->groupID] = (Object) [
+                'title' => $result->groupName,
+                'short' => $short
+            ];
+        }
+        return $groups;
+    }
+    
+
 }

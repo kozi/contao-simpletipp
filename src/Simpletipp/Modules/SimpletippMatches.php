@@ -16,7 +16,6 @@
 namespace Simpletipp\Modules;
 
 use Simpletipp\Models\SimpletippMatchModel;
-use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippPoints;
 use \Simpletipp\SimpletippModule;
 use \Simpletipp\Models\SimpletippTeamModel;
@@ -78,7 +77,7 @@ class SimpletippMatches extends SimpletippModule {
         $this->Template->action     = ampersand(\Environment::get('request'));
 
 		$this->Template->summary    = $this->pointSummary;
-		$this->Template->messages   = Simpletipp::getSimpletippMessages();
+		$this->Template->messages   = $this->getSimpletippMessages();
 	}
 
 	private function getMatches()
@@ -365,7 +364,7 @@ class SimpletippMatches extends SimpletippModule {
 			for ($i=0;$i < count($ids);$i++)
             {
 				$id    = intval($ids[$i]);
-				$tipp  = Simpletipp::cleanupTipp($tipps[$i]);
+				$tipp  = $this->cleanupTipp($tipps[$i]);
 
 				if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp))
                 {
@@ -411,9 +410,32 @@ class SimpletippMatches extends SimpletippModule {
                 $message = $GLOBALS['TL_LANG']['simpletipp']['message_inserted'];
             }
         }
-        Simpletipp::addSimpletippMessage($message);
+        $this->addSimpletippMessage($message);
         return true;
 	}
+
+    private function cleanupTipp($tipp)
+    {
+        $t = preg_replace ('/[^0-9]/',' ', $tipp);
+        $t = preg_replace ('/\s+/',SimpletippTippModel::TIPP_DIVIDER, $t);
+
+        if (strlen($t) < 3)
+        {
+            return '';
+        }
+
+        $tmp = explode(SimpletippTippModel::TIPP_DIVIDER, $t);
+
+        if(strlen($tmp[0]) < 1 && strlen($tmp[1]) < 1)
+        {
+            return '';
+        }
+
+        $h = intval($tmp[0], 10);
+        $a = intval($tmp[1], 10);
+        return $h.SimpletippTippModel::TIPP_DIVIDER.$a;
+    }
+    
 
 	private function sendTippEmail($matches)
     {
@@ -478,6 +500,9 @@ class SimpletippMatches extends SimpletippModule {
         }
 
     }
+
+
+
 
 
 } // END class SimpletippMatches

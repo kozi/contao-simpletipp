@@ -15,10 +15,7 @@
 
 namespace Simpletipp\Modules;
 
-
-use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippModule;
-
 
 /**
  * Class SimpletippUserselect
@@ -49,7 +46,7 @@ class SimpletippUserselect extends SimpletippModule
     {
         $participants = [];
 
-        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = $this->getGroupMember($this->simpletipp->participant_group);
         if ($objMembers != null)
         {
             foreach ($objMembers as $objMember)

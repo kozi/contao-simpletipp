@@ -15,9 +15,9 @@
 
 namespace Simpletipp\Elements;
 
-use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippModule;
 use \Simpletipp\Models\SimpletippMatchModel;
+use \Simpletipp\Models\SimpletippTippModel;
 
 /**
  * Class SimpletippStatistics
@@ -187,7 +187,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
-        $objMembers = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers = $this->getGroupMember($this->simpletipp->participant_group);
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
                 $objMember->highscorePositions = [0];
@@ -247,7 +247,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
-        $objMembers  = Simpletipp::getGroupMember($this->simpletipp->participant_group);
+        $objMembers  = $this->getGroupMember($this->simpletipp->participant_group);
         $memberArray = [];
 
         if ($objMembers !== null)
@@ -386,7 +386,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
                             WHERE match_id = ?")->execute($match->id);
         while ($tippResult->next()) {
 
-            $tippPoints = Simpletipp::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);
+            $tippPoints = SimpletippTippModel::getPoints($ergebnis, $tippResult->tipp, $this->pointFactors);
             $points->points     += $tippPoints->points;
             $points->perfect    += $tippPoints->perfect;
             $points->difference += $tippPoints->difference;

@@ -16,7 +16,8 @@
 namespace Simpletipp\Modules;
 
 use Simpletipp\Models\SimpletippTippModel;
-use Simpletipp\Simpletipp;
+use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\SimpletippEmailReminder;
 use Simpletipp\SimpletippModule;
 
 /**
@@ -46,7 +47,8 @@ class SimpletippNotTipped extends SimpletippModule
 
 	protected function compile() {
 
-		$match = Simpletipp::getNextMatch($this->simpletipp->leagueID);
+
+		$match = SimpletippMatchModel::getNextMatch($this->simpletipp->leagueID);
         if ($match == null)
 		{
             // no next match
@@ -59,7 +61,7 @@ class SimpletippNotTipped extends SimpletippModule
 		if ($arrUser === null)
 		{
 			$arrUser = [];
-			$arr     = Simpletipp::getNotTippedUser($this->simpletipp->participant_group, $match->id);
+			$arr     = SimpletippEmailReminder::getNotTippedUser($this->simpletipp->participant_group, $match->id);
 			foreach($arr as $u)
 			{
 				$key           = $u['username'];

@@ -15,8 +15,8 @@
 
 namespace Simpletipp\Widgets;
 
-use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippPokal;
+use \Simpletipp\Models\SimpletippModel;
 
 class PokalRangesField extends \Widget
 {
@@ -27,7 +27,7 @@ class PokalRangesField extends \Widget
 
     public function generate()
     {
-        $this->leagueGroups  = Simpletipp::getLeagueGroups($this->activeRecord->leagueID);
+        $this->leagueGroups  = SimpletippModel::getLeagueGroups($this->activeRecord->leagueID);
         $this->varValue      = ($this->varValue === null) ? array() : $this->varValue;
 
         // Initialize the tab index
@@ -85,10 +85,9 @@ class PokalRangesField extends \Widget
         $i            = 0;
         $addGroup     = false;
         $currentAlias = SimpletippPokal::$groupAliases[$i];
-
-        foreach (Simpletipp::getLeagueGroups($this->activeRecord->leagueID) as $g)
+        $leagueGroups = SimpletippModel::getLeagueGroups($this->activeRecord->leagueID); 
+        foreach ($leagueGroups as $g)
         {
-
             if ($g->title == $def[$currentAlias]['end'])
             {
                 $valueArr[$currentAlias][] = $g->title;

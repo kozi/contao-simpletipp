@@ -220,7 +220,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 
 
 use \Simpletipp\OpenLigaDB;
-use \Simpletipp\Simpletipp;
 use \Simpletipp\Models\SimpletippModel;
 
 /**
@@ -298,7 +297,7 @@ class tl_simpletipp extends \Backend
         {
             $this->matchGroupOptions[''] = '-';
             $leagueID = intval($dc->activeRecord->leagueID);
-            $groups   = Simpletipp::getLeagueGroups($leagueID);
+            $groups   = SimpletippModel::getLeagueGroups($leagueID);
             foreach ($groups as $g)
             {
                 $this->matchGroupOptions[$g->title] = $g->title;

@@ -15,9 +15,9 @@
 
 namespace Simpletipp\Modules;
 
-
-use \Simpletipp\Simpletipp;
 use \Simpletipp\SimpletippModule;
+use \Simpletipp\Models\SimpletippTippModel;
+
 
 /**
  * Class SimpletippCalendar
@@ -194,7 +194,7 @@ class SimpletippCalendar extends SimpletippModule
 				}
 				else
 				{
-					$p          = Simpletipp::getPoints($m->result, $m->tipp, $this->pointFactors);
+					$p          = SimpletippTippModel::getPoints($m->result, $m->tipp, $this->pointFactors);
 					$pointsSum  = $pointsSum + $p->points;
 					$info2      = ' # '.$p->getPointsString();
 				}

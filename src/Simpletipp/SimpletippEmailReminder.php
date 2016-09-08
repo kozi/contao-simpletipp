@@ -26,7 +26,7 @@ namespace Simpletipp;
  * @package    Controller
  */
 use Simpletipp\Models\SimpletippModel;
-
+use Simpletipp\Models\SimpletippMatchModel;
 
 class SimpletippEmailReminder extends \Backend
 {
@@ -40,7 +40,7 @@ class SimpletippEmailReminder extends \Backend
         $arrMessages     = [];
         foreach ($simpletippModel as $simpletippObj)
         {
-            $match = Simpletipp::getNextMatch($simpletippObj->leagueID);
+            $match = SimpletippMatchModel::getNextMatch($simpletippObj->leagueID);
 
             if ($match == null
                 || $simpletippObj->lastRemindedMatch == $match->id
@@ -61,7 +61,7 @@ class SimpletippEmailReminder extends \Backend
                     \Environment::get('base').$this->generateFrontendUrl($pageObj->row()));
 
                 $emailCount = 0;
-                foreach(Simpletipp::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u)
+                foreach(static::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u)
                 {
                     $emailSent = '';
                     if ($u['simpletipp_email_reminder'] == '1')
@@ -113,6 +113,26 @@ class SimpletippEmailReminder extends \Backend
             $email->html  = $text;
         }
         return $email;
+    }
+
+    public static function getNotTippedUser($groupID, $match_id)
+    {
+        $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
+
+        $result = \Database::getInstance()->prepare("SELECT tblu.*
+             FROM tl_member as tblu
+             LEFT JOIN tl_simpletipp_tipp AS tblt
+             ON ( tblu.id = tblt.member_id AND tblt.match_id = ?)
+             WHERE tblt.id IS NULL
+             AND CONVERT(tblu.groups USING utf8) LIKE ?
+             ORDER BY tblu.lastname")->execute($match_id, $participantStr);
+
+        $arrUser = [];
+        while ($result->next())
+        {
+            $arrUser[] = $result->row();
+        }
+        return $arrUser;
     }
 
 }

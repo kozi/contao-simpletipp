@@ -142,4 +142,14 @@ class SimpletippMatchModel extends \Model
         return $goalData;
     }
 
+
+    public static function getNextMatch($leagueID)
+    {
+	    return self::findOneBy(
+            ['leagueID = ?', 'deadline > ?'],
+            [$leagueID, time()],
+            ['order' => 'deadline ASC, id ASC']
+        );
+    }
+
 }
