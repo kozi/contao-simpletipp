@@ -97,13 +97,14 @@ class SimpletippCallbacks extends \Backend
                 $recipient->save();
             }
         }
-        
+
         // Create global newsletter channel with the users from all simpletipp configurations
-        $globalChannel = $this->Database->prepare("SELECT * FROM tl_newsletter_channel WHERE simpletipp = ?")->execute('-1');
+        $simpletipp_global_id = 999999999;
+        $globalChannel = $this->Database->prepare("SELECT * FROM tl_newsletter_channel WHERE simpletipp = ?")->execute($simpletipp_global_id);
         if ($globalChannel->numRows == 0) {
 			$nlc = new \NewsletterChannelModel();
 			$nlc->setRow([
-        		'simpletipp' => -1,
+        		'simpletipp' => $simpletipp_global_id,
 	        	'title'      => 'SIMPLETIPP ALL',
             	'jumpTo'     => 1, // TODO
             	'tstamp'     => time(),
