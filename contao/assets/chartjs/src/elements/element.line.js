@@ -116,7 +116,7 @@ module.exports = function(Chart) {
 					}
 				}
 
-				if (!loop) {
+				if (!loop && lastDrawnIndex !== -1) {
 					ctx.lineTo(points[lastDrawnIndex]._view.x, scaleZero);
 				}
 
@@ -150,9 +150,7 @@ module.exports = function(Chart) {
 
 				// First point moves to it's starting position no matter what
 				if (index === 0) {
-					if (currentVM.skip) {
-						
-					} else {
+					if (!currentVM.skip) {
 						ctx.moveTo(currentVM.x, currentVM.y);
 						lastDrawnIndex = index;
 					}

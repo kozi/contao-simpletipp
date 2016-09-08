@@ -21,7 +21,7 @@ module.exports = function(Chart) {
 		// Implement this so that
 		determineDataLimits: function() {
 			var me = this;
-			var labels = me.getLabels(); 
+			var labels = me.getLabels();
 			me.minIndex = 0;
 			me.maxIndex = labels.length - 1;
 			var findIndex;
@@ -59,7 +59,7 @@ module.exports = function(Chart) {
 			// 1 is added because we need the length but we have the indexes
 			var offsetAmt = Math.max((me.maxIndex + 1 - me.minIndex - ((me.options.gridLines.offsetGridLines) ? 0 : 1)), 1);
 
-			if (value !== undefined) {
+			if (value !== undefined && isNaN(index)) {
 				var labels = me.getLabels();
 				var idx = labels.indexOf(value);
 				index = idx !== -1 ? idx : index;
@@ -70,9 +70,9 @@ module.exports = function(Chart) {
 				var valueWidth = innerWidth / offsetAmt;
 				var widthOffset = (valueWidth * (index - me.minIndex)) + me.paddingLeft;
 
-				if (me.options.gridLines.offsetGridLines && includeOffset) {
+			if (me.options.gridLines.offsetGridLines && includeOffset || me.maxIndex === me.minIndex && includeOffset) {
 					widthOffset += (valueWidth / 2);
-				}
+			}
 
 				return me.left + Math.round(widthOffset);
 			} else {

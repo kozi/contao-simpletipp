@@ -19,7 +19,9 @@ module.exports = function(Chart) {
 			tickMarkLength: 10,
 			zeroLineWidth: 1,
 			zeroLineColor: "rgba(0,0,0,0.25)",
-			offsetGridLines: false
+			offsetGridLines: false,
+			borderDash: [],
+			borderDashOffset: 0.0
 		},
 
 		// scale label
@@ -275,6 +277,7 @@ module.exports = function(Chart) {
 			var globalDefaults = Chart.defaults.global;
 			var tickOpts = opts.ticks;
 			var scaleLabelOpts = opts.scaleLabel;
+			var gridLineOpts = opts.gridLines;
 			var display = opts.display;
 			var isHorizontal = me.isHorizontal();
 
@@ -292,12 +295,12 @@ module.exports = function(Chart) {
 				// subtract the margins to line up with the chartArea if we are a full width scale
 				minSize.width = me.isFullWidth() ? me.maxWidth - me.margins.left - me.margins.right : me.maxWidth;
 			} else {
-				minSize.width = display ? tickMarkLength : 0;
+				minSize.width = display && gridLineOpts.drawTicks ? tickMarkLength : 0;
 			}
 
 			// height
 			if (isHorizontal) {
-				minSize.height = display ? tickMarkLength : 0;
+				minSize.height = display && gridLineOpts.drawTicks ? tickMarkLength : 0;
 			} else {
 				minSize.height = me.maxHeight; // fill all the height
 			}
@@ -502,6 +505,8 @@ module.exports = function(Chart) {
 			var tickFontFamily = helpers.getValueOrDefault(optionTicks.fontFamily, globalDefaults.defaultFontFamily);
 			var tickLabelFont = helpers.fontString(tickFontSize, tickFontStyle, tickFontFamily);
 			var tl = gridLines.tickMarkLength;
+			var borderDash = helpers.getValueOrDefault(gridLines.borderDash, globalDefaults.borderDash);
+			var borderDashOffset = helpers.getValueOrDefault(gridLines.borderDashOffset, globalDefaults.borderDashOffset);
 
 			var scaleLabelFontColor = helpers.getValueOrDefault(scaleLabel.fontColor, globalDefaults.defaultFontColor);
 			var scaleLabelFontSize = helpers.getValueOrDefault(scaleLabel.fontSize, globalDefaults.defaultFontSize);
@@ -641,6 +646,8 @@ module.exports = function(Chart) {
 					labelY: labelY,
 					glWidth: lineWidth,
 					glColor: lineColor,
+					glBorderDash: borderDash,
+					glBorderDashOffset: borderDashOffset,
 					rotation: -1 * labelRotationRadians,
 					label: label,
 					textBaseline: textBaseline,
@@ -651,8 +658,13 @@ module.exports = function(Chart) {
 			// Draw all of the tick labels, tick marks, and grid lines at the correct places
 			helpers.each(itemsToDraw, function(itemToDraw) {
 				if (gridLines.display) {
+					context.save();
 					context.lineWidth = itemToDraw.glWidth;
 					context.strokeStyle = itemToDraw.glColor;
+					if (context.setLineDash) {
+						context.setLineDash(itemToDraw.glBorderDash);
+						context.lineDashOffset = itemToDraw.glBorderDashOffset;
+					}
 
 					context.beginPath();
 
@@ -667,6 +679,7 @@ module.exports = function(Chart) {
 					}
 
 					context.stroke();
+					context.restore();
 				}
 
 				if (optionTicks.display) {
