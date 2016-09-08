@@ -4,12 +4,12 @@
  * Contao Open Source CMS
  * Copyright (C) 2005-2016 Leo Feyer
  *
- *
  * PHP version 5
- * @copyright  Martin Kozianka 2014-2016 <http://kozianka.de/>
- * @author     Martin Kozianka <http://kozianka.de/>
- * @package    simpletipp
- * @license    LGPL
+ *
+ * @package    Simpletipp
+ * @author     Martin Kozianka <martin@kozianka.de> 
+ * @copyright  2014-2016 Martin Kozianka <http://kozianka.de/>
+ * @license    LGPL www.gnu.org/licenses/lgpl.html
  * @filesource
  */
 
@@ -20,9 +20,9 @@ use \Simpletipp\Models\SimpletippModel;
 /**
  * Class Simpletipp
  *
- * @copyright  Martin Kozianka 2014-2016
- * @author     Martin Kozianka <martin@kozianka.de>
- * @package    Controller
+ * @package   Controller
+ * @author    Martin Kozianka <martin@kozianka.de> 
+ * @copyright 2014-2016 Martin Kozianka <http://kozianka.de/>
  */
 
 abstract class SimpletippModule extends \Module
@@ -328,9 +328,10 @@ abstract class SimpletippModule extends \Module
     {
         $arrIds     = [];
         $objMembers = $this->getGroupMember($groupID);
-        if ($objMembers!== null)
-        {
-            $arrIds = array_map(function($objMember) { return $objMember->id; }, $objMembers);
+        if ($objMembers!== null) {
+            foreach ($objMembers as $objMember) {
+                $arrIds[] = $objMember->id;
+            }
         }
         return $arrIds;
     }
@@ -425,5 +426,4 @@ abstract class SimpletippModule extends \Module
     }
 
 
-} // END class Simpletipp
-
+} // END class setSimpletipp
