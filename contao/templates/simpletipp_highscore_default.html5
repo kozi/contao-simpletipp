@@ -8,13 +8,7 @@
 <table class="<?=$this->tableClass?>">
 	<thead><tr>
 		<th><?=$GLOBALS['TL_LANG']['simpletipp']['position'][0]?></th>
-
-		<?php if($this->avatarActive): ?>
-			<th colspan="2"><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
-		<?php else: ?>
-			<th><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
-		<?php endif; ?>
-
+		<th><?=$GLOBALS['TL_LANG']['simpletipp']['name'][0]?></th>
 		<th><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
 		<th style="text-align:right;"><button onclick="$('tr.pointExplanation').toggle();">Details</button></th>
 	</tr></thead>
@@ -23,13 +17,10 @@
 <?php $i = 1; foreach($this->table as $row): ?>
 	<tr class="<?=$row->cssClass?>">
 		<td class="position"><?=$i++?>. </td>
-		<?php if($this->avatarActive): ?>
-			<td class="avatar"><a href="<?=$row->memberLink?>">{{image::<?=$row->avatar?>?width=24&height=24&mode=crop}}</a></td>
-		<?php endif;?>
 		<td class="name"><a href="<?=$row->memberLink?>"><?=$row->firstname.' '.$row->lastname?><span class="username"><?=' ('.$row->username.')';?></span></a></td>
-        <td class="details" title="<?=sprintf($GLOBALS['TL_LANG']['simpletipp']['point_details'], $row->sum_perfect, $row->sum_difference, $row->sum_tendency)?>">
-            <?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency.(($row->questionPoints) ? '/'.$row->questionPoints : '')?>
-        </td>
+        	<td class="details" title="<?=sprintf($GLOBALS['TL_LANG']['simpletipp']['point_details'], $row->sum_perfect, $row->sum_difference, $row->sum_tendency)?>">
+            		<?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency.(($row->questionPoints) ? '/'.$row->questionPoints : '')?>
+        	</td>
 		<td class="points"><?=$row->points?></td>
 	</tr>
 	<tr class="pointExplanation <?=$row->cssClass?>">
