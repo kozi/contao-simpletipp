@@ -15,7 +15,6 @@
 
 namespace Simpletipp;
 
-use \Contao\ModuleLoader;
 use \Simpletipp\Models\SimpletippModel;
 
 /**
@@ -41,10 +40,6 @@ abstract class SimpletippModule extends \Module
 
     protected $factorDifference;
     protected $factorTendency;
-
-    protected $avatarActive = false;
-    protected $avatarSql;
-    protected $avatarFallback;
 
     protected $participant_group;
 
@@ -104,20 +99,6 @@ abstract class SimpletippModule extends \Module
         }
 
         $this->isPersonal = ($this->simpletippUserId === $this->User->id);
-
-        if ($this->Config)
-        {
-            $this->avatarActive = (in_array('avatar', ModuleLoader::getActive()));
-            $this->avatarSql    = ($this->avatarActive) ? ' tl_member.avatar AS avatar,' : '';
-        }
-
-        if ($this->avatarActive)
-        {
-            $fileObj = \FilesModel::findByPk($GLOBALS['TL_CONFIG']['avatar_fallback_image']);
-            $this->avatarFallback = $fileObj->path;
-        }
-
-
     }
 
     public function setSimpletipp($simpletippId)
@@ -151,7 +132,6 @@ abstract class SimpletippModule extends \Module
         if (count($matches) > 0)
         {
             $result  = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
-                .$this->avatarSql
                 ." SUM(tendency) AS sum_tendency,"
                 ." SUM(difference) AS sum_difference,"
                 ." SUM(perfect) AS sum_perfect,"
@@ -285,7 +265,6 @@ abstract class SimpletippModule extends \Module
     private function getHighscoreRow($memberRow, $params = '')
     {
         $row            = (Object) $memberRow;
-        $row->avatar    = ($row->avatar != null) ? $row->avatar : $this->avatarFallback;
         $row->cssClass  = (($this->i % 2 === 0 ) ? 'odd':'even') . ' pos'.$this->i++;
         $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
 
