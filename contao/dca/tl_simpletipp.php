@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 
 	// Palettes
 	'palettes' => [
-		'default'                     => '{simpletipp_legend}, title, leagueID, factor, matchLength, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_pokal_legend}, pokal_ranges',
+		'default'                     => '{simpletipp_legend}, title, leagueID, factor, matchLength, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
 	],
 
 
@@ -188,6 +188,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
             'foreignKey'              => 'tl_member_group.name',
             'eval'					  => ['mandatory'=>false, 'tl_class' => 'clr', 'mandatory' => true],
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
+		],
+		'matches_page' => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['matches_page'],
+			'exclude'                 => true,
+			'inputType'               => 'pageTree',
+			'eval'                    => ['fieldType'=>'radio', 'tl_class' => 'long'],
+			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		],
         'lastChanged' => [
             'label'      => ['lastChanged', 'lastChanged'],
