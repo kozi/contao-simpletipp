@@ -260,7 +260,7 @@ class tl_simpletipp extends \Backend
         {
             $options[$league->leagueID] = sprintf($tmpl,
                 $league->leagueName,
-                \String::substr($league->leagueShortcut, 10),
+                \StringUtil::substr($league->leagueShortcut, 10),
                 $league->leagueID
             );
 		}
