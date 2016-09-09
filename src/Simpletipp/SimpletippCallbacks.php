@@ -214,9 +214,12 @@ class SimpletippCallbacks extends \Backend
     }
 
     public function stripImgTag($flag, $tag, $cachedTag, $flags, $blnCache, $tags, $arrCache, $_rit, $_cnt) {
-        return print_r([
-            $flag, $tag, $cachedTag, $flags, $blnCache, $tags, $arrCache, $_rit, $_cnt
-        ], true); 
+        $arrResult = [];
+        preg_match('/src="([^"]*)"/', $cachedTag, $arrResult);
+        if(count($arrResult) === 2) {
+            return $arrResult[1];
+        }
+        return $cachedTag;
     }
 }
 
