@@ -4,7 +4,7 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend']           = 'Wettbewer
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_legend_questions'] = 'Extrafragen';
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_pokal_legend']     = 'Pokalrunden';
 $GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_matches']          = 'Spiele';
-
+$GLOBALS['TL_LANG']['tl_simpletipp']['simpletipp_reminder_legend']  = 'Erinnerungsemail'; 
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['title']             = ['Titel', 'Titel für diese Tipprunde'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['adminName']         = ['Admin Name','Name des Tipprundenadmins'];
@@ -14,6 +14,7 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['factor']            = ['Punkteverteilung',
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueID']          = ['Liga', 'Liga die getippt werden soll.'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueInfos']       = ['LigaInfos', 'LigaInfos'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['teaser']            = ['Info', 'Info'];
+$GLOBALS['TL_LANG']['tl_simpletipp']['matches_page']      = ['Seitenauswahl Spiele', 'Wähle eine Seite, die das Modul <strong>Simpletipp - Spiele</strong> enthält. In den Emails wird dann ein Link zu der Seite generiert.'];
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges']      = ['Pokal Spieltage', 'Es müssen 6 sich nicht überschneidende Abschnitte gewählt werden.'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group']       = ['Gruppenphase', 'Spieltage festlegen.'];

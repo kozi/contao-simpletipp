@@ -53,11 +53,11 @@ class SimpletippEmailReminder extends \Backend
             }
             else
             {
-                // TODO Spiele Seite aus der Konfiguration auslesen
+                // Spiele Seite aus der Konfiguration auslesen
                 $matchesPageUrl = \Environment::get('base');
-                // $pageObj = \PageModel::findByIdOrAlias('spiele');
-                // $url .= $this->generateFrontendUrl($pageObj->row());
-                
+                $pageObj = \PageModel::findById($simpletippObj->matches_page);
+                $matchesPageUrl .= ($pageObj) ? $this->generateFrontendUrl($pageObj->row()) : '';
+
                 $userNamesArr    = [];
                 $emailSubject    = $GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'];
                 $emailText       = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
