@@ -213,6 +213,10 @@ class SimpletippCallbacks extends \Backend
         return false;
     }
 
-
+    public function stripImgTag($flag, $tag, $cachedTag, $flags, $blnCache, $tags, $arrCache, $_rit, $_cnt) {
+        return print_r([
+            $flag, $tag, $cachedTag, $flags, $blnCache, $tags, $arrCache, $_rit, $_cnt
+        ], true); 
+    }
 }
 

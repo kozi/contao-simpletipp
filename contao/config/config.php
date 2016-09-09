@@ -28,6 +28,10 @@ $GLOBALS['TL_MODELS']['tl_simpletipp_match'] = '\Simpletipp\Models\SimpletippMat
 $GLOBALS['TL_MODELS']['tl_simpletipp_tipp']  = '\Simpletipp\Models\SimpletippTippModel';
 $GLOBALS['TL_MODELS']['tl_simpletipp_team']  = '\Simpletipp\Models\SimpletippTeamModel';
 
+array_insert($GLOBALS['TL_HOOKS']['insertTagFlags'], 0, [
+    'strip_img_tag' => ['\Simpletipp\SimpletippCallbacks', 'stripImgTag']
+]);
+
 array_insert($GLOBALS['FE_MOD']['simpletipp'], 0, [
     'simpletipp_calendar'   => '\Simpletipp\Modules\SimpletippCalendar',
     'simpletipp_matches'    => '\Simpletipp\Modules\SimpletippMatches',
