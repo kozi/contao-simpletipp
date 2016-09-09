@@ -47,9 +47,8 @@ class SimpletippEmailReminder extends \Backend
                 || ($match->deadline > (($hours*3600)+$now)))
             {
                 // no next match found or already reminded or more than $hours to start
-                $message       = sprintf('No next match found or already reminded or more than %s to start', $hours);
+                $message       = sprintf('[%s] No next match found or already reminded or more than %s to start', $simpletippObj->title, $hours);
                 $arrMessages[] = $message;
-                \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
             }
             else
             {
@@ -92,7 +91,6 @@ class SimpletippEmailReminder extends \Backend
                 \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
             } // END else
         } // END foreach
-
 
         if ('reminder' === \Input::get('key'))
         {
