@@ -46,7 +46,7 @@ class SimpletippUserselect extends SimpletippModule
     {
         $participants = [];
 
-        $objMembers = $this->getGroupMember($this->simpletipp->participant_group);
+        $objMembers = $this->simpletipp->getGroupMember();
         if ($objMembers != null)
         {
             foreach ($objMembers as $objMember)

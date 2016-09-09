@@ -80,7 +80,7 @@ class SimpletippQuestions extends SimpletippModule
 
         if (count($this->questions) > 0)
         {
-            $objMembers   = $this->getGroupMember($this->simpletipp->participant_group);
+            $objMembers   = $this->simpletipp->getGroupMember();
             if ($objMembers != null)
             {
                 foreach ($objMembers as $objMember)

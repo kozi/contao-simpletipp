@@ -124,7 +124,7 @@ abstract class SimpletippModule extends \Module
         else
         {
             $restrictToMember  = '';
-            $arrParticipantIds = $this->getGroupMemberIds($this->simpletipp->participant_group);
+            $arrParticipantIds = $this->simpletipp->getGroupMemberIds();
         }
 
         $this->i = 1;
@@ -306,37 +306,7 @@ abstract class SimpletippModule extends \Module
         $this->pointSummary->difference += $pointObj->difference;
         $this->pointSummary->tendency   += $pointObj->tendency;
     }
-
-
-    /**
-     * @param $groupID
-     * @param string $order
-     * @return \MemberModel|\Model\Collection
-     */
-    protected function getGroupMember($groupID, $order = 'tl_member.lastname ASC, tl_member.firstname ASC')
-    {
-        $participantStr = '%s:'.strlen($groupID).':"'.$groupID.'"%';
-        $objMembers     = \MemberModel::findBy(
-                                ['tl_member.groups LIKE ?'],
-                                $participantStr,
-                                ['order' => $order]
-                          );
-        return $objMembers;
-    }
-
-    protected function getGroupMemberIds($groupID)
-    {
-        $arrIds     = [];
-        $objMembers = $this->getGroupMember($groupID);
-        if ($objMembers!== null) {
-            foreach ($objMembers as $objMember) {
-                $arrIds[] = $objMember->id;
-            }
-        }
-        return $arrIds;
-    }
     
-
     protected function cache($key, $data = null, $cleanEntries = false)
     {
         $fn = static::$cache_key_prefix.'_'.$key.'_'.$this->simpletipp->id

@@ -36,6 +36,35 @@ class SimpletippModel extends \Model
         return $pointFactors;
     }
 
+    /**
+     * @param $groupID
+     * @param string $order
+     * @return \MemberModel|\Model\Collection
+     */
+    public function getGroupMember($order = 'tl_member.lastname ASC, tl_member.firstname ASC')
+    {
+        $groupId = $this->simpletipp->participant_group;        
+        $participantStr = '%s:'.strlen($groupId).':"'.$groupId.'"%';
+        $objMembers     = \MemberModel::findBy(
+                                ['tl_member.groups LIKE ?'],
+                                $participantStr,
+                                ['order' => $order]
+                          );
+        return $objMembers;
+    }
+
+    public function getGroupMemberIds()
+    {
+        $arrIds     = [];
+        $objMembers = $this->getGroupMember();
+        if ($objMembers!== null) {
+            foreach ($objMembers as $objMember) {
+                $arrIds[] = $objMember->id;
+            }
+        }
+        return $arrIds;
+    }
+
     public static function getLeagueGroups($leagueID)
     {
         $groups = [];

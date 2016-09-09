@@ -160,7 +160,9 @@ class SimpletippPokal extends \Backend
         if ($this->finishedGroup === null)
         {
             // 8 Gruppen auslosen
-            $arrUserIds = $this->getGroupMemberIds($this->simpletipp->participant_group);
+            
+            $arrUserIds = $this->simpletipp->getGroupMemberIds();
+
             if ($arrUserIds === null)
             {
                 // No ids --> nothing to do

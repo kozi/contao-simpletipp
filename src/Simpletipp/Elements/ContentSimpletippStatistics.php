@@ -187,7 +187,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
-        $objMembers = $this->getGroupMember($this->simpletipp->participant_group);
+        $objMembers = $this->simpletipp->getGroupMember();
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
                 $objMember->highscorePositions = [0];
@@ -247,7 +247,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return true;
         }
 
-        $objMembers  = $this->getGroupMember($this->simpletipp->participant_group);
+        $objMembers  = $this->simpletipp->getGroupMember();
         $memberArray = [];
 
         if ($objMembers !== null)
