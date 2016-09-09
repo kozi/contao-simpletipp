@@ -116,10 +116,9 @@ class SimpletippCallbacks extends \Backend
         	$globalChannel_id = $globalChannel->id;
         }
 		$this->Database->prepare("DELETE FROM tl_newsletter_recipients WHERE pid = ?")->execute($globalChannel_id);
-        
 
-		$allSimpletippEmails[] = array_unique($allSimpletippEmails);
-        foreach($allSimpletippEmails as $email)
+		$uniqueMails = array_unique($allSimpletippEmails);
+        foreach($uniqueMails as $email)
         {
             $recipient = new \NewsletterRecipientsModel();
             $recipient->setRow([
