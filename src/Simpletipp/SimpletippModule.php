@@ -7,7 +7,7 @@
  * PHP version 5
  *
  * @package    Simpletipp
- * @author     Martin Kozianka <martin@kozianka.de> 
+ * @author     Martin Kozianka <martin@kozianka.de>
  * @copyright  2014-2016 Martin Kozianka <http://kozianka.de/>
  * @license    LGPL www.gnu.org/licenses/lgpl.html
  * @filesource
@@ -21,7 +21,7 @@ use \Simpletipp\Models\SimpletippModel;
  * Class Simpletipp
  *
  * @package   Controller
- * @author    Martin Kozianka <martin@kozianka.de> 
+ * @author    Martin Kozianka <martin@kozianka.de>
  * @copyright 2014-2016 Martin Kozianka <http://kozianka.de/>
  */
 
@@ -156,31 +156,31 @@ abstract class SimpletippModule extends \Module
             }
 
             // Add points from questions (do not show in matchgroup highscores)
-            if ($matchgroup === null) 
+            if ($matchgroup === null)
             {
-                
+
                 $arrQuestionPoints = $this->getQuestionHighscore();
                 if (is_array($arrQuestionPoints) && count($arrQuestionPoints) > 0)
                 {
                     // Fill table with points
                     foreach($arrQuestionPoints as $qEntry)
                     {
-                        if (array_key_exists($qEntry->memberId, $table)) 
+                        if (array_key_exists($qEntry->memberId, $table))
                         {
                             $rowObj = &$table[$qEntry->memberId];
                             $rowObj->points = $rowObj->points + $qEntry->questionPoints;
                             $rowObj->questionPoints = $qEntry->questionPoints;
-                            $rowObj->questionDetails = $qEntry->questionDetails;                             
+                            $rowObj->questionDetails = $qEntry->questionDetails;
                         }
                     }
 
                     uasort($table, function($a, $b) {
-                        $intCmp = $b->points - $a->points; 
+                        $intCmp = $b->points - $a->points;
                         if($intCmp !== 0) return $intCmp;
 
                         $intCmp = $b->sum_tendency - $a->sum_tendency;
                         if($intCmp !== 0) return $intCmp;
-                        
+
                         $intCmp = $b->sum_difference - $a->sum_difference;
                         if($intCmp !== 0) return $intCmp;
 
@@ -197,16 +197,16 @@ abstract class SimpletippModule extends \Module
                         $row->cssClass  = (($i % 2 === 0 ) ? 'odd':'even') . ' pos'.$i++;
                         $row->cssClass .= ($row->username == $this->User->username) ? ' current' : '';
                     }
-                    
-                    
-                     
+
+
+
                 }
             }
 
 
         }
 
-        if ($arrParticipantIds !== null)
+        if (is_array($arrParticipantIds) && count($arrParticipantIds) > 0)
         {
             // Jetzt noch die member, die noch nichts getippt haben hinzufügen
             $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
@@ -222,7 +222,7 @@ abstract class SimpletippModule extends \Module
         return $table;
     }
 
-    public function getQuestionHighscore() 
+    public function getQuestionHighscore()
     {
         $arrResult = [];
         $result = $this->Database->prepare("SELECT
@@ -231,7 +231,7 @@ abstract class SimpletippModule extends \Module
             tl_simpletipp_answer.id as answerId, tl_simpletipp_answer.answer,
             tl_member.id as memberId, tl_member.*
             FROM tl_simpletipp_answer,tl_simpletipp_question, tl_member
-            WHERE tl_simpletipp_answer.pid 
+            WHERE tl_simpletipp_answer.pid
             IN(SELECT id FROM tl_simpletipp_question WHERE tl_simpletipp_question.pid = ?)
             AND tl_simpletipp_question.id = tl_simpletipp_answer.pid
             AND tl_member.id = tl_simpletipp_answer.member"
@@ -245,9 +245,9 @@ abstract class SimpletippModule extends \Module
             $row['results'] = unserialize($row['results']);
             if(!array_key_exists($result->memberId, $arrResult))
             {
-                $m = (object) $row; 
+                $m = (object) $row;
                 $m->questionPoints = 0;
-                $m->questionDetails = []; 
+                $m->questionDetails = [];
                 $arrResult[$result->memberId] = $m;
             }
             $memberObj = &$arrResult[$result->memberId];
@@ -306,7 +306,7 @@ abstract class SimpletippModule extends \Module
         $this->pointSummary->difference += $pointObj->difference;
         $this->pointSummary->tendency   += $pointObj->tendency;
     }
-    
+
     protected function cache($key, $data = null, $cleanEntries = false)
     {
         $fn = static::$cache_key_prefix.'_'.$key.'_'.$this->simpletipp->id
