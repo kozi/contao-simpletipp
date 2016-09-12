@@ -469,7 +469,7 @@ class SimpletippMatches extends SimpletippModule {
             $email           = new \Email();
             $email->from     = $this->simpletipp->adminEmail;
             $email->fromName = $this->simpletipp->adminName;
-            $email->subject  = $subject;
+            $email->subject  = SimpletippModule::EMOJI_SOCCER." ".$subject;
             $email->text     = $content;
             $email->replyTo($this->User->email);
             $email->sendTo($this->User->email);
@@ -479,7 +479,7 @@ class SimpletippMatches extends SimpletippModule {
         $email           = new \Email();
         $email->from     = $this->simpletipp->adminEmail;
         $email->fromName = $this->simpletipp->adminName;
-        $email->subject  = $subject;
+        $email->subject  = SimpletippModule::EMOJI_SOCCER." ".$subject;
         $email->text     = base64_encode($content);
         $email->replyTo($this->User->email);
         $email->sendTo($this->simpletipp->adminEmail);

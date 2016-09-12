@@ -28,7 +28,7 @@ use \Simpletipp\Models\SimpletippModel;
 abstract class SimpletippModule extends \Module
 {
     const SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
-
+    const EMOJI_SOCCER       = "⚽️";
     protected $now;
     protected $simpletipp;
     protected $simpletippGroups;
