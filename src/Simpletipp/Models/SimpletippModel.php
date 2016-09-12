@@ -43,7 +43,7 @@ class SimpletippModel extends \Model
      */
     public function getGroupMember($order = 'tl_member.lastname ASC, tl_member.firstname ASC')
     {
-        $groupId = $this->simpletipp->participant_group;        
+        $groupId = $this->participant_group;        
         $participantStr = '%s:'.strlen($groupId).':"'.$groupId.'"%';
         $objMembers     = \MemberModel::findBy(
                                 ['tl_member.groups LIKE ?'],
