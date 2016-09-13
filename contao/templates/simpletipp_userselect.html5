@@ -1,22 +1,30 @@
 <?php
+$this->import('FrontendUser', 'User');
 $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js';
 $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
 ?>
 
 <div class="simpletipp_userselect">
-    <form action="<?=$this->action?>" method="get">
-        <select tabindex="-1" name="user" onchange="location.href= '<?=$this->action?>?user=' + this.value">
-            <option value="<?=$this->resetOption->value?>"><?=$this->resetOption->label?></option>
-            <?php foreach($this->participants as $user):
-                $sel = ($user->id == $this->simpletippUserId) ? ' selected="selected"':'';
-                ?>
-                <option<?=$sel?> value="<?=$user->username?>"><?=$user->lastname.', '.$user->firstname.' ('.$user->username.')'?></option>
-            <?php endforeach;?>
-        </select>
-        <noscript>
-            <input value="OK" type="submit" />
-        </noscript>
-    </form>
+  <div class="wrapper">
+    <div class="userButton" style="color:#fff;">
+        <a href="<?=$this->action.'?user='.$this->User->username;?>"><i class="icon-benutzer"></i></a>
+    </div>
+    <div class="selectForm">
+        <form action="<?=$this->action?>" method="get">
+            <select tabindex="-1" name="user" onchange="location.href= '<?=$this->action?>?user=' + this.value">
+                <option value="<?=$this->resetOption->value?>"><?=$this->resetOption->label?></option>
+                <?php foreach($this->participants as $user):
+                    $sel = ($user->id == $this->simpletippUserId) ? ' selected="selected"':'';
+                    ?>
+                    <option<?=$sel?> value="<?=$user->username?>"><?=$user->lastname.', '.$user->firstname.' ('.$user->username.')'?></option>
+                <?php endforeach;?>
+            </select>
+            <noscript>
+                <input value="OK" type="submit" />
+            </noscript>
+        </form>
+    </div>
+  </div>
 </div>
 <script>
 

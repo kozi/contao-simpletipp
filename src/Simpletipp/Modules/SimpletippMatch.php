@@ -16,7 +16,7 @@
 namespace Simpletipp\Modules;
 
 use \Simpletipp\SimpletippModule;
-use \Simpletipp\SimpletippPoints;
+use \Simpletipp\Models\SimpletippPoints;
 use \Simpletipp\Models\SimpletippMatchModel;
 
 /**

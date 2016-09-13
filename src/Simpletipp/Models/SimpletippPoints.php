@@ -13,7 +13,7 @@
  * @filesource
  */
 
-namespace Simpletipp;
+namespace Simpletipp\Models;
 
 
 class SimpletippPoints
