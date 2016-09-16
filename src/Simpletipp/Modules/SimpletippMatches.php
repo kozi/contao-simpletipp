@@ -33,15 +33,9 @@ class SimpletippMatches extends SimpletippModule {
 	protected $strTemplate  = 'simpletipp_matches_default';
 	private $formId         = 'tl_simpletipp_matches';
 	private $matches_filter = null;
-	
 
-	public function generate() {
-
-        // Search for finished matches which are not marked as finished
-        // So maybe the current result is not the final one
-        $this->finishedMatches();
-
-
+	public function generate()
+    {
 		if (TL_MODE == 'BE')
         {
 			$this->Template = new \BackendTemplate('be_wildcard');
@@ -49,6 +43,10 @@ class SimpletippMatches extends SimpletippModule {
 			$this->Template->wildcard .= '<br/>'.$this->headline;
 			return $this->Template->parse();
 		}
+
+        // Search for finished matches which are not marked as finished
+        // So maybe the current result is not the final one
+        $this->finishedMatches();
 
         $GLOBALS['TL_JAVASCRIPT'][] = "/system/modules/simpletipp/assets/simpletipp.js";
 		return parent::generate();

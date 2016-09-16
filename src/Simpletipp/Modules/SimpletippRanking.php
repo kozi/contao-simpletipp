@@ -32,6 +32,14 @@ class SimpletippRanking extends SimpletippModule
 
 	public function generate()
     {
+		if (TL_MODE == 'BE')
+        {
+			$this->Template = new \BackendTemplate('be_wildcard');
+			$this->Template->wildcard  = '### SimpletippRanking ###';
+			$this->Template->wildcard .= '<br/>'.$this->headline;
+			return $this->Template->parse();
+		}
+        
 		$this->strTemplate = $this->simpletipp_template;
 		return parent::generate();
 	}
