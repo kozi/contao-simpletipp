@@ -60,13 +60,24 @@ class SimpletippTelegram extends SimpletippModule
         $this->telegram->addCommand(new StartCommand());
         $this->telegram->commandsHandler(true);
 
-        $update = $this->telegram->getWebhookUpdates();
-        $this->chatMember = MemberModel::findOneBy('telegram_chat_id', $update->getMessage()->getChat()->getId());
+        $update  = $this->telegram->getWebhookUpdates();
+        $chat_id = $update->getMessage()->getChat()->getId();
+        $this->chatMember = MemberModel::findOneBy('telegram_chat_id', $chat_id);
         if ($this->chatMember === null)
         {
-            $this->replyWithMessage(['text' => 'Chat not registered.']);
+            $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Chat not registered.']);            
             exit;
         }
+        
+        $text = $update->getMessage()->getText();
+
+        if ("t" === strtolower($text))
+        {
+            $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Geht noch nicht!']);
+            exit;
+        }
+
+        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Schicke ein T um Spiele zu tippen!']);
 
         file_put_contents('telegram-log.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
         exit;
