@@ -5,7 +5,7 @@ namespace Simpletipp\BotCommands;
 use Contao\MemberModel;
 use Telegram\Bot\Actions;
 
-class StartCommand extends BasicCommand
+class StartCommand extends Command
 {
     /**
      * @var string Command Name
