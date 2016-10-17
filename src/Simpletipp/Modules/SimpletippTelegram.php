@@ -59,16 +59,50 @@ class SimpletippTelegram extends SimpletippModule
             $commander->sendText('Chat not registered.');            
             exit;
         }
-
-        if ("t" === strtolower($text))
-        {
-            $commander->sendText('Geht noch nicht!');
+        
+        $this->text = $commander->getText();
+        if ($this->text === null) {
+            // Only handle text messages
             exit;
         }
-
-        $commander->sendText($this->telegram->getMessage());
-
-        file_put_contents('telegram-log-'.$this->simpletipp_telegram_url_token.'.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
+        
+        $t = strtolower($this->text);
+        switch ($t) {
+            case "h":
+                $this->showHighscore();
+                break;
+            case "t":
+                $this->handleTipp(true);
+                break;
+            case "s":
+                $this->showSpiele();
+                break;
+            default:
+                if ("/start" === $commander->messagePrefix()) {
+                    // Handle start command
+                    $this->handleStart();
+                }
+                elseif(true) { // TODO Check if match_id is correct and "fresh"
+                    $this->handleTipp();
+                }
+        }
         exit;
     }
+
+    private function handleStart() {
+        // Verarbeite das Start-Kommando mit dem bot secret 
+    }
+
+    private function handleTipp() {
+        // Trage einen Tipp ein und zeige das nächste Spiel
+    }
+
+    private function showHighscore() {
+        // Zeige den Highscore
+    }
+
+    private function showSpiele() {
+        // Zeige die Spiele des aktuellen Spieltags      
+    }
+    
 }

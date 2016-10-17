@@ -16,6 +16,8 @@
 namespace Simpletipp;
 
 use Telegram\Bot\Api;
+use Contao\MemberModel;
+
 
 class TelegramCommander
 {
@@ -30,11 +32,18 @@ class TelegramCommander
         $this->update     = ($this->telegram !== null) ? $this->telegram->getWebhookUpdates() : null;
         $this->chat_id    = ($this->update !== null && $this->update->getMessage() !== null) ? $this->update->getMessage()->getChat()->getId() : null;
         $this->chatMember = ($this->chat_id !== null) ? MemberModel::findOneBy('telegram_chat_id', $this->chat_id) : null;
+
+        if ($this->update !== null) {
+            file_put_contents('telegram-log-'.$botKey.'.txt', json_encode($this->update)."\n --- \n",  FILE_APPEND);
+        } 
 	}
-    
-    public function getMessage() {
-        $message = $this->update->getMessage();
-        return json_encode($message);
+
+    public function getText() {
+        $text = null;
+        if ($this->chat_id) {
+            $text= $this->update->getMessage()->getText();
+        }
+        return $text;
     }
 
     public function getChatMember() {
@@ -46,4 +55,5 @@ class TelegramCommander
             $this->telegram->sendMessage(['chat_id' => $this->chat_id, 'text' => $text]);
         }
     }
+
 }
