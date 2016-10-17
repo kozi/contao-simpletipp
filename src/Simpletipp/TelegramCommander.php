@@ -37,6 +37,10 @@ class TelegramCommander
         } 
 	}
 
+    public function getChatId() {
+        return $this->chat_id;
+    }
+
     public function getText() {
         $text = null;
         if ($this->chat_id) {
@@ -47,6 +51,10 @@ class TelegramCommander
 
     public function getChatMember() {
         return $this->chatMember;         
+    }
+
+    public function sendInfoMessage() {
+        $this->sendText("TODO Erklärung der Kommandos"); // TODO Erklärung der Kommandos
     }
 
     public function sendText($text) {

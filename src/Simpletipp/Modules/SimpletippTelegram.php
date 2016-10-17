@@ -56,17 +56,21 @@ class SimpletippTelegram extends SimpletippModule
     {
         $this->commander = new TelegramCommander($this->simpletipp_telegram_bot_key);
 
-        if ($this->commander->getChatMember() === null) {
-            $this->commander->sendText('Chat not registered.');            
-            exit;
-        }
-        
         $this->text = $this->commander->getText();
         if ($this->text === null) {
             // Only handle text messages
             exit;
         }
-        
+
+        if (strpos($this->text, "/start") === 0) {
+            // Handle start command
+            $this->handleStart();
+        }
+        elseif ($this->commander->getChatMember() === null) {
+            $this->commander->sendText('Chat not registered.');            
+            exit;
+        }
+
         $t = strtolower($this->text);
         switch ($t) {
             case "h":
@@ -79,20 +83,15 @@ class SimpletippTelegram extends SimpletippModule
                 $this->showSpiele();
                 break;
             default:
-                if ("/start" === $this->commander->messagePrefix()) {
-                    // Handle start command
-                    $this->handleStart();
-                }
-                elseif(true) { // TODO Check if match_id is correct and "fresh"
+                if(false) { // TODO Check if match_id is correct and "fresh"
                     $this->handleTipp();
+                }
+                else {
+                    // Do something funny!
+                    // Zeigler, Foto, Zitat, Sticker... 
                 }
         }
         exit;
-    }
-
-    private function handleStart() {
-        $this->commander->chatAction(Actions::TYPING);        
-        // Verarbeite das Start-Kommando mit dem bot secret 
     }
 
     private function handleTipp($isInitial = false) {
@@ -110,4 +109,30 @@ class SimpletippTelegram extends SimpletippModule
         $this->commander->chatAction(Actions::TYPING);
         // Zeige die Spiele des aktuellen Spieltags      
     }
+
+    private function handleStart() {
+        $this->commander->chatAction(Actions::TYPING);
+
+        // Verarbeite das Start-Kommando mit dem bot secret
+        $botSecret = trim(str_replace("/start", "", $this->text));
+        if (strlen($botSecret) === 0) {
+            $this->commander->sendText("Missing secret key. Use link on settings page to start chat.");
+            return false;
+        }
+        // Search for key in tl_member
+        $objMember = MemberModel::findOneBy('simpletipp_bot_secret', $botSecret);
+        if ($objMember === null) {
+            $this->commander->sendText("Key not found.");
+            return false;
+        }
+        $objMember->telegram_chat_id      = $this->commander->getChatId();
+        $objMember->simpletipp_bot_secret = '';
+        $objMember->save();
+
+        $tmpl = 'Chat registered for %s (%s).';
+        $this->commander->sendText(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
+        $this->commander->sendInfoMessage();
+        return true;
+    }
+    
 }
