@@ -17,11 +17,8 @@ namespace Simpletipp\Modules;
 
 use Contao\Input;
 use Contao\MemberModel;
-
-use Telegram\Bot\Api;
-
 use Simpletipp\SimpletippModule;
-use Simpletipp\BotCommands\StartCommand;
+use Simpletipp\TelegramCommander;
 
 /**
  * Class SimpletippTelegram
@@ -54,32 +51,26 @@ class SimpletippTelegram extends SimpletippModule
         return parent::generate();
 	}
 
-	protected function compile()
+    protected function compile()
     {
-        $this->telegram = new Api($this->simpletipp_telegram_bot_key); 
-        $this->telegram->addCommand(new StartCommand());
-        $this->telegram->commandsHandler(true);
+        $commander = new TelegramCommander($this->simpletipp_telegram_bot_key);
 
-        $update  = $this->telegram->getWebhookUpdates();
-        $chat_id = $update->getMessage()->getChat()->getId();
-        $this->chatMember = MemberModel::findOneBy('telegram_chat_id', $chat_id);
-        if ($this->chatMember === null)
-        {
-            $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Chat not registered.']);            
+        if ($commander->getChatMember() === null) {
+            $commander->sendMessage('Chat not registered.');            
             exit;
         }
-        
-        $text = $update->getMessage()->getText();
 
         if ("t" === strtolower($text))
         {
             $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Geht noch nicht!']);
             exit;
         }
+        
+        $this->telegram->sendMessage($this->telegram->getMessage());
 
         $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Schicke ein T um Spiele zu tippen!']);
-
-        file_put_contents('telegram-log.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
+        
+        file_put_contents('telegram-log-'.$this->simpletipp_telegram_url_token.'.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
         exit;
     }
 }

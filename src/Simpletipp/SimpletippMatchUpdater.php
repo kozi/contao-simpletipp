@@ -210,7 +210,7 @@ class SimpletippMatchUpdater extends \Backend
 
     private function updateTipps($ids)
     {
-        if (count($ids) === 0)
+        if (!is_array($ids) || count($ids) === 0)
         {
             //  Nothing to do
             return true;

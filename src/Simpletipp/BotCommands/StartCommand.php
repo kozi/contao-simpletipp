@@ -5,25 +5,10 @@ namespace Simpletipp\BotCommands;
 use Contao\MemberModel;
 use Telegram\Bot\Actions;
 
-class StartCommand extends Command
+class StartCommand extends AbstractCommand
 {
-    /**
-     * @var string Command Name
-     */
-    protected $name = "start";
-
-    /**
-     * @var string Command Description
-     */
-    protected $description = "Chat mit dem Tippspiel starten";
-
-    /**
-     * @inheritdoc
-     */
-    public function handle($arguments)
+    public function handle($text)
     {
-        $botSecret = trim($arguments);
-
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
