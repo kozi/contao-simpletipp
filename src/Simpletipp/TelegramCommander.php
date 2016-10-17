@@ -19,21 +19,21 @@ use Telegram\Bot\Api;
 
 class TelegramCommander
 {
-    private $telegram;
-    private $update;    
-    private $chat_id;
+    private $telegram = null;
+    private $update = null; 
+    private $chat_id = null;
     private $chatMember = null;
 
     public function __construct($botKey)
     {
-        $this->telegram = new Api($botKey);
-        $this->update  = $this->telegram->getWebhookUpdates();
-        $this->chat_id = $update->getMessage()->getChat()->getId();
-        $this->chatMember = MemberModel::findOneBy('telegram_chat_id', $this->chat_id);
+        $this->telegram   = new Api($botKey);
+        $this->update     = ($this->telegram !== null) ? $this->telegram->getWebhookUpdates() : null;
+        $this->chat_id    = ($this->update !== null && $this->update->getMessage() !== null) ? $this->update->getMessage()->getChat()->getId() : null;
+        $this->chatMember = ($this->chat_id !== null) ? MemberModel::findOneBy('telegram_chat_id', $this->chat_id) : null;
 	}
     
     public function getMessage() {
-        $message = $update->getMessage();
+        $message = $this->update->getMessage();
         return json_encode($message);
     }
 
@@ -41,7 +41,9 @@ class TelegramCommander
         return $this->chatMember;         
     }
 
-    public function sendMessage($text) {
-        $this->telegram->sendMessage(['chat_id' => $this->chat_id, 'text' => $text]);        
+    public function sendText($text) {
+        if ($this->chat_id !== null) {
+            $this->telegram->sendMessage(['chat_id' => $this->chat_id, 'text' => $text]);
+        }
     }
 }

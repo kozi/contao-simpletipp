@@ -56,20 +56,18 @@ class SimpletippTelegram extends SimpletippModule
         $commander = new TelegramCommander($this->simpletipp_telegram_bot_key);
 
         if ($commander->getChatMember() === null) {
-            $commander->sendMessage('Chat not registered.');            
+            $commander->sendText('Chat not registered.');            
             exit;
         }
 
         if ("t" === strtolower($text))
         {
-            $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Geht noch nicht!']);
+            $commander->sendText('Geht noch nicht!');
             exit;
         }
-        
-        $this->telegram->sendMessage($this->telegram->getMessage());
 
-        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Schicke ein T um Spiele zu tippen!']);
-        
+        $commander->sendText($this->telegram->getMessage());
+
         file_put_contents('telegram-log-'.$this->simpletipp_telegram_url_token.'.txt', json_encode($update)."\n --- \n",  FILE_APPEND);
         exit;
     }
