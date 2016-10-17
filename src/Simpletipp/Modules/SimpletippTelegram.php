@@ -20,6 +20,7 @@ use Contao\MemberModel;
 use Simpletipp\SimpletippModule;
 use Simpletipp\TelegramCommander;
 use Telegram\Bot\Actions;
+use SimplePie;
 
 /**
  * Class SimpletippTelegram
@@ -82,13 +83,19 @@ class SimpletippTelegram extends SimpletippModule
             case "s":
                 $this->showSpiele();
                 break;
+            case "z":
+                $this->showZeigler();
+                break; 
+            case "c":
+                $this->showZitat();
+                break;               
             default:
                 if(false) { // TODO Check if match_id is correct and "fresh"
                     $this->handleTipp();
                 }
                 else {
                     // Do something funny!
-                    // Zeigler, Foto, Zitat, Sticker... 
+                    // Foto, Zitat, Sticker... 
                 }
         }
         exit;
@@ -103,6 +110,21 @@ class SimpletippTelegram extends SimpletippModule
     private function showHighscore() {
         $this->commander->chatAction(Actions::TYPING);
         // Zeige den Highscore
+        $highscore = $this->getHighscore();
+        $result    = '';
+        $i         = 1;
+
+        foreach($highscore as $r)
+        {
+            $isU     = ($this->commander->getChatMember()->id == $r->id);
+            $result .=
+                str_pad($i++, 2, '0', STR_PAD_LEFT).'. '
+                .$r->firstname.' '.$r->lastname." → "
+                .$r->points.' ['.$r->sum_perfect.', '.$r->sum_difference.', '.$r->sum_tendency.']'
+                .(($isU) ? " ★\n" : "\n");
+        }
+
+        $this->commander->sendText($result);
     }
 
     private function showSpiele() {
@@ -112,6 +134,14 @@ class SimpletippTelegram extends SimpletippModule
 
     private function handleStart() {
         $this->commander->chatAction(Actions::TYPING);
+
+        // Chat schon registriert?
+        if($this->commander->getChatMember() !== null) {
+            $objMember = $this->commander->getChatMember();
+            $tmpl = 'Chat already registered for %s (%s).';
+            $this->commander->sendText(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
+            return true;
+        }
 
         // Verarbeite das Start-Kommando mit dem bot secret
         $botSecret = trim(str_replace("/start", "", $this->text));
@@ -135,4 +165,44 @@ class SimpletippTelegram extends SimpletippModule
         return true;
     }
     
+
+    private function showZeigler() {
+        $this->commander->chatAction(Actions::TYPING);
+
+        $feed = new SimplePie();
+        $feed->set_cache_location(TL_ROOT.'/system/tmp');
+        $feed->set_feed_url('http://www.radiobremen.de/podcast/zeigler/');
+        $feed->init();
+
+        $filename = null;
+        if ($item = $feed->get_item()) {
+            $filename = 'zeigler-'.$item->get_date('Y-m-d').'.mp3';
+            if ($enclosure = $item->get_enclosure()) {
+                if (!file_exists(TL_ROOT.'/system/tmp/'.$filename)) {
+                    file_put_contents(TL_ROOT.'/system/tmp/'.$filename, fopen($enclosure->get_link(), 'r'));
+                }
+            }
+        }
+        if (file_exists('system/tmp/'.$filename)) {
+            // TODO Save file_id
+            $this->commander->sendAudio('system/tmp/'.$filename);
+            return true;
+        }
+        return false;
+    }
+
+    private function showZitat() {
+        $this->commander->chatAction(Actions::TYPING);
+
+        $filename = 'files/tippspiel/zitate.txt';
+        $fileArr  = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $index    = array_rand($fileArr);
+        $message  = trim($fileArr[$index]);
+
+        $arr = explode(';', $message);
+        if (count($arr) == 2) {
+            $message = "»".$arr[0]."« (".$arr[1].")\n";
+        }
+        $this->commander->sendText($message);
+    }
 }

@@ -65,4 +65,9 @@ class TelegramCommander
         $this->telegram->sendChatAction(['action' => $action, 'chat_id' => $this->chat_id]); 
     }
 
+    public function sendAudio($audioFile) {
+        $this->telegram->sendAudio(['audio' => $audioFile, 'chat_id' => $this->chat_id]);
+    }
+ 
+
 }
