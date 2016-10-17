@@ -19,6 +19,7 @@ use Contao\Input;
 use Contao\MemberModel;
 use Simpletipp\SimpletippModule;
 use Simpletipp\TelegramCommander;
+use Telegram\Bot\Actions;
 
 /**
  * Class SimpletippTelegram
@@ -53,14 +54,14 @@ class SimpletippTelegram extends SimpletippModule
 
     protected function compile()
     {
-        $commander = new TelegramCommander($this->simpletipp_telegram_bot_key);
+        $this->commander = new TelegramCommander($this->simpletipp_telegram_bot_key);
 
-        if ($commander->getChatMember() === null) {
-            $commander->sendText('Chat not registered.');            
+        if ($this->commander->getChatMember() === null) {
+            $this->commander->sendText('Chat not registered.');            
             exit;
         }
         
-        $this->text = $commander->getText();
+        $this->text = $this->commander->getText();
         if ($this->text === null) {
             // Only handle text messages
             exit;
@@ -78,7 +79,7 @@ class SimpletippTelegram extends SimpletippModule
                 $this->showSpiele();
                 break;
             default:
-                if ("/start" === $commander->messagePrefix()) {
+                if ("/start" === $this->commander->messagePrefix()) {
                     // Handle start command
                     $this->handleStart();
                 }
@@ -90,19 +91,23 @@ class SimpletippTelegram extends SimpletippModule
     }
 
     private function handleStart() {
+        $this->commander->chatAction(Actions::TYPING);        
         // Verarbeite das Start-Kommando mit dem bot secret 
     }
 
-    private function handleTipp() {
+    private function handleTipp($isInitial = false) {
+        $this->commander->chatAction(Actions::TYPING);
+        
         // Trage einen Tipp ein und zeige das nächste Spiel
     }
 
     private function showHighscore() {
+        $this->commander->chatAction(Actions::TYPING);
         // Zeige den Highscore
     }
 
     private function showSpiele() {
+        $this->commander->chatAction(Actions::TYPING);
         // Zeige die Spiele des aktuellen Spieltags      
     }
-    
 }
