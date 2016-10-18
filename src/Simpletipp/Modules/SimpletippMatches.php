@@ -370,27 +370,32 @@ class SimpletippMatches extends SimpletippModule {
 				}
 			}
 
-			$checkSql  = "SELECT id FROM tl_simpletipp_tipp WHERE member_id = ? AND match_id = ?";
-			$updateSql = "UPDATE tl_simpletipp_tipp SET tipp = ? WHERE id = ?";
-			$insertSql = "INSERT INTO tl_simpletipp_tipp(tstamp, member_id, match_id, tipp) VALUES(?, ?, ?, ?)";
-			$memberId  = $this->User->id;
-
-
-            // TODO HIER MUSS DOCH NOCH ÜBERPRÜFT WERDEN OB DAS SPIEL SCHON BEGONNEN HAT!!!
-            // TODO DEN TIMESTAMP AUCH AKTUALISIEREN
+            $checkTstamp = "SELECT id FROM tl_simpletipp_match WHERE id = ? AND deadline > ?";
+			$checkSql    = "SELECT id FROM tl_simpletipp_tipp WHERE member_id = ? AND match_id = ?";
+			$updateSql   = "UPDATE tl_simpletipp_tipp SET tipp = ?,tstamp = ? WHERE id = ?";
+			$insertSql   = "INSERT INTO tl_simpletipp_tipp(tstamp, member_id, match_id, tipp) VALUES(?, ?, ?, ?)";
+			$memberId    = $this->User->id;
+            $timestamp   = time();
             
-			foreach($to_db as $id=>$tipp)
+			foreach($to_db as $id => $tipp)
             {
-				$result = $this->Database->prepare($checkSql)->execute($memberId, $id);
-
-				if ($result->numRows > 0)
+                $result = $this->Database->prepare($checkTstamp)->execute($id, $timestamp);
+                if ($result->numRows > 0)
                 {
-					$this->Database->prepare($updateSql)->execute($tipp, $result->id);
-				}
-				else
-                {
-					$this->Database->prepare($insertSql)->execute(time(), $memberId, $id, $tipp);
-				}
+                    $result = $this->Database->prepare($checkSql)->execute($memberId, $id);
+                    if ($result->numRows > 0)
+                    {
+                        $this->Database->prepare($updateSql)->execute($tipp, $timestamp, $result->id);
+                    }
+                    else
+                    {
+                        $this->Database->prepare($insertSql)->execute($timestamp, $memberId, $id, $tipp);
+                    }
+                }
+                else {
+                    // Remove from array because match already started
+                    unset($to_db[$id]);
+                }
 			}
 		}
 
@@ -502,9 +507,5 @@ class SimpletippMatches extends SimpletippModule {
         }
 
     }
-
-
-
-
 
 } // END class SimpletippMatches
