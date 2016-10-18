@@ -111,24 +111,51 @@ class SimpletippTelegram extends SimpletippModule
         $this->commander->chatAction(Actions::TYPING);
         // Zeige den Highscore
         $highscore = $this->getHighscore();
-        $result    = '';
+        $result    = "<pre>";
+        $padding   = ['index' => 0, 'username' => 0, 'points' => 0, 'sum_perfect' => 0, 'sum_difference' => 0, 'sum_tendency' => 0];
         $i         = 1;
-
-        foreach($highscore as $r)
-        {
-            $isU     = ($this->commander->getChatMember()->id == $r->id);
-            $result .=
-                str_pad($i++, 2, '0', STR_PAD_LEFT).'. '
-                .$r->firstname.' '.$r->lastname." → "
-                .$r->points.' ['.$r->sum_perfect.', '.$r->sum_difference.', '.$r->sum_tendency.']'
-                .(($isU) ? " ★\n" : "\n");
+        $list      = [];
+        $arrIcon   = [
+            1 => "\x31\xE2\x83\xA3",
+        ];
+                    
+        foreach($highscore as $r) {
+            $icon    = (array_key_exists($i, $arrIcon)) ? $arrIcon[$i] : " ";
+            $list[]  = [
+                $i++,
+                $r->username,
+                $r->points,
+                $r->sum_perfect,
+                $r->sum_difference,
+                $r->sum_tendency
+            ];
+            $padding['username'] = (strlen($r->username."") > $padding['username']) ? strlen($r->username."") : $padding['username'];
+            $padding['points'] = (strlen($r->points."") > $padding['points']) ? strlen($r->points."") : $padding['points'];
+            $padding['sum_perfect'] = (strlen($r->sum_perfect."") > $padding['sum_perfect']) ? strlen($r->sum_perfect."") : $padding['sum_perfect'];
+            $padding['sum_difference'] = (strlen($r->sum_difference."") > $padding['sum_difference']) ? strlen($r->sum_difference."") : $padding['sum_difference'];
+            $padding['sum_tendency'] = (strlen($r->sum_tendency."") > $padding['sum_tendency']) ? strlen($r->sum_tendency."") : $padding['sum_tendency'];
         }
+        $padding['index'] = strlen($i."");        
 
-        $this->commander->sendText($result);
+        foreach($list as $r) {
+            $result .= sprintf("%s. %s %s%s\n",
+                str_pad($r[0], $padding['index'], '0', STR_PAD_LEFT),
+                str_pad($r[1], $padding['username'], ' ', STR_PAD_RIGHT),
+                str_pad($r[2], $padding['points'], ' ', STR_PAD_LEFT),
+                /* [%s,%s,%s] ---  str_pad($r[3], $padding['sum_perfect'], ' ', STR_PAD_LEFT),
+                str_pad($r[4], $padding['sum_difference'], ' ', STR_PAD_LEFT),
+                str_pad($r[5], $padding['sum_tendency'], ' ', STR_PAD_LEFT)*/
+                ($this->commander->getChatMember()->username == $r[1]) ? " \xF0\x9F\x99\x88" : ""
+            );
+        }
+        $return = $this->commander->sendText($result."</pre>", "HTML");
+        $this->commander->sendText(json_encode($return));
     }
 
     private function showSpiele() {
         $this->commander->chatAction(Actions::TYPING);
+
+        
         // Zeige die Spiele des aktuellen Spieltags      
     }
 

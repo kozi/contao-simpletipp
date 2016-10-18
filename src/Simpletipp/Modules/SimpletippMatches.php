@@ -375,6 +375,10 @@ class SimpletippMatches extends SimpletippModule {
 			$insertSql = "INSERT INTO tl_simpletipp_tipp(tstamp, member_id, match_id, tipp) VALUES(?, ?, ?, ?)";
 			$memberId  = $this->User->id;
 
+
+            // TODO HIER MUSS DOCH NOCH ÜBERPRÜFT WERDEN OB DAS SPIEL SCHON BEGONNEN HAT!!!
+            // TODO DEN TIMESTAMP AUCH AKTUALISIEREN
+            
 			foreach($to_db as $id=>$tipp)
             {
 				$result = $this->Database->prepare($checkSql)->execute($memberId, $id);

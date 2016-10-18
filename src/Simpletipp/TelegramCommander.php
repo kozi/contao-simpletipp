@@ -54,20 +54,19 @@ class TelegramCommander
     }
 
     public function sendInfoMessage() {
-        $this->sendText("TODO Erklärung der Kommandos"); // TODO Erklärung der Kommandos
+        return $this->sendText("TODO Erklärung der Kommandos"); // TODO Erklärung der Kommandos
     }
-
-    public function sendText($text) {
-        $this->telegram->sendMessage(['text' => $text, 'chat_id' => $this->chat_id]);
+    
+    public function sendText($text, $parse_mode = 'Markdown') {
+        return $this->telegram->sendMessage(['text' => $text, 'parse_mode' => $parse_mode, 'chat_id' => $this->chat_id]);
     }
 
     public function chatAction($action) {
-        $this->telegram->sendChatAction(['action' => $action, 'chat_id' => $this->chat_id]); 
+        return $this->telegram->sendChatAction(['action' => $action, 'chat_id' => $this->chat_id]); 
     }
-
+    
     public function sendAudio($audioFile) {
-        $this->telegram->sendAudio(['audio' => $audioFile, 'chat_id' => $this->chat_id]);
+        return $this->telegram->sendAudio(['audio' => $audioFile, 'chat_id' => $this->chat_id]);
     }
- 
 
 }
