@@ -18,6 +18,8 @@ namespace Simpletipp\Modules;
 use Contao\Input;
 use Contao\MemberModel;
 use Simpletipp\SimpletippModule;
+use Simpletipp\Models\SimpletippTeamModel;
+use Simpletipp\Models\SimpletippPoints;
 use Simpletipp\TelegramCommander;
 use Telegram\Bot\Actions;
 use SimplePie;
@@ -153,10 +155,53 @@ class SimpletippTelegram extends SimpletippModule
     }
 
     private function showSpiele() {
+        $userId   = $this->commander->getChatMember()->id;
+        $ball     = "\xE2\x9A\xBD";
+        $groupIds = [];
         $this->commander->chatAction(Actions::TYPING);
+        $this->import("Database");
 
+        $result = $this->Database->prepare("SELECT groupID FROM tl_simpletipp_match WHERE leagueID = ? AND deadline < ? ORDER BY deadline DESC")->limit(1)->execute($this->simpletipp->leagueID, $this->now);
+        if ($result->numRows == 1) {
+            $groupIds[] = $result->groupID;
+        }
+
+        $result = $this->Database->prepare("SELECT groupID FROM tl_simpletipp_match WHERE leagueID = ? AND deadline > ? ORDER BY deadline ASC")->limit(1)->execute($this->simpletipp->leagueID, $this->now);
+        if ($result->numRows == 1) {
+            $groupIds[] = $result->groupID;
+        }
+
+		$sql = "SELECT
+				matches.*,
+				tipps.perfect AS perfect,
+				tipps.difference AS difference,
+				tipps.tendency AS tendency,
+				tipps.tipp AS tipp
+			FROM tl_simpletipp_match AS matches
+		 	LEFT JOIN tl_simpletipp_tipp AS tipps ON (matches.id = tipps.match_id AND tipps.member_id = ?)
+		 	WHERE matches.leagueID = ?
+		 	AND (tipps.member_id = ? OR tipps.member_id IS NULL)
+            AND matches.groupID IN (".implode($groupIds,",").") ORDER BY deadline ASC";
         
-        // Zeige die Spiele des aktuellen Spieltags      
+        $content = "<pre>";
+        $result  = $this->Database->prepare($sql)->execute($userId, $this->simpletipp->leagueID, $userId);
+
+        while ($result->next()) {
+            $match = (Object) $result->row();
+            $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
+            $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);
+            $pointObj      = new SimpletippPoints($this->pointFactors, $match->perfect, $match->difference, $match->tendency);
+			$match->points = $pointObj->points;
+            $content .= sprintf("%s-%s %s (%s) ",
+                $match->teamHome->three,
+                $match->teamAway->three,
+                (strlen($match->tipp) > 2) ? $match->tipp : "?:?",
+                (strlen($match->result) > 2) ? $match->result : "?:?"
+            );
+            $content .= str_repeat($ball, $match->points)."\n";
+        }            
+        
+        $return = $this->commander->sendText($content."</pre>", "HTML");
     }
 
     private function handleStart() {
