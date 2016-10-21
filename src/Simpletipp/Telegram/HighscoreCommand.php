@@ -59,7 +59,7 @@ class HighscoreCommand extends TelegramCommand
                     str_pad($r->sum_difference, $padding['sum_difference'], ' ', STR_PAD_LEFT),
                     str_pad($r->sum_tendency, $padding['sum_tendency'], ' ', STR_PAD_LEFT),
                     ($this->chatMember->username == $r->username) ? "*".$userCommand."*" : $userCommand
-                    // ($this->commander->getChatMember()->username == $r->username) ? "\xF0\x9F\x99\x88" : "\xF0\x9F\x99\x88"
+                    // ($this->chatMember->username == $r->username) ? "\xF0\x9F\x99\x88" : "\xF0\x9F\x99\x88"
                 );
             } else {
                 $result .= sprintf("`%s.[%s]%s` %s %s\n",
