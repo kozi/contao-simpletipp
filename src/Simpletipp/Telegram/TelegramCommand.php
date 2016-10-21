@@ -16,6 +16,7 @@
 namespace Simpletipp\Telegram;
 
 use Contao\MemberModel;
+use Telegram\Bot\Actions;
 
 abstract class TelegramCommand
 {
@@ -25,6 +26,7 @@ abstract class TelegramCommand
     protected $chatMember = null;
     protected $text       = null;
     protected $chat_id    = null;
+    protected $now        = null;
 
     public function __construct($telegram, $module, $message, $chatMember = null)
     {
@@ -33,11 +35,17 @@ abstract class TelegramCommand
         $this->text       = ($message !== null) ? $message->getText() : null;
         $this->chat_id    = ($message !== null) ? $message->getChat()->getId() : null;
         $this->chatMember = $chatMember;
+        $this->now        = time();
+
 
         if ($this->message !== null) {
+
+            $this->chatAction(Actions::TYPING);
+
             $fn = "system/logs/".preg_replace('/[^a-zA-Z0-9-_.]/', '', 'telegram-log-'.$telegram->getAccessToken().'.log');
             file_put_contents($fn, json_encode($message)."\n --- \n",  FILE_APPEND);
-        } 
+        }
+
 	}
 
     protected function sendInfoMessage() {
