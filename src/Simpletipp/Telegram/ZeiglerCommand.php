@@ -19,7 +19,7 @@ use SimplePie;
 
 class ZeiglerCommand extends TelegramCommand
 {
-    public function handle() {
+    protected function handle() {
         $feed = new SimplePie();
         $feed->set_cache_location(TL_ROOT.'/system/tmp');
         $feed->set_feed_url('http://www.radiobremen.de/podcast/zeigler/');

@@ -100,8 +100,9 @@ class SimpletippTelegram extends SimpletippModule
                 break;               
             default:
                 $command = new TippCommand($telegram, $this, $message, $chatMember);            
-        }            
-        $command->handle();
+        }
+                    
+        $command->handleCommand();
         exit;
     }
 }

@@ -19,7 +19,7 @@ class HighscoreCommand extends TelegramCommand
 {
     private $detailsEnabled = false;
 
-    public function handle() {
+    protected function handle() {
         // Zeige den Highscore
         $highscore = $this->module->getHighscore();
         $result    = "";

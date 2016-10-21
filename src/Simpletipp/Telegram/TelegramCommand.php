@@ -20,6 +20,7 @@ use Telegram\Bot\Actions;
 
 abstract class TelegramCommand
 {
+    private $filenameTippStack = null;
     private $telegram = null;
 
     protected $module     = null;
@@ -37,15 +38,15 @@ abstract class TelegramCommand
         $this->chatMember = $chatMember;
         $this->now        = time();
 
+        $fnPrefix = "TELEGRAM-".preg_replace('/[^a-zA-Z0-9-_.]/', '', $telegram->getAccessToken());
 
-        if ($this->message !== null) {
-
-            $this->chatAction(Actions::TYPING);
-
-            $fn = "system/logs/".preg_replace('/[^a-zA-Z0-9-_.]/', '', 'telegram-log-'.$telegram->getAccessToken().'.log');
-            file_put_contents($fn, json_encode($message)."\n --- \n",  FILE_APPEND);
+        if ($this->chatMember->id !== null) {
+            $this->filenameTippStack = TL_ROOT."/system/tmp/".$fnPrefix.$this->chatMember->id.".spc";
         }
-
+        if ($this->message !== null) {
+            $this->chatAction(Actions::TYPING);
+            file_put_contents("system/logs/".$fnPrefix.".log", json_encode($message)."\n --- \n",  FILE_APPEND);
+        }
 	}
 
     protected function sendInfoMessage() {
@@ -64,4 +65,41 @@ abstract class TelegramCommand
         return $this->telegram->sendAudio(['audio' => $audioFile, 'chat_id' => $this->chat_id]);
     }
 
+
+    protected function getTippStack($initial = false) {
+        $stack = null;
+        if ($initial === true) {
+            $stack = (object) ["lastAccess" => time(), "tipps" => []];
+        }
+        elseif ($this->filenameTippStack !== null && file_exists($stackFile)) {
+            $stack = unserialize(file_get_contents($stackFile));
+        }
+        return $stack;
+    }
+    
+    protected function saveTippStack($stack = null) {
+        if ($this->filenameTippStack === null || $stack === null) {
+            return false;
+        }
+        // Den stack speichern
+        $stack->lastAccess = time();
+        file_put_contents($this->filenameTippStack, serialize($stack));
+        return true;
+    }
+
+    protected function deleteTippStack() {
+        if ($this->filenameTippStack === null) {
+            return false;
+        }
+        unlink($this->filenameTippStack);
+        return true;
+    }
+
+    abstract protected function handle();
+
+    public function handleCommand() {
+        $this->handle();
+    } 
+
+    
 }

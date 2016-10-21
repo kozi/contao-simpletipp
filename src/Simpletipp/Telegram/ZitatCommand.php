@@ -17,7 +17,7 @@ namespace Simpletipp\Telegram;
 
 class ZitatCommand extends TelegramCommand
 {
-    public function handle() {
+    protected function handle() {
         $filename = 'files/tippspiel/zitate.txt';
         $fileArr  = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $index    = array_rand($fileArr);

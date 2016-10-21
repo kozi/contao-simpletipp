@@ -18,7 +18,7 @@ namespace Simpletipp\Telegram;
 use Contao\MemberModel;
 class StartCommand extends TelegramCommand
 {
-    public function handle() {
+    protected function handle() {
         // Chat schon registriert?
         if($this->chatMember !== null) {
             $tmpl = 'Chat already registered for %s (%s).';

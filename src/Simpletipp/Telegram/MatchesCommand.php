@@ -20,7 +20,7 @@ use Simpletipp\Models\SimpletippPoints;
 
 class MatchesCommand extends TelegramCommand
 {
-    public function handle() {
+    protected function handle() {
         $simpletipp = $this->module->simpletipp;
         $db = $this->module->Database;
         
