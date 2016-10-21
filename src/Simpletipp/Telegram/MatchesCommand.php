@@ -21,7 +21,7 @@ use Simpletipp\Models\SimpletippPoints;
 class MatchesCommand extends TelegramCommand
 {
     protected function handle() {
-        $simpletipp = $this->module->simpletipp;
+        $leagueID = $this->module->getLeagueID();
         $db = $this->module->Database;
         
         // TODO Titel anzeigen!
@@ -55,13 +55,13 @@ class MatchesCommand extends TelegramCommand
             AND matches.groupID IN (".implode($groupIds,",").") ORDER BY deadline ASC";
         
         $content = "";
-        $result  = $db->prepare($sql)->execute($this->chatMember->id, $simpletipp->leagueID, $this->chatMember->id);
+        $result  = $db->prepare($sql)->execute($this->chatMember->id, $leagueID, $this->chatMember->id);
 
         while ($result->next()) {
             $match = (Object) $result->row();
             $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
             $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);
-            $pointObj      = new SimpletippPoints($this->module->pointFactors, $match->perfect, $match->difference, $match->tendency);
+            $pointObj      = new SimpletippPoints($this->module->getPointFactors(), $match->perfect, $match->difference, $match->tendency);
 			$match->points = $pointObj->points;
 
             //$match->teamHome->short,

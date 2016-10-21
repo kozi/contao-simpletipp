@@ -114,6 +114,14 @@ abstract class SimpletippModule extends \Module
         }
     }
 
+    public function getPointFactors() {
+        return $this->pointFactors;
+    }
+    
+    public function getLeagueID() {
+        return $this->simpletipp->leagueID;
+    }
+
     public function getHighscore($matchgroup = null, $arrMemberIds = null)
     {
         if ($arrMemberIds != null)

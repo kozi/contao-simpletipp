@@ -24,6 +24,7 @@ class TippCommand extends TelegramCommand
     protected function handle() {
         $this->commander->chatAction(Actions::TYPING);
         $db = $this->module->Database;
+        $leagueID = $this->module->getLeagueID();
         $newMatchQuestion = false;
 
         // Den Stack holen
@@ -51,7 +52,7 @@ class TippCommand extends TelegramCommand
         $sql .= (is_array($excludeIds) && count($excludeIds) > 0) ? " AND id NOT IN (".implode($excludeIds, ",").")" : "";
         $sql .= " ORDER BY deadline ASC";
 
-        $result = $db->prepare($sql)->limit(1)->execute($this->module->simpletipp->leagueID, $this->now);
+        $result = $db->prepare($sql)->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1) {
             $match = (Object) $result->row();
             $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
