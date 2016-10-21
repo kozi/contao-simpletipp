@@ -30,14 +30,14 @@ class MatchesCommand extends TelegramCommand
         $groupIds = [];
         $result   = $db->prepare("SELECT groupID FROM tl_simpletipp_match
              WHERE leagueID = ? AND deadline < ? ORDER BY deadline DESC")
-             ->limit(1)->execute($simpletipp->leagueID, $this->now);
+             ->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1) {
             $groupIds[] = $result->groupID;
         }
 
         $result = $db->prepare("SELECT groupID FROM tl_simpletipp_match
              WHERE leagueID = ? AND deadline > ? ORDER BY deadline ASC")
-             ->limit(1)->execute($simpletipp->leagueID, $this->now);
+             ->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1 && count($groupIds) === 0) {
             $groupIds[] = $result->groupID;
         }

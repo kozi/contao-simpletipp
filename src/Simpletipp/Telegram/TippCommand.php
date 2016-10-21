@@ -22,7 +22,7 @@ class TippCommand extends TelegramCommand
     private $isInitial = false;
 
     protected function handle() {
-        $this->commander->chatAction(Actions::TYPING);
+        $this->chatAction(Actions::TYPING);
         $db = $this->module->Database;
         $leagueID = $this->module->getLeagueID();
         $newMatchQuestion = false;
@@ -31,7 +31,7 @@ class TippCommand extends TelegramCommand
         $stack = $this->getTippStack($this->isInitial);
 
         if ($this->isInitial) {
-            $this->commander->sendText("Format: `[HEIM]:[AUSWÄRTS]`\nBeispiele: `2:0`, `1:1`, `5:0`\nSchicke einen `-` zum Überspringen oder einen `.` zum Beenden.");
+            $this->sendText("Format: `[HEIM]:[AUSWÄRTS]`\nBeispiele: `2:0`, `1:1`, `5:0`\nSchicke einen `-` zum Überspringen oder einen `.` zum Beenden.");
         }
 
         if ($stack === null || ($stack->lastAccess + 120) < time()) {
@@ -41,7 +41,7 @@ class TippCommand extends TelegramCommand
         // Tippen beenden --> stackFile löschen
         if ("." === $this->text) {
             $this->deleteTippStack();
-            $this->commander->sendText("Tippen beendet!");
+            $this->sendText("Tippen beendet!");
             return true;
         }
 
