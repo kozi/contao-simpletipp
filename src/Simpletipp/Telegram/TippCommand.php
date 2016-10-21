@@ -22,7 +22,6 @@ class TippCommand extends TelegramCommand
     private $isInitial = false;
 
     protected function handle() {
-        $this->chatAction(Actions::TYPING);
         $db = $this->module->Database;
         $leagueID = $this->module->getLeagueID();
         $newMatchQuestion = false;
