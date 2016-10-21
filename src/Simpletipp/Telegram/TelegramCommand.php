@@ -43,7 +43,7 @@ abstract class TelegramCommand
         if ($this->chatMember->id !== null) {
             $this->filenameTippStack = TL_ROOT."/system/tmp/".$fnPrefix.$this->chatMember->id.".spc";
         }
-        if ($this->message !== null) {
+        if ($message !== null) {
             $this->chatAction(Actions::TYPING);
             file_put_contents("system/logs/".$fnPrefix.".log", json_encode($message)."\n --- \n",  FILE_APPEND);
         }
@@ -65,18 +65,17 @@ abstract class TelegramCommand
         return $this->telegram->sendAudio(['audio' => $audioFile, 'chat_id' => $this->chat_id]);
     }
 
-
     protected function getTippStack($initial = false) {
         $stack = null;
         if ($initial === true) {
             $stack = (object) ["lastAccess" => time(), "tipps" => []];
         }
-        elseif ($this->filenameTippStack !== null && file_exists($stackFile)) {
-            $stack = unserialize(file_get_contents($stackFile));
+        elseif ($this->filenameTippStack !== null && file_exists($this->filenameTippStack)) {
+            $stack = unserialize(file_get_contents($this->filenameTippStack));
         }
         return $stack;
     }
-    
+   
     protected function saveTippStack($stack = null) {
         if ($this->filenameTippStack === null || $stack === null) {
             return false;

@@ -54,8 +54,8 @@ class TippCommand extends TelegramCommand
         $result = $db->prepare($sql)->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1) {
             $match = (Object) $result->row();
-            $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
-            $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);
+            $match->teamHome = (Object) SimpletippTeamModel::findByPk($match->team_h)->row();
+            $match->teamAway = (Object) SimpletippTeamModel::findByPk($match->team_a)->row();
 
 		    $sql = "SELECT * FROM tl_simpletipp_tipp WHERE member_id = ? AND match_id = ?";  
             $result = $db->prepare($sql)->limit(1)->execute($this->chatMember->id, $match->id);
