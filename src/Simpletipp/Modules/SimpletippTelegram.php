@@ -20,8 +20,8 @@ use Contao\MemberModel;
 use Simpletipp\SimpletippModule;
 use Simpletipp\Models\SimpletippTeamModel;
 use Simpletipp\Models\SimpletippPoints;
-use Simpletipp\TelegramCommander;
-use Telegram\Bot\Actions;
+use Simpletipp\Telegram\StartCommand;
+use Telegram\Bot\Api;
 use SimplePie;
 
 /**
@@ -34,9 +34,6 @@ use SimplePie;
 
 class SimpletippTelegram extends SimpletippModule
 {
-    private $chatMember;
-    private $telegram;
-
     public function generate()
     {
         if (TL_MODE == 'BE')
@@ -57,23 +54,29 @@ class SimpletippTelegram extends SimpletippModule
 
     protected function compile()
     {
-        $this->commander = new TelegramCommander($this->simpletipp_telegram_bot_key);
-        $this->chatMember = $this->commander->getChatMember();
+        $telegram   = new Api($this->simpletipp_telegram_bot_key);
+        $update     = ($telegram !== null) ? $telegram->getWebhookUpdates() : null;
+        $message    = ($update !== null) ? $update->getMessage() : null;
+        $text       = ($message !== null) ? $message->getText() : null; 
+        $chat_id    = ($message !== null) ? $message->getChat()->getId() : null;
+        $chatMember = ($chat_id !== null) ? MemberModel::findOneBy('telegram_chat_id', $chat_id) : null;
 
-        $this->text = $this->commander->getText();
-        if ($this->text === null) {
+        if ($text === null) {
             // Only handle text messages
             exit;
         }
 
-        if (strpos($this->text, "/start") === 0) {
+        if (strpos($text, "/start") === 0) {
             // Handle start command
-            $this->handleStart();
+            $command = new StartCommand($telegram, $this, $message);
+            $command->handle();
         }
-        elseif ($this->chatMember === null) {
-            $this->commander->sendText('Chat not registered.');            
+        elseif ($chatMember === null) {
+            $telegram->sendMessage(['text' => 'Chat not registered.', 'chat_id' => $chat_id]);
             exit;
         }
+        
+        /*
 
         $t = strtolower($this->text);
         switch ($t) {
@@ -106,6 +109,7 @@ class SimpletippTelegram extends SimpletippModule
                     $this->showHelp();
                 }
         }
+        */
         exit;
     }
 
@@ -307,35 +311,6 @@ class SimpletippTelegram extends SimpletippModule
     }
 
     private function handleStart() {
-        $this->commander->chatAction(Actions::TYPING);
-
-        // Chat schon registriert?
-        if($this->chatMember !== null) {
-            $tmpl = 'Chat already registered for %s (%s).';
-            $this->commander->sendText(sprintf($tmpl, $this->chatMember->firstname.' '.$this->chatMember->lastname, $this->chatMember->username));
-            return true;
-        }
-
-        // Verarbeite das Start-Kommando mit dem bot secret
-        $botSecret = trim(str_replace("/start", "", $this->text));
-        if (strlen($botSecret) === 0) {
-            $this->commander->sendText("Missing secret key. Use link on settings page to start chat.");
-            return false;
-        }
-        // Search for key in tl_member
-        $objMember = MemberModel::findOneBy('simpletipp_bot_secret', $botSecret);
-        if ($objMember === null) {
-            $this->commander->sendText("Key not found.");
-            return false;
-        }
-        $objMember->telegram_chat_id      = $this->commander->getChatId();
-        $objMember->simpletipp_bot_secret = '';
-        $objMember->save();
-
-        $tmpl = 'Chat registered for %s (%s).';
-        $this->commander->sendText(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
-        $this->showHelp();
-        return true;
     }
     
 
