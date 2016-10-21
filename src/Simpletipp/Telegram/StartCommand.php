@@ -16,6 +16,8 @@
 namespace Simpletipp\Telegram;
 
 use Contao\MemberModel;
+use Simpletipp\Telegram\HelpCommand;
+
 class StartCommand extends TelegramCommand
 {
     protected function handle() {
@@ -44,7 +46,9 @@ class StartCommand extends TelegramCommand
 
         $tmpl = 'Chat registered for %s (%s).';
         $this->sendText(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
-        $this->showHelp();
+        
+        $this->sendText(HelpCommand::helpMessage());
+
         return true;
 
     }

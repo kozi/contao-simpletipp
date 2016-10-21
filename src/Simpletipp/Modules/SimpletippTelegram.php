@@ -18,6 +18,7 @@ use Contao\Input;
 use Contao\MemberModel;
 use Simpletipp\SimpletippModule;
 use Simpletipp\Telegram\StartCommand;
+use Simpletipp\Telegram\HelpCommand;
 use Simpletipp\Telegram\HighscoreCommand;
 use Simpletipp\Telegram\MatchesCommand;
 use Simpletipp\Telegram\ZitatCommand;
@@ -65,6 +66,7 @@ class SimpletippTelegram extends SimpletippModule
             // Handle start command
             $command = new StartCommand($telegram, $this, $message);
             $command->handle();
+            exit;
         }
         elseif ($chatMember === null) {
             $telegram->sendMessage(['text' => 'Chat not registered.', 'chat_id' => $chat_id]);
@@ -72,6 +74,12 @@ class SimpletippTelegram extends SimpletippModule
         }
 
         switch ($text) {
+            case "/hilfe":
+            case "hilfe":
+            case "/help":
+            case "help":
+            case "?":
+                $command = new HelpCommand($telegram, $this, $message, $chatMember);
             case "/h":
             case "h":
                 $command = new HighscoreCommand($telegram, $this, $message, $chatMember);

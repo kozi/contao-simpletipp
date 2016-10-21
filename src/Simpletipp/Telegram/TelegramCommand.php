@@ -50,10 +50,6 @@ abstract class TelegramCommand
             file_put_contents("system/logs/".$fnPrefix.".log", json_encode($message)."\n --- \n",  FILE_APPEND);
         }
 	}
-
-    protected function sendInfoMessage() {
-        return $this->sendText("TODO Erklärung der Kommandos"); // TODO Erklärung der Kommandos
-    }
     
     protected function sendText($text, $parse_mode = 'Markdown') {
         return $this->telegram->sendMessage(['text' => $text, 'parse_mode' => $parse_mode, 'chat_id' => $this->chat_id]);

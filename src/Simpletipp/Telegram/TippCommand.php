@@ -73,7 +73,7 @@ class TippCommand extends TelegramCommand
                 ($match->tipp) ? "Bisheriger Tipp: `".$match->tipp."`" : "" 
             );
         }
-
+        
         // Tipp eintragen
         if (!$this->isInitial && is_array($stack->tipps) && count($stack->tipps) > 0 && $this->text !== "-") {
             // - Bedeutet aktuellen Tipp beibehalten bzw. das Spiel nicht tippen
@@ -90,7 +90,6 @@ class TippCommand extends TelegramCommand
 
         // Den stack speichern
         $this->saveTippStack($stack);
-
         return true;
     }
 
