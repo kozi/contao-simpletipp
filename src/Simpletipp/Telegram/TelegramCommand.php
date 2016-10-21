@@ -20,9 +20,11 @@ use Telegram\Bot\Actions;
 
 abstract class TelegramCommand
 {
+    private $resetTippStack = true;
     private $filenameTippStack = null;
     private $telegram = null;
 
+    
     protected $module     = null;
     protected $chatMember = null;
     protected $text       = null;
@@ -98,6 +100,14 @@ abstract class TelegramCommand
 
     public function handleCommand() {
         $this->handle();
+        // Reset (delete) tipp stack if other commands are called
+        if ($this->resetTippStack) {
+            $this->deleteTippStack();
+        }
+    }
+
+    protected function preserveTippStack() {
+        $this->resetTippStack = false;
     } 
 
     

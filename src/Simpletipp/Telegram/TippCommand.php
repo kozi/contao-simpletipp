@@ -22,6 +22,9 @@ class TippCommand extends TelegramCommand
     private $isInitial = false;
 
     protected function handle() {
+        // Prevent tipp stack reset
+        $this->preserveTippStack();
+
         $db = $this->module->Database;
         $leagueID = $this->module->getLeagueID();
         $newMatchQuestion = false;
