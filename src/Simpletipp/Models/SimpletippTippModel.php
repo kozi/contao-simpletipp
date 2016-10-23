@@ -90,7 +90,7 @@ class SimpletippTippModel extends \Model
             $tippModel->match_id  = $matchId; 
         }
         $tippModel->tstamp = time();
-        $tippModel->tipp  = $tipp;
+        $tippModel->tipp   = $tipp;
         $tippModel->save();
         return $tippModel;        
     }

@@ -88,12 +88,10 @@ class TippCommand extends TelegramCommand
             $tipp  = SimpletippTippModel::cleanupTipp($this->text);
             if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp) && $currentMatch->deadline > $this->now)
             {
-
-                $this->sendText($currentMatch->id." -- ".$currentMatch->deadline." > ".$this->now);
-                // TODO
-                SimpletippTippModel::addTipp($this->chatMember->id, $currentMatch->id, $tipp); 
                 // Der Tipp ist in Ordnung und kan eingetragen werden
-                $this->sendText("`TIPP: ".$tipp."`");
+                $m = SimpletippTippModel::addTipp($this->chatMember->id, $currentMatch->id, $tipp);
+                $r = $m->row();
+                $this->sendText(print_r($r, true));
             }
             else {
                 // Die letzte ID vom stack holen                
