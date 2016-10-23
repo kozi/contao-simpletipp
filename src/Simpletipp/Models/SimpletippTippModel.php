@@ -58,5 +58,28 @@ class SimpletippTippModel extends \Model
         return new SimpletippPoints($simpletippFactor, $perfect, $difference, $tendency);
     }
 
+    public static function cleanupTipp($tipp)
+    {
+        $t = preg_replace ('/[^0-9]/',' ', $tipp);
+        $t = preg_replace ('/\s+/',self::TIPP_DIVIDER, $t);
+
+        if (strlen($t) < 3)
+        {
+            return '';
+        }
+
+        $tmp = explode(self::TIPP_DIVIDER, $t);
+
+        if(strlen($tmp[0]) < 1 && strlen($tmp[1]) < 1)
+        {
+            return '';
+        }
+
+        $h = intval($tmp[0], 10);
+        $a = intval($tmp[1], 10);
+        return $h.self::TIPP_DIVIDER.$a;
+    }
+    
+
     
 }

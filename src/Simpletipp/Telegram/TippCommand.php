@@ -16,6 +16,7 @@
 namespace Simpletipp\Telegram;
 
 use Simpletipp\Models\SimpletippTeamModel;
+use \Simpletipp\Models\SimpletippTippModel;
 
 class TippCommand extends TelegramCommand
 {
@@ -25,9 +26,10 @@ class TippCommand extends TelegramCommand
         // Prevent tipp stack reset
         $this->preserveTippStack();
 
-        $db = $this->module->Database;
-        $leagueID = $this->module->getLeagueID();
-        $newMatchQuestion = false;
+        $db               = $this->module->Database;
+        $leagueID         = $this->module->getLeagueID();
+        $newMatchQuestion = null;
+        $currentMatch     = null;
 
         // Den Stack holen
         $stack = $this->getTippStack($this->isInitial);
@@ -37,6 +39,7 @@ class TippCommand extends TelegramCommand
         }
 
         if ($stack === null || ($stack->lastAccess + 120) < time()) {
+            $this->sendText("Timeout! (Starte den Tippvorgang mit T erneut.)");
             return false;
         }
 
@@ -47,50 +50,66 @@ class TippCommand extends TelegramCommand
             return true;
         }
 
+        if (is_array($stack->tipps) && count($stack->tipps) > 0) {
+            $currentMatch = end($stack->tipps);
+            reset($stack->tipps); 
+        }             
+
+        // Infos zur aktuellesten ID aus dem stack holen und an den Client schicken!
         $excludeIds = array_keys($stack->tipps);
 
-        // Infos zur aktuellesten ID auf dem stack holen und an den Client schicken!
 		$sql  = "SELECT id,title,team_h,team_a,deadline FROM tl_simpletipp_match WHERE leagueID = ? AND deadline > ?";
         $sql .= (is_array($excludeIds) && count($excludeIds) > 0) ? " AND id NOT IN (".implode($excludeIds, ",").")" : "";
         $sql .= " ORDER BY deadline ASC";
-
+        
         $result = $db->prepare($sql)->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1) {
-            $match = (Object) $result->row();
-            $match->teamHome = (Object) SimpletippTeamModel::findByPk($match->team_h)->row();
-            $match->teamAway = (Object) SimpletippTeamModel::findByPk($match->team_a)->row();
+            $newMatch = (Object) $result->row();
+            $newMatch->teamHome = (Object) SimpletippTeamModel::findByPk($newMatch->team_h)->row();
+            $newMatch->teamAway = (Object) SimpletippTeamModel::findByPk($newMatch->team_a)->row();
 
 		    $sql = "SELECT * FROM tl_simpletipp_tipp WHERE member_id = ? AND match_id = ?";  
-            $result = $db->prepare($sql)->limit(1)->execute($this->chatMember->id, $match->id);
+            $result = $db->prepare($sql)->limit(1)->execute($this->chatMember->id, $newMatch->id);
             if ($result->numRows == 1) {
-                $match->tipp = $result->tipp;
+                $newMatch->tipp = $result->tipp;
             }
             
-            $stack->tipps[$match->id] = $match;
-
-            $newMatchQuestion = sprintf("*%s*\n%s",
-                $match->teamHome->short." - ".$match->teamAway->short,
-                ($match->tipp) ? "Bisheriger Tipp: `".$match->tipp."`" : "" 
-            );
-        }
-        
-        // Tipp eintragen
-        if (!$this->isInitial && is_array($stack->tipps) && count($stack->tipps) > 0 && $this->text !== "-") {
-            // - Bedeutet aktuellen Tipp beibehalten bzw. das Spiel nicht tippen
-            // TODO $this->text auswerten!
-            $this->sendText("`TIPP: ".$this->text."`");
-            // TODO Wenn es nicht klappt die letzte id vom stack holen
-            // Tippformatbeispiel: *2:1* (*.* zum Beenden. *-* zum Überspringen)
-            // Die letzte ID vom stack holen damit das Spiel nochmal getippt werden kann
+            $stack->tipps[$newMatch->id] = $newMatch;
+            $newMatchQuestion = $this->getMatchText($newMatch);
         }
 
-        if ($newMatchQuestion !== false) {
+        // Tipp eintragen (- Bedeutet aktuellen Tipp beibehalten bzw. das Spiel nicht tippen)
+        if (!$this->isInitial && $currentMatch != null && $this->text !== "-") {
+
+            $tipp  = SimpletippTippModel::cleanupTipp($this->text);
+            if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp))
+            {
+                // TODO $currentMatch
+                // Der Tipp ist in Ordnung und kan eingetragen werden
+                $this->sendText("`TIPP: ".$this->text."`");
+            }
+            else {
+                // Die letzte ID vom stack holen                
+                unset($stack->tipps[$newMatch->id]);
+                // Tippabfrage erneut senden                
+                $newMatchQuestion = $this->getMatchText($currentMatch);
+            }
+        }
+
+        if ($newMatchQuestion !== null) {
             $this->sendText($newMatchQuestion);
         }
 
         // Den stack speichern
         $this->saveTippStack($stack);
         return true;
+    }
+
+    public function getMatchText($match) {
+        return sprintf("*%s*\n%s",
+                $match->teamHome->short." - ".$match->teamAway->short,
+                ($match->tipp) ? "Bisheriger Tipp: `".$match->tipp."`" : "" 
+        ); 
     }
 
     public function isInitial($flag = false) {

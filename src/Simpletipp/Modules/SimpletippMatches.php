@@ -362,7 +362,7 @@ class SimpletippMatches extends SimpletippModule {
 			for ($i=0;$i < count($ids);$i++)
             {
 				$id    = intval($ids[$i]);
-				$tipp  = $this->cleanupTipp($tipps[$i]);
+				$tipp  = SimpletippTippModel::cleanupTipp($tipps[$i]);
 
 				if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp))
                 {
@@ -421,28 +421,6 @@ class SimpletippMatches extends SimpletippModule {
         return true;
 	}
 
-    private function cleanupTipp($tipp)
-    {
-        $t = preg_replace ('/[^0-9]/',' ', $tipp);
-        $t = preg_replace ('/\s+/',SimpletippTippModel::TIPP_DIVIDER, $t);
-
-        if (strlen($t) < 3)
-        {
-            return '';
-        }
-
-        $tmp = explode(SimpletippTippModel::TIPP_DIVIDER, $t);
-
-        if(strlen($tmp[0]) < 1 && strlen($tmp[1]) < 1)
-        {
-            return '';
-        }
-
-        $h = intval($tmp[0], 10);
-        $a = intval($tmp[1], 10);
-        return $h.SimpletippTippModel::TIPP_DIVIDER.$a;
-    }
-    
 
 	private function sendTippEmail($matches)
     {

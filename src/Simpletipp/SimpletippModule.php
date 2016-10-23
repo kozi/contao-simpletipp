@@ -16,6 +16,7 @@
 namespace Simpletipp;
 
 use \Simpletipp\Models\SimpletippModel;
+use \Simpletipp\Models\SimpletippTippModel;
 
 /**
  * Class Simpletipp
@@ -369,8 +370,6 @@ abstract class SimpletippModule extends \Module
             }
         }
     }
-
-
 
     protected function getSimpletippMessages()
     {
