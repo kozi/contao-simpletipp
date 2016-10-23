@@ -38,9 +38,13 @@ class TippCommand extends TelegramCommand
             $this->sendText("Format: `[HEIM]:[AUSWÄRTS]`\nBeispiele: `2:0`, `1:1`, `5:0`\nSchicke einen `-` zum Überspringen oder einen `.` zum Beenden.");
         }
 
-        if ($stack === null || ($stack->lastAccess + 120) < time()) {
-            $this->sendText("Timeout! (Starte den Tippvorgang mit T erneut.)");
+        if ($stack === null) {
+            $this->sendText("Brauchen Sie Hilfe? /hilfe");
             return false;
+        }
+        if (($stack->lastAccess + 120) < time()) {
+            $this->sendText("Timeout! (Starte den Tippvorgang mit T erneut.)");
+            return fals;
         }
 
         // Tippen beenden --> stackFile löschen
@@ -82,11 +86,14 @@ class TippCommand extends TelegramCommand
         if (!$this->isInitial && $currentMatch != null && $this->text !== "-") {
 
             $tipp  = SimpletippTippModel::cleanupTipp($this->text);
-            if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp))
+            if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp) && $currentMatch->deadline > $this->now)
             {
-                // TODO $currentMatch
+
+                $this->sendText($currentMatch->id." -- ".$currentMatch->deadline." > ".$this->now);
+                // TODO
+                SimpletippTippModel::addTipp($this->chatMember->id, $currentMatch->id, $tipp); 
                 // Der Tipp ist in Ordnung und kan eingetragen werden
-                $this->sendText("`TIPP: ".$this->text."`");
+                $this->sendText("`TIPP: ".$tipp."`");
             }
             else {
                 // Die letzte ID vom stack holen                
@@ -106,7 +113,8 @@ class TippCommand extends TelegramCommand
     }
 
     public function getMatchText($match) {
-        return sprintf("*%s*\n%s",
+        return sprintf("`%s`\n*%s*\n%s",
+                date("d.m. H:i", $match->deadline),
                 $match->teamHome->short." - ".$match->teamAway->short,
                 ($match->tipp) ? "Bisheriger Tipp: `".$match->tipp."`" : "" 
         ); 

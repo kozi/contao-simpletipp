@@ -67,7 +67,7 @@ class MatchesCommand extends TelegramCommand
             //$match->teamHome->short,
             //$match->teamAway->short,
 
-            $content .= sprintf("`%s - %s`\n`%s [%s]` %s /%s\_%s\n",
+            $content .= sprintf("*%s - %s*\n`%s [%s]` %s /%s\_%s\n",
                 $match->teamHome->short,
                 $match->teamAway->short,
                 (strlen($match->tipp) > 2) ? $match->tipp : "?:?",

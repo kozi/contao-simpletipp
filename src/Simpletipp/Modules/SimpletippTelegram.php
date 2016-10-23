@@ -80,6 +80,7 @@ class SimpletippTelegram extends SimpletippModule
             case "help":
             case "?":
                 $command = new HelpCommand($telegram, $this, $message, $chatMember);
+                break;
             case "/h":
             case "h":
                 $command = new HighscoreCommand($telegram, $this, $message, $chatMember);

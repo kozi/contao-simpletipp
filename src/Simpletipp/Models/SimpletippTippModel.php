@@ -79,7 +79,20 @@ class SimpletippTippModel extends \Model
         $a = intval($tmp[1], 10);
         return $h.self::TIPP_DIVIDER.$a;
     }
-    
 
-    
+    public static function addTipp($memberId, $matchId, $tipp) {
+        $arrWhere  = ['member_id = ?', 'match_id = ?'];
+        $arrValues = [$memberId, $matchId];
+        $tippModel = self::findOneBy($arrWhere, $arrValues);
+        if ($tippModel === null) {
+            $tippModel = new SimpletippTippModel();
+            $tippModel->member_id = $memberId;
+            $tippModel->match_id  = $matchId; 
+        }
+        $tippModel->tstamp = time();
+        $tippModel->tipp  = $tipp;
+        $tippModel->save();
+        return $tippModel;        
+    }
+
 }
