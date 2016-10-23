@@ -83,12 +83,10 @@ class SimpletippTelegram extends SimpletippModule
                 break;
             case "/h":
             case "h":
-                $command = new HighscoreCommand($telegram, $this, $message, $chatMember);
-                break;
             case "/hd":
             case "hd":
                 $command = new HighscoreCommand($telegram, $this, $message, $chatMember);
-                $command->enableDetails(true);
+                $command->enableDetails(in_array($text, ["hd", "/hd"]));                
                 break;
             case "/t":
             case "t":
@@ -97,7 +95,10 @@ class SimpletippTelegram extends SimpletippModule
                 break;
             case "/s":                
             case "s":
+            case "/sn":
+            case "sn":
                 $command = new MatchesCommand($telegram, $this, $message, $chatMember);
+                $command->setNext(in_array($text, ["sn", "/sn"]));
                 break;
             case "/z":
             case "z":            

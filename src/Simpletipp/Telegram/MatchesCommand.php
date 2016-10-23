@@ -20,6 +20,8 @@ use Simpletipp\Models\SimpletippPoints;
 
 class MatchesCommand extends TelegramCommand
 {
+    private $next = false;
+
     protected function handle() {
         $leagueID = $this->module->getLeagueID();
         $db = $this->module->Database;
@@ -38,8 +40,12 @@ class MatchesCommand extends TelegramCommand
         $result = $db->prepare("SELECT groupID FROM tl_simpletipp_match
              WHERE leagueID = ? AND deadline > ? ORDER BY deadline ASC")
              ->limit(1)->execute($leagueID, $this->now);
-        if ($result->numRows == 1 && count($groupIds) === 0) {
-            $groupIds[] = $result->groupID;
+        if ($result->numRows == 1 && (count($groupIds) === 0 || $this->next)) {
+            if($this->next) {
+                $groupIds = [$result->groupID];
+            } else {
+                $groupIds[] = $result->groupID;
+            }            
         }
 
 		$sql = "SELECT
@@ -80,6 +86,10 @@ class MatchesCommand extends TelegramCommand
 
         $return = $this->sendText($content);
 
+    }
+
+    public function setNext($flag) {
+        $this->next = ($flag === true);
     }
     
 }
