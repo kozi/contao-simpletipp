@@ -90,8 +90,7 @@ class TippCommand extends TelegramCommand
             {
                 // Der Tipp ist in Ordnung und kan eingetragen werden
                 $m = SimpletippTippModel::addTipp($this->chatMember->id, $currentMatch->id, $tipp);
-                $r = $m->row();
-                $this->sendText(print_r($r, true));
+                $this->sendText("Tipp (".$currentMatch->teamHome->three."-".$currentMatch->teamAway->three."): `".$m->tipp."`");
             }
             else {
                 // Die letzte ID vom stack holen                
