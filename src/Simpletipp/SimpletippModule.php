@@ -15,8 +15,8 @@
 
 namespace Simpletipp;
 
-use \Simpletipp\Models\SimpletippModel;
-use \Simpletipp\Models\SimpletippTippModel;
+use Simpletipp\Models\SimpletippModel;
+use Simpletipp\Models\SimpletippTippModel;
 
 /**
  * Class Simpletipp

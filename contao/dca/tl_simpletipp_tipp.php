@@ -12,8 +12,8 @@
  * @license    LGPL
  * @filesource
  */
-use \Simpletipp\Models\SimpletippModel;
-use \Simpletipp\Models\SimpletippTippModel;
+use Simpletipp\Models\SimpletippModel;
+use Simpletipp\Models\SimpletippTippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp_tipp'] = [
 

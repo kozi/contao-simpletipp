@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['simpletipp_group'] = [
 ];
 
 
-use \Simpletipp\Models\SimpletippModel;
+use Simpletipp\Models\SimpletippModel;
 /**
  * Class tl_module_simpletipp
  *

@@ -15,7 +15,7 @@
 
 namespace Simpletipp\Models;
 
-use \Simpletipp\Models\SimpletippPoints;
+use Simpletipp\Models\SimpletippPoints;
 
 class SimpletippTippModel extends \Model
 {

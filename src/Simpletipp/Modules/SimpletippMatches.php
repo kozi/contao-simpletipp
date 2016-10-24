@@ -15,11 +15,11 @@
 
 namespace Simpletipp\Modules;
 
-use \Simpletipp\SimpletippModule;
-use \Simpletipp\Models\SimpletippMatchModel;
-use \Simpletipp\Models\SimpletippTeamModel;
-use \Simpletipp\Models\SimpletippTippModel;
-use \Simpletipp\Models\SimpletippPoints;
+use Simpletipp\SimpletippModule;
+use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\Models\SimpletippTeamModel;
+use Simpletipp\Models\SimpletippTippModel;
+use Simpletipp\Models\SimpletippPoints;
 
 /**
  * Class SimpletippMatches

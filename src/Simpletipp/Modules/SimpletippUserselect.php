@@ -15,7 +15,7 @@
 
 namespace Simpletipp\Modules;
 
-use \Simpletipp\SimpletippModule;
+use Simpletipp\SimpletippModule;
 
 /**
  * Class SimpletippUserselect

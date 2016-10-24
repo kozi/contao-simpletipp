@@ -15,8 +15,8 @@
 
 namespace Simpletipp\Widgets;
 
-use \Simpletipp\SimpletippPokal;
-use \Simpletipp\Models\SimpletippModel;
+use Simpletipp\SimpletippPokal;
+use Simpletipp\Models\SimpletippModel;
 
 class PokalRangesField extends \Widget
 {

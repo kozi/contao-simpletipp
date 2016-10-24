@@ -15,9 +15,9 @@
 
 namespace Simpletipp\Elements;
 
-use \Simpletipp\SimpletippModule;
-use \Simpletipp\Models\SimpletippMatchModel;
-use \Simpletipp\Models\SimpletippTippModel;
+use Simpletipp\SimpletippModule;
+use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\Models\SimpletippTippModel;
 
 /**
  * Class SimpletippStatistics

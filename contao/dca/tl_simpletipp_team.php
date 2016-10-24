@@ -107,8 +107,8 @@ $GLOBALS['TL_DCA']['tl_simpletipp_team'] = [
 ];
 
 
-use \Simpletipp\OpenLigaDB;
-use \Simpletipp\Models\SimpletippModel;
+use Simpletipp\OpenLigaDB;
+use Simpletipp\Models\SimpletippModel;
 
 /**
  * Class tl_simpletipp_team

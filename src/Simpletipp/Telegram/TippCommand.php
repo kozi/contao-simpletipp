@@ -16,7 +16,7 @@
 namespace Simpletipp\Telegram;
 
 use Simpletipp\Models\SimpletippTeamModel;
-use \Simpletipp\Models\SimpletippTippModel;
+use Simpletipp\Models\SimpletippTippModel;
 
 class TippCommand extends TelegramCommand
 {

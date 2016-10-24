@@ -15,7 +15,7 @@
 
 namespace Simpletipp;
 
-use \Simpletipp\Models\SimpletippModel;
+use Simpletipp\Models\SimpletippModel;
 
 /**
  * Class SimpletippPokal
