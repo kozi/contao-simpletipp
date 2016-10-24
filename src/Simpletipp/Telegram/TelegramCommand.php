@@ -42,7 +42,7 @@ abstract class TelegramCommand
 
         $fnPrefix = "TELEGRAM-".preg_replace('/[^a-zA-Z0-9-_.]/', '', $telegram->getAccessToken());
 
-        if ($this->chatMember->id !== null) {
+        if ($this->chatMember !== null && $this->chatMember->id !== null) {
             $this->filenameTippStack = TL_ROOT."/system/tmp/".$fnPrefix.$this->chatMember->id.".spc";
         }
         if ($message !== null) {

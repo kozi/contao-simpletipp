@@ -61,11 +61,11 @@ class SimpletippTelegram extends SimpletippModule
         $text       = ($message !== null) ? strtolower($message->getText()) : null; 
         $chat_id    = ($message !== null) ? $message->getChat()->getId() : null;
         $chatMember = ($chat_id !== null) ? MemberModel::findOneBy('telegram_chat_id', $chat_id) : null;
-        
+
         if (is_string($text) && strpos($text, "/start") === 0) {
             // Handle start command
-            $command = new StartCommand($telegram, $this, $message);
-            $command->handle();
+            $command = new StartCommand($telegram, $this, $message, $chatMember);
+            $command->handleCommand();
             exit;
         }
         elseif ($chatMember === null) {
@@ -73,6 +73,7 @@ class SimpletippTelegram extends SimpletippModule
             exit;
         }
 
+        // Handle all other commands
         switch ($text) {
             case "/hilfe":
             case "hilfe":

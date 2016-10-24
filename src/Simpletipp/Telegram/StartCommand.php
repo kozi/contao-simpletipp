@@ -25,6 +25,7 @@ class StartCommand extends TelegramCommand
         if($this->chatMember !== null) {
             $tmpl = 'Chat already registered for %s (%s).';
             $this->sendText(sprintf($tmpl, $this->chatMember->firstname.' '.$this->chatMember->lastname, $this->chatMember->username));
+            $this->sendText(HelpCommand::helpMessage());
             return true;
         }
 

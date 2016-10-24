@@ -33,6 +33,10 @@ $GLOBALS['TL_LANG']['simpletipp']['matches']                 = 'Spiele';
 $GLOBALS['TL_LANG']['simpletipp']['point_details']           = 'Richtig: %s, Differenz: %s, Tendenz: %s';
 
 
+// TODO Telegram messages
+$GLOBALS['TL_LANG']['simpletipp']['telegram'] = [];
+
+
 
 
 
