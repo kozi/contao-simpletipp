@@ -6,7 +6,7 @@ $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css
 
 <div class="simpletipp_userselect">
   <div class="wrapper">
-    <div class="userButton" style="color:#fff;">
+    <div class="userButton">
         <a href="<?=$this->action.'?user='.$this->User->username;?>"><i class="icon-benutzer"></i></a>
     </div>
     <div class="selectForm">

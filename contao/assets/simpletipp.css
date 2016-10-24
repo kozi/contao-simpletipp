@@ -6,59 +6,62 @@ TODO :: less verwenden?
 */
 
 .mod_simpletipp table {
-	width:100%;
+    width: 100%;
     border-collapse: separate;
 }
-
 
 .mod_simpletipp_ranking td.logo i,
 .mod_simpletipp_match th.logos i,
 .simpletipp_stat td.logos i,
 .mod_simpletipp_matches td.logos i {
-    text-indent:-99999px;
-    display:inline-block;
-    width:2em;
-    height:2em;
+    text-indent: -99999px;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
     background-size: auto 2.5em;
-    background-color:#ffffff;
+    background-color: #ffffff;
     background-position: center center;
     background-repeat: no-repeat;
-    border:0.1em solid #aaaaaa;
-    border-radius:0.5em;
+    border: 0.1em solid #aaaaaa;
+    border-radius: 0.5em;
 }
 
 .mod_simpletipp_ranking td.logo {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     vertical-align: middle;
 }
+
 .mod_simpletipp_ranking td.logo i {
-    display:block;
-    width:1.2em;
-    height:1.2em;
-    border-radius:0.2em;
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 0.2em;
 }
 
 .mod_simpletipp td.goalData .goalEntry {
-    display:inline-block;
-    padding:0.2em;
-    white-space:nowrap;
+    display: inline-block;
+    padding: 0.2em;
+    white-space: nowrap;
 }
+
 .mod_simpletipp td.goalData .goalResult {
-    display:inline-block;
+    display: inline-block;
     background-position: center left;
     background-repeat: no-repeat;
-    padding-left:20px;
+    padding-left: 20px;
 }
 
 .mod_simpletipp th {
-    text-align:left;
+    text-align: left;
 }
 
-.mod_simpletipp td.tipp { font-weight:bold; }
+.mod_simpletipp td.tipp {
+    font-weight: bold;
+}
 
 .mod_simpletipp td.position {
-	text-align:right;
+    text-align: right;
 }
 
 .mod_simpletipp td.tipp,
@@ -67,92 +70,104 @@ TODO :: less verwenden?
 .mod_simpletipp td.goals,
 .mod_simpletipp td.result,
 .mod_simpletipp th.result {
-	text-align:right;
+    text-align: right;
 }
 
+.mod_simpletipp .matchtitle .short {
+    display: none;
+}
 
-.mod_simpletipp .matchtitle .short { display:none; }
-.mod_simpletipp .matchtitle .tiny  { display:none; }
-
+.mod_simpletipp .matchtitle .tiny {
+    display: none;
+}
 
 .simpletipp_filter {
-    padding:1em 0;
-    display:block;
+    padding: 1em 0;
+    display: block;
 }
 
 .simpletipp_filter ul {
-    position:relative;
-    text-align:center;
-    display:block;
-    list-style:none;
-    line-height:normal;
-    margin:0;
-    padding:0;
+    position: relative;
+    text-align: center;
+    display: block;
+    list-style: none;
+    line-height: normal;
+    margin: 0;
+    padding: 0;
 }
 
 .simpletipp_filter a {
-    display:block;
+    display: block;
     min-width: 2em;
-    padding:0.2em 0.4em;
+    padding: 0.2em 0.4em;
     text-decoration: none;
-    margin:0;
+    margin: 0;
     outline: none;
 }
+
+
+/* User select
+-----------------------------------------------------------------------------*/
+.simpletipp_userselect .userButton {
+    display: none;
+}
+
 
 /* Questions
 -----------------------------------------------------------------------------*/
 
 .mod_simpletipp_questions .question {
-    margin:1em 0 0 0;
+    margin: 1em 0 0 0;
 }
 
 .mod_simpletipp_questions .question .title {
-    display:block;
-    font-weight:700;
+    display: block;
+    font-weight: 700;
 }
 
 .mod_simpletipp_questions .question .answer {
-    display:block;
+    display: block;
 }
 
 .mod_simpletipp_questions .otherAnswers .member {
     list-style: none;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 .mod_simpletipp_questions .otherAnswers .member li {
-	background:#eee;
-    display:inline-block;
-    margin:2px;
-    padding:3px;
+    background: #eee;
+    display: inline-block;
+    margin: 2px;
+    padding: 3px;
 }
+
 
 /* Highscore Details
 -----------------------------------------------------------------------------*/
 
 .mod_simpletipp .pointExplanation {
-	display: none;
+    display: none;
 }
 
 .mod_simpletipp .pointExplanation table {
-	background-color:transparent;
-	border-spacing:0;
-	float:right;
-	text-align:right;
-	width:auto;
+    background-color: transparent;
+    border-spacing: 0;
+    float: right;
+    text-align: right;
+    width: auto;
 }
 
 .mod_simpletipp .pointExplanation table tr {
-	border:none;
+    border: none;
 }
 
 .mod_simpletipp tr.pointExplanation table tr td {
-	font-size:13px;
-	font-weight:normal !important;
-	text-align:right;
-	white-space:normal;
-	border:none;
-	padding:0 0 0 20px;
-	margin:0;
+    font-size: 13px;
+    font-weight: normal !important;
+    text-align: right;
+    white-space: normal;
+    border: none;
+    padding: 0 0 0 20px;
+    margin: 0;
 }
