@@ -6,8 +6,10 @@
         <?php endforeach;?>
     </ul>
 
+    
     <?php foreach (array_reverse($this->groups) as $group): if ($group->highscores && ($group->current || $group->finished || $group->next)) : ?>
         <h3><?=$group->name?> <small>(<?=$group->first.' - '.$group->last?>)</small></h3>
+        <div class="group group_<?=$group->alias?>">        
         <?php foreach ($group->highscores as $highscore): ?>
             <div class="pokal_highscore <?=$group->alias?>">
                 <table>
@@ -33,5 +35,6 @@
                     </tbody>
                 </table></div>
         <?php endforeach;?>
+        </div>
     <?php endif; endforeach;?>
 </div>
