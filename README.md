@@ -25,7 +25,15 @@ Mit den folgenden Modulen kann man nun beginnen eine Seite für die Tipprunden z
 * **Simpletipp Kalender**:
     Mit diesem Modul kann ein iCal Kalender mit den Spielen einer Tipprunde erstellt werden.
     Das Modul muss als einziges auf einer Seite eingebunden werden. **Details folgen**.
-
+    
+* **Simpletipp Telegram**:
+    Mit diesem Modul kann man über einen Chat mit einem [Telegram-Bot](https://core.telegram.org/bots)
+    einige der Tippspiel-Funktionen ansteuern. Dazu muss ein Telegram-Bot erstellt werden und als
+    [Webhook-URL](https://core.telegram.org/bots/api#setwebhook) die Seite angegeben werden die dieses Modul enthält.
+    Die URL muss als Parameter auch einen geheimen Token enthalten, den man im Modul festlegt.
+    Der Link für die Mitglieder wird über den InsertTag {{telegram_chat::BOTNAME}} erzeugt. Mit diesem Link wird ein
+    Chat mit dem Bot gestartet.
+    
 * **Simpletipp Nicht getippt**:
     Einfache Auflistung der Mitglieder, die das nächste Spiel der gewählten Tipprunde noch nicht getippt haben.
 
