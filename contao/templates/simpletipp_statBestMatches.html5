@@ -15,7 +15,11 @@
                     <i style="background-image:url('<?php echo Image::get($match->teamHome->logoPath(), 50, 50, 'center_center');?>');"><?=$match->teamHome->three?></i>
                     <i style="background-image:url('<?php echo Image::get($match->teamAway->logoPath(), 50, 50, 'center_center');?>');"><?=$match->teamAway->three?></i>
                 </td>
-                <td class="title"><?=$match->title?></td>
+                <td class="matchtitle">
+					<span class="full"><?=$match->title?></span>
+					<span class="short"><?=$match->title_short?></span>
+					<span class="tiny"><?=$match->teamHome->three.' - '.$match->teamAway->three?></span>
+				</td>
                 <td class="points"><?=$match->objPoints->perfect?>/<?=$match->objPoints->difference?>/<?=$match->objPoints->tendency?></td>
                 <td class="points"><?=$match->objPoints->points?></td>
             </tr>
