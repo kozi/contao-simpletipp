@@ -13,16 +13,16 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>Punkte</th>
+                        <th class="index">&nbsp;</th>
+                        <th class="name">Name</th>
+                        <th class="points">Punkte</th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php $i = 1; foreach ($highscore as $row): ?>
                         <tr class="<?=$row->cssClass?>">
-                            <td><?=$i++?>.</td>
-                            <td><?=$row->firstname.' '.$row->lastname?></td>
+                            <td class="index"><?=$i++?>.</td>
+                            <td class="name"><?=$row->firstname.' '.$row->lastname?></td>
 
                             <td class="points">
                                 <small>(<?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency?>)</small>
