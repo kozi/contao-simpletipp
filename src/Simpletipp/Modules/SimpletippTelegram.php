@@ -69,7 +69,9 @@ class SimpletippTelegram extends SimpletippModule
             exit;
         }
         elseif ($chatMember === null) {
-            $telegram->sendMessage(['text' => 'Chat not registered.', 'chat_id' => $chat_id]);
+            if ($chat_id !== null) {
+                $telegram->sendMessage(['text' => 'Chat not registered.', 'chat_id' => $chat_id]);
+            }
             exit;
         }
 
