@@ -20,10 +20,9 @@
 
     },
     "require": {
-        "php": ">=5.5",
-        "contao/core": ">=3.4",
-        "contao-community-alliance/composer-plugin": "~2",
-        "kigkonsult/icalcreator": "*",
+        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
+        "contao/core-bundle": "~3.5 || ~4.4",
+        "kigkonsult/icalcreator": "~2",
         "phpfastcache/phpfastcache": "~5",
         "irazasyed/telegram-bot-sdk": "~2"
     },
@@ -43,10 +42,14 @@
             "Simpletipp": "src/"
         }
     },
+    "config": {
+        "fxp-asset": {
+            "installer-paths": {
+                "bower-asset-library": "contao/assets"
+            }
+        }
+    },
     "extra": {
-        "asset-installer-paths": {
-            "bower-asset-library": "contao/assets"
-        },
         "contao": {
             "sources": {
                 "contao": "system/modules/simpletipp"
