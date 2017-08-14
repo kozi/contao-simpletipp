@@ -79,6 +79,11 @@ array_insert($GLOBALS['BE_MOD'], 1, [
     ]
 ]);
 
+if (TL_MODE === 'BE')
+{
+    $GLOBALS['TL_CSS'][] = 'system/modules/simpletipp/assets/simpletipp-be-global.css|static';
+}
+
 // Bundesliga Teams
 $GLOBALS['simpletipp']['teamData'] = [
       7 => ['Dortmund',     'BVB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/1000px-Borussia_Dortmund_logo.svg.png'],
