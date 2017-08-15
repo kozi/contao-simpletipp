@@ -143,7 +143,7 @@ class SimpletippQuestions extends SimpletippModule
         if (!$quizFinished && $this->Input->post('FORM_SUBMIT') === $this->formId)
         {
             $this->processAnswers();
-            $this->redirect($this->addToUrl(''));
+            $this->redirect($this->getReferer());
         }
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/dist/Chart.min.js|static';

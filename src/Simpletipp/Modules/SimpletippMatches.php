@@ -179,8 +179,6 @@ class SimpletippMatches extends SimpletippModule {
 
 		if ($group === null && $date === null && $matches === null)
         {
-            // Redirect benötigt nur Zeit und bringt keine Vorteile
-            // $this->redirect($this->addToUrl('matches=current&date=&group='));
             $matches = 'current';
 		}
 		

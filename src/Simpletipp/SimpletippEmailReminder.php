@@ -98,7 +98,7 @@ class SimpletippEmailReminder extends \Backend
             {
                 \Message::addInfo($m);
             }
-            $this->redirect(\Environment::get('script').'?do=simpletipp_group');
+            $this->redirect($this->getReferer());
         }
     }
 

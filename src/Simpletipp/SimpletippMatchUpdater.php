@@ -75,7 +75,7 @@ class SimpletippMatchUpdater extends \Backend
 
             if ('update' === Input::get('key'))
             {
-                $this->redirect(\Environment::get('script').'?do=simpletipp_group');
+                $this->redirect($this->getReferer());
             }
 
         }
@@ -203,7 +203,7 @@ class SimpletippMatchUpdater extends \Backend
 
         $message = sprintf('Tipps für die Liga <strong>%s</strong> aktualisiert! ', $leagueInfos['name']);
         \Message::add($message, 'TL_INFO');
-        $this->redirect(\Environment::get('script').'?do=simpletipp_group');
+        $this->redirect($this->getReferer());
 
     }
 
