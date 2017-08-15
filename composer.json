@@ -23,7 +23,7 @@
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "contao/core-bundle": "~3.5 || ~4.4",
         "kigkonsult/icalcreator": "~2",
-        "phpfastcache/phpfastcache": "~5",
+        "phpfastcache/phpfastcache": "~6",
         "irazasyed/telegram-bot-sdk": "~2"
     },
     "require-dev": {
