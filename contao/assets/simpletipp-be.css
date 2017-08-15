@@ -39,7 +39,7 @@ table.simpletipp_results input {
 }
 
 .header_simpletipp_reminder {
-	background:url("/system/modules/newsletter/assets/icon.gif") no-repeat scroll left center transparent;
+	background:url("../../../bundles/contaonewsletter/send.svg") no-repeat scroll left center transparent;
 }
 
 .tl_box {

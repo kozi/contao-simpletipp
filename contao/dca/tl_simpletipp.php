@@ -65,22 +65,22 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
             'calculate' => [
                 'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['calculate'],
 				'href'                => 'key=calculate',
-                'icon'                => 'system/themes/default/images/modules.gif',
+                'icon'                => 'modules.gif',
             ],
 			'update' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['update'],
 				'href'                => 'key=update',
-				'icon'                => 'system/themes/default/images/reload.gif',
+				'icon'                => 'sync.gif',
 			],
             'pokal' => [
                 'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['pokal'],
                 'href'                => 'key=pokal',
-                'icon'                => 'system/modules/simpletipp/assets/images/pokal.png',
+                'icon'                => 'system/modules/simpletipp/assets/svg/pokal.svg',
             ],
 			'questions' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
 				'href'                => 'table=tl_simpletipp_question',
-				'icon'                => 'system/modules/simpletipp/assets/images/question-balloon.png'
+				'icon'                => 'show.svg'
 			],
 			'edit' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['edit'],
@@ -95,6 +95,13 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 			]
 		]
 	],
+
+// icon: WRENCH system/themes/flexible/icons/modules.svg
+// icon: (i) 
+// icon: SYNC system/themes/flexible/icons/sync.svg
+// icon: send email bundles/contaonewsletter/send.svg
+
+	
 
 	// Palettes
 	'palettes' => [
