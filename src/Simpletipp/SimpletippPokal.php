@@ -110,21 +110,21 @@ class SimpletippPokal extends \Backend
         if ($result === false)
         {
             \Message::add('Keine Pokalgruppen definiert.', 'TL_ERROR');
-            $this->redirect($this->getReferer());
+            $this->redirect($this->getReferer()."?do=simpletipp_group");
         }
 
         if ($this->currentGroup != null)
         {
             \Message::add(sprintf('<strong>%s</strong> (%s-%s) läuft noch!', $this->currentGroup->name,
                 $this->currentGroup->first, $this->currentGroup->last), 'TL_ERROR');
-            $this->redirect($this->getReferer());
+            $this->redirect($this->getReferer()."?do=simpletipp_group");
         }
 
         if ($this->nextGroup != null && $this->nextGroup->pairings != null)
         {
             \Message::add(sprintf('<strong>%s</strong> (%s-%s) wurde schon ausgelost!', $this->nextGroup->name,
                 $this->nextGroup->first, $this->nextGroup->last), 'TL_ERROR');
-            $this->redirect($this->getReferer());
+            $this->redirect($this->getReferer()."?do=simpletipp_group");
         }
 
         $sqlGroupName = (is_array($this->finishedGroup->matchgroups)) ? "AND groupName IN ('".implode("','", $this->finishedGroup->matchgroups)."')" : "";
@@ -151,7 +151,7 @@ class SimpletippPokal extends \Backend
             \Message::add(sprintf('<strong>%s</strong> (%s-%s): Es sind noch nicht alle Spiele eingetragen!', $this->finishedGroup->name,
                 $this->finishedGroup->first, $this->finishedGroup->last), 'TL_ERROR');
         }
-        $this->redirect($this->getReferer());
+        $this->redirect($this->getReferer()."?do=simpletipp_group");
     }
 
     private function calculatePairs()

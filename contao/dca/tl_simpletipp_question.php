@@ -168,7 +168,7 @@ class tl_simpletipp_question extends Backend
 		if (strlen($this->Input->get('tid')))
         {
 			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
-			$this->redirect($this->getReferer());
+			$this->redirect($this->getReferer()."?do=simpletipp_group");
 		}
 	
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
