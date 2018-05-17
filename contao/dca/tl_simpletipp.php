@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 			'questions' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['questions'],
 				'href'                => 'table=tl_simpletipp_question',
-				'icon'                => 'show.svg'
+				'icon'                => 'show.gif'
 			],
 			'edit' => [
 				'label'               => &$GLOBALS['TL_LANG']['tl_simpletipp']['edit'],

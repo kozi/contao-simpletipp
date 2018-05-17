@@ -29,12 +29,20 @@ $GLOBALS['TL_DCA']['tl_simpletipp_team'] = [
 			'mode'                    => 2,
 			'fields'                  => ['leagues ASC', 'name ASC'],
 			'flag'                    => 1,
-			'panelLayout'             => 'limit'
+			'panelLayout'             => 'filter, search, limit'
 		],
 		'label' => [
 			'fields'                  => ['logo', 'name', 'short', 'three'],
 			'showColumns'             => true,
 			'label_callback'          => ['tl_simpletipp_team', 'labelCallback']
+		],
+		'global_operations' => [
+			'all' => [
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'                => 'act=select',
+				'class'               => 'header_edit_all',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			]
 		],
 		'operations' => [
 
@@ -59,8 +67,11 @@ $GLOBALS['TL_DCA']['tl_simpletipp_team'] = [
 
 		'id'       => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
 		'tstamp'   => ['sql' => "int(10) unsigned NOT NULL default '0'"],
-        'leagues'  => ['sql' => "text NOT NULL"],
-
+        'leagues'  => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_team']['leagues'],
+			'sql'                     => "text NOT NULL",
+			'search'                  => true
+		],
         'name' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_team']['name'],
 			'exclude'                 => true,
@@ -140,5 +151,3 @@ class tl_simpletipp_team extends \Backend
 	}
 
 }
-
-

@@ -89,11 +89,15 @@ TODO :: less verwenden?
 .simpletipp_filter ul {
     position: relative;
     text-align: center;
-    display: block;
+    display: flex;
     list-style: none;
     line-height: normal;
     margin: 0;
     padding: 0;
+}
+
+.simpletipp_filter ul li {
+    flex-grow:1;
 }
 
 .simpletipp_filter a {

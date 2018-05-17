@@ -260,8 +260,8 @@ class SimpletippMatches extends SimpletippModule {
         $tmpl        = new \FrontendTemplate('simpletipp_filter');
         $date_filter = [];
 
-        $lastArr     = [9];
-        $nextArr     = [9];
+        $lastArr     = [9, 6, 3];
+        $nextArr     = [3, 6, 9];
 
         foreach ($lastArr as $l) {
             $date_filter['last-'.$l] = array(
@@ -328,13 +328,12 @@ class SimpletippMatches extends SimpletippModule {
                 );
 		    }
 
-            usort($groups, function($a, $b)
-            {
-		// TODO Configure sorting string or int
-		// return strcmp($a['title'], $b['title']);
-		return ((int) $a['title']) - ((int) $b['title']);            	
+            usort($groups, function($a, $b) {
+                // TODO Configure sorting string or int
+                return strcmp($a['title'], $b['title']);
+                // return ((int) $a['title']) - ((int) $b['title']);            	
             });
-
+            
             $tmpl->group_filter = $groups;
         }
 

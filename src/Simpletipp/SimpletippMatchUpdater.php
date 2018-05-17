@@ -132,6 +132,16 @@ class SimpletippMatchUpdater extends \Backend
                 $arrTeamIds[] = intval($objTeam->id);
             }
         }
+
+        // Reset league information on all teams
+        $collectionTeam = SimpletippTeamModel::findAll();
+        foreach($collectionTeam as $objTeam)
+        {
+            $objTeam->leagues = "";
+            $objTeam->save();
+        }
+
+
         $collectionSimpletipp = SimpletippModel::findAll();
         foreach($collectionSimpletipp as $objSimpletipp)
         {
@@ -163,7 +173,7 @@ class SimpletippMatchUpdater extends \Backend
                     $objTeam = SimpletippTeamModel::findByPk($team->teamID);
                     if ($objTeam !== null && strpos($objTeam->leagues, $strLeague) === false)
                     {
-                        $objTeam->leagues .= ', '.$strLeague;
+                        $objTeam->leagues .= (strlen($objTeam->leagues) > 0) ? ', '.$strLeague : $strLeague;
                         $objTeam->save();
                     }
                 }
