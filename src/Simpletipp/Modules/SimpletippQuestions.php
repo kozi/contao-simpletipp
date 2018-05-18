@@ -48,6 +48,8 @@ class SimpletippQuestions extends SimpletippModule
 	
 	protected function compile()
     {
+        global $objPage;
+
         $this->questions = [];
         $participants = [];
 
@@ -143,7 +145,7 @@ class SimpletippQuestions extends SimpletippModule
         if (!$quizFinished && $this->Input->post('FORM_SUBMIT') === $this->formId)
         {
             $this->processAnswers();
-            $this->redirect($this->getReferer()."?do=simpletipp_group");
+            $this->redirect($objPage->getFrontendUrl());
         }
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/dist/Chart.min.js|static';
