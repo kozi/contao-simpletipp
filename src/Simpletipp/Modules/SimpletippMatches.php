@@ -100,10 +100,14 @@ class SimpletippMatches extends SimpletippModule {
 			$params = array_merge(
 				array($this->simpletippUserId, $this->simpletipp->leagueID, $this->simpletippUserId),
 				$this->matches_filter->params
-			);
+            );
 
-			$result = $this->Database->prepare($sql.$this->matches_filter->stmt.$this->matches_filter->order_by)
-				->limit($this->matches_filter->limit)->execute($params);
+            $dbStmt = $this->Database->prepare($sql.$this->matches_filter->stmt.$this->matches_filter->order_by);
+            if($this->matches_filter->limit != 0) {
+                $dbStmt->limit($this->matches_filter->limit);
+            }
+            
+			$result = $dbStmt->execute($params);
 		}
         else
         {
