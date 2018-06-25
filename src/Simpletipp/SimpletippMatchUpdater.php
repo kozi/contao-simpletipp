@@ -373,16 +373,16 @@ class SimpletippMatchUpdater extends \Backend
 
         $replaceFrom = [];
         $replaceTo = [];
-        
-        $replaceFrom[] = 'Gruppe';           $replaceTo[] = '';
-        $replaceFrom[] = '. Spieltag';       $replaceTo[] = '';
+
+        $replaceFrom[] = 'Gruppenphase';     $replaceTo[] = 'GP';        
         $replaceFrom[] = 'Achtelfinale';     $replaceTo[] = '⅛';
         $replaceFrom[] = 'Viertelfinale';    $replaceTo[] = '¼';
         $replaceFrom[] = 'Halbfinale';       $replaceTo[] = '½';
         $replaceFrom[] = 'Spiel um Platz 3'; $replaceTo[] = 'P3';
         $replaceFrom[] = 'Finale';           $replaceTo[] = 'F';
-
-
+        $replaceFrom[] = 'Gruppe';           $replaceTo[] = '';
+        $replaceFrom[] = '. Spieltag';       $replaceTo[] = '';
+        
         $arrGroup['short'] = $strName = trim(str_replace($replaceFrom, $replaceTo, $arrGroup['name']));
 
         return $arrGroup;
