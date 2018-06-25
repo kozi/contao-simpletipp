@@ -60,7 +60,7 @@ class SimpletippMatch extends SimpletippModule
         else
         {
             // get matchId from team short names
-            $this->match = SimpletippMatchModel::findByTeamAttributeAliases($this->simpletipp, $matchAlias, 'three');
+            $this->match = SimpletippMatchModel::findByTeamAttributeAliases($this->simpletipp, strtoupper($matchAlias), 'three');
         }
 
         if ($this->match == null)
