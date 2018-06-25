@@ -55,15 +55,15 @@ class SimpletippMatchModel extends \Model
         return null;
     }
 
-    public static function findByShortNames($simpletipp, $strAliases)
+    public static function findByTeamAttributeAliases($simpletipp, $strAliases, $teamAttributeName)
     {
         $arrAlias = explode('-', $strAliases);
         if (sizeof($arrAlias) !== 2)
         {
             return null;
         }
-        $teamHome = SimpletippTeamModel::findBy('alias', $arrAlias[0]);
-        $teamAway = SimpletippTeamModel::findBy('alias', $arrAlias[1]);
+        $teamHome = SimpletippTeamModel::findBy($teamAttributeName, $arrAlias[0]);
+        $teamAway = SimpletippTeamModel::findBy($teamAttributeName, $arrAlias[1]);
 
         $arrWhere  = [
             'leagueID' => 'leagueID = ?',

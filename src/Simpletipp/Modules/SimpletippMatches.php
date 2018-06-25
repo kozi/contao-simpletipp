@@ -144,9 +144,7 @@ class SimpletippMatches extends SimpletippModule {
 
             if ($pageRow !== null)
 			{
-                $alias = strtolower($match->teamHome->short.'-'.$match->teamAway->short);
-                $alias = str_replace(array('Ü','Ä','Ö'), array('ue', 'ae', 'oe'), $alias);
-                $alias = str_replace(array('ü','ä','ö'), array('ue', 'ae', 'oe'), $alias);
+                $alias = strtolower($match->teamHome->three.'-'.$match->teamAway->three);
                 $match->matchLink = $this->generateFrontendUrl($pageRow, '/match/'.$alias);
             }
 
