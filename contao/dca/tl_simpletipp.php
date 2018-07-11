@@ -289,6 +289,17 @@ class tl_simpletipp extends \Backend
 		return $args;
 	}
 
+	public function getSaisons(DataContainer $dc)
+	{
+		$maxYear = intval(date("Y")) + 2;
+		$minYear = 2002;
+		
+		for($y=$maxYear; $y >= $minYear; $y--) {
+			$arrOptions["".$y] = "".$y;
+		}
+		return $arrOptions;
+	}
+
     public function getMatchgroups(DataContainer $dc)
     {
         if (count($this->matchGroupOptions) == 0)
