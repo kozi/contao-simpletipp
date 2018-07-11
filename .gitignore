@@ -13,10 +13,7 @@ Thumbs.db
 .idea/
 nbproject/
 
-# bower
-contao/**/bower.json
-
 # dependencies
-build
+components
 vendor
 composer.lock

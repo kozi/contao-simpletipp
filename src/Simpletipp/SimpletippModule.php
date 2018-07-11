@@ -2,13 +2,13 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2018 Leo Feyer
  *
  * PHP version 5
  *
  * @package    Simpletipp
  * @author     Martin Kozianka <martin@kozianka.de>
- * @copyright  2014-2016 Martin Kozianka <http://kozianka.de/>
+ * @copyright  2014-2018 Martin Kozianka <http://kozianka.de/>
  * @license    LGPL www.gnu.org/licenses/lgpl.html
  * @filesource
  */
@@ -23,7 +23,7 @@ use Simpletipp\Models\SimpletippTippModel;
  *
  * @package   Controller
  * @author    Martin Kozianka <martin@kozianka.de>
- * @copyright 2014-2016 Martin Kozianka <http://kozianka.de/>
+ * @copyright 2014-2018 Martin Kozianka <http://kozianka.de/>
  */
 
 abstract class SimpletippModule extends \Module

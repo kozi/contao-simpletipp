@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2018 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2014-2016 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2014-2018 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -17,156 +17,63 @@ namespace Simpletipp;
 
 class OpenLigaDB
 {
-    const SOAP_URL = 'http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL';
+    const OPENLIGA_DB_API_URL = 'https://www.openligadb.de/api';
 
-    /**
-     * @var OpenLigaDB
-     */
-    protected static $instance;
+    public static function getMatchGoals(string $shortcut, int $saison, int $matchId)
+    {
+        return static::call("/getmatchdata", [$shortcut, $saison, $matchId]);
+	}
 
-    private $client;
-	private $leagueShortcut = '';
-	private $leagueSaison   =  0;
-
-    /**
-     * Instantiate the OpenLigaDB object (Factory)
-     *
-     * @return OpenLigaDB The OpenLigaDB object
-     */
-    static public function getInstance()
-	{
-        if (static::$instance === null)
-		{
-            static::$instance = new static();
-        }
-        return static::$instance;
+	public static function getMatches(string $shortcut, int $saison)
+    {
+        return static::call("/getmatchdata", [$shortcut, $saison]);
+    }
+    
+    public static function getLeagueTeams(string $shortcut, int $saison)
+    {
+        return static::call("/getavailableteams", [$shortcut, $saison]);
     }
 
-    public function __construct()
+	public static function getLastChangeByMatchDay(string $shortcut, int $saison, string $groupId)
     {
-		$this->client = new \SoapClient(static::SOAP_URL, [
-                'encoding'             => 'UTF-8',
-                'connection_timeout'   => 10,
-                'exceptions'           => 1,
-        ]);
-	}
-
-
-	public function getAvailLeagues()
-    {
-		try
-        {
-			$response = $this->client->GetAvailLeagues();
-			$data     = $response->GetAvailLeaguesResult->League;
-			return $data;
-		}
-		catch (SoapFault $e)
-        {
-			return false;
-		}
-		catch (Exception $e)
-        {
-			return false;
-		}
-	}
-
-	public function getMatchGoals($matchId)
-    {
-        try
-        {
-            $res  = $this->client->GetGoalsByMatch((Object) ['MatchID' => $matchId]);
-            $data = $res->GetGoalsByMatchResult->Goal;
-            return $data;
-        }
-        catch (SoapFault $e)
-        {
-            return false;
-        }
-        catch (Exception $e)
-        {
-            return false;
-        }
-	}
-
-	public function setLeague(array $leagueInfos)
-    {
-		$this->leagueShortcut = $leagueInfos['shortcut'];
-		$this->leagueSaison   = $leagueInfos['saison'];
-	}
-
-	public function getMatches()
-    {
-		if ($this->leagueShortcut == '' || $this->leagueSaison == 0)
-        {
-			return false;
-		}
-
-		try
-        {
-		    $params = (Object) [
-                'leagueShortcut' => $this->leagueShortcut,
-                'leagueSaison'   => $this->leagueSaison
-            ];
-			$res  = $this->client->GetMatchdataByLeagueSaison($params);
-			$data = $res->GetMatchdataByLeagueSaisonResult->Matchdata;
-			return $data;
-		}
-		catch (SoapFault $e)
-        {
-		    return false;
-		}
-		catch (Exception $e)
-        {
-		    return false;
-		}
-	}
-
-
-    public function getLeagueTeams()
-    {
-        if ($this->leagueShortcut == '' || $this->leagueSaison == 0)
-        {
-            return false;
-        }
-
-        try
-        {
-            $params = (Object) [
-                'leagueShortcut' => $this->leagueShortcut,
-                'leagueSaison'   => $this->leagueSaison
-            ];
-            $res  = $this->client->GetTeamsByLeagueSaison($params);
-            $data = $res->GetTeamsByLeagueSaisonResult->Team;
-            return $data;
-        }
-        catch (SoapFault $e)
-        {
-            return false;
-        }
-        catch (Exception $e)
-        {
-            return false;
-        }
+        return static::call("/getlastchangedate", [$shortcut, $saison, $groupId]);
     }
 
-	public function getLastLeagueChange()
+    public static function getTeamsEncounters(string $shortcut, int $saison, int $teamId1, int $teamId2) 
     {
-		try
-        {
-            $params = (Object) [
-                'leagueShortcut' => $this->leagueShortcut,
-                'leagueSaison'   => $this->leagueSaison
+        return static::call("/getmatchdata", [$shortcut, $saison, $teamId1, $teamId2]);
+    }
+
+    public static function getGoalGetters(string $shortcut, int $saison)
+    {
+        return static::call("/getgoalgetters", [$shortcut, $saison]);
+    }
+
+    public static function getHighscore(string $shortcut, int $saison)
+    {
+        return static::call("/getbltable", [$shortcut, $saison]);
+    }
+
+    public static function getLeagueData(string $shortcut, int $saison)
+    {
+        $result = static::call("/getmatchdata", [$shortcut, $saison]);
+        if (is_array($result) && count($result) > 0) {
+            return (Object) [
+                "id"   => $result[0]['LeagueId'],
+                "name" => $result[0]['LeagueName']
             ];
-			$res  = $this->client->GetLastChangeDateByLeagueSaison($params);
-            return $res->GetLastChangeDateByLeagueSaisonResult;
-		}
-        catch (SoapFault $e)
-        {
-			return false;
-		}
-		catch (Exception $e)
-        {
-			return false;
-		}
-	}
+        }
+        return null;
+    }
+
+    private function call(string $apiRoute, array $params) {
+        $apiRoute .= is_array($params) ? "/".implode("/", $params) : "";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, static::OPENLIGA_DB_API_URL.$apiRoute);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        $result = json_decode($output, true);
+        return $result;
+    }
 }

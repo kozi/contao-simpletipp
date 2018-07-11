@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2018 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2014-2016 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2014-2018 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_question'] = [
  * Class tl_simpletipp_question
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2014-2016
+ * @copyright  Martin Kozianka 2014-2018
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */

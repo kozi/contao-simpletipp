@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2018 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2014-2016 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2014-2018 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -74,74 +74,6 @@ class SimpletippMatchModel extends \Model
 
         return self::findOneBy($arrWhere, $arrValues);
     }
-
-    public function refreshGoalData($simpletipp)
-    {
-        $now = time();
-        if ($now < $this->deadline)
-        {
-            return false;
-        }
-
-        $simpletippLastChanged = intval($simpletipp->lastChanged);
-
-        if ($this->goalData == NULL
-            || $this->goalData->lastUpdate < $simpletippLastChanged
-            || ($now - $this->deadline) < ($simpletipp->matchLength))
-        {
-
-            $oldb         = OpenLigaDB::getInstance();
-            $leagueInfos  = unserialize($simpletipp->leagueInfos);
-            $oldb->setLeague($leagueInfos);
-            $openligaLastChanged = strtotime($oldb->getLastLeagueChange());
-
-            if ($this->goalData->lastUpdate < $openligaLastChanged)
-            {
-                // Update goalData
-                $this->goalData = serialize((object) [
-                    'lastUpdate' => $openligaLastChanged,
-                    'data'       => $this->convertGoalData($oldb->getMatchGoals($this->id))
-                ]);
-                
-                $this->save();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function convertGoalData($data)
-    {
-        $goalData    = [];
-
-        if (is_object($data))
-        {
-            $goalObjects = [$data];
-        }
-        elseif (is_array($data)) {
-            $goalObjects = $data;
-        }
-        else {
-            $goalObjects = [];
-        }
-
-        $previousHome = 0;
-        foreach($goalObjects as $goalObj)
-        {
-            $goalData[] = (Object) [
-                'name'     => $goalObj->goalGetterName,
-                'minute'   => $goalObj->goalMatchMinute,
-                'result'   => $goalObj->goalScoreTeam1.':'.$goalObj->goalScoreTeam2,
-                'penalty'  => $goalObj->goalPenalty,
-                'ownGoal'  => $goalObj->goalOwnGoal,
-                'overtime' => $goalObj->goalOvertime,
-                'home'     => ($previousHome !== $goalObj->goalScoreTeam1),
-            ];
-            $previousHome = $goalObj->goalScoreTeam1;
-        }
-        return $goalData;
-    }
-
 
     public static function getNextMatch($leagueID)
     {

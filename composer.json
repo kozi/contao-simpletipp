@@ -23,14 +23,10 @@
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "contao/core-bundle": "~3.5 || ~4.4",
         "kigkonsult/icalcreator": "~2",
-        "phpfastcache/phpfastcache": "~6",
-        "irazasyed/telegram-bot-sdk": "~2"
-    },
-    "require-dev": {
-        "bower-asset/select2": "~4",
-        "bower-asset/chartist": ">0.9",
-        "bower-asset/chartjs": "~2",
-        "fxp/composer-asset-plugin": "~1"
+        "phpfastcache/phpfastcache": "~7",
+        "irazasyed/telegram-bot-sdk": "~2",
+        "select2/select2": "~4",
+        "nnnick/chartjs": "~2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -42,12 +38,9 @@
             "Simpletipp": "src/"
         }
     },
-    "config": {
-        "fxp-asset": {
-            "installer-paths": {
-                "bower-asset-library": "contao/assets"
-            }
-        }
+    "scripts": {
+        "post-install-cmd": "Simpletipp\\SimpletippComposerCallbacks::postInstallUpdate",
+        "post-update-cmd": "Simpletipp\\SimpletippComposerCallbacks::postInstallUpdate"
     },
     "extra": {
         "contao": {

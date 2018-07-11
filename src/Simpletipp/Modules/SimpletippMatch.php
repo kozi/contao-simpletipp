@@ -2,11 +2,11 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2018 Leo Feyer
  *
  *
  * PHP version 5
- * @copyright  Martin Kozianka 2014-2016 <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2014-2018 <http://kozianka.de/>
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  * @license    LGPL
@@ -22,7 +22,7 @@ use Simpletipp\Models\SimpletippMatchModel;
 /**
  * Class SimpletippMatch
  *
- * @copyright  Martin Kozianka 2014-2016
+ * @copyright  Martin Kozianka 2014-2018
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
@@ -71,10 +71,7 @@ class SimpletippMatch extends SimpletippModule
         }
 
         $this->isStarted = (time() > $this->match->deadline);
-
-        // GoalData
-        $this->match->refreshGoalData($this->simpletipp);
-
+        
         $this->match->goalData = unserialize($this->match->goalData);
 
         $this->match->teamHome = $this->match->getRelated('team_h');
