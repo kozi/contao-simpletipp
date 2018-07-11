@@ -11,6 +11,8 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['adminName']         = ['Admin Name','Name 
 $GLOBALS['TL_LANG']['tl_simpletipp']['adminEmail']        = ['Admin Email','Email des Tipprundenadmins'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['matchLength']       = ['Spiellänge','Länge eines Spiel in Sekunden (Beispiel: 2*45[Min] + 15[Min] = 6300 [Sekunden])'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['factor']            = ['Punkteverteilung', 'Punkteverteilung (Richtig, Differenz, Tendenz)'];
+$GLOBALS['TL_LANG']['tl_simpletipp']['quizDeadline']      = ['Quiz-Deadline', 'Zeitpunkt bis zu dem die Fragen beantwortet werden dürfen.'];
+
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueShortcut']    = ['Liga-Shortcut', 'Liga die getippt werden soll. (https://www.openligadb.de/Datenhaushalt/)'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueSaison']      = ['Liga-Saison', 'Liga-Saison die getippt werden soll.'];
 
