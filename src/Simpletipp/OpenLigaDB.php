@@ -19,42 +19,42 @@ class OpenLigaDB
 {
     const OPENLIGA_DB_API_URL = 'https://www.openligadb.de/api';
 
-    public static function getMatchGoals(string $shortcut, int $saison, int $matchId)
+    public static function getMatchGoals(string $shortcut, string $saison, string $matchId)
     {
         return static::call("/getmatchdata", [$shortcut, $saison, $matchId]);
 	}
 
-	public static function getMatches(string $shortcut, int $saison)
+	public static function getMatches(string $shortcut, string $saison)
     {
         return static::call("/getmatchdata", [$shortcut, $saison]);
     }
     
-    public static function getLeagueTeams(string $shortcut, int $saison)
+    public static function getLeagueTeams(string $shortcut, string $saison)
     {
         return static::call("/getavailableteams", [$shortcut, $saison]);
     }
 
-	public static function getLastChangeByMatchDay(string $shortcut, int $saison, string $groupId)
+	public static function getLastChangeByMatchDay(string $shortcut, string $saison, string $groupId)
     {
         return static::call("/getlastchangedate", [$shortcut, $saison, $groupId]);
     }
 
-    public static function getTeamsEncounters(string $shortcut, int $saison, int $teamId1, int $teamId2) 
+    public static function getTeamsEncounters(string $shortcut, string $saison, string $teamId1, string $teamId2) 
     {
         return static::call("/getmatchdata", [$shortcut, $saison, $teamId1, $teamId2]);
     }
 
-    public static function getGoalGetters(string $shortcut, int $saison)
+    public static function getGoalGetters(string $shortcut, string $saison)
     {
         return static::call("/getgoalgetters", [$shortcut, $saison]);
     }
 
-    public static function getHighscore(string $shortcut, int $saison)
+    public static function getHighscore(string $shortcut, string $saison)
     {
         return static::call("/getbltable", [$shortcut, $saison]);
     }
 
-    public static function getLeagueData(string $shortcut, int $saison)
+    public static function getLeagueData(string $shortcut, string $saison)
     {
         $result = static::call("/getmatchdata", [$shortcut, $saison]);
         if (is_array($result) && count($result) > 0) {
