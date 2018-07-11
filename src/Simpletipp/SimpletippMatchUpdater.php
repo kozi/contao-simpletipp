@@ -281,7 +281,7 @@ class SimpletippMatchUpdater extends \Backend
                 'groupID'         => $match['Group']['GroupID'],
                 'groupName'       => $match['Group']['GroupName'],
                 'groupOrderID'    => $match['Group']['GroupOrderID'],
-                'groupShort'      => groupNameShort($match['Group']['GroupName']),
+                'groupShort'      => $this->groupNameShort($match['Group']['GroupName']),
 
                 'deadline'        => strtotime($match['MatchDateTimeUTC']),
                 'title'           => $strTitle,
@@ -296,7 +296,7 @@ class SimpletippMatchUpdater extends \Backend
                 'resultFirst'     => $resultObj->resultFirst,
                 'result'          => $resultObj->result,
 
-                'goalData'        => serialize(goalData($match))
+                'goalData'        => serialize($this->goalData($match))
             ];
             
             $lastChange = ($match['LastUpdateDateTime'] > $lastChange) ? $match['LastUpdateDateTime'] : $lastChange;
