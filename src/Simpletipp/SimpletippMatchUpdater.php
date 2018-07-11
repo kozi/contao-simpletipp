@@ -259,7 +259,7 @@ class SimpletippMatchUpdater extends \Backend
 
         foreach($matches as $match)
         {
-            $matchId      = $tmp['matchID'];
+            $matchId      = $match['MatchID'];
 
             $resultObj    = $this->parseResults($match);
 
