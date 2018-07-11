@@ -22,9 +22,9 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
 		'onsubmit_callback' => [
+			['tl_simpletipp', 'saveLeagueData'],
 			['tl_simpletipp', 'updateTeamTable'],
 			['tl_simpletipp', 'updateMatches'],
-			['tl_simpletipp', 'saveLeagueData'],
 		],
 		'ondelete_callback' => [
 			['tl_simpletipp', 'updateTeamTable'],
@@ -321,7 +321,7 @@ class tl_simpletipp extends \Backend
 		$newName = ""; 
 
 		// Get and save leagueID
-		$leagueData = OpenLigaDB::getLeagueData($dc->activeRecord->leagueSaison, $dc->activeRecord->leagueShortcut);
+		$leagueData = OpenLigaDB::getLeagueData($dc->activeRecord->leagueShortcut, $dc->activeRecord->leagueSaison);
 		if (!is_null($leagueData)) {
 			$newID   = $leagueData->id;
 			$newName = $leagueData->name;
