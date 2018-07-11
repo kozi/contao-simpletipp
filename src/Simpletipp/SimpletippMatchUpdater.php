@@ -62,7 +62,7 @@ class SimpletippMatchUpdater extends \Backend
             foreach($objSimpletippCollection as $objSimpletipp)
             {
                 // Only update current leagues (lastChange is not older than 1 year (31557600 seconds))
-                if ($objSimpletipp->lastChanged + 31557600 > $now)
+                if ($objSimpletipp->lastChanged == 0 || $objSimpletipp->lastChanged + 31557600 > $now)
                 {
                     $message = $this->updateSimpletippMatches($objSimpletipp);
                     \System::log(strip_tags($message), 'SimpletippCallbacks updateMatches()', TL_INFO);
@@ -78,7 +78,7 @@ class SimpletippMatchUpdater extends \Backend
 
             if ('update' === Input::get('key'))
             {
-                $this->redirect($this->getReferer()."?do=simpletipp_group");
+                $this->redirect($this->getReferer());
             }
 
         }
@@ -247,7 +247,7 @@ class SimpletippMatchUpdater extends \Backend
 
     private function updateLeagueMatches(&$simpletippObj)
     {
-        $matches = OpenLigaDB::getMatches($simpletippObj->leagueSaison, $simpletippObj->leagueShortcut);
+        $matches = OpenLigaDB::getMatches($simpletippObj->leagueShortcut, $simpletippObj->leagueSaison);
 
         if ($matches === false)
         {
