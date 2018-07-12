@@ -27,12 +27,12 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 'list' => [
 	'sorting' => [
 		'mode'                    => 2,
-		'fields'                  => ['groupName ASC, deadline ASC'],
+		'fields'                  => ['groupOrderID ASC, deadline ASC'],
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
 	],
 	'label' => [
-		'fields'                  => ['leagueName', 'groupName', 'deadline', 'title', 'result'],
+		'fields'                  => ['leagueName', 'groupOrderID', 'deadline', 'title', 'result'],
 		'showColumns'             => true
 	],
 ],
@@ -66,14 +66,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 	'groupID' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['groupName'],
 			'sql'                     => "int(10) unsigned NOT NULL",
-			'filter'                  => true,
 	],
 	'groupName' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['groupName'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
+			'filter'                  => true,			
 	],
     'groupOrderID' => [
-			'sql'                     => "varchar(255) NOT NULL default ''",
+			'sql'                     => "int(10) unsigned NOT NULL",
 	],
     'groupShort' => [
 			'sql'                     => "varchar(255) NOT NULL default ''",
