@@ -33,7 +33,8 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 	],
 	'label' => [
 		'fields'                  => ['leagueName', 'groupOrderID', 'deadline', 'title', 'result'],
-		'showColumns'             => true
+		'showColumns'             => true,
+		'label_callback'          => ['tl_simpletipp_match', 'labelCallback']
 	],
 ],
 
@@ -73,6 +74,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 			'filter'                  => true,			
 	],
     'groupOrderID' => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp_match']['groupName'],
 			'sql'                     => "int(10) unsigned NOT NULL",
 	],
     'groupShort' => [
@@ -115,3 +117,28 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 ] //fields
 
 ];
+
+/**
+ * Class tl_simpletipp_match
+ *
+ * Provide miscellaneous methods that are used by the data configuration array.
+ * @copyright  Martin Kozianka 2014-2018
+ * @author     Martin Kozianka <http://kozianka.de/>
+ * @package    simpletipp
+ */
+
+class tl_simpletipp_match extends \Backend
+{
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+	public function labelCallback($row, $label, DataContainer $dc, $args = null)
+	{
+		$args[1] = $row['groupName'];
+		$args[2] = date($GLOBALS['TL_CONFIG']['datimFormat'], $args[2]);
+		return $args;
+	}
+
+}
