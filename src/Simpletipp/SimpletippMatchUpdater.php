@@ -267,11 +267,19 @@ class SimpletippMatchUpdater extends \Backend
             $teamAway      = SimpletippTeamModel::findByPk($match['Team2']['TeamId']);
             $strTitle      = $match['Team1']['TeamName'].' - '.$match['Team2']['TeamName'];
             $strTitleShort = $match['Team1']['ShortName'].' - '.$match['Team2']['ShortName'];
-            
+    
             if ($teamHome !== null && $teamAway !== null)
             {
-                $strTitle      = $teamHome->short.' - '.$teamAway->short;
-                $strTitleShort = $teamHome->name.' - '.$teamAway->name;
+                $strTitle      = $teamHome->name.' - '.$teamAway->name;
+                
+                if(count($teamHome->short) > 0 && count($teamAway->short) > 0)
+                {
+                    $strTitleShort = $teamHome->short.' - '.$teamAway->short;
+                }
+                else
+                {
+                    $strTitleShort = $strTitle;
+                }
             }
 
             $newMatch = [
@@ -325,7 +333,6 @@ class SimpletippMatchUpdater extends \Backend
         {
             $objMatch       = new SimpletippMatchModel();
             $arrMatch['id'] = $matchId;
-
             $objMatch->setRow($arrMatch);
             $objMatch->save();
         }
@@ -419,7 +426,7 @@ class SimpletippMatchUpdater extends \Backend
         $objTeam->tstamp  = time();
         $objTeam->name    = $team['TeamName'];
 
-        if (is_array($GLOBALS['simpletipp']['teamData']) && array_key_exists($team->teamID, $GLOBALS['simpletipp']['teamData']))
+        if (is_array($GLOBALS['simpletipp']['teamData']) && array_key_exists($team['TeamId'], $GLOBALS['simpletipp']['teamData']))
         {
             $arr = $GLOBALS['simpletipp']['teamData'][$objTeam->id];
             $objTeam->short    = $arr[0];

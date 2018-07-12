@@ -87,7 +87,7 @@ if (TL_MODE === 'BE')
 // Bundesliga Teams
 $GLOBALS['simpletipp']['teamData'] = [
        7 => ['Dortmund',     'BVB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/1000px-Borussia_Dortmund_logo.svg.png'],
-      40 => ['Bayern',       'FCB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Logo_FC_Bayern_M%C3%BCnchen.svg/1000px-Logo_FC_Bayern_M%C3%BCnchen.svg.png'],
+      40 => ['Bayern',       'FCB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Logo_FC_Bayern_München_(2002–2017).svg/1000px-Logo_FC_Bayern_München_(2002–2017).svg.png'],
      100 => ['HSV',          'HSV', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/HSV-Logo.svg/1000px-HSV-Logo.svg.png'],
      112 => ['Freiburg',     'SCF', 'https://upload.wikimedia.org/wikipedia/de/thumb/f/f1/SC-Freiburg_Logo-neu.svg/1000px-SC-Freiburg_Logo-neu.svg.png'],
        9 => ['Schalke',      'S04', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/1000px-FC_Schalke_04_Logo.svg.png'],
@@ -97,7 +97,7 @@ $GLOBALS['simpletipp']['teamData'] = [
      131 => ['Wolfsburg',    'WOL', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Logo-VfL-Wolfsburg.svg/1000px-Logo-VfL-Wolfsburg.svg.png'],
      123 => ['Hoffenheim',   'HOF', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/TSG_Logo-Standard_4c.png/857px-TSG_Logo-Standard_4c.png'],
       79 => ['Nürnberg',     'FCN', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/1._FC_N%C3%BCrnberg_logo.svg/1000px-1._FC_N%C3%BCrnberg_logo.svg.png'],
-      81 => ['Mainz',        'MAI', 'https://upload.wikimedia.org/wikipedia/de/thumb/0/0b/FSV_Mainz_05_Logo.svg/1000px-FSV_Mainz_05_Logo.svg.png'],
+      81 => ['Mainz',        'MAI', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/FSV_Mainz_05_Logo.svg/1000px-FSV_Mainz_05_Logo.svg.png'],
       16 => ['Stuttgart',    'VFB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/VfB_Stuttgart_1893_Logo.svg/1000px-VfB_Stuttgart_1893_Logo.svg.png'],
       95 => ['Augsburg',     'FCA', 'https://upload.wikimedia.org/wikipedia/de/thumb/b/b5/Logo_FC_Augsburg.svg/1000px-Logo_FC_Augsburg.svg.png'],
       74 => ['Braunschweig', 'BRA', 'https://upload.wikimedia.org/wikipedia/de/thumb/4/45/Logo_Eintracht_Braunschweig.svg/1000px-Logo_Eintracht_Braunschweig.svg.png'],

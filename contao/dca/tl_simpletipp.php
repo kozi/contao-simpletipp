@@ -123,7 +123,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 				'exclude'                 => true,
 				'flag'                    => 1,
 				'inputType'               => 'text',
-				'eval'                    => ['mandatory'=>true, 'tl_class' => 'w50', 'maxlength' => 48],
+				'eval'                    => ['mandatory'=>true, 'maxlength' => 48],
 				'sql'                     => "varchar(64) NOT NULL default ''",
 		],
         'adminName' => [

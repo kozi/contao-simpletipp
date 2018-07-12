@@ -282,7 +282,6 @@ class tl_simpletipp_tipp extends Backend
             }
 
         }
-        // var_dump($dc->activeRecord);
     }
 }
 

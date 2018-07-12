@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 'list' => [
 	'sorting' => [
 		'mode'                    => 2,
-		'fields'                  => ['groupID ASC, deadline ASC'],
+		'fields'                  => ['groupName ASC, deadline ASC'],
 		'flag'                    => 1,
 		'panelLayout'             => 'filter, search, limit'
 	],
