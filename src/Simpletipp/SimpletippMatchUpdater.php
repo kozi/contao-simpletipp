@@ -133,20 +133,12 @@ class SimpletippMatchUpdater extends \Backend
         {
             if($objSimpletipp->leagueID == 0)
             {
-                break;
+                continue;
             }
             
             $strLeague = $objSimpletipp->leagueShortcut;
             $arrTeams  = OpenLigaDB::getLeagueTeams($objSimpletipp->leagueShortcut, $objSimpletipp->leagueSaison);
-            /*
-            {
-            "TeamId": 65,
-            "TeamName": "1. FC Köln",
-            "ShortName": "",
-            "TeamIconUrl": "https://www.openligadb.de/images/teamicons/1_FC_Koeln.gif",
-            "TeamGroupName": null
-            },            
-            */
+
             foreach($arrTeams as $team)
             {
                 if(!in_array($team['TeamId'], $arrTeamIds))
@@ -155,7 +147,7 @@ class SimpletippMatchUpdater extends \Backend
                     $objTeam->leagues = $strLeague;
                     $objTeam->save();
 
-                    $arrTeamIds[] = $team->teamID;
+                    $arrTeamIds[] = $team['TeamId'];
                 }
                 else
                 {
