@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 		'panelLayout'             => 'filter, search, limit'
 	],
 	'label' => [
-		'fields'                  => ['leagueName', 'groupOrderID', 'deadline', 'title', 'result'],
+		'fields'                  => ['leagueName', 'groupOrderID', 'deadline', 'title', 'result', 'resultFirst'],
 		'showColumns'             => true,
 		'label_callback'          => ['tl_simpletipp_match', 'labelCallback']
 	],
@@ -104,6 +104,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 			'sql'                     => "char(1) NOT NULL default ''"
 	],
 	'resultFirst' => [
+			'label'                   => $GLOBALS['TL_LANG']['tl_simpletipp_match']['resultFirst'],
 			'sql'                     => "varchar(32) NOT NULL default ''",
 	],
 	'result' => [
