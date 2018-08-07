@@ -17,7 +17,7 @@ namespace Simpletipp\Modules;
 
 use Simpletipp\SimpletippModule;
 use Simpletipp\Models\SimpletippTippModel;
-
+use kigkonsult\iCalcreator\vcalendar;
 
 /**
  * Class SimpletippCalendar
@@ -60,7 +60,7 @@ class SimpletippCalendar extends SimpletippModule
 		$pageObj           = \PageModel::findByPk($this->simpletipp_matches_page);
 		$this->matchesPage = ($pageObj !== null) ? $pageObj->row() : null;
 
-		$v = new \vcalendar();
+		$v = new vcalendar();
 		$v->setConfig('unique_id', \Environment::get('base'));
 		$v->setProperty('method', 'PUBLISH');
 		$v->setProperty("X-WR-CALNAME",  $this->title);
