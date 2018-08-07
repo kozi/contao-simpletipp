@@ -1,7 +1,7 @@
 <?php
 $this->import('FrontendUser', 'User');
-$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/dist/js/select2.min.js';
-$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/dist/css/select2.min.css||static';
+$GLOBALS['TL_JAVASCRIPT'][] = 'assets/components/select2/dist/js/select2.js';
+$GLOBALS['TL_CSS'][]        = 'assets/components/select2/dist/css/select2.css||static';
 ?>
 
 <div class="simpletipp_userselect">
