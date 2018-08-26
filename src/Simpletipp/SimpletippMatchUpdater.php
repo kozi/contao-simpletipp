@@ -355,7 +355,7 @@ class SimpletippMatchUpdater extends \Backend
     private function parseResults($match)
     {
         //TODO Keys aus Konfiguration lesen 
-        $resultKeyFirst = "Halbzeitergebnis";
+        $resultKeyFirst = "Halbzeit";
         $resultKey      = "Endergebnis";
         $matchResults   = $match["MatchResults"];
 
@@ -364,12 +364,12 @@ class SimpletippMatchUpdater extends \Backend
         $resultObj->result      = "";
 
         foreach($matchResults as $matchResult)
-        {
+        {            
             if ($matchResult["ResultName"] == $resultKeyFirst)
             {
                 $resultObj->resultFirst = $matchResult["PointsTeam1"].SimpletippTippModel::TIPP_DIVIDER.$matchResult["PointsTeam2"];
             }
-            else if ($matchResult["ResultName"] == $resultKeyFirst)
+            else if ($matchResult["ResultName"] == $resultKey)
             {
                 $resultObj->result = $matchResult["PointsTeam1"].SimpletippTippModel::TIPP_DIVIDER.$matchResult["PointsTeam2"];
             }
