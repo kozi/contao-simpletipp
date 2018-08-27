@@ -105,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 
 	// Palettes
 	'palettes' => [
-		'default'                     => '{simpletipp_legend}, title, leagueShortcut, leagueSaison, factor, matchLength, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
+		'default'                     => '{simpletipp_legend}, title, leagueShortcut, leagueSaison, factor, matchLength, resultKeyFirst, resultKeyFinal, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
 	],
 
 
