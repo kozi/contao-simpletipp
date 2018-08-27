@@ -40,8 +40,8 @@ class SimpletippMatchUpdater extends \Backend
 
     private static $lookupLockSeconds = 0;
 
-    private $resultKeyFirst;
-    private $resultKeyFinal;
+    private $resultTypeIdFirst;
+    private $resultTypeIdFinal;
 
     private $folder = null;
 
@@ -248,10 +248,10 @@ class SimpletippMatchUpdater extends \Backend
         {
             return false;
         }
-        
+
         // Keys aus Konfiguration lesen 
-        $this->resultKeyFirst = ($simpletippObj->resultKeyFirst != "") ? $simpletippObj->resultKeyFirst : "Halbzeit";
-        $this->resultKeyFinal = ($simpletippObj->resultKeyFinal != "") ? $simpletippObj->resultKeyFinal : "Endergebnis";
+        $this->resultTypeIdFirst = $simpletippObj->resultTypeIdFirst;
+        $this->resultTypeIdFinal = $simpletippObj->resultTypeIdFinal;
 
         $lastChange = "";
         $newMatches = [];
@@ -369,11 +369,11 @@ class SimpletippMatchUpdater extends \Backend
 
         foreach($matchResults as $matchResult)
         {            
-            if ($matchResult["ResultName"] == $this->resultKeyFirst)
+            if ($matchResult["ResultTypeID"] == $this->resultTypeIdFirst)
             {
                 $resultObj->resultFirst = $matchResult["PointsTeam1"].SimpletippTippModel::TIPP_DIVIDER.$matchResult["PointsTeam2"];
             }
-            else if ($matchResult["ResultName"] == $this->resultKeyFinal)
+            else if ($matchResult["ResultTypeID"] == $this->resultTypeIdFinal)
             {
                 $resultObj->result = $matchResult["PointsTeam1"].SimpletippTippModel::TIPP_DIVIDER.$matchResult["PointsTeam2"];
             }

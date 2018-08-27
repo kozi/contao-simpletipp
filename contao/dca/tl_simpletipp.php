@@ -105,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 
 	// Palettes
 	'palettes' => [
-		'default'                     => '{simpletipp_legend}, title, leagueShortcut, leagueSaison, factor, matchLength, resultKeyFirst, resultKeyFinal, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
+		'default'                     => '{simpletipp_legend}, title, leagueShortcut, leagueSaison, factor, matchLength, resultTypeIdFirst, resultTypeIdFinal, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
 	],
 
 
@@ -188,24 +188,23 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 		'leagueName' => [
 			'sql'                     => "varchar(255) NOT NULL default ''",
 		],
-
-		'resultKeyFirst'     => [
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['resultKeyFirst'],
+		'resultTypeIdFirst'     => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['resultTypeIdFirst'],
 			'exclude'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'select',
-			'options_callback'        => ['tl_simpletipp', 'getResultNames'],
+			'options_callback'        => ['tl_simpletipp', 'getResultTypes'],
 			'eval'                    => ['tl_class' => 'w50'],
-			'sql'                     => "varchar(255) NOT NULL default ''",
+			'sql'                     => "int(10) unsigned NOT NULL default '1'",
 		],
-		'resultKeyFinal'     => [
-			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['resultKeyFinal'],
+		'resultTypeIdFinal'     => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['resultTypeIdFinal'],
 			'exclude'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'select',
-			'options_callback'        => ['tl_simpletipp', 'getResultNames'],
+			'options_callback'        => ['tl_simpletipp', 'getResultTypes'],
 			'eval'                    => ['tl_class' => 'w50'],
-			'sql'                     => "varchar(255) NOT NULL default ''",
+			'sql'                     => "int(10) unsigned NOT NULL default '2'",
 		],
 		'teaser' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['teaser'],
@@ -305,16 +304,13 @@ class tl_simpletipp extends \Backend
 		return $args;
 	}
 
-	public function getResultNames(DataContainer $dc)
+	public function getResultTypes(DataContainer $dc)
 	{
 		$arrOptions = [];
-		$maxYear = intval(date("Y")) + 2;
-		$minYear = 2002;
-		$arrOptions[""] = "";
 		
-		for($y=$maxYear; $y >= $minYear; $y--) {
-			$arrOptions["".$y] = "".$y;
-		}
+		$arrOptions["1"] = "Ergebnis zur Halbzeit";
+		$arrOptions["2"] = "Ergebnis nach 90 Minuten";
+
 		return $arrOptions;
 	}
 	
