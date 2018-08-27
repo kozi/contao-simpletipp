@@ -165,9 +165,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
             'eval'                    => ['rgxp'=>'digit', 'tl_class'=>'w50'],
             'sql'                     => "int(10) unsigned NOT NULL default '6300'"
         ],
-        //'matchResultType'   => [
-        // TODO
-		// ],
 		'leagueShortcut'     => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['leagueShortcut'],
 			'exclude'                 => true,
@@ -198,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options_callback'        => ['tl_simpletipp', 'getResultNames'],
-			'eval'                    => ['mandatory'=> true, 'tl_class' => 'w50'],
+			'eval'                    => ['tl_class' => 'w50'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
 		],
 		'resultKeyFinal'     => [
@@ -207,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options_callback'        => ['tl_simpletipp', 'getResultNames'],
-			'eval'                    => ['mandatory'=> true, 'tl_class' => 'w50'],
+			'eval'                    => ['tl_class' => 'w50'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
 		],
 		'teaser' => [
