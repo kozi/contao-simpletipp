@@ -16,6 +16,8 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['quizDeadline']      = ['Quiz-Deadline', 'Z
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueShortcut']    = ['Liga-Shortcut', 'Liga die getippt werden soll. (https://www.openligadb.de/Datenhaushalt/)'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['leagueSaison']      = ['Liga-Saison', 'Liga-Saison die getippt werden soll.'];
 
+$GLOBALS['TL_LANG']['tl_simpletipp']['resultKeyFirst']    = ['Halbzeitergebnis', 'Ergebnis, das als Halbzeitergebnis verwendet werden solll.'];
+$GLOBALS['TL_LANG']['tl_simpletipp']['resultKeyFinal']    = ['Endergebnis', 'Ergebnis, das als Endergebnis verwendet werden soll.'];
 
 $GLOBALS['TL_LANG']['tl_simpletipp']['teaser']            = ['Info', 'Info'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['matches_page']      = ['Seitenauswahl Spiele', 'Wähle eine Seite, die das Modul <strong>Simpletipp - Spiele</strong> enthält. In den Emails wird dann ein Link zu der Seite generiert.'];

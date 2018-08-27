@@ -191,6 +191,25 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
 		'leagueName' => [
 			'sql'                     => "varchar(255) NOT NULL default ''",
 		],
+
+		'resultKeyFirst'     => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['resultKeyFirst'],
+			'exclude'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'select',
+			'options_callback'        => ['tl_simpletipp', 'getResultNames'],
+			'eval'                    => ['mandatory'=> true, 'tl_class' => 'w50'],
+			'sql'                     => "varchar(255) NOT NULL default ''",
+		],
+		'resultKeyFinal'     => [
+			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['resultKeyFinal'],
+			'exclude'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'select',
+			'options_callback'        => ['tl_simpletipp', 'getResultNames'],
+			'eval'                    => ['mandatory'=> true, 'tl_class' => 'w50'],
+			'sql'                     => "varchar(255) NOT NULL default ''",
+		],
 		'teaser' => [
 			'label'                   => &$GLOBALS['TL_LANG']['tl_simpletipp']['teaser'],
 			'exclude'                 => true,
@@ -289,8 +308,23 @@ class tl_simpletipp extends \Backend
 		return $args;
 	}
 
+	public function getResultNames(DataContainer $dc)
+	{
+		$arrOptions = [];
+		$maxYear = intval(date("Y")) + 2;
+		$minYear = 2002;
+		$arrOptions[""] = "";
+		
+		for($y=$maxYear; $y >= $minYear; $y--) {
+			$arrOptions["".$y] = "".$y;
+		}
+		return $arrOptions;
+	}
+	
+
 	public function getSaisons(DataContainer $dc)
 	{
+		$arrOptions = [];
 		$maxYear = intval(date("Y")) + 2;
 		$minYear = 2002;
 		
