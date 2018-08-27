@@ -68,8 +68,8 @@ class SimpletippModel extends \Model
     public static function getLeagueGroups($leagueID)
     {
         $groups = [];
-        $result = \Database::getInstance()->prepare("SELECT DISTINCT groupID, groupName
-          FROM tl_simpletipp_match WHERE leagueID = ? ORDER BY groupID")->execute($leagueID);
+        $result = \Database::getInstance()->prepare("SELECT DISTINCT groupID, groupName, groupOrderID 
+          FROM tl_simpletipp_match WHERE leagueID = ? ORDER BY groupOrderID")->execute($leagueID);
 
         while($result->next())
         {
