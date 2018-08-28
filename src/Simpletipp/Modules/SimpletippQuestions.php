@@ -148,7 +148,8 @@ class SimpletippQuestions extends SimpletippModule
             $this->redirect($objPage->getFrontendUrl());
         }
 
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/dist/Chart.min.js|static';
+
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
 
         $this->Template->finished   = $quizFinished;
         $this->Template->formId     = $this->formId;

@@ -173,11 +173,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     protected function statHighscoreTimeline()
     {
-        $GLOBALS['TL_CSS'][]        = 'assets/components/select2/dist/css/select2.css||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'assets/components/select2/dist/js/select2.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
 
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.css||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.js|static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
 
 
         // Cached result?
@@ -232,11 +231,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     protected function statPoints()
     {
-        $GLOBALS['TL_CSS'][]        = 'assets/components/select2/dist/css/select2.css||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'assets/components/select2/dist/js/select2.js';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
 
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.css||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartist/dist/chartist.min.js|static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
 
         $memberArray = $this->cache(static::$cache_key_points);
 
