@@ -1,46 +1,42 @@
 {
-    "name":"martin-kozianka/contao-simpletipp",
-    "description":"Simpletipp",
-    "keywords":["contao", "openligadb", "tippspiel", "soccer", "game"],
-    "type":"contao-module",
-    "license":"LGPL-3.0+",
-    "authors":[
+    "name": "martin-kozianka/contao-simpletipp",
+    "description": "Simpletipp",
+    "keywords": [
+        "contao",
+        "openligadb",
+        "tippspiel",
+        "soccer",
+        "game"
+    ],
+    "type": "contao-module",
+    "license": "LGPL-3.0+",
+    "authors": [
         {
-            "name":"Martin Kozianka",
-            "email":"martin@kozianka.de",
-            "homepage":"http://kozianka.de",
-            "role":"Developer"
+            "name": "Martin Kozianka",
+            "email": "martin@kozianka.de",
+            "homepage": "http://kozianka.de",
+            "role": "Developer"
         }
     ],
-    "support":{
-        "email":"martin@kozianka.de",
-        "issues":"https://github.com/kozi/contao-simpletipp/issues",
-        "irc":"irc://irc.freenode.org/contao.dev",
-        "source":"https://github.com/kozi/contao-simpletipp"
-
+    "support": {
+        "email": "martin@kozianka.de",
+        "issues": "https://github.com/kozi/contao-simpletipp/issues",
+        "irc": "irc://irc.freenode.org/contao.dev",
+        "source": "https://github.com/kozi/contao-simpletipp"
     },
     "require": {
-        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
+        "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
         "contao/core-bundle": "~3.5 || ~4.4",
         "kigkonsult/icalcreator": "~2",
         "phpfastcache/phpfastcache": "~7",
-        "irazasyed/telegram-bot-sdk": "~2",
-        "select2/select2": "~4",
-        "nnnick/chartjs": "~2"
+        "irazasyed/telegram-bot-sdk": "~2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "replace":{
-        "contao-legacy/simpletipp": "*"
-    },
     "autoload": {
         "psr-0": {
             "Simpletipp": "src/"
         }
-    },
-    "scripts": {
-        "post-install-cmd": "Simpletipp\\SimpletippComposerCallbacks::postInstallUpdate",
-        "post-update-cmd": "Simpletipp\\SimpletippComposerCallbacks::postInstallUpdate"
     },
     "extra": {
         "contao": {
