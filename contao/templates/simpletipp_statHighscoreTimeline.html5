@@ -37,6 +37,9 @@ $(document).ready(function() {
 	                ci.update();
 	            }
 	        },
+	        tooltips: {
+	        	enabled: false
+	        },
 	        scales: {
 	            yAxes: [{
 	                ticks: {
@@ -47,7 +50,31 @@ $(document).ready(function() {
 	                    min: -<?=$this->data->roundedMaximum?>
 	                }
 	            }]
-	        }
+	        },
+			plugins: {
+				datalabels: {
+					backgroundColor: function(context) {
+						return context.dataset.backgroundColor;
+					},
+					anchor: "start",
+					align: "left",
+					borderRadius: 4,
+					color: 'white',
+					font: {
+						fontSize: "10px",
+						weight: 'normal',
+						lineHeight: 1
+					},
+					formatter: function(value, c){
+						var username = (c.dataIndex+1 === c.dataset.data.length) ? " "+c.dataset.label : "";
+						return Math.abs(value) + "." + username;
+					},
+					display: function(context) {
+    					return context.dataIndex !== 0; // display labels with an odd index
+					}
+
+				}
+			}
 	    }
 	});
 	
