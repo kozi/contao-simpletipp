@@ -347,20 +347,28 @@ class ContentSimpletippStatistics extends SimpletippModule {
         while ($result->next()) {
             if (!array_key_exists($result->member_id, $memberArray )) {
                 $member       = (Object) $result->row();
-                $member->tore = 0; $member->two_one = 0;
-                $member->home = 0; $member->draw = 0; $member->away = 0;
+                $member->tore = 0;
+                $member->two_one = 0;
+                $member->home = 0;
+                $member->draw = 0;
+                $member->away = 0;
+                $member->tippCount = 0;
                 unset($member->tipp);
                 $memberArray[$result->member_id] = $member;
             }
 
-            $m          = &$memberArray[$result->member_id];
-            $tArr       = array_map('intval', explode(':', $result->tipp));
-            $m->tore    = $m->tore + $tArr[0] + $tArr[1];
-            $m->two_one = ('2:1' == $result->tipp) ? ++$m->two_one : $m->two_one;
-            $m->draw    = ($tArr[0] == $tArr[1]) ? ++$m->draw : $m->draw;
-            $m->home    = ($tArr[0] > $tArr[1])  ? ++$m->home : $m->home;
-            $m->away    = ($tArr[0] < $tArr[1])  ? ++$m->away : $m->away;
+            $m            = &$memberArray[$result->member_id];
+            $tArr         = array_map('intval', explode(':', $result->tipp));
+            $m->tore      = $m->tore + $tArr[0] + $tArr[1];
+            $m->two_one   = ('2:1' == $result->tipp) ? ++$m->two_one : $m->two_one;
+            $m->draw      = ($tArr[0] == $tArr[1]) ? ++$m->draw : $m->draw;
+            $m->home      = ($tArr[0] > $tArr[1])  ? ++$m->home : $m->home;
+            $m->away      = ($tArr[0] < $tArr[1])  ? ++$m->away : $m->away;
+            $m->tippCount = ++$m->tippCount;
         }
+
+        $maxCount = sizeof($arrMatchIds);
+        // Filter user who missed too much matches
 
         // TODO Den link zu dem Benutzer
 
