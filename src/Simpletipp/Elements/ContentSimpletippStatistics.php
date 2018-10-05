@@ -182,7 +182,11 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     protected function statHighscoreTimeline()
     {
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.min.js|static';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
+
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
+
 
         // Cached result?
         $dataObject = $this->cache(static::$cache_key_highscore);
@@ -220,8 +224,6 @@ class ContentSimpletippStatistics extends SimpletippModule {
                 $highscoreHistory   = $memberArray[$tableEntry->username]->highscorePositions;
                 $highscoreHistory[] = $highscorePos;
                 $memberArray[$tableEntry->username]->highscorePositions = $highscoreHistory;
-
-                //array_push($memberArray[$tableEntry->username]->highscorePositions, $highscorePos);
             }
         }
 
@@ -246,7 +248,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
 
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.min.js|static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
 
         $memberArray = $this->cache(static::$cache_key_points);
 
@@ -263,9 +265,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
         {
             foreach($objMembers as $objMember)
             {
-                $memberArray[$objMember->username] = $objMember->row();
-                $memberArray[$objMember->username]['pointsArray'] = [[],[],[]];
-                $memberArray[$objMember->username]['punkte']      = [];
+                $mem = (object) $objMember->row();
+                $mem->pointsArray = [[],[],[]];
+                $mem->punkte = [];
+                $memberArray[$objMember->username] = $mem;
             }
         }
 
@@ -279,10 +282,11 @@ class ContentSimpletippStatistics extends SimpletippModule {
             $highscore = $this->getHighscore($result->groupName);
             foreach($highscore as $e)
             {
-                $memberArray[$e->username]['punkte'][$mgShort]         = intval($e->points);
-                $memberArray[$e->username]['pointsArray'][0][$mgShort] = intval($e->sum_perfect) * $this->pointFactors->perfect;
-                $memberArray[$e->username]['pointsArray'][1][$mgShort] = intval($e->sum_difference) * $this->pointFactors->difference;
-                $memberArray[$e->username]['pointsArray'][2][$mgShort] = intval($e->sum_tendency) * $this->pointFactors->tendency;
+                $mem = $memberArray[$e->username];
+                $mem->punkte[$mgShort] = intval($e->points);
+                $mem->pointsArray[0][$mgShort] = intval($e->sum_perfect) * $this->pointFactors->perfect;
+                $mem->pointsArray[1][$mgShort] = intval($e->sum_difference) * $this->pointFactors->difference;
+                $mem->pointsArray[2][$mgShort] = intval($e->sum_tendency) * $this->pointFactors->tendency;
             }
         }
         usort($memberArray, function($a, $b)
