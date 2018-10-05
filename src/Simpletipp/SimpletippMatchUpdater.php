@@ -269,9 +269,8 @@ class SimpletippMatchUpdater extends \Backend
     
             if ($teamHome !== null && $teamAway !== null)
             {
-                $strTitle      = $teamHome->name.' - '.$teamAway->name;
-                
-                if(count($teamHome->short) > 0 && count($teamAway->short) > 0)
+                $strTitle = $teamHome->name.' - '.$teamAway->name;
+                if(strlen($teamHome->short) > 0 && strlen($teamAway->short) > 0)
                 {
                     $strTitleShort = $teamHome->short.' - '.$teamAway->short;
                 }
