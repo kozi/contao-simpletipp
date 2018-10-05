@@ -45,6 +45,15 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return sprintf('%s method does not exist!', $this->simpletipp_statistics_type);
         }
 
+		if (TL_MODE == 'BE')
+        {
+			$this->Template = new \BackendTemplate('be_wildcard');
+			$this->Template->wildcard  = '### SimpletippStatistics ###';
+            $this->Template->wildcard .= '<br/>'.$this->simpletipp_statistics_type;
+			$this->Template->wildcard .= '<br/>'.static::$types[$this->simpletipp_statistics_type];
+			return $this->Template->parse();
+		}
+
         return parent::generate();
     }
 
@@ -173,23 +182,19 @@ class ContentSimpletippStatistics extends SimpletippModule {
 
     protected function statHighscoreTimeline()
     {
-        $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
-
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
-
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.min.js|static';
 
         // Cached result?
-        $memberArray = $this->cache(static::$cache_key_highscore);
-        if ($memberArray != null) {
-            $this->statsTemplate->table = $memberArray;
+        $dataObject = $this->cache(static::$cache_key_highscore);
+        if ($dataObject != null) {
+            $this->statsTemplate->data = $dataObject;
             return true;
         }
 
         $objMembers = $this->simpletipp->getGroupMember();
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
-                $objMember->highscorePositions = [0];
+                $objMember->highscorePositions = [-1];
                 $memberArray[$objMember->username]   = $objMember;
             }
         }
@@ -207,7 +212,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         {
             $matchgroups = array_slice($groups, 0, $i);
 
-            $pos            = 0;
+            $pos            = 1;
             $highscoreTable = $this->getHighscore($matchgroups);
             foreach($highscoreTable as $tableEntry)
             {
@@ -225,8 +230,15 @@ class ContentSimpletippStatistics extends SimpletippModule {
             return strcmp($a->lastname.$a->firstname, $b->lastname.$b->firstname);
         });
 
-        $this->cache(static::$cache_key_highscore, $memberArray, true);
-        $this->statsTemplate->table  = $memberArray;
+        $max = count($memberArray);
+
+        $dataObject = new \stdClass();
+        $dataObject->table = $memberArray;
+        $dataObject->labels = array_map(function($i) { return '"'.$i.'."'; }, range(0, count($memberArray[0]->highscorePositions)-1));
+        $dataObject->roundedMaximum = (ceil($max)%5 === 0) ? ceil($max) : round(($max+5/2)/5)*5;
+
+        $this->cache(static::$cache_key_highscore, $dataObject, true);
+        $this->statsTemplate->data = $dataObject;
     }
 
     protected function statPoints()
@@ -234,7 +246,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
 
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.js|static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.min.js|static';
 
         $memberArray = $this->cache(static::$cache_key_points);
 

@@ -1,62 +1,78 @@
-<div id="highscoreTimeline-select">
-<select style="width:100%" multiple="multiple">
-    <?php foreach($this->table as $row): ?>
-        <option <?php echo ($row->username == $this->user->username) ? 'selected="selected" ':''?>value="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></option>
-    <?php endforeach;?>
-</select>
-</div>
-
-<div id="highscoreTimeline"></div>
+<div class="chartWrapper"><canvas id="highscoreTimeline"></canvas></div>
+<ul id="highscoreTimeline-legend" class="chart-legend-user">
+<?php foreach($this->data->table as $row): ?>
+    <li id="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></li>
+<?php endforeach;?>
+</ul>	
 <script>
-var highscoreChartist    = null;
-var highscoreTimeline    = [];
-var highscorePlotColors  = ["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aa aa11","#22aa99","#994499"];
-
-var highscorePlotOptions = {
-    high: 0,
-    low: -<?=count($this->table)?>,
-    height: '400px',
-    fullWidth: true,
-    lineSmooth: Chartist.Interpolation.none(),
-    axisY: {
-        onlyInteger: true,
-        offset: 60,
-        labelInterpolationFnc: function(value) {
-            return (Math.abs(value)+1) + '.';
-        }
-
-    }
-};
-
-var highscorePlotData = {
-    labels: [<?=implode(',', range(0, count($this->table[0]->highscorePositions)-1))?>],
-    series: []
-};
-
-<?php foreach($this->table as $row): ?>
-    highscoreTimeline['user_<?=$row->username?>'] = [<?=implode(',',$row->highscorePositions)?>];
+<?php foreach($this->data->table as $row): ?>
+	highscoreTimeline['user_<?=$row->username?>'] = [<?=implode(',',$row->highscorePositions)?>];
 <?php endforeach;?>
 
 $(document).ready(function() {
 
-    $("#highscoreTimeline-select select").select2();
-
-    highscorePlotData.series = [
-        highscoreTimeline['user_<?php echo  $this->user->username;?>']
-    ];
-    highscoreChartist = new Chartist.Line('#highscoreTimeline', highscorePlotData, highscorePlotOptions);
-
-    $('#highscoreTimeline-select select').on('change', function(evt, params) {
-        var arrOptions = $(this).val();
-        var arrData    = [];
-        $.each(arrOptions, function(index, value) {
-            arrData.push(highscoreTimeline[value]);
-        });
-        highscorePlotData.series = arrData;
-        highscoreChartist.update(highscorePlotData);
-    });
-
+	var highscoreColors = [
+		"#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aaaa11","#22aa99","#994499"
+	];
+	var highscoreChart = new Chart(document.getElementById("highscoreTimeline"), {
+	    type: "line",
+	    data: {
+	        labels: [<?=implode(",", $this->data->labels)?>]
+	    },
+	    options: {
+	        maintainAspectRatio: false,
+	        legend: {
+	        	position: "bottom",
+	            onClick: function(e, legendItem) {
+	                var ci = this.chart;
+	                var index = legendItem.datasetIndex;
+	                var entry = ci.data.datasets[index];
+	                if (ci.data.datasets.length === 1) {
+	                    // do not remove the last entry
+	                    return;
+	                }
+					$("#highscoreTimeline-legend li#"+entry.id).show();
+	                highscoreColors.unshift(legendItem.fillStyle);
+	                ci.data.datasets.splice(index, 1);
+	                ci.update();
+	            }
+	        },
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    callback: function (value, index, values) {
+	                        return (value === 0) ? "" : ((value * -1) + ".");
+	                    },
+	                    max: 0,
+	                    min: -<?=$this->data->roundedMaximum?>
+	                }
+	            }]
+	        }
+	    }
+	});
+	
+	$("#highscoreTimeline-legend li").click(function(){
+		var $li = $(this),
+			label = $li.text(),
+			color = highscoreColors.shift();
+			
+    	if (highscoreChart.data.datasets.map(d => d.label).indexOf(label) !== -1) {
+    		return;
+    	}
+    	
+		highscoreChart.data.datasets.push({
+			id: this.id,
+	        label: label,
+	        data: highscoreTimeline[this.id],
+	        tension: 0.2,
+	        fill: false,
+	        backgroundColor: color,
+	        borderColor: color
+	    });
+	    
+		highscoreChart.update();
+        $li.hide();
+	});
+	$("#highscoreTimeline-legend li#user_<?=$this->user->username?>").click();
 });
-
 </script>
-
