@@ -1,5 +1,5 @@
 <div class="chartWrapper"><canvas id="highscoreTimeline"></canvas></div>
-<ul id="highscoreTimeline-legend" class="chart-legend-user">
+<ul id="highscoreTimeline-legend" class="chart-legend-user noselect">
 <?php foreach($this->data->table as $row): ?>
     <li id="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></li>
 <?php endforeach;?>

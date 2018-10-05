@@ -196,8 +196,8 @@ class ContentSimpletippStatistics extends SimpletippModule {
         $objMembers = $this->simpletipp->getGroupMember();
         if ($objMembers !== null) {
             foreach($objMembers as $objMember) {
-                $objMember->highscorePositions = [-1];
-                $memberArray[$objMember->username]   = $objMember;
+                $objMember->highscorePositions = [];
+                $memberArray[$objMember->username] = $objMember;
             }
         }
 
@@ -220,6 +220,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
             {
                 $highscorePos       = intval($pos++) * (-1);
                 $highscoreHistory   = $memberArray[$tableEntry->username]->highscorePositions;
+                if (count($highscoreHistory) === 0) {
+                    // Do insertion twice to get the same entry for the matchday 0 and 1
+                    $highscoreHistory[] = $highscorePos;
+                }
                 $highscoreHistory[] = $highscorePos;
                 $memberArray[$tableEntry->username]->highscorePositions = $highscoreHistory;
             }

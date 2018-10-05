@@ -1,5 +1,5 @@
 <div class="chartWrapper"><canvas id="pointsPlot"></canvas></div>
-<ul id="pointstat-legend" class="chart-legend-user">
+<ul id="pointstat-legend" class="chart-legend-user noselect">
 <?php foreach($this->table as $row): ?>
     <li<?php echo ($row->username == $this->user->username) ? ' class="selected"':''?> id="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></li>
 <?php endforeach;?>
