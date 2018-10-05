@@ -344,6 +344,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
                     AND match_id IN (".implode(',', $arrMatchIds).")");
 
         $memberArray = [];
+        $maxCount = sizeof($arrMatchIds);
         while ($result->next()) {
             if (!array_key_exists($result->member_id, $memberArray )) {
                 $member       = (Object) $result->row();
@@ -353,6 +354,7 @@ class ContentSimpletippStatistics extends SimpletippModule {
                 $member->draw = 0;
                 $member->away = 0;
                 $member->tippCount = 0;
+                $member->maxCount = $maxCount;
                 unset($member->tipp);
                 $memberArray[$result->member_id] = $member;
             }
@@ -367,8 +369,10 @@ class ContentSimpletippStatistics extends SimpletippModule {
             $m->tippCount = ++$m->tippCount;
         }
 
-        $maxCount = sizeof($arrMatchIds);
-        // Filter user who missed too much matches
+        // Filter "dead "user who missed too much matches 6% (tippCount / maxCount > 0,94)
+        $memberArray = array_filter($memberArray, function($member) {
+            return (($member->tippCount / $member->maxCount) > 0.94);
+        });
 
         // TODO Den link zu dem Benutzer
 
