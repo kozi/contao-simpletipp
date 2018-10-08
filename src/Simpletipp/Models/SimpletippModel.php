@@ -66,6 +66,8 @@ class SimpletippModel extends \Model
     }
 
     public static function shortenLeagueName($name) {
+        $name = preg_replace('/(\d\d)(\d\d)\/(\d\d)(\d\d)/i', "${2}/${4}", $name);
+
         $replaceFrom = [];
         $replaceTo   = [];
         
