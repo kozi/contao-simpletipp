@@ -6,7 +6,7 @@
 </ul>
 <script>
 $(document).ready(function() {
-    var pointsObj = <?=json_encode((object) $this->data->table)?>;
+    var pointsObj = <?=json_encode($this->data->table, JSON_FORCE_OBJECT)?>;
 	var pointsPlotChart = new Chart(document.getElementById("pointsPlot"), {
 	    type: "bar",
 	    data: {
