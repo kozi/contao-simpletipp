@@ -248,10 +248,14 @@ class ContentSimpletippStatistics extends SimpletippModule
 
         if ($objMembers !== null) {
             foreach ($objMembers as $objMember) {
-                $mem = (object) $objMember->row();
-                $mem->pointsArray = [[], [], []];
-                $mem->punkte = [];
-                $memberArray[$objMember->username] = $mem;
+                $memberArray[$objMember->username] = (object) [
+                    "id" => $objMember->id,
+                    "firstname" => $objMember->firstname,
+                    "lastname" => $objMember->lastname,
+                    "username" => $objMember->username,
+                    "pointsArray" => [[], [], []],
+                    "punkte" => []
+                ];
             }
         }
 
