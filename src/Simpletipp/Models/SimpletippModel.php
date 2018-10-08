@@ -65,6 +65,15 @@ class SimpletippModel extends \Model
         return $arrIds;
     }
 
+    public static function shortenLeagueName($name) {
+        $replaceFrom = [];
+        $replaceTo   = [];
+        
+        $replaceFrom[] = 'Bundesliga';     $replaceTo[] = 'Buli';
+
+        return trim(str_replace($replaceFrom, $replaceTo, $name));
+    }
+
     public static function getLeagueGroups($leagueID)
     {
         $groups = [];

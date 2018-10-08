@@ -12,6 +12,7 @@
  * @license    LGPL
  * @filesource
  */
+use Simpletipp\Models\SimpletippModel;
 
 $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 
@@ -32,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 		'panelLayout'             => 'filter, search, limit'
 	],
 	'label' => [
-		'fields'                  => ['leagueID', 'groupOrderID', 'deadline', 'title_short', 'result', 'resultFirst'],
+		'fields'                  => ['leagueName', 'groupOrderID', 'deadline', 'title_short', 'result', 'resultFirst'],
 		'showColumns'             => true,
 		'label_callback'          => ['tl_simpletipp_match', 'labelCallback']
 	],
@@ -137,7 +138,7 @@ class tl_simpletipp_match extends \Backend
 
 	public function labelCallback($row, $label, DataContainer $dc, $args = null)
 	{
-		// $args[0] IS $row['leagueID'];
+		$args[0] = SimpletippModel::shortenLeagueName($row['leagueName']);
 		$args[1] = $row['groupName'];
 		$args[2] = date($GLOBALS['TL_CONFIG']['datimFormat'], $args[2]);
 		return $args;
