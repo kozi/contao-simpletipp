@@ -282,7 +282,7 @@ class ContentSimpletippStatistics extends SimpletippModule
                 $mem->pointsArray[2][] = intval($e->sum_tendency) * $this->pointFactors->tendency;
             }
         }
-        usort($memberArray, function ($a, $b) {
+        uasort($memberArray, function ($a, $b) {
             return strcmp($a->lastname . $a->firstname, $b->lastname . $b->firstname);
         });
 

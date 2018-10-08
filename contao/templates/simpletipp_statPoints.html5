@@ -6,7 +6,7 @@
 </ul>
 <script>
 $(document).ready(function() {
-    var pointsObj = <?=json_encode($this->data->table, JSON_FORCE_OBJECT)?>;
+    var pointsObj = <?=json_encode($this->data->table)?>;
 	var pointsPlotChart = new Chart(document.getElementById("pointsPlot"), {
 	    type: "bar",
 	    data: {
@@ -34,18 +34,12 @@ $(document).ready(function() {
 	});
 
 	$("#pointstat-legend li").click(function() {
-		var username = this.id.replace("user_", ""),
-			datasetArray = [];
-		if(pointsObj[username][0] > 0) {
-			datasetArray.push({ label: 'Richtige', backgroundColor: "#3366cc", data: pointsObj[username][0] });
-		}
-		if(pointsObj[username][1] > 0) {
-			datasetArray.push({ label: 'Differenzen', backgroundColor: "#dc3912", data: pointsObj[username][1] });
-		}
-		if(pointsObj[username][2] > 0) {
-			datasetArray.push({ label: 'Tendenzen', backgroundColor: "#ff9900", data: pointsObj[username][2] });
-		}
-		pointsPlotChart.data.datasets = datasetArray;
+		var username = this.id.replace("user_", "");
+		pointsPlotChart.data.datasets = [
+			{label: 'Richtige', backgroundColor: "#3366cc", data: pointsObj[username].pointsArray[0]},
+			{label: 'Differenzen', backgroundColor: "#dc3912", data: pointsObj[username].pointsArray[1]},
+			{label: 'Tendenzen', backgroundColor: "#ff9900", data: pointsObj[username].pointsArray[2]}
+		];
 		pointsPlotChart.update();
 	});
 	$("#pointstat-legend li#user_<?=$this->user->username?>").click();
