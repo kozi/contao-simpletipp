@@ -204,7 +204,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         }
 
         $dataObject = new \stdClass();
-        $dataObject->labels = [];
+        $dataObject->labels = ["0."];
 
         for ($i = 1; $i <= count($groups); $i++) {
             $dataObject->labels[] = $i . ".";
