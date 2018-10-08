@@ -286,7 +286,7 @@ class ContentSimpletippStatistics extends SimpletippModule
             return strcmp($a->lastname . $a->firstname, $b->lastname . $b->firstname);
         });
 
-        $data->table = (object) $memberArray;
+        $data->table = $memberArray;
         $this->cache(static::$cache_key_points, $data, true);
 
         $this->statsTemplate->data = $data;
