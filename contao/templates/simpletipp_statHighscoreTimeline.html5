@@ -1,12 +1,12 @@
 <div class="chartWrapper"><canvas id="highscoreTimeline"></canvas></div>
 <ul id="highscoreTimeline-legend" class="chart-legend-user noselect">
-<?php foreach($this->data->table as $row): ?>
-    <li id="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></li>
+<?php foreach ($this->data->table as $row): ?>
+    <li id="user_<?=$row->username?>"><?=$row->firstname . ' ' . $row->lastname?></li>
 <?php endforeach;?>
-</ul>	
+</ul>
 <script>
-<?php foreach($this->data->table as $row): ?>
-	highscoreTimeline['user_<?=$row->username?>'] = [<?=implode(',',$row->highscorePositions)?>];
+<?php foreach ($this->data->table as $row): ?>
+	highscoreTimeline['user_<?=$row->username?>'] = [<?=implode(',', $row->highscorePositions)?>];
 <?php endforeach;?>
 
 $(document).ready(function() {
@@ -17,7 +17,7 @@ $(document).ready(function() {
 	var highscoreChart = new Chart(document.getElementById("highscoreTimeline"), {
 	    type: "line",
 	    data: {
-	        labels: [<?=implode(",", $this->data->labels)?>]
+	        labels: <?=json_encode($this->data->labels)?>
 	    },
 	    options: {
 	        maintainAspectRatio: false,
@@ -76,16 +76,16 @@ $(document).ready(function() {
 			}
 	    }
 	});
-	
+
 	$("#highscoreTimeline-legend li").click(function(){
 		var $li = $(this),
 			label = $li.text(),
 			color = highscoreColors.shift();
-			
+
     	if (highscoreChart.data.datasets.map(d => d.label).indexOf(label) !== -1) {
     		return;
     	}
-    	
+
 		highscoreChart.data.datasets.push({
 			id: this.id,
 	        label: label,
@@ -95,7 +95,7 @@ $(document).ready(function() {
 	        backgroundColor: color,
 	        borderColor: color
 	    });
-	    
+
 		highscoreChart.update();
         $li.hide();
 	});

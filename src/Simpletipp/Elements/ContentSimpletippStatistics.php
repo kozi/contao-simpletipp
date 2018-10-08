@@ -199,10 +199,14 @@ class ContentSimpletippStatistics extends SimpletippModule
             $groups[] = $result->groupName;
         }
 
+        $dataObject = new \stdClass();
+        $dataObject->labels = [];
+
         for ($i = 1; $i <= count($groups); $i++) {
-            $matchgroups = array_slice($groups, 0, $i);
+            $dataObject->labels[] = $i . ".";
 
             $pos = 1;
+            $matchgroups = array_slice($groups, 0, $i);
             $highscoreTable = $this->getHighscore($matchgroups);
             foreach ($highscoreTable as $tableEntry) {
                 $highscorePos = intval($pos++) * (-1);
@@ -224,7 +228,6 @@ class ContentSimpletippStatistics extends SimpletippModule
 
         $dataObject = new \stdClass();
         $dataObject->table = $memberArray;
-        $dataObject->labels = array_map(function ($i) {return '"' . $i . '."';}, range(0, count($memberArray[0]->highscorePositions) - 1));
         $dataObject->roundedMaximum = (ceil($max) % 5 === 0) ? ceil($max) : round(($max + 5 / 2) / 5) * 5;
 
         $this->cache(static::$cache_key_highscore, $dataObject, true);
