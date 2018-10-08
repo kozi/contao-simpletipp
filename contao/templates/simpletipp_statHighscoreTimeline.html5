@@ -1,16 +1,14 @@
 <div class="chartWrapper"><canvas id="highscoreTimeline"></canvas></div>
+
 <ul id="highscoreTimeline-legend" class="chart-legend-user noselect">
 <?php foreach ($this->data->table as $row): ?>
     <li id="user_<?=$row->username?>"><?=$row->firstname . ' ' . $row->lastname?></li>
 <?php endforeach;?>
 </ul>
+
 <script>
-<?php foreach ($this->data->table as $row): ?>
-	highscoreTimeline['user_<?=$row->username?>'] = [<?=implode(',', $row->highscorePositions)?>];
-<?php endforeach;?>
-
 $(document).ready(function() {
-
+	var highscoreTimeline = <?=json_encode($this->data->table)?>;
 	var highscoreColors = [
 		"#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#aaaa11","#22aa99","#994499"
 	];
@@ -31,7 +29,7 @@ $(document).ready(function() {
 	                    // do not remove the last entry
 	                    return;
 	                }
-					$("#highscoreTimeline-legend li#"+entry.id).show();
+					$("#highscoreTimeline-legend li#" + entry.id).show();
 	                highscoreColors.unshift(legendItem.fillStyle);
 	                ci.data.datasets.splice(index, 1);
 	                ci.update();
@@ -79,6 +77,7 @@ $(document).ready(function() {
 
 	$("#highscoreTimeline-legend li").click(function(){
 		var $li = $(this),
+			username = this.id.replace("user_", ""),
 			label = $li.text(),
 			color = highscoreColors.shift();
 
@@ -89,7 +88,7 @@ $(document).ready(function() {
 		highscoreChart.data.datasets.push({
 			id: this.id,
 	        label: label,
-	        data: highscoreTimeline[this.id],
+	        data: highscoreTimeline[username].highscorePositions,
 	        tension: 0.2,
 	        fill: false,
 	        backgroundColor: color,

@@ -186,8 +186,12 @@ class ContentSimpletippStatistics extends SimpletippModule
         $objMembers = $this->simpletipp->getGroupMember();
         if ($objMembers !== null) {
             foreach ($objMembers as $objMember) {
-                $objMember->highscorePositions = [];
-                $memberArray[$objMember->username] = $objMember;
+                $memberArray[$objMember->username] = (object) [
+                    "username" => $objMember->username,
+                    "firstname" => $objMember->firstname,
+                    "lastname" => $objMember->lastname,
+                    "highscorePositions" => []
+                ];
             }
         }
 
