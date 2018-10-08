@@ -19,6 +19,10 @@ TODO :: less verwenden?
     border-collapse: separate;
 }
 
+.mod_simpletipp abbr[title] {
+    text-decoration: none;
+}
+
 .mod_simpletipp_ranking td.logo i,
 .mod_simpletipp_match th.logos i,
 .simpletipp_stat td.logos i,

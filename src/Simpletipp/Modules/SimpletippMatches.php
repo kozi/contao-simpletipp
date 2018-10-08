@@ -136,12 +136,12 @@ class SimpletippMatches extends SimpletippModule {
             $match->cssClass   .= ($i == $result->numRows) ? ' last' : '';
             $match->cssClass   .= ($match->isFinished) ? ' finished' : '';
 
-            if (count($matches) > 0 && $match->groupName_short != $currentGroup)
+            if (count($matches) > 0 && $match->groupShort != $currentGroup)
 			{
                 $prevMatch = &$matches[(count($matches)-1)];
                 $prevMatch->cssClass .= ($currentGroup != 0) ? ' break' : '';
             }
-            $currentGroup = $match->groupName_short;
+            $currentGroup = $match->groupShort;
 
             $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
             $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);

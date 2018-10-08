@@ -47,7 +47,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
     <tr id="match_<?=$match->id?>" class="<?=$match->cssClass?>">
         <td class="matchgroup">
             <span class="content">
-                <abbr title="<?=$match->groupName?>"><?=$match->groupName_short?></abbr>
+                <abbr title="<?=$match->groupName?>"><?=$match->groupShort?></abbr>
                 <small title="<?=$match->date_title?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline);?>)</small>
             </span>
         </td>
