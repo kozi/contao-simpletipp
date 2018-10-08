@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_match'] = [
 		'panelLayout'             => 'filter, search, limit'
 	],
 	'label' => [
-		'fields'                  => ['leagueName', 'groupOrderID', 'deadline', 'title', 'result', 'resultFirst'],
+		'fields'                  => ['leagueID', 'groupOrderID', 'deadline', 'title', 'result', 'resultFirst'],
 		'showColumns'             => true,
 		'label_callback'          => ['tl_simpletipp_match', 'labelCallback']
 	],
@@ -137,6 +137,7 @@ class tl_simpletipp_match extends \Backend
 
 	public function labelCallback($row, $label, DataContainer $dc, $args = null)
 	{
+		// $args[0] IS $row['leagueID'];
 		$args[1] = $row['groupName'];
 		$args[2] = date($GLOBALS['TL_CONFIG']['datimFormat'], $args[2]);
 		return $args;
