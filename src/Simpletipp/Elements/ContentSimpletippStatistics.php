@@ -276,17 +276,17 @@ class ContentSimpletippStatistics extends SimpletippModule
                 $data->maxPoints = ($intPoints > $data->maxPoints) ? $intPoints : $data->maxPoints;
 
                 $mem = $memberArray[$e->username];
-                $mem->punkte[$mgShort] = $intPoints;
-                $mem->pointsArray[0][$mgShort] = intval($e->sum_perfect) * $this->pointFactors->perfect;
-                $mem->pointsArray[1][$mgShort] = intval($e->sum_difference) * $this->pointFactors->difference;
-                $mem->pointsArray[2][$mgShort] = intval($e->sum_tendency) * $this->pointFactors->tendency;
+                $mem->punkte[] = $intPoints;
+                $mem->pointsArray[0][] = intval($e->sum_perfect) * $this->pointFactors->perfect;
+                $mem->pointsArray[1][] = intval($e->sum_difference) * $this->pointFactors->difference;
+                $mem->pointsArray[2][] = intval($e->sum_tendency) * $this->pointFactors->tendency;
             }
         }
         usort($memberArray, function ($a, $b) {
             return strcmp($a->lastname . $a->firstname, $b->lastname . $b->firstname);
         });
 
-        $data->table = $memberArray;
+        $data->table = (object) $memberArray;
         $this->cache(static::$cache_key_points, $data, true);
 
         $this->statsTemplate->data = $data;
