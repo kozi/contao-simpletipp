@@ -229,8 +229,6 @@ class ContentSimpletippStatistics extends SimpletippModule
         });
 
         $max = count($memberArray);
-
-        $dataObject = new \stdClass();
         $dataObject->table = $memberArray;
         $dataObject->roundedMaximum = (ceil($max) % 5 === 0) ? ceil($max) : round(($max + 5 / 2) / 5) * 5;
 
