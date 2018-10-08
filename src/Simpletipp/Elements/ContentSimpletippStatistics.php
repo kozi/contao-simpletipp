@@ -216,7 +216,7 @@ class ContentSimpletippStatistics extends SimpletippModule
             }
         }
 
-        usort($memberArray, function ($a, $b) {
+        uasort($memberArray, function ($a, $b) {
             return strcmp($a->lastname . $a->firstname, $b->lastname . $b->firstname);
         });
 
