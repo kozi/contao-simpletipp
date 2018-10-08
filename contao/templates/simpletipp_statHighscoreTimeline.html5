@@ -66,8 +66,7 @@ $(document).ready(function() {
 						lineHeight: 1
 					},
 					formatter: function(value, c){
-						var username = (c.dataIndex+1 === c.dataset.data.length) ? " "+c.dataset.label : "";
-						return Math.abs(value) + "." + username;
+						return Math.abs(value) + ".";
 					},
 					display: function(context) {
     					return context.dataIndex !== 0; // display labels with an odd index
