@@ -1,27 +1,16 @@
 <div class="chartWrapper"><canvas id="pointsPlot"></canvas></div>
 <ul id="pointstat-legend" class="chart-legend-user noselect">
-<?php foreach($this->table as $row): ?>
-    <li<?php echo ($row->username == $this->user->username) ? ' class="selected"':''?> id="user_<?=$row->username?>"><?=$row->firstname.' '.$row->lastname?></li>
+<?php foreach ($this->data->table as $row): ?>
+	<li <?php echo ($row->username == $this->user->username) ? 'class="selected "' : '' ?>id="user_<?=$row->username?>"><?=$row->firstname . ' ' . $row->lastname?></li>
 <?php endforeach;?>
-</ul>	
+</ul>
 <script>
-
-<?php $maxPoints = 0; ?>
-
 $(document).ready(function() {
-
-    var pointsObj = {
-        <?php foreach($this->table as $row):
-        	foreach($row->punkte as $p) { $maxPoints = ($p > $maxPoints) ? $p : $maxPoints; }
-        ?>
-			"user_<?=$row->username?>" : <?=json_encode(array_map('array_values', $row->pointsArray)); ?>,
-        <?php endforeach;?>
-    };
-
+    var pointsObj = <?=json_encode($this->data->table)?>;
 	var pointsPlotChart = new Chart(document.getElementById("pointsPlot"), {
 	    type: "bar",
 	    data: {
-			labels: <?=json_encode( array_keys($this->table[0]->pointsArray[0]) ); ?>,
+			labels: <?=json_encode($this->data->labels);?>,
 	    },
 		options: {
 			tooltips: {
@@ -36,14 +25,14 @@ $(document).ready(function() {
 				yAxes: [{
 					stacked: true,
 					ticks: {
-	                    max: <?=$maxPoints?>,
+	                    max: <?=$this->data->maxPoints?>,
 	                    min: 0
 					}
 				}]
 			}
 		}
 	});
-	
+
 	$("#pointstat-legend li").click(function(){
 		pointsPlotChart.data.datasets = [
 			{ label: 'Richtige', backgroundColor: "#3366cc",

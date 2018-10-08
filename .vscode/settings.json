@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.html5": "php"
+    },
+    "editor.formatOnSave": true
+}
