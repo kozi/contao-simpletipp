@@ -1,5 +1,4 @@
 <div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
-
 <?php if ($this->match != null && $this->userArr != null): ?>
 
 <?php if ($this->headline): ?>
@@ -7,15 +6,10 @@
 <?php endif;?>
 
 <p><strong><?=$this->match->title_short?></strong> haben folgende Tipper noch nicht getippt:
-    <em>
-        <?php $i=0; $max=count($this->userArr); foreach($this->userArr as $username => $name):
-            $tmpl  = ($this->user->username == $username) ? '<strong class="currentUser">%s</strong>' : '%s';
-            $tmpl .= (++$i != $max) ? ', ':'';
-            printf($tmpl, $name);
-        endforeach;?>
-    </em>
+<em><?=join(', ', array_map(function ($k, $v) {
+    return ($this->user->username == $k) ? '<strong class="currentUser">' . $v . '</strong>' : $v;
+}, $this->userArr))?></em>
 </p>
 
 <?php endif;?>
-
 </div>

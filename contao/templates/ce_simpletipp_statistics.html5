@@ -9,6 +9,5 @@
     <div class="stat_content">
         <?=$this->content?>
     </div>
-
     <div class="duration"><?=$this->duration?></div>
 </div>

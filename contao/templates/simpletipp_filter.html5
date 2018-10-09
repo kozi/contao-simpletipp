@@ -1,34 +1,33 @@
 <div class="block simpletipp_filter">
 
-<?php if($this->special_filter): ?>
+<?php if ($this->special_filter): ?>
 <ul class="date_filter">
-    <?php foreach($this->special_filter as $link): ?><li<?=$link['cssClass']?>><a title="<?=$link['desc']?>" href="<?=$link['href']?>"><?=$link['title']?></a></li><?php endforeach;?>
+    <?php foreach ($this->special_filter as $link): ?><li<?=$link['cssClass']?>><a title="<?=$link['desc']?>" href="<?=$link['href']?>"><?=$link['title']?></a></li><?php endforeach;?>
 </ul>
 <?php endif;?>
 
-<?php $hasActive = false; if($this->group_filter): ?>
+<?php $hasActive = false;if ($this->group_filter): ?>
     <ul class="matchfilter">
-        <?php $i=1; foreach($this->group_filter as $link): $hasActive = $hasActive || (strpos($link['cssClass'], 'active') !==false); ?>
-            <li<?=$link['cssClass']?>><a title="<?=$link['desc']?>" href="<?=$link['href']?>"><?=$link['title']?></a></li>
-        <?php endforeach;?>
+        <?php $i = 1;foreach ($this->group_filter as $link): $hasActive = $hasActive || (strpos($link['cssClass'], 'active') !== false);?>
+		            <li<?=$link['cssClass']?>><a title="<?=$link['desc']?>" href="<?=$link['href']?>"><?=$link['title']?></a></li>
+		        <?php endforeach;?>
     </ul>
 <?php endif;?>
 
 </div>
 
-<?php 
-if($hasActive) {
-$GLOBALS['TL_BODY'][] = <<<'EOD'
+<?php
+if ($hasActive) {
+    $GLOBALS['TL_BODY'][] = <<<'EOD'
 
 <script>
     $(function() {
         var $mf = $(".matchfilter");
         var $actEl = $mf.find(".active");
         var leftPos = $actEl.position().left + ($actEl.width() / 2) - ($mf.width() / 2 );
-        $(".matchfilter").animate({scrollLeft: leftPos});        
+        $(".matchfilter").animate({scrollLeft: leftPos});
     });
 </script>
 
 EOD;
 }
-

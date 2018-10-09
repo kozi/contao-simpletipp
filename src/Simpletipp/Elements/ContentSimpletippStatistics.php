@@ -27,7 +27,6 @@ use Simpletipp\SimpletippModule;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    simpletipp
  */
-
 class ContentSimpletippStatistics extends SimpletippModule
 {
     protected $strTemplate = 'ce_simpletipp_statistics';
@@ -190,7 +189,7 @@ class ContentSimpletippStatistics extends SimpletippModule
                     "username" => $objMember->username,
                     "firstname" => $objMember->firstname,
                     "lastname" => $objMember->lastname,
-                    "highscorePositions" => []
+                    "highscorePositions" => [],
                 ];
             }
         }
@@ -259,7 +258,7 @@ class ContentSimpletippStatistics extends SimpletippModule
                     "lastname" => $objMember->lastname,
                     "username" => $objMember->username,
                     "pointsArray" => [[], [], []],
-                    "punkte" => []
+                    "punkte" => [],
                 ];
             }
         }

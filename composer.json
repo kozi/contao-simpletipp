@@ -10,14 +10,12 @@
     ],
     "type": "contao-module",
     "license": "LGPL-3.0+",
-    "authors": [
-        {
-            "name": "Martin Kozianka",
-            "email": "martin@kozianka.de",
-            "homepage": "http://kozianka.de",
-            "role": "Developer"
-        }
-    ],
+    "authors": [{
+        "name": "Martin Kozianka",
+        "email": "martin@kozianka.de",
+        "homepage": "http://kozianka.de",
+        "role": "Developer"
+    }],
     "support": {
         "email": "martin@kozianka.de",
         "issues": "https://github.com/kozi/contao-simpletipp/issues",

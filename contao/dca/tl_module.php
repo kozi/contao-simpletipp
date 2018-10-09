@@ -13,100 +13,96 @@
  * @filesource
  */
 
-
-
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_matches'] =
-'{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_template,simpletipp_match_page;'
-.'{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;'
+    . '{simpletipp_legend},simpletipp_template,simpletipp_match_page;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_highscore'] =
-'{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_matches_page,simpletipp_template;'
-.'{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;'
+    . '{simpletipp_legend},simpletipp_matches_page,simpletipp_template;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_match'] =
-'{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_matches_page,simpletipp_template;'
-.'{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;'
+    . '{simpletipp_legend},simpletipp_matches_page,simpletipp_template;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_questions'] =
-'{title_legend},name,headline,type;'
-.'{simpletipp_legend},simpletipp_template;'
-.'{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;'
+    . '{simpletipp_legend},simpletipp_template;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_userselect'] =
-'{title_legend},name,headline,type;'
-.'{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_calendar'] =
-'{title_legend},name,type;'
-.'{simpletipp_legend},simpletipp_matches_page;';
+    '{title_legend},name,type;'
+    . '{simpletipp_legend},simpletipp_matches_page;';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_ranking'] =
     '{title_legend},name,headline,type;'
-    .'{simpletipp_legend},simpletipp_template;'
-    .'{expert_legend:hide},guests,cssID,space';
+    . '{simpletipp_legend},simpletipp_template;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_pokal'] =
     '{title_legend},name,headline,type;'
-    .'{simpletipp_legend},simpletipp_template;'
-    .'{expert_legend:hide},guests,cssID,space';
+    . '{simpletipp_legend},simpletipp_template;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_nottipped'] =
-	'{title_legend},name,headline,type;'
-	.'{simpletipp_legend},simpletipp_template;'
-	.'{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;'
+    . '{simpletipp_legend},simpletipp_template;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['simpletipp_telegram'] =
-	'{title_legend},name,headline,type;'
-	.'{simpletipp_legend},simpletipp_telegram_bot_key, simpletipp_telegram_url_token;'
-	.'{expert_legend:hide},guests,cssID,space';
-
+    '{title_legend},name,headline,type;'
+    . '{simpletipp_legend},simpletipp_telegram_bot_key, simpletipp_telegram_url_token;'
+    . '{expert_legend:hide},guests,cssID,space';
 
 /**
  * Add fields to tl_module
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_match_page'] = [
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_match_page'],
-		'exclude'                 => true,
-		'inputType'               => 'pageTree',
-		'eval'                    => ['fieldType'=>'radio', 'tl_class' => 'long'],
-		'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_match_page'],
+    'exclude' => true,
+    'inputType' => 'pageTree',
+    'eval' => ['fieldType' => 'radio', 'tl_class' => 'long'],
+    'sql' => "int(10) unsigned NOT NULL default '0'",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_matches_page'] = [
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_matches_page'],
-		'exclude'                 => true,
-		'inputType'               => 'pageTree',
-		'eval'                    => ['fieldType'=>'radio', 'tl_class' => 'long'],
-		'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_matches_page'],
+    'exclude' => true,
+    'inputType' => 'pageTree',
+    'eval' => ['fieldType' => 'radio', 'tl_class' => 'long'],
+    'sql' => "int(10) unsigned NOT NULL default '0'",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_template'] = [
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_template'],
-		'exclude'                 => true,
-		'inputType'               => 'select',
-		'options_callback'        => ['tl_module_simpletipp', 'getSimpletippTemplates'],
-		'eval'                    => ['tl_class'=>'w50'],
-		'sql'                     => "varchar(255) NOT NULL default ''"
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_template'],
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => ['tl_module_simpletipp', 'getSimpletippTemplates'],
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "varchar(255) NOT NULL default ''",
 ];
 
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_telegram_bot_key'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_bot_key'],
-    'exclude'                 => true,
-    'inputType'               => 'text',
-    'eval'                    => ['tl_class'=>'w50'],
-    'sql'                     => "varchar(255) NOT NULL default ''"
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_bot_key'],
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_telegram_url_token'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_url_token'],
-    'exclude'                 => true,
-    'inputType'               => 'text',
-    'eval'                    => ['tl_class'=>'w50'],
-    'sql'                     => "varchar(255) NOT NULL default ''"
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['simpletipp_telegram_url_token'],
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "varchar(255) NOT NULL default ''",
 ];
 
 /**
@@ -119,22 +115,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['simpletipp_telegram_url_token'] = [
  */
 class tl_module_simpletipp extends Backend
 {
-	/**
-	 * Return all simpletipp_matches templates as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getSimpletippTemplates(DataContainer $dc)
-	{
-		$intPid = $dc->activeRecord->pid;
-		$prefix = $dc->activeRecord->type.'_';
-		
-		if ($this->Input->get('act') == 'overrideAll')
-		{
-			$intPid = $this->Input->get('id');
-			$prefix = 'simpletipp_';
-		}
-		return $this->getTemplateGroup($prefix, $intPid);
-	}
-}
+    /**
+     * Return all simpletipp_matches templates as array
+     * @param DataContainer
+     * @return array
+     */
+    public function getSimpletippTemplates(DataContainer $dc)
+    {
+        $intPid = $dc->activeRecord->pid;
+        $prefix = $dc->activeRecord->type . '_';
 
+        if ($this->Input->get('act') == 'overrideAll') {
+            $intPid = $this->Input->get('id');
+            $prefix = 'simpletipp_';
+        }
+        return $this->getTemplateGroup($prefix, $intPid);
+    }
+}

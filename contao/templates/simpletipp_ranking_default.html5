@@ -9,10 +9,10 @@
     </tr></thead>
     <tbody>
 
-<?php $i = 1; foreach($this->ranking as $team): ?>
-    <tr class="<?=$team->alias.' rank'.$i; echo ($i %2 == 0) ? ' even':' odd'?>">
+<?php $i = 1;foreach ($this->ranking as $team): ?>
+        <tr class="<?=$team->alias . ' rank' . $i . ' ' . (($i % 2 == 0) ? 'even' : 'odd')?>">
         <td class="position"><?=$i++?>. </td>
-        <td class="logo"><i style="background-image:url('<?php echo Image::get($team->logoPath(), 32, 32, 'center_center');?>');"></i></td>
+        <td class="logo"><i style="background-image:url('<?php echo Image::get($team->logoPath(), 32, 32, 'center_center'); ?>');"></i></td>
         <td class="name"><abbr title="<?=$team->name?>"><?=$team->short?></abbr></td>
         <td class="goals"><small>(<?=$team->goalsPlus?>:<?=$team->goalsMinus?>)</small>&nbsp;<?=$team->goalDiff()?></td>
         <td class="points"><small>[<?=$team->wins?>/<?=$team->draws?>/<?=$team->losses?>]</small>&nbsp;<?=$team->getPoints()?></td>

@@ -5,7 +5,7 @@
 <?php endif;?>
 
 
-<?php if($this->questions): ?>
+<?php if ($this->questions): ?>
 
 <?php if ($this->isPersonal && !$this->finished): ?>
 
@@ -14,14 +14,14 @@
     <input type="hidden" name="FORM_SUBMIT" value="<?=$this->formId?>">
     <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 
-    <?php foreach($this->questions as $q): ?>
+    <?php foreach ($this->questions as $q): ?>
         <fieldset class="question" id="<?=$q->key?>">
             <legend><?=$q->points?> Punkt(e)</legend>
             <label for="<?=$q->key?>"><?=$q->question?></label>
             <select name="<?=$q->key?>">
                 <option value="<?=$q->emptyValue?>">Bitte wählen...</option>
-                <?php foreach($q->answers as $a): ?>
-                    <option<?php echo ($q->currentMemberAnswer == $a->value) ? ' selected="selected"' : '';?> value="<?=$a->value?>"><?=$a->value?></option>
+                <?php foreach ($q->answers as $a): ?>
+                    <option <?php echo ($q->currentMemberAnswer == $a->value) ? 'selected="selected" ' : ''; ?>value="<?=$a->value?>"><?=$a->value?></option>
                 <?php endforeach;?>
             </select>
         </fieldset>
@@ -36,20 +36,21 @@
 <?php if ($this->finished): ?>
 
 
-<h3>Antworten von <?=$this->member->firstname.' '.$this->member->lastname?></h3>
+<h3>Antworten von <?=$this->member->firstname . ' ' . $this->member->lastname?></h3>
 
-<?php foreach($this->questions as $q): ?>
+<?php foreach ($this->questions as $q): ?>
 <ul class="question" id="<?=$q->key?>">
     <li>
         <span class="title"><?=$q->question?> [<?=$q->points?> Punkt(e)]</span>
         <span class="answer"><?=$q->currentMemberAnswer?></span>
     </li>
 </ul>
-<?php endforeach; reset($this->questions);?>
+<?php endforeach;
+reset($this->questions);?>
 
 <h3>Antworten</h3>
 
-<?php foreach($this->questions as $q): ?>
+<?php foreach ($this->questions as $q): ?>
     <h4><?=$q->question?> [<?=$q->points?> Punkt(e)]</h4>
 
     <canvas id="chart_<?=$q->id?>"></canvas>
@@ -87,14 +88,14 @@
 
 
 
-    <?php usort($q->answers, function($a, $b) { return $b->count - $a->count; });?>
+    <?php usort($q->answers, function ($a, $b) {return $b->count - $a->count;});?>
     <ul class="otherAnswers">
-    <?php foreach($q->answers as $arrAnswer):?>
+    <?php foreach ($q->answers as $arrAnswer): ?>
         <?php if ($arrAnswer->count > 0): ?>
             <li>
                 <strong><?=$arrAnswer->value?> (<?=$arrAnswer->count?>)</strong>
                 <ul class="member">
-                    <?php foreach($arrAnswer->member as $m): ?>
+                    <?php foreach ($arrAnswer->member as $m): ?>
                         <li><?=$m->firstname?> <?=$m->lastname?> (<?=$m->username?>)</li>
                     <?php endforeach;?>
                 </ul>
@@ -113,7 +114,7 @@
     </tr></thead>
     <tbody>
 
-    <?php $i = 1; foreach($this->arrRanking as $m): ?>
+    <?php $i = 1;foreach ($this->arrRanking as $m): ?>
         <tr>
             <td class="rank"><?=$i++?>. </td>
             <td class="name"><?=$m->firstname?> <?=$m->lastname?> (<?=$m->username?>)</td>

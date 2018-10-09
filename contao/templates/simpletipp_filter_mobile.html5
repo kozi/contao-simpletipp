@@ -3,16 +3,19 @@
 <form>
 <select onchange="location.href=this.value" name="filter">
 
-<?php if($this->special_filter): ?>
-    <?php foreach($this->special_filter as $link): ?>
-        <option <?=$link['cssClass'].$link['selected']?> value="<?=$link['href']?>"><?=$link['title']?></option>
+<?php if ($this->special_filter): ?>
+    <?php foreach ($this->special_filter as $link): ?>
+        <option <?=$link['cssClass'] . $link['selected']?> value="<?=$link['href']?>"><?=$link['title']?></option>
     <?php endforeach;?>
 <?php endif;?>
 
-<?php if($this->group_filter): ?>
-        <?php $i=1; foreach($this->group_filter as $link): ?>
-	    <option<?=$link['cssClass'].$link['selected']?> value="<?=$link['href']?>"><?=$link['desc']?></option>
-        <?php if ($i++ == 17) echo '</ul><ul class="matchfilter">' ?>
+<?php if ($this->group_filter): ?>
+        <?php $i = 1;foreach ($this->group_filter as $link): ?>
+	    <option<?=$link['cssClass'] . $link['selected']?> value="<?=$link['href']?>"><?=$link['desc']?></option>
+        <?php if ($i++ == 17) {
+    echo '</ul><ul class="matchfilter">';
+}
+?>
     <?php endforeach;?>
 <?php endif;?>
 </select>

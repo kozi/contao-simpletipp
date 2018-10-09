@@ -15,7 +15,6 @@
 
 namespace Simpletipp\Telegram;
 
-use Contao\MemberModel;
 use Telegram\Bot\Actions;
 
 abstract class TelegramCommand
@@ -24,57 +23,60 @@ abstract class TelegramCommand
     private $filenameTippStack = null;
     private $telegram = null;
 
-    
-    protected $module     = null;
+    protected $module = null;
     protected $chatMember = null;
-    protected $text       = null;
-    protected $chat_id    = null;
-    protected $now        = null;
+    protected $text = null;
+    protected $chat_id = null;
+    protected $now = null;
 
     public function __construct($telegram, $module, $message, $chatMember = null)
     {
-        $this->module     = $module;
-        $this->telegram   = $telegram;
-        $this->text       = ($message !== null) ? $message->getText() : null;
-        $this->chat_id    = ($message !== null) ? $message->getChat()->getId() : null;
+        $this->module = $module;
+        $this->telegram = $telegram;
+        $this->text = ($message !== null) ? $message->getText() : null;
+        $this->chat_id = ($message !== null) ? $message->getChat()->getId() : null;
         $this->chatMember = $chatMember;
-        $this->now        = time();
+        $this->now = time();
 
-        $fnPrefix = "TELEGRAM-".preg_replace('/[^a-zA-Z0-9-_.]/', '', $telegram->getAccessToken());
+        $fnPrefix = "TELEGRAM-" . preg_replace('/[^a-zA-Z0-9-_.]/', '', $telegram->getAccessToken());
 
         if ($this->chatMember !== null && $this->chatMember->id !== null) {
-            $this->filenameTippStack = TL_ROOT."/system/tmp/".$fnPrefix.$this->chatMember->id.".spc";
+            $this->filenameTippStack = TL_ROOT . "/system/tmp/" . $fnPrefix . $this->chatMember->id . ".spc";
         }
         if ($message !== null) {
             $this->chatAction(Actions::TYPING);
-            file_put_contents("system/logs/".$fnPrefix.".log", json_encode($message)."\n --- \n",  FILE_APPEND);
+            file_put_contents("system/logs/" . $fnPrefix . ".log", json_encode($message) . "\n --- \n", FILE_APPEND);
         }
-	}
-    
-    protected function sendText($text, $parse_mode = 'Markdown') {
+    }
+
+    protected function sendText($text, $parse_mode = 'Markdown')
+    {
         return $this->telegram->sendMessage(['text' => $text, 'parse_mode' => $parse_mode, 'chat_id' => $this->chat_id]);
     }
 
-    protected function chatAction($action) {
-        return $this->telegram->sendChatAction(['action' => $action, 'chat_id' => $this->chat_id]); 
+    protected function chatAction($action)
+    {
+        return $this->telegram->sendChatAction(['action' => $action, 'chat_id' => $this->chat_id]);
     }
-    
-    protected function sendAudio($audioFile) {
+
+    protected function sendAudio($audioFile)
+    {
         return $this->telegram->sendAudio(['audio' => $audioFile, 'chat_id' => $this->chat_id]);
     }
 
-    protected function getTippStack($initial = false) {
+    protected function getTippStack($initial = false)
+    {
         $stack = null;
         if ($initial === true) {
             $stack = (object) ["lastAccess" => time(), "tipps" => []];
-        }
-        elseif ($this->filenameTippStack !== null && file_exists($this->filenameTippStack)) {
+        } elseif ($this->filenameTippStack !== null && file_exists($this->filenameTippStack)) {
             $stack = unserialize(file_get_contents($this->filenameTippStack));
         }
         return $stack;
     }
-   
-    protected function saveTippStack($stack = null) {
+
+    protected function saveTippStack($stack = null)
+    {
         if ($this->filenameTippStack === null || $stack === null) {
             return false;
         }
@@ -84,7 +86,8 @@ abstract class TelegramCommand
         return true;
     }
 
-    protected function deleteTippStack() {
+    protected function deleteTippStack()
+    {
         if ($this->filenameTippStack === null) {
             return false;
         }
@@ -94,7 +97,8 @@ abstract class TelegramCommand
 
     abstract protected function handle();
 
-    public function handleCommand() {
+    public function handleCommand()
+    {
         $this->handle();
         // Reset (delete) tipp stack if other commands are called
         if ($this->resetTippStack) {
@@ -102,9 +106,9 @@ abstract class TelegramCommand
         }
     }
 
-    protected function preserveTippStack() {
+    protected function preserveTippStack()
+    {
         $this->resetTippStack = false;
-    } 
+    }
 
-    
 }

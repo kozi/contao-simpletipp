@@ -15,8 +15,8 @@
 
 namespace Simpletipp\Modules;
 
-use Simpletipp\Models\SimpletippTippModel;
 use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\Models\SimpletippTippModel;
 use Simpletipp\SimpletippEmailReminder;
 use Simpletipp\SimpletippModule;
 
@@ -30,49 +30,47 @@ use Simpletipp\SimpletippModule;
 
 class SimpletippNotTipped extends SimpletippModule
 {
-	protected $strTemplate = 'simpletipp_nottipped_default';
+    protected $strTemplate = 'simpletipp_nottipped_default';
 
-	public function generate() {
-		if (TL_MODE == 'BE') {
-			$this->Template = new \BackendTemplate('be_wildcard');
-			$this->Template->wildcard = '### SimpletippNotTipped ###';
-			$this->Template->wildcard .= '<br/>'.$this->headline;
-			return $this->Template->parse();
-		}
-		
-		$this->strTemplate = $this->simpletipp_template;
-		
-		return parent::generate();
-	}
+    public function generate()
+    {
+        if (TL_MODE == 'BE') {
+            $this->Template = new \BackendTemplate('be_wildcard');
+            $this->Template->wildcard = '### SimpletippNotTipped ###';
+            $this->Template->wildcard .= '<br/>' . $this->headline;
+            return $this->Template->parse();
+        }
 
-	protected function compile() {
+        $this->strTemplate = $this->simpletipp_template;
 
+        return parent::generate();
+    }
 
-		$match = SimpletippMatchModel::getNextMatch($this->simpletipp->leagueID);
-        if ($match == null)
-		{
+    protected function compile()
+    {
+
+        $match = SimpletippMatchModel::getNextMatch($this->simpletipp->leagueID);
+        if ($match == null) {
             // no next match
             return;
         }
 
-		$tippCount = SimpletippTippModel::countBy('match_id', $match->id);
-		$arrUser   = $this->cache(static::$cache_key_notTipped.$tippCount);
+        $tippCount = SimpletippTippModel::countBy('match_id', $match->id);
+        $arrUser = $this->cache(static::$cache_key_notTipped . $tippCount);
 
-		if ($arrUser === null)
-		{
-			$arrUser = [];
-			$arr     = SimpletippEmailReminder::getNotTippedUser($this->simpletipp->participant_group, $match->id);
-			foreach($arr as $u)
-			{
-				$key           = $u['username'];
-				$arrUser[$key] = $u['firstname'].' '.$u['lastname'];
-			}
-			$this->cache(static::$cache_key_notTipped.$tippCount, $arrUser);
-		}
+        if ($arrUser === null) {
+            $arrUser = [];
+            $arr = SimpletippEmailReminder::getNotTippedUser($this->simpletipp->participant_group, $match->id);
+            foreach ($arr as $u) {
+                $key = $u['username'];
+                $arrUser[$key] = $u['firstname'] . ' ' . $u['lastname'];
+            }
+            $this->cache(static::$cache_key_notTipped . $tippCount, $arrUser);
+        }
 
-		$this->Template->match   = $match;
-        $this->Template->user    = $this->User;
+        $this->Template->match = $match;
+        $this->Template->user = $this->User;
         $this->Template->userArr = $arrUser;
-	}
+    }
 
 } // END class SimpletippQuestions

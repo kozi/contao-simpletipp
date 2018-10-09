@@ -1,6 +1,8 @@
 <?php
-$i       = 1;
+$i = 1;
 $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
+$currentDeadline = 0;
+$points = 0;
 ?>
 
 <div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
@@ -19,58 +21,56 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
     <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <?php endif;?>
 
-
-
-<?php if($this->matches): ?>
+<?php if ($this->matches): ?>
 
 <table class="matches" cellspacing="2" cellpadding="2">
 <thead>
     <tr>
         <th class="matchgroup"><span class="content"><?=$GLOBALS['TL_LANG']['tl_simpletipp']['matchgroup'][0]?></span></th>
         <th colspan="2"><?=$GLOBALS['TL_LANG']['tl_simpletipp']['match'][0]?></th>
-        <th colspan="2"><abbr title="<?=$GLOBALS['TL_LANG']['simpletipp']['tipp'][0]?>"><?=substr($GLOBALS['TL_LANG']['simpletipp']['tipp'][0],0,1)?></abbr>/<abbr title="Ergebnis">E</abbr></th>
+        <th colspan="2"><abbr title="<?=$GLOBALS['TL_LANG']['simpletipp']['tipp'][0]?>"><?=substr($GLOBALS['TL_LANG']['simpletipp']['tipp'][0], 0, 1)?></abbr>/<abbr title="Ergebnis">E</abbr></th>
         <th><?=$GLOBALS['TL_LANG']['simpletipp']['points'][0]?></th>
     </tr>
 </thead>
 
 <tbody>
-<?php $currentDeadline = 0; $points = 0; foreach($this->matches as $match): ?>
+<?php foreach ($this->matches as $match): ?>
 
     <?php if ($currentDeadline != $match->deadline): $currentDeadline = $match->deadline;?>
-        <tr class="group_row">
-            <th colspan="6">
-                <?=$match->groupName?> (<?=$match->date_title?>)
-            </th>
-        </tr>
-    <?php endif;?>
+						        <tr class="group_row">
+						            <th colspan="6">
+						                <?=$match->groupName?> (<?=$match->date_title?>)
+						            </th>
+						        </tr>
+						    <?php endif;?>
 
     <tr id="match_<?=$match->id?>" class="<?=$match->cssClass?>">
         <td class="matchgroup">
             <span class="content">
                 <abbr title="<?=$match->groupName?>"><?=$match->groupShort?></abbr>
-                <small title="<?=$match->date_title?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline);?>)</small>
+                <small title="<?=$match->date_title?>" class="deadline">(<?php echo date("d.m. H:i", $match->deadline); ?>)</small>
             </span>
         </td>
         <td class="logos">
-            <i class="<?=$match->teamHome->alias?>" style="background-image:url('<?php echo Image::get($match->teamHome->logoPath(), 100, 100, 'center_center');?>');"><?=$match->teamHome->three?></i>
-            <i class="<?=$match->teamAway->alias?>" style="background-image:url('<?php echo Image::get($match->teamAway->logoPath(), 100, 100, 'center_center');?>');"><?=$match->teamAway->three?></i>
+            <i class="<?=$match->teamHome->alias?>" style="background-image:url('<?php echo Image::get($match->teamHome->logoPath(), 100, 100, 'center_center'); ?>');"><?=$match->teamHome->three?></i>
+            <i class="<?=$match->teamAway->alias?>" style="background-image:url('<?php echo Image::get($match->teamAway->logoPath(), 100, 100, 'center_center'); ?>');"><?=$match->teamAway->three?></i>
         </td>
         <td class="matchtitle">
             <a href="<?=$match->matchLink?>">
                 <span class="full"><?=$match->title?></span>
                 <span class="short"><?=$match->title_short?></span>
-                <span class="tiny"><?=$match->teamHome->three.' - '.$match->teamAway->three?></span>
+                <span class="tiny"><?=$match->teamHome->three . ' - ' . $match->teamAway->three?></span>
             </a>
         </td>
 
         <?php if ($match->isStarted): ?>
             <td class="tipp <?=$match->pointsClass?>"><?=$match->tipp?></td>
-        <?php elseif($this->isPersonal): $hasTippableMatch = true;?>
-            <td class="tipp" colspan="3">
-                <input type="hidden" name="match_ids[]" value="<?=$match->id?>"/>
-                <input title="Beispieleingabe: 1:1 oder 1-2 oder 1,2 oder 3;2" class="tipp" tabindex="<?=$i++?>" size="5" maxlength="5" type="text"<?=$onfocus?> name="tipps[]" value="<?=$match->tipp?>"/>
-            </td>
-        <?php else: ?>
+        <?php elseif ($this->isPersonal): $hasTippableMatch = true;?>
+						            <td class="tipp" colspan="3">
+						                <input type="hidden" name="match_ids[]" value="<?=$match->id?>"/>
+						                <input title="Beispieleingabe: 1:1 oder 1-2 oder 1,2 oder 3;2" class="tipp" tabindex="<?=$i++?>" size="5" maxlength="5" type="text"<?=$onfocus?> name="tipps[]" value="<?=$match->tipp?>"/>
+						            </td>
+						        <?php else: ?>
             <td class="tipp <?=$match->pointsClass?>">?:?</td>
         <?php endif;?>
 
@@ -79,7 +79,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
         <?php endif;?>
 
         <?php if ($match->isStarted || !$this->isPersonal): ?>
-            <td class="points points<?=$match->points?>"><?php echo str_repeat('<i class="icon-ball"></i>', $match->points);?></td>
+            <td class="points points<?=$match->points?>"><?php echo str_repeat('<i class="icon-ball"></i>', $match->points); ?></td>
         <?php endif;?>
     </tr>
 <?php endforeach;?>
@@ -89,7 +89,7 @@ $onfocus = ' onfocus="this.setSelectionRange(0, 9999);"';
     <tr>
         <td colspan="5">&nbsp;</td>
         <td class="points">
-            <small><?=$this->summary->perfect.'/'.$this->summary->difference.'/'.$this->summary->tendency?></small>
+            <small><?=$this->summary->perfect . '/' . $this->summary->difference . '/' . $this->summary->tendency?></small>
             <?=$this->summary->points?>
         </td>
     </tr>

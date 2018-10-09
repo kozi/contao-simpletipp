@@ -15,11 +15,11 @@
 
 namespace Simpletipp\Modules;
 
-use Simpletipp\SimpletippModule;
 use Simpletipp\Models\SimpletippMatchModel;
 use Simpletipp\Models\SimpletippTeamModel;
 use Simpletipp\Models\SimpletippTippModel;
 use Simpletipp\Models\SimpletippPoints;
+use Simpletipp\SimpletippModule;
 
 /**
  * Class SimpletippMatches
@@ -101,7 +101,6 @@ class SimpletippMatches extends SimpletippModule {
 				array($this->simpletippUserId, $this->simpletipp->leagueID, $this->simpletippUserId),
 				$this->matches_filter->params
             );
-
             $dbStmt = $this->Database->prepare($sql.$this->matches_filter->stmt.$this->matches_filter->order_by);
             if($this->matches_filter->limit != 0) {
                 $dbStmt->limit($this->matches_filter->limit);
@@ -109,8 +108,7 @@ class SimpletippMatches extends SimpletippModule {
             
 			$result = $dbStmt->execute($params);
 		}
-        else
-        {
+        else {
 			$result = $this->Database->prepare($sql.$this->order_by)
 				->execute($this->simpletippUserId, $this->simpletipp->leagueID, $this->simpletippUserId);
 		}

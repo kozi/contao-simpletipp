@@ -22,14 +22,15 @@ class TippCommand extends TelegramCommand
 {
     private $isInitial = false;
 
-    protected function handle() {
+    protected function handle()
+    {
         // Prevent tipp stack reset
         $this->preserveTippStack();
 
-        $db               = $this->module->Database;
-        $leagueID         = $this->module->getLeagueID();
+        $db = $this->module->Database;
+        $leagueID = $this->module->getLeagueID();
         $newMatchQuestion = null;
-        $currentMatch     = null;
+        $currentMatch = null;
 
         // Den Stack holen
         $stack = $this->getTippStack($this->isInitial);
@@ -56,28 +57,28 @@ class TippCommand extends TelegramCommand
 
         if (is_array($stack->tipps) && count($stack->tipps) > 0) {
             $currentMatch = end($stack->tipps);
-            reset($stack->tipps); 
-        }             
+            reset($stack->tipps);
+        }
 
         // Infos zur aktuellesten ID aus dem stack holen und an den Client schicken!
         $excludeIds = array_keys($stack->tipps);
 
-		$sql  = "SELECT id,title,team_h,team_a,deadline FROM tl_simpletipp_match WHERE leagueID = ? AND deadline > ?";
-        $sql .= (is_array($excludeIds) && count($excludeIds) > 0) ? " AND id NOT IN (".implode($excludeIds, ",").")" : "";
+        $sql = "SELECT id,title,team_h,team_a,deadline FROM tl_simpletipp_match WHERE leagueID = ? AND deadline > ?";
+        $sql .= (is_array($excludeIds) && count($excludeIds) > 0) ? " AND id NOT IN (" . implode($excludeIds, ",") . ")" : "";
         $sql .= " ORDER BY deadline ASC";
-        
+
         $result = $db->prepare($sql)->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1) {
             $newMatch = (Object) $result->row();
             $newMatch->teamHome = (Object) SimpletippTeamModel::findByPk($newMatch->team_h)->row();
             $newMatch->teamAway = (Object) SimpletippTeamModel::findByPk($newMatch->team_a)->row();
 
-		    $sql = "SELECT * FROM tl_simpletipp_tipp WHERE member_id = ? AND match_id = ?";  
+            $sql = "SELECT * FROM tl_simpletipp_tipp WHERE member_id = ? AND match_id = ?";
             $result = $db->prepare($sql)->limit(1)->execute($this->chatMember->id, $newMatch->id);
             if ($result->numRows == 1) {
                 $newMatch->tipp = $result->tipp;
             }
-            
+
             $stack->tipps[$newMatch->id] = $newMatch;
             $newMatchQuestion = $this->getMatchText($newMatch);
         }
@@ -85,17 +86,15 @@ class TippCommand extends TelegramCommand
         // Tipp eintragen (- Bedeutet aktuellen Tipp beibehalten bzw. das Spiel nicht tippen)
         if (!$this->isInitial && $currentMatch != null && $this->text !== "-") {
 
-            $tipp  = SimpletippTippModel::cleanupTipp($this->text);
-            if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp) && $currentMatch->deadline > $this->now)
-            {
+            $tipp = SimpletippTippModel::cleanupTipp($this->text);
+            if (preg_match('/^(\d{1,4}):(\d{1,4})$/', $tipp) && $currentMatch->deadline > $this->now) {
                 // Der Tipp ist in Ordnung und kan eingetragen werden
                 $m = SimpletippTippModel::addTipp($this->chatMember->id, $currentMatch->id, $tipp);
-                $this->sendText("Tipp (".$currentMatch->teamHome->three."-".$currentMatch->teamAway->three."): `".$m->tipp."`");
-            }
-            else {
-                // Die letzte ID vom stack holen                
+                $this->sendText("Tipp (" . $currentMatch->teamHome->three . "-" . $currentMatch->teamAway->three . "): `" . $m->tipp . "`");
+            } else {
+                // Die letzte ID vom stack holen
                 unset($stack->tipps[$newMatch->id]);
-                // Tippabfrage erneut senden                
+                // Tippabfrage erneut senden
                 $newMatchQuestion = $this->getMatchText($currentMatch);
             }
         }
@@ -109,15 +108,17 @@ class TippCommand extends TelegramCommand
         return true;
     }
 
-    public function getMatchText($match) {
+    public function getMatchText($match)
+    {
         return sprintf("`%s`\n*%s*\n%s",
-                date("d.m. H:i", $match->deadline),
-                $match->teamHome->short." - ".$match->teamAway->short,
-                ($match->tipp) ? "Bisheriger Tipp: `".$match->tipp."`" : "" 
-        ); 
+            date("d.m. H:i", $match->deadline),
+            $match->teamHome->short . " - " . $match->teamAway->short,
+            ($match->tipp) ? "Bisheriger Tipp: `" . $match->tipp . "`" : ""
+        );
     }
 
-    public function isInitial($flag = false) {
+    public function isInitial($flag = false)
+    {
         $this->isInitial = ($flag === true);
     }
 }

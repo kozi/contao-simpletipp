@@ -15,7 +15,6 @@
 
 namespace Simpletipp\Modules;
 
-
 use Simpletipp\SimpletippModule;
 
 /**
@@ -26,33 +25,30 @@ use Simpletipp\SimpletippModule;
  * @package    Controller
  */
 
-
 class SimpletippModulePokal extends SimpletippModule
 {
     protected $strTemplate = 'simpletipp_pokal_default';
-    private $groups        = [];
+    private $groups = [];
 
-	public function generate()
+    public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
-            $this->Template            = new \BackendTemplate('be_wildcard');
-            $this->Template->wildcard  = '### SimpletippPokal ###';
-            $this->Template->wildcard .= '<br/>'.$this->headline;
+        if (TL_MODE == 'BE') {
+            $this->Template = new \BackendTemplate('be_wildcard');
+            $this->Template->wildcard = '### SimpletippPokal ###';
+            $this->Template->wildcard .= '<br/>' . $this->headline;
             return $this->Template->parse();
         }
 
         $this->import('\Simpletipp\SimpletippPokal', 'SimpletippPokal');
-        $this->strTemplate  = $this->simpletipp_template;
-        $this->groups       = $this->SimpletippPokal->getGroups($this->simpletipp);
+        $this->strTemplate = $this->simpletipp_template;
+        $this->groups = $this->SimpletippPokal->getGroups($this->simpletipp);
 
         return parent::generate();
-	}
+    }
 
-	protected function compile()
+    protected function compile()
     {
-        foreach($this->groups as &$group)
-        {
+        foreach ($this->groups as &$group) {
             $group->highscores = $this->getGroupHighscores($group);
         }
         $this->Template->groups = $this->groups;
@@ -60,23 +56,19 @@ class SimpletippModulePokal extends SimpletippModule
 
     public function getGroupHighscores($group)
     {
-        if ($group->pairings === null)
-        {
+        if ($group->pairings === null) {
             return null;
         }
         $highscores = [];
 
-        if ($group->pairings === false)
-        {
+        if ($group->pairings === false) {
             return $highscores;
         }
 
-        foreach ($group->pairings as $memberArr)
-        {
+        foreach ($group->pairings as $memberArr) {
             $highscores[] = $this->getHighscore($group->matchgroups, $memberArr);
         }
         return $highscores;
     }
 
 } // END class SimpletippModulePokal
-

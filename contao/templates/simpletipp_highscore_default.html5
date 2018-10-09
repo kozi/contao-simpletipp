@@ -1,10 +1,10 @@
-<div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif; ?>>
+<div class="<?=$this->class?> block mod_simpletipp"<?=$this->cssID?><?php if ($this->style): ?> style="<?=$this->style?>"<?php endif;?>>
 
 	<?php if ($this->headline): ?>
 	<<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
-<?php endif; ?>
+<?php endif;?>
 
-<?=$this->filter; ?>
+<?=$this->filter;?>
 <table class="<?=$this->tableClass?>">
 	<thead><tr>
 		<th><?=$GLOBALS['TL_LANG']['simpletipp']['position'][0]?></th>
@@ -14,27 +14,27 @@
 	</tr></thead>
 	<tbody>
 
-<?php $i = 1; foreach($this->table as $row): ?>
+<?php $i = 1;foreach ($this->table as $row): ?>
 	<tr class="<?=$row->cssClass?>">
 		<td class="position"><?=$i++?>. </td>
-		<td class="name"><a href="<?=$row->memberLink?>"><?=$row->firstname.' '.$row->lastname?><span class="username"><?=' ('.$row->username.')';?></span></a></td>
+		<td class="name"><a href="<?=$row->memberLink?>"><?=$row->firstname . ' ' . $row->lastname?><span class="username"><?=' (' . $row->username . ')';?></span></a></td>
         	<td class="details" title="<?=sprintf($GLOBALS['TL_LANG']['simpletipp']['point_details'], $row->sum_perfect, $row->sum_difference, $row->sum_tendency)?>">
-            		<?=$row->sum_perfect.'/'.$row->sum_difference.'/'.$row->sum_tendency.(($row->questionPoints) ? '/'.$row->questionPoints : '')?>
+            		<?=$row->sum_perfect . '/' . $row->sum_difference . '/' . $row->sum_tendency . (($row->questionPoints) ? '/' . $row->questionPoints : '')?>
         	</td>
 		<td class="points"><?=$row->points?></td>
 	</tr>
 	<tr class="pointExplanation <?=$row->cssClass?>">
 		<td colspan="4">
 			<table>
-				<tr><td>Richtige:</td><td><?=$row->sum_perfect?> x 3</td><td><?=($row->sum_perfect* 3)?></td></tr>
-				<tr><td>Differenzen:</td><td><?=$row->sum_difference?> x 2</td><td><?=($row->sum_difference* 2)?></td></tr>
-				<tr><td>Tendenzen:</td><td><?=$row->sum_tendency?> x 1</td><td><?=($row->sum_tendency* 1)?></td></tr>
+				<tr><td>Richtige:</td><td><?=$row->sum_perfect?> x 3</td><td><?=($row->sum_perfect * 3)?></td></tr>
+				<tr><td>Differenzen:</td><td><?=$row->sum_difference?> x 2</td><td><?=($row->sum_difference * 2)?></td></tr>
+				<tr><td>Tendenzen:</td><td><?=$row->sum_tendency?> x 1</td><td><?=($row->sum_tendency * 1)?></td></tr>
 
-				<?php if($row->questionPoints && $row->questionPoints > 0): ?>
-					<?php foreach($row->questionDetails as $q): ?>
+				<?php if ($row->questionPoints && $row->questionPoints > 0): ?>
+					<?php foreach ($row->questionDetails as $q): ?>
 						<tr><td><?=$q->question?></td><td><?=$q->answer?></td><td><?=$q->points?></td></tr>
 					<?php endforeach;?>
-				<?php endif; ?>
+				<?php endif;?>
 			</table>
 		</td>
 	</tr>

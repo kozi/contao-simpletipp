@@ -20,11 +20,12 @@ use Simpletipp\Telegram\HelpCommand;
 
 class StartCommand extends TelegramCommand
 {
-    protected function handle() {
+    protected function handle()
+    {
         // Chat schon registriert?
-        if($this->chatMember !== null) {
+        if ($this->chatMember !== null) {
             $tmpl = 'Chat already registered for %s (%s).';
-            $this->sendText(sprintf($tmpl, $this->chatMember->firstname.' '.$this->chatMember->lastname, $this->chatMember->username));
+            $this->sendText(sprintf($tmpl, $this->chatMember->firstname . ' ' . $this->chatMember->lastname, $this->chatMember->username));
             $this->sendText(HelpCommand::helpMessage());
             return true;
         }
@@ -41,17 +42,17 @@ class StartCommand extends TelegramCommand
             $this->sendText("Key not found.");
             return false;
         }
-        $objMember->telegram_chat_id      = $this->chat_id;
+        $objMember->telegram_chat_id = $this->chat_id;
         $objMember->simpletipp_bot_secret = '';
         $objMember->save();
 
         $tmpl = 'Chat registered for %s (%s).';
-        $this->sendText(sprintf($tmpl, $objMember->firstname.' '.$objMember->lastname, $objMember->username));
-        
+        $this->sendText(sprintf($tmpl, $objMember->firstname . ' ' . $objMember->lastname, $objMember->username));
+
         $this->sendText(HelpCommand::helpMessage());
 
         return true;
 
     }
-    
+
 }

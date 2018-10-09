@@ -1,24 +1,25 @@
 .tl_pokalRanges .tl_select {
-    width: 240px;
+	width: 240px;
 }
 
 .tl_pokalRanges td {
-    padding:2px 4px;
+	padding: 2px 4px;
 }
 
 .tl_help {
-    width: 50%;
+	width: 50%;
 }
 
-table.simpletipp_questions, table.simpletipp_results {
-	width:100%;
-	padding:10px 0;
-	margin:0;
+table.simpletipp_questions,
+table.simpletipp_results {
+	width: 100%;
+	padding: 10px 0;
+	margin: 0;
 	border-collapse: separate;
-    border-spacing: 1px;
+	border-spacing: 1px;
 }
 
-table.simpletipp_questions tr.odd, 
+table.simpletipp_questions tr.odd,
 table.simpletipp_results tr.odd {
 	background-color: #eee;
 }
@@ -30,26 +31,26 @@ table.simpletipp_results tr.even {
 
 table.simpletipp_questions td,
 table.simpletipp_results td {
-	padding:2px 5px;
+	padding: 2px 5px;
 }
 
 table.simpletipp_results input {
-	font-family:monospace;
-	text-align:right;
+	font-family: monospace;
+	text-align: right;
 }
 
 .header_simpletipp_reminder {
-	background:url("../../../../bundles/contaonewsletter/send.svg") no-repeat scroll left center transparent;
+	background: url("../../../../bundles/contaonewsletter/send.svg") no-repeat scroll left center transparent;
 }
 
 .tl_box {
-	border-top:none;
+	border-top: none;
 }
 
 #simpletipp_info {
-	background-color:#f6f6f6;
-	margin-bottom:30px;
-	padding:10px;
+	background-color: #f6f6f6;
+	margin-bottom: 30px;
+	padding: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -57,64 +58,78 @@ table.simpletipp_results input {
 
 
 #simpletipp_info pre {
-	margin:5px 0;
-	padding:5px;
-	border:1px dashed #333;
+	margin: 5px 0;
+	padding: 5px;
+	border: 1px dashed #333;
 }
 
 
 #ctrl_matches span.odd {
-	background-color:#dfdfdf;
+	background-color: #dfdfdf;
 }
 
 #ctrl_matches span.even {
-	background-color:#efefef;
+	background-color: #efefef;
 }
 
 #ctrl_matches span.dline,
 #ctrl_matches span.title {
-	display:inline-block;
+	display: inline-block;
 }
 
-#ctrl_matches span.dline { width:120px; }
-#ctrl_matches span.title { width:300px; }
+#ctrl_matches span.dline {
+	width: 120px;
+}
+
+#ctrl_matches span.title {
+	width: 300px;
+}
 
 
 
 table.simpletipp_questions th {
-	background-color:#333;
-	color:#fff;
-	padding:5px;
+	background-color: #333;
+	color: #fff;
+	padding: 5px;
 }
 
 table.simpletipp_questions tr.new {
-	background-color:#C5E0AC;
+	background-color: #C5E0AC;
 }
 
 table.simpletipp_questions textarea {
-	width:280px;
+	width: 280px;
 }
 
 table.simpletipp_questions input.points {
-	width:40px;
+	width: 40px;
 }
 
 td.col_points i {
-    font-style: normal;
-    border-radius: 7px;
-    text-align:center;
-    display:inline-block;
-    overflow:hidden;
-    width:12px;
-    height:12px;
-    background-color:#ffffff;
-    color:#ffffff;
-    border:1px solid #cccccc;
+	font-style: normal;
+	border-radius: 7px;
+	text-align: center;
+	display: inline-block;
+	overflow: hidden;
+	width: 12px;
+	height: 12px;
+	background-color: #ffffff;
+	color: #ffffff;
+	border: 1px solid #cccccc;
 }
 
-td.col_points i.wrong      { background-color: red;}
-td.col_points i.tendency   { background-color: gold;}
-td.col_points i.difference { background-color: skyblue;}
-td.col_points i.perfect    { background-color: green;}
+td.col_points i.wrong {
+	background-color: red;
+}
 
+td.col_points i.tendency {
+	background-color: gold;
+}
 
+td.col_points i.difference {
+	background-color: skyblue;
+}
+
+td.col_points i.perfect {
+	background-color: green;
+}

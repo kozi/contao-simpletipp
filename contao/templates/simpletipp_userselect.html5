@@ -1,22 +1,20 @@
 <?php
 $this->import('FrontendUser', 'User');
-$GLOBALS['TL_CSS'][]        = 'system/modules/simpletipp/assets/select2/select2.css||static';
+$GLOBALS['TL_CSS'][] = 'system/modules/simpletipp/assets/select2/select2.css||static';
 $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/select2/select2.js';
 ?>
 
 <div class="simpletipp_userselect">
   <div class="wrapper">
     <div class="userButton">
-        <a href="<?=$this->action.'?user='.$this->User->username;?>"><i class="icon-benutzer"></i></a>
+        <a href="<?=$this->action . '?user=' . $this->User->username;?>"><i class="icon-benutzer"></i></a>
     </div>
     <div class="selectForm">
         <form action="<?=$this->action?>" method="get">
             <select tabindex="-1" name="user" onchange="location.href= '<?=$this->action?>?user=' + this.value">
                 <option value="<?=$this->resetOption->value?>"><?=$this->resetOption->label?></option>
-                <?php foreach($this->participants as $user):
-                    $sel = ($user->id == $this->simpletippUserId) ? ' selected="selected"':'';
-                    ?>
-                    <option<?=$sel?> value="<?=$user->username?>"><?=$user->lastname.', '.$user->firstname.' ('.$user->username.')'?></option>
+                <?php foreach ($this->participants as $user): ?>
+                    <option <?=(($user->id == $this->simpletippUserId) ? 'selected="selected" ' : '')?>value="<?=$user->username?>"><?=$user->lastname . ', ' . $user->firstname . ' (' . $user->username . ')'?></option>
                 <?php endforeach;?>
             </select>
             <noscript>

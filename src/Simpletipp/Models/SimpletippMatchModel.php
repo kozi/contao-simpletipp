@@ -15,8 +15,6 @@
 
 namespace Simpletipp\Models;
 
-use Simpletipp\OpenLigaDB;
-
 class SimpletippMatchModel extends \Model
 {
     /**
@@ -27,30 +25,28 @@ class SimpletippMatchModel extends \Model
 
     public static function findLastMatchgroup($simpletipp)
     {
-        $arrWhere  = ['leagueID = ?','deadline < ?'];
+        $arrWhere = ['leagueID = ?', 'deadline < ?'];
         $arrValues = [$simpletipp->leagueID, time()];
-        $objGroup  = self::findBy($arrWhere, $arrValues, ['order'=>'deadline DESC', 'limit'=>'1']);
+        $objGroup = self::findBy($arrWhere, $arrValues, ['order' => 'deadline DESC', 'limit' => '1']);
 
-        if ($objGroup !== null)
-        {
-            $arrWhere  = ['leagueID = ?','groupID = ?'];
+        if ($objGroup !== null) {
+            $arrWhere = ['leagueID = ?', 'groupID = ?'];
             $arrValues = [$simpletipp->leagueID, $objGroup->groupID];
-            return self::findBy($arrWhere, $arrValues, ['order'=>'deadline ASC']);
+            return self::findBy($arrWhere, $arrValues, ['order' => 'deadline ASC']);
         }
         return null;
     }
 
     public static function findCurrent($simpletipp)
     {
-        $arrWhere  = ['leagueID = ?','deadline > ?'];
+        $arrWhere = ['leagueID = ?', 'deadline > ?'];
         $arrValues = [$simpletipp->leagueID, time()];
-        $objGroup  = self::findBy($arrWhere, $arrValues, ['order'=>'deadline ASC', 'limit'=>'1']);
+        $objGroup = self::findBy($arrWhere, $arrValues, ['order' => 'deadline ASC', 'limit' => '1']);
 
-        if ($objGroup !== null)
-        {
-            $arrWhere  = ['leagueID = ?','groupID = ?'];
+        if ($objGroup !== null) {
+            $arrWhere = ['leagueID = ?', 'groupID = ?'];
             $arrValues = [$simpletipp->leagueID, $objGroup->groupID];
-            return self::findBy($arrWhere, $arrValues, ['order'=>'deadline ASC']);
+            return self::findBy($arrWhere, $arrValues, ['order' => 'deadline ASC']);
         }
         return null;
     }
@@ -58,17 +54,16 @@ class SimpletippMatchModel extends \Model
     public static function findByTeamAttributeAliases($simpletipp, $strAliases, $teamAttributeName)
     {
         $arrAlias = explode('-', $strAliases);
-        if (sizeof($arrAlias) !== 2)
-        {
+        if (sizeof($arrAlias) !== 2) {
             return null;
         }
         $teamHome = SimpletippTeamModel::findBy($teamAttributeName, $arrAlias[0]);
         $teamAway = SimpletippTeamModel::findBy($teamAttributeName, $arrAlias[1]);
 
-        $arrWhere  = [
+        $arrWhere = [
             'leagueID' => 'leagueID = ?',
-            'team_h'   => 'team_h = ?',
-            'team_a'   => 'team_a = ?',
+            'team_h' => 'team_h = ?',
+            'team_a' => 'team_a = ?',
         ];
         $arrValues = [$simpletipp->leagueID, $teamHome->id, $teamAway->id];
 
@@ -77,7 +72,7 @@ class SimpletippMatchModel extends \Model
 
     public static function getNextMatch($leagueID)
     {
-	    return self::findOneBy(
+        return self::findOneBy(
             ['leagueID = ?', 'deadline > ?'],
             [$leagueID, time()],
             ['order' => 'deadline ASC, id ASC']

@@ -15,40 +15,41 @@
 
 namespace Simpletipp\Telegram;
 
-use Simpletipp\Models\SimpletippTeamModel;
 use Simpletipp\Models\SimpletippPoints;
+use Simpletipp\Models\SimpletippTeamModel;
 
 class MatchesCommand extends TelegramCommand
 {
     private $next = false;
 
-    protected function handle() {
+    protected function handle()
+    {
         $leagueID = $this->module->getLeagueID();
         $db = $this->module->Database;
-        
+
         // TODO Titel anzeigen!
         // TODO Spiele von anderen Benutzern anzeigen
-        $ball     = "\xE2\x9A\xBD";
+        $ball = "\xE2\x9A\xBD";
         $groupIds = [];
-        $result   = $db->prepare("SELECT groupID FROM tl_simpletipp_match
+        $result = $db->prepare("SELECT groupID FROM tl_simpletipp_match
              WHERE leagueID = ? AND deadline < ? ORDER BY deadline DESC")
-             ->limit(1)->execute($leagueID, $this->now);
+            ->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1) {
             $groupIds[] = $result->groupID;
         }
 
         $result = $db->prepare("SELECT groupID FROM tl_simpletipp_match
              WHERE leagueID = ? AND deadline > ? ORDER BY deadline ASC")
-             ->limit(1)->execute($leagueID, $this->now);
+            ->limit(1)->execute($leagueID, $this->now);
         if ($result->numRows == 1 && (count($groupIds) === 0 || $this->next)) {
-            if($this->next) {
+            if ($this->next) {
                 $groupIds = [$result->groupID];
             } else {
                 $groupIds[] = $result->groupID;
-            }            
+            }
         }
 
-		$sql = "SELECT
+        $sql = "SELECT
 				matches.*,
 				tipps.perfect AS perfect,
 				tipps.difference AS difference,
@@ -58,17 +59,17 @@ class MatchesCommand extends TelegramCommand
 		 	LEFT JOIN tl_simpletipp_tipp AS tipps ON (matches.id = tipps.match_id AND tipps.member_id = ?)
 		 	WHERE matches.leagueID = ?
 		 	AND (tipps.member_id = ? OR tipps.member_id IS NULL)
-            AND matches.groupID IN (".implode($groupIds,",").") ORDER BY deadline ASC";
-        
+            AND matches.groupID IN (" . implode($groupIds, ",") . ") ORDER BY deadline ASC";
+
         $content = "";
-        $result  = $db->prepare($sql)->execute($this->chatMember->id, $leagueID, $this->chatMember->id);
+        $result = $db->prepare($sql)->execute($this->chatMember->id, $leagueID, $this->chatMember->id);
 
         while ($result->next()) {
             $match = (Object) $result->row();
             $match->teamHome = SimpletippTeamModel::findByPk($match->team_h);
             $match->teamAway = SimpletippTeamModel::findByPk($match->team_a);
-            $pointObj      = new SimpletippPoints($this->module->getPointFactors(), $match->perfect, $match->difference, $match->tendency);
-			$match->points = $pointObj->points;
+            $pointObj = new SimpletippPoints($this->module->getPointFactors(), $match->perfect, $match->difference, $match->tendency);
+            $match->points = $pointObj->points;
 
             //$match->teamHome->short,
             //$match->teamAway->short,
@@ -78,9 +79,9 @@ class MatchesCommand extends TelegramCommand
                 $match->teamAway->short,
                 (strlen($match->tipp) > 2) ? $match->tipp : "?:?",
                 (strlen($match->result) > 2) ? $match->result : "?:?",
-                str_repeat($ball, $match->points).str_repeat("\xE2\x9A\xAA", 3-$match->points),
+                str_repeat($ball, $match->points) . str_repeat("\xE2\x9A\xAA", 3 - $match->points),
                 strtolower($match->teamHome->three),
-                strtolower($match->teamAway->three)               
+                strtolower($match->teamAway->three)
             );
         }
 
@@ -88,8 +89,9 @@ class MatchesCommand extends TelegramCommand
 
     }
 
-    public function setNext($flag) {
+    public function setNext($flag)
+    {
         $this->next = ($flag === true);
     }
-    
+
 }

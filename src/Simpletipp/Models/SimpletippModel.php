@@ -15,7 +15,6 @@
 
 namespace Simpletipp\Models;
 
-
 class SimpletippModel extends \Model
 {
 
@@ -29,9 +28,9 @@ class SimpletippModel extends \Model
     {
         $factor = explode(',', $this->factor);
         $pointFactors = new \stdClass;
-        $pointFactors->perfect    = intval($factor[0]);
+        $pointFactors->perfect = intval($factor[0]);
         $pointFactors->difference = intval($factor[1]);
-        $pointFactors->tendency   = intval($factor[2]);
+        $pointFactors->tendency = intval($factor[2]);
 
         return $pointFactors;
     }
@@ -43,21 +42,21 @@ class SimpletippModel extends \Model
      */
     public function getGroupMember($order = 'tl_member.lastname ASC, tl_member.firstname ASC')
     {
-        $groupId = $this->participant_group;        
-        $participantStr = '%s:'.strlen($groupId).':"'.$groupId.'"%';
-        $objMembers     = \MemberModel::findBy(
-                                ['tl_member.groups LIKE ?'],
-                                $participantStr,
-                                ['order' => $order]
-                          );
+        $groupId = $this->participant_group;
+        $participantStr = '%s:' . strlen($groupId) . ':"' . $groupId . '"%';
+        $objMembers = \MemberModel::findBy(
+            ['tl_member.groups LIKE ?'],
+            $participantStr,
+            ['order' => $order]
+        );
         return $objMembers;
     }
 
     public function getGroupMemberIds()
     {
-        $arrIds     = [];
+        $arrIds = [];
         $objMembers = $this->getGroupMember();
-        if ($objMembers!== null) {
+        if ($objMembers !== null) {
             foreach ($objMembers as $objMember) {
                 $arrIds[] = $objMember->id;
             }
@@ -65,13 +64,15 @@ class SimpletippModel extends \Model
         return $arrIds;
     }
 
-    public static function shortenLeagueName($name) {
+    public static function shortenLeagueName($name)
+    {
         $name = preg_replace('/(\d\d)(\d\d)\/(\d\d)(\d\d)/i', '$2/$4', $name);
 
         $replaceFrom = [];
-        $replaceTo   = [];
+        $replaceTo = [];
 
-        $replaceFrom[] = 'Bundesliga';     $replaceTo[] = 'Buli';
+        $replaceFrom[] = 'Bundesliga';
+        $replaceTo[] = 'Buli';
 
         return trim(str_replace($replaceFrom, $replaceTo, $name));
     }
@@ -79,25 +80,22 @@ class SimpletippModel extends \Model
     public static function getLeagueGroups($leagueID)
     {
         $groups = [];
-        $result = \Database::getInstance()->prepare("SELECT DISTINCT groupID, groupName, groupOrderID 
+        $result = \Database::getInstance()->prepare("SELECT DISTINCT groupID, groupName, groupOrderID
           FROM tl_simpletipp_match WHERE leagueID = ? ORDER BY groupOrderID")->execute($leagueID);
 
-        while($result->next())
-        {
+        while ($result->next()) {
             $short = intval($result->groupName);
-            if ($short == 0)
-            {
-                $mg    = explode(". ", $result->groupName);
+            if ($short == 0) {
+                $mg = explode(". ", $result->groupName);
                 $short = $mg[0];
             }
 
             $groups[$result->groupID] = (Object) [
                 'title' => $result->groupName,
-                'short' => $short
+                'short' => $short,
             ];
         }
         return $groups;
     }
-    
 
 }
