@@ -62,7 +62,7 @@ class SimpletippNotTipped extends SimpletippModule
             $arr = SimpletippEmailReminder::getNotTippedUser($this->simpletipp->participant_group, $match->id);
             foreach ($arr as $u) {
                 $name = $u['firstname'] . ' ' . $u['lastname'];
-                $arrUser[$key] = ($u['username'] == $username) ? '<strong class="currentUser">' . $name . '</strong>' : $name;
+                $arrUser[] = ($u['username'] == $username) ? '<strong class="currentUser">' . $name . '</strong>' : $name;
             }
             $this->cache(static::$cache_key_notTipped . $tippCount, $arrUser);
         }
