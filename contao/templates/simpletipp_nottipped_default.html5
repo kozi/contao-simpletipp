@@ -5,11 +5,7 @@
     <<?=$this->hl?>><?=$this->headline?></<?=$this->hl?>>
 <?php endif;?>
 
-<p><strong><?=$this->match->title_short?></strong> haben folgende Tipper noch nicht getippt:
-<em><?=join(', ', array_map(function ($k, $v) {
-    return ($this->user->username == $k) ? '<strong class="currentUser">' . $v . '</strong>' : $v;
-}, $this->userArr))?></em>
-</p>
+<p><strong><?=$this->match->title_short?></strong> haben folgende Tipper noch nicht getippt: <em><?=join(', ', $this->userArr)?></em></p>
 
 <?php endif;?>
 </div>

@@ -48,7 +48,6 @@ class SimpletippNotTipped extends SimpletippModule
 
     protected function compile()
     {
-
         $match = SimpletippMatchModel::getNextMatch($this->simpletipp->leagueID);
         if ($match == null) {
             // no next match
@@ -57,19 +56,17 @@ class SimpletippNotTipped extends SimpletippModule
 
         $tippCount = SimpletippTippModel::countBy('match_id', $match->id);
         $arrUser = $this->cache(static::$cache_key_notTipped . $tippCount);
-
+        $username = $this->User->username;
         if ($arrUser === null) {
             $arrUser = [];
             $arr = SimpletippEmailReminder::getNotTippedUser($this->simpletipp->participant_group, $match->id);
             foreach ($arr as $u) {
-                $key = $u['username'];
-                $arrUser[$key] = $u['firstname'] . ' ' . $u['lastname'];
+                $name = $u['firstname'] . ' ' . $u['lastname'];
+                $arrUser[$key] = ($u['username'] == $username) ? '<strong class="currentUser">' . $name . '</strong>' : $name;
             }
             $this->cache(static::$cache_key_notTipped . $tippCount, $arrUser);
         }
-
         $this->Template->match = $match;
-        $this->Template->user = $this->User;
         $this->Template->userArr = $arrUser;
     }
 

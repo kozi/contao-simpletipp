@@ -60,11 +60,7 @@ class TippInserterField extends \Widget
         }
 
         $strReturn = '<table id="ctrl_' . $this->strId . '" class="tl_pokalRanges" data-tabindex="' . $tabindex++ . '"><tbody>';
-        $tmpl = '<tr>
-                        <td>%s</td>
-                        <td>%s</td>
-                        <td>%s</td>
-                      </tr>';
+        $tmpl = '<tr><td>%s</td><td>%s</td><td>%s</td></tr>';
         $tmplInput = '<input type="hidden" name="tippInserter_matchId[]" value="%s"><input style="width:64px;" type="text" class="tl_text" name="tippInserter_tipp[]" onfocus="Backend.getScrollOffset()">';
 
         foreach ($arrMatches as $arrM) {
