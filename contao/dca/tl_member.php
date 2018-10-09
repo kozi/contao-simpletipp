@@ -1,20 +1,5 @@
 <?php
 
-/**
- * Contao Open Source CMS
- * Copyright (C) 2005-2018 Leo Feyer
- *
- *
- * PHP version 5
- * @copyright  Martin Kozianka 2014-2018 <http://kozianka.de/>
- * @author     Martin Kozianka <http://kozianka.de/>
- * @package    simpletipp
- * @license    LGPL
- * @filesource
- */
-
-// simpletipp_email
-
 $GLOBALS['TL_DCA']['tl_member']['palettes']['default'] .= ';{simpletipp_legend},simpletipp_calendar, simpletipp_email_reminder, simpletipp_email_confirmation';
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_email_confirmation'] = [

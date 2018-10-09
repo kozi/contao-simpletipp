@@ -1,18 +1,5 @@
 <?php
 
-/**
- * Contao Open Source CMS
- * Copyright (C) 2005-2018 Leo Feyer
- *
- *
- * PHP version 5
- * @copyright  Martin Kozianka 2014-2018 <http://kozianka.de/>
- * @author     Martin Kozianka <http://kozianka.de/>
- * @package    simpletipp
- * @license    LGPL
- * @filesource
- */
-
 $GLOBALS['TL_DCA']['tl_content']['palettes']['simpletipp_statistics'] = '{type_legend},type,headline;{simpletipp_legend},simpletipp_statistics_type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['simpletipp_statistics_type'] = [
