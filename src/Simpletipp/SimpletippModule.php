@@ -278,9 +278,10 @@ abstract class SimpletippModule extends \Module
         $this->pointSummary->tendency += $pointObj->tendency;
     }
 
-    protected function cache($key, $data = null, $cleanEntries = false)
+    protected function cache($methodName, $data = null, $cleanEntries = false)
     {
-        $fn = join('.', ['simpletipp', str_replace(":", ".", $key), $this->simpletipp->id, $this->simpletipp->lastChanged, 'json']);
+        $key = str_replace(":", "", strtolower(substr($methodName, strrpos($methodName, '\\') + 1)));
+        $fn = join('.', ['simpletipp', $key, $this->simpletipp->id, $this->simpletipp->lastChanged, 'json']);
         $objFile = new \File('system/tmp/' . $fn, true);
 
         if ($data !== null) {
