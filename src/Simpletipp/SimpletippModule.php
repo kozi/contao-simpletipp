@@ -280,7 +280,7 @@ abstract class SimpletippModule extends \Module
 
     protected function cache($methodName, $data = null, $cleanEntries = false)
     {
-        $key = str_replace(":", "", strtolower(substr($methodName, strrpos($methodName, '\\') + 1)));
+        $key = str_replace("::", ".", strtolower(substr($methodName, strrpos($methodName, '\\') + 1)));
         $fn = join('.', ['simpletipp', $key, $this->simpletipp->id, $this->simpletipp->lastChanged, 'json']);
         $objFile = new \File('system/tmp/' . $fn, true);
 
