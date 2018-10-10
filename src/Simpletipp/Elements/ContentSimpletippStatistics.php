@@ -120,42 +120,28 @@ class ContentSimpletippStatistics extends SimpletippModule
         if ($objMatches === null) {
             return true;
         }
-
+        
         foreach ($objMatches as $objMatch) {
             $tippPoints = $this->getPointsForMatch($objMatch);
-            $teamHome = $objMatch->getRelated('team_h');
-            $teamAway = $objMatch->getRelated('team_a');
-            if (!array_key_exists($teamHome->id, $arrTeams)) {
-                $arrTeams[$teamHome->id] = [
-                    'name' => $teamHome->name,
-                    'icon' => $teamHome->logoPath(),
-                    'name_short' => $teamHome->short,
-                    'points' => [0, 0, 0, 0],
-                ];
-            }
-            if (!array_key_exists($teamAway->id, $arrTeams)) {
-                $arrTeams[$teamAway->id] = [
-                    'name' => $teamAway->name,
-                    'icon' => $teamAway->logoPath(),
-                    'name_short' => $teamAway->short,
-                    'points' => [0, 0, 0, 0],
-                ];
-            }
-
-            $arrTeams[$teamHome->id]['points'][0] += $tippPoints->points;
-            $arrTeams[$teamHome->id]['points'][1] += $tippPoints->perfect;
-            $arrTeams[$teamHome->id]['points'][2] += $tippPoints->difference;
-            $arrTeams[$teamHome->id]['points'][3] += $tippPoints->tendency;
-
-            $arrTeams[$teamAway->id]['points'][0] += $tippPoints->points;
-            $arrTeams[$teamAway->id]['points'][1] += $tippPoints->perfect;
-            $arrTeams[$teamAway->id]['points'][2] += $tippPoints->difference;
-            $arrTeams[$teamAway->id]['points'][3] += $tippPoints->tendency;
-
+            $teams = [$objMatch->getRelated('team_h'), $objMatch->getRelated('team_a')];
+            foreach ($teams as $team) {
+                if (!array_key_exists($team->id, $arrTeams)) {
+                    $arrTeams[$team->id] = (object) [
+                        'name' => $team->name,
+                        'icon' => $team->logoPath(),
+                        'name_short' => $team->short,
+                        'points' => [0, 0, 0, 0],
+                    ];
+                }
+                $arrTeams[$team->id]->points[0] += $tippPoints->points;
+                $arrTeams[$team->id]->points[1] += $tippPoints->perfect;
+                $arrTeams[$team->id]->points[2] += $tippPoints->difference;
+                $arrTeams[$team->id]->points[3] += $tippPoints->tendency;
+            }            
         }
 
         usort($arrTeams, function ($team_a, $team_b) {
-            return ($team_b['points'][0] - $team_a['points'][0]);
+            return ($team_b->points[0] - $team_a->points[0]);
         });
 
         $arrBestTeams = array_slice($arrTeams, 0, 10);
