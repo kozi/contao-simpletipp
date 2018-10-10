@@ -120,7 +120,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         if ($objMatches === null) {
             return true;
         }
-        
+
         foreach ($objMatches as $objMatch) {
             $tippPoints = $this->getPointsForMatch($objMatch);
             $teams = [$objMatch->getRelated('team_h'), $objMatch->getRelated('team_a')];
@@ -137,7 +137,7 @@ class ContentSimpletippStatistics extends SimpletippModule
                 $arrTeams[$team->id]->points[1] += $tippPoints->perfect;
                 $arrTeams[$team->id]->points[2] += $tippPoints->difference;
                 $arrTeams[$team->id]->points[3] += $tippPoints->tendency;
-            }            
+            }
         }
 
         usort($arrTeams, function ($team_a, $team_b) {
