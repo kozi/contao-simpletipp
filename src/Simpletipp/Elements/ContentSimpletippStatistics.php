@@ -83,12 +83,12 @@ class ContentSimpletippStatistics extends SimpletippModule
             $objMatch->teamHome = $objMatch->getRelated('team_h');
             $objMatch->teamAway = $objMatch->getRelated('team_a');
             $arrMatches[] = (object) [
-                "title" => $match->title,
-                "title_short" => $match->title_short,
-                "homeLogo" => $match->teamHome->logoPath(),
-                "homeThree" => $match->teamHome->three,
-                "awayLogo" => $match->teamAway->logoPath(),
-                "awayThree" => $match->teamAway->three,
+                "title" => $objMatch->title,
+                "title_short" => $objMatch->title_short,
+                "homeLogo" => $objMatch->teamHome->logoPath(),
+                "homeThree" => $objMatch->teamHome->three,
+                "awayLogo" => $objMatch->teamAway->logoPath(),
+                "awayThree" => $objMatch->teamAway->three,
                 "objPoints" => $this->getPointsForMatch($objMatch),
             ];
         }
