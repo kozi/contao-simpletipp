@@ -42,7 +42,8 @@ class SimpletippNotTipped extends SimpletippModule
         }
 
         $tippCount = SimpletippTippModel::countBy('match_id', $match->id);
-        $arrUser = $this->cache(__METHOD__ . $tippCount);
+        $cacheKey = __METHOD__ . '.' . $tippCount;
+        $arrUser = $this->cache($cacheKey);
         $username = $this->User->username;
         if ($arrUser === null) {
             $arrUser = [];
@@ -51,7 +52,7 @@ class SimpletippNotTipped extends SimpletippModule
                 $name = $u['firstname'] . ' ' . $u['lastname'];
                 $arrUser[] = ($u['username'] == $username) ? '<strong class="currentUser">' . $name . '</strong>' : $name;
             }
-            $this->cache(__METHOD__ . $tippCount, $arrUser);
+            $this->cache($cacheKey, $arrUser);
         }
         $this->Template->match = $match;
         $this->Template->userArr = $arrUser;
