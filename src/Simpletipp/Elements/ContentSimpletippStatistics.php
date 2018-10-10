@@ -353,6 +353,8 @@ class ContentSimpletippStatistics extends SimpletippModule
             $m = &$memberArray[$result->member_id];
             $tArr = array_map('intval', explode(':', $result->tipp));
             $m->tore = $m->tore + $tArr[0] + $tArr[1];
+            $m->maxTore = $m->tore + $tArr[0] + $tArr[1];
+            $m->minTore = $m->tore + $tArr[0] + $tArr[1];
             $m->two_one = ('2:1' == $result->tipp) ? ++$m->two_one : $m->two_one;
             $m->draw = ($tArr[0] == $tArr[1]) ? ++$m->draw : $m->draw;
             $m->home = ($tArr[0] > $tArr[1]) ? ++$m->home : $m->home;
