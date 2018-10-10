@@ -8,17 +8,16 @@
         </tr>
         </thead>
         <tbody>
-
         <?php $i = 1;foreach ($this->matches as $match): ?>
             <tr class="<?php echo ($i++ % 2 == 0) ? ' even' : ' odd'; ?>">
                 <td class="logos">
-                    <i style="background-image:url('<?php echo Image::get($match->teamHome->logoPath(), 50, 50, 'center_center'); ?>');"><?=$match->teamHome->three?></i>
-                    <i style="background-image:url('<?php echo Image::get($match->teamAway->logoPath(), 50, 50, 'center_center'); ?>');"><?=$match->teamAway->three?></i>
+                    <i style="background-image:url('<?php echo Image::get($match->homeLogo, 50, 50, 'center_center'); ?>');"><?=$match->homeThree?></i>
+                    <i style="background-image:url('<?php echo Image::get($match->awayLogo, 50, 50, 'center_center'); ?>');"><?=$match->awayThree?></i>
                 </td>
                 <td class="matchtitle">
 					<span class="full"><?=$match->title?></span>
 					<span class="short"><?=$match->title_short?></span>
-					<span class="tiny"><?=$match->teamHome->three . ' - ' . $match->teamAway->three?></span>
+					<span class="tiny"><?=$match->homeThree . ' - ' . $match->awayThree?></span>
 				</td>
                 <td class="points"><?=$match->objPoints->perfect?>/<?=$match->objPoints->difference?>/<?=$match->objPoints->tendency?></td>
                 <td class="points"><?=$match->objPoints->points?></td>

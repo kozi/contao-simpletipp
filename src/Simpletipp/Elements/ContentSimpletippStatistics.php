@@ -82,8 +82,15 @@ class ContentSimpletippStatistics extends SimpletippModule
         foreach ($objMatches as $objMatch) {
             $objMatch->teamHome = $objMatch->getRelated('team_h');
             $objMatch->teamAway = $objMatch->getRelated('team_a');
-            $objMatch->objPoints = $this->getPointsForMatch($objMatch);
-            $arrMatches[] = $objMatch;
+            $arrMatches[] = (object) [
+                "title" => $match->title,
+                "title_short" => $match->title_short,
+                "homeLogo" => $match->teamHome->logoPath(),
+                "homeThree" => $match->teamHome->three,
+                "awayLogo" => $match->teamAway->logoPath(),
+                "awayThree" => $match->teamAway->three,
+                "objPoints" => $this->getPointsForMatch($objMatch),
+            ];
         }
 
         usort($arrMatches, function ($match_a, $match_b) {
