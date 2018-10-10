@@ -166,7 +166,7 @@ class tl_simpletipp_question extends Backend
     {
         // Check permissions to publish
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_simpletipp_question::published', 'alexf')) {
-            $this->log('Not enough permissions to publish/unpublish tl_simpletipp_question ID "' . $intId . '"', 'tl_simpletipp_question toggleVisibility', TL_ERROR);
+            $this->log('Not enough permissions to publish/unpublish tl_simpletipp_question ID "' . $intId . '"', 'tl_simpletipp_question toggleVisibility', 'TL_ERROR');
             $this->redirect('contao/main.php?act=error');
         }
 

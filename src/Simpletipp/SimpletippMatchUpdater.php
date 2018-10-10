@@ -47,14 +47,14 @@ class SimpletippMatchUpdater extends \Backend
                 // Only update current leagues (lastChange is not older than 1 year (31557600 seconds))
                 if ($objSimpletipp->lastChanged == 0 || $objSimpletipp->lastChanged + 31557600 > $now) {
                     $message = $this->updateSimpletippMatches($objSimpletipp);
-                    \System::log(strip_tags($message), 'SimpletippCallbacks updateMatches()', TL_INFO);
+                    \System::log(strip_tags($message), 'SimpletippCallbacks updateMatches()', 'TL_INFO');
                 }
 
             }
         } else {
             $objSimpletipp = SimpletippModel::findByPk($id);
             $message = $this->updateSimpletippMatches($objSimpletipp);
-            \Message::add($message, TL_INFO);
+            \Message::add($message, 'TL_INFO');
 
             if ('update' === Input::get('key')) {
                 $this->redirect($this->getReferer());

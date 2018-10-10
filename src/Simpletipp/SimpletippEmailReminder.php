@@ -67,7 +67,7 @@ class SimpletippEmailReminder extends \Backend
                 $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
                     $match->title, \Date::parse('d.m.Y H:i', $match->deadline));
                 $arrMessages[] = $message;
-                \System::log($message, 'SimpletippCallbacks tippReminder()', TL_INFO);
+                \System::log($message, 'SimpletippCallbacks tippReminder()', 'TL_INFO');
             } // END else
         } // END foreach
 
