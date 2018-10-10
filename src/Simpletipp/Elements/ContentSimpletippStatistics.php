@@ -284,13 +284,13 @@ class ContentSimpletippStatistics extends SimpletippModule
             return true;
         }
 
-        $table = [
-            'maxTore' => ['realValue' => 0, 'title' => 'Die meisten Tore'],
-            'minTore' => ['realValue' => 0, 'title' => 'Die wenigsten Tore'],
-            'home' => ['realValue' => 0, 'title' => 'Die meisten Heimsiege'],
-            'draw' => ['realValue' => 0, 'title' => 'Die meisten Unentschieden'],
-            'away' => ['realValue' => 0, 'title' => 'Die meisten Auswärtssiege'],
-            'two_one' => ['realValue' => 0, 'title' => 'Die meisten 2:1 Tipps'],
+        $table = (object) [
+            'maxTore' => (object) ['realValue' => 0, 'title' => 'Die meisten Tore'],
+            'minTore' => (object) ['realValue' => 0, 'title' => 'Die wenigsten Tore'],
+            'home' => (object) ['realValue' => 0, 'title' => 'Die meisten Heimsiege'],
+            'draw' => (object) ['realValue' => 0, 'title' => 'Die meisten Unentschieden'],
+            'away' => (object) ['realValue' => 0, 'title' => 'Die meisten Auswärtssiege'],
+            'two_one' => (object) ['realValue' => 0, 'title' => 'Die meisten 2:1 Tipps'],
         ];
 
         $result = $this->Database->prepare("SELECT id,result FROM tl_simpletipp_match
@@ -302,12 +302,12 @@ class ContentSimpletippStatistics extends SimpletippModule
             $arrMatchIds[] = $result->id;
 
             $rArr = array_map('intval', explode(':', $result->result));
-            $table['maxTore']['realValue'] = $table['maxTore']['realValue'] + $rArr[0] + $rArr[1];
-            $table['minTore']['realValue'] = $table['maxTore']['realValue'];
-            $table['two_one']['realValue'] = ('2:1' == $result->result) ? ++$table['two_one']['realValue'] : $table['two_one']['realValue'];
-            $table['draw']['realValue'] = ($rArr[0] == $rArr[1]) ? ++$table['draw']['realValue'] : $table['draw']['realValue'];
-            $table['home']['realValue'] = ($rArr[0] > $rArr[1]) ? ++$table['home']['realValue'] : $table['home']['realValue'];
-            $table['away']['realValue'] = ($rArr[0] < $rArr[1]) ? ++$table['away']['realValue'] : $table['away']['realValue'];
+            $table->maxTore->realValue = $table->maxTore->realValue + $rArr[0] + $rArr[1];
+            $table->minTore->realValue = $table->maxTore->realValue;
+            $table->two_one->realValue = ('2:1' == $result->result) ? ++$table->two_one->realValue : $table->two_one->realValue;
+            $table->draw->realValue = ($rArr[0] == $rArr[1]) ? ++$table->draw->realValue : $table->draw->realValue;
+            $table->home->realValue = ($rArr[0] > $rArr[1]) ? ++$table->home->realValue : $table->home->realValue;
+            $table->away->realValue = ($rArr[0] < $rArr[1]) ? ++$table->away->realValue : $table->away->realValue;
         }
 
         if (sizeof($arrMatchIds) === 0) {
@@ -356,20 +356,20 @@ class ContentSimpletippStatistics extends SimpletippModule
         // TODO Den link zu dem Benutzer
 
         usort($memberArray, function ($a, $b) {return ($b->tore - $a->tore);});
-        $table['maxTore']['member'] = array_slice($memberArray, 0, 3);
-        $table['minTore']['member'] = array_reverse(array_slice($memberArray, count($memberArray) - 3, 3));
+        $table->maxTore->member = array_slice($memberArray, 0, 3);
+        $table->minTore->member = array_reverse(array_slice($memberArray, count($memberArray) - 3, 3));
 
         usort($memberArray, function ($a, $b) {return ($b->home - $a->home);});
-        $table['home']['member'] = array_slice($memberArray, 0, 3);
+        $table->home->member = array_slice($memberArray, 0, 3);
 
         usort($memberArray, function ($a, $b) {return ($b->away - $a->away);});
-        $table['away']['member'] = array_slice($memberArray, 0, 3);
+        $table->away->member = array_slice($memberArray, 0, 3);
 
         usort($memberArray, function ($a, $b) {return ($b->draw - $a->draw);});
-        $table['draw']['member'] = array_slice($memberArray, 0, 3);
+        $table->draw->member = array_slice($memberArray, 0, 3);
 
         usort($memberArray, function ($a, $b) {return ($b->two_one - $a->two_one);});
-        $table['two_one']['member'] = array_slice($memberArray, 0, 3);
+        $table->two_one->member = array_slice($memberArray, 0, 3);
 
         $this->cache(__METHOD__, $table);
         $this->statsTemplate->table = $table;
