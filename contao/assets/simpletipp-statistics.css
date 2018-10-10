@@ -39,6 +39,7 @@
     background: #eeeeee;
 }
 
+.mod_simpletipp .chart-legend-user li.active,
 .mod_simpletipp .chart-legend-user li:hover {
     background: #333;
     color: #fff;

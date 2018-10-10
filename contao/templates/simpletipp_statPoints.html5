@@ -13,6 +13,17 @@ $(document).ready(function() {
 			labels: <?=json_encode($this->data->labels);?>,
 	    },
 		options: {
+			plugins: {
+				datalabels: {
+					color: 'white',
+					display: function(context) {
+						return (context.dataset.data[context.dataIndex] > 0);
+					},
+					font: {
+						weight: 'bold'
+					}
+				}
+			},
 			tooltips: {
 				mode: 'index',
 				intersect: false
@@ -34,6 +45,8 @@ $(document).ready(function() {
 	});
 
 	$("#pointstat-legend li").click(function() {
+		$("#pointstat-legend li.active").removeClass("active");
+		$(this).addClass("active");
 		var username = this.id.replace("user_", "");
 		pointsPlotChart.data.datasets = [
 			{label: 'Richtige', backgroundColor: "#3366cc", data: pointsObj[username].pointsArray[0]},
