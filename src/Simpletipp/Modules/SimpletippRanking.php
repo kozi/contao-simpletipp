@@ -33,7 +33,7 @@ class SimpletippRanking extends SimpletippModule
     protected function compile()
     {
         // Cached result?
-        $ranking = $this->cache(static::$cache_key_ranking);
+        $ranking = $this->cache(__METHOD__);
         if ($ranking != null) {
             $this->Template->ranking = $ranking;
             return true;
@@ -112,7 +112,7 @@ class SimpletippRanking extends SimpletippModule
             return 0;
         });
 
-        $this->cache(static::$cache_key_ranking, $ranking);
+        $this->cache(__METHOD__, $ranking);
         $this->Template->ranking = $ranking;
     }
 }

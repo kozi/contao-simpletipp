@@ -16,6 +16,7 @@ abstract class SimpletippModule extends \Module
 {
     const SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';
     const EMOJI_SOCCER = "⚽️";
+
     protected $now;
     protected $simpletipp;
     protected $simpletippGroups;
@@ -30,17 +31,6 @@ abstract class SimpletippModule extends \Module
     protected $factorTendency;
 
     protected $participant_group;
-
-    protected static $cache_key_prefix = 'simpletipp';
-    protected static $cache_key_suffix = '.json';
-    protected static $cache_key_highscore = 'highscore';
-    protected static $cache_key_bestof = 'bestof';
-    protected static $cache_key_points = 'points';
-    protected static $cache_key_special = 'special';
-    protected static $cache_key_bestTeams = 'bestTeams';
-    protected static $cache_key_bestMatches = 'bestMatches';
-    protected static $cache_key_ranking = 'ranking';
-    protected static $cache_key_notTipped = 'notTipped';
 
     public function __construct($objModule = null, $strColumn = 'main')
     {
@@ -118,7 +108,10 @@ abstract class SimpletippModule extends \Module
         $matches = $this->getMatchIds($matchgroup);
 
         if (count($matches) > 0) {
-            $result = \Database::getInstance()->execute("SELECT *, tl_member.id AS member_id,"
+            $result = \Database::getInstance()->execute("SELECT tl_member.id AS member_id,"
+                . " tl_member.username AS username,"
+                . " tl_member.firstname AS firstname,"
+                . " tl_member.lastname AS lastname,"
                 . " SUM(tendency) AS sum_tendency,"
                 . " SUM(difference) AS sum_difference,"
                 . " SUM(perfect) AS sum_perfect,"
@@ -193,7 +186,11 @@ abstract class SimpletippModule extends \Module
 
         if (is_array($arrParticipantIds) && count($arrParticipantIds) > 0) {
             // Jetzt noch die member, die noch nichts getippt haben hinzufügen
-            $result = $this->Database->execute("SELECT *, tl_member.id AS member_id FROM tl_member"
+            $result = $this->Database->execute("SELECT tl_member.id AS member_id,"
+                . " tl_member.username AS username,"
+                . " tl_member.firstname AS firstname,"
+                . " tl_member.lastname AS lastname"
+                . " FROM tl_member"
                 . " WHERE tl_member.id in (" . implode(',', $arrParticipantIds) . ")");
             while ($result->next()) {
                 if (!array_key_exists($result->member_id, $table)) {
@@ -283,8 +280,7 @@ abstract class SimpletippModule extends \Module
 
     protected function cache($key, $data = null, $cleanEntries = false)
     {
-        $fn = static::$cache_key_prefix . '_' . $key . '_' . $this->simpletipp->id
-        . '_' . $this->simpletipp->lastChanged . static::$cache_key_suffix;
+        $fn = join('.', ['simpletipp', str_replace(":", ".", $key), $this->simpletipp->id, $this->simpletipp->lastChanged, 'json']);
         $objFile = new \File('system/tmp/' . $fn, true);
 
         if ($data !== null) {
@@ -293,7 +289,7 @@ abstract class SimpletippModule extends \Module
                     $this->cleanItem($item);
                 }
             }
-            $objFile->write(serialize($data));
+            $objFile->write(json_encode($data));
             $objFile->close();
             return null;
         }
@@ -301,7 +297,8 @@ abstract class SimpletippModule extends \Module
         if (!$objFile->exists()) {
             return null;
         }
-        return unserialize($objFile->getContent());
+
+        return json_decode($objFile->getContent());
     }
 
     private function cleanItem(&$item)

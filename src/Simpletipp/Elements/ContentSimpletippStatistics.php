@@ -63,7 +63,7 @@ class ContentSimpletippStatistics extends SimpletippModule
     protected function statBestMatches()
     {
         // Cached result?
-        $arrBestMatches = $this->cache(static::$cache_key_bestMatches);
+        $arrBestMatches = $this->cache(__METHOD__);
         if ($arrBestMatches != null) {
             $this->statsTemplate->matches = $arrBestMatches;
             return true;
@@ -91,14 +91,14 @@ class ContentSimpletippStatistics extends SimpletippModule
         });
 
         $arrBestMatches = array_slice($arrMatches, 0, 10);
-        $this->cache(static::$cache_key_bestMatches, $arrBestMatches, true);
+        $this->cache(__METHOD__, $arrBestMatches, true);
         $this->statsTemplate->matches = $arrBestMatches;
     }
 
     protected function statBestTeams()
     {
         // Cached result?
-        $arrBestTeams = $this->cache(static::$cache_key_bestTeams);
+        $arrBestTeams = $this->cache(__METHOD__);
         if ($arrBestTeams != null) {
             $this->statsTemplate->teams = $arrBestTeams;
             return true;
@@ -152,7 +152,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         });
 
         $arrBestTeams = array_slice($arrTeams, 0, 10);
-        $this->cache(static::$cache_key_bestTeams, $arrBestTeams, true);
+        $this->cache(__METHOD__, $arrBestTeams, true);
         $this->statsTemplate->teams = $arrBestTeams;
 
     }
@@ -163,7 +163,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/chartjs-plugin-datalabels.min.js|static';
 
         // Cached result?
-        $dataObject = $this->cache(static::$cache_key_highscore);
+        $dataObject = $this->cache(__METHOD__);
         if ($dataObject != null) {
             $this->statsTemplate->data = $dataObject;
             return true;
@@ -218,7 +218,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         $dataObject->table = $memberArray;
         $dataObject->roundedMaximum = (ceil($max) % 5 === 0) ? ceil($max) : round(($max + 5 / 2) / 5) * 5;
 
-        $this->cache(static::$cache_key_highscore, $dataObject, true);
+        $this->cache(__METHOD__, $dataObject, true);
         $this->statsTemplate->data = $dataObject;
     }
 
@@ -227,7 +227,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/Chart.bundle.min.js|static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/simpletipp/assets/chartjs/chartjs-plugin-datalabels.min.js|static';
 
-        $data = $this->cache(static::$cache_key_points);
+        $data = $this->cache(__METHOD__);
 
         if ($data != null) {
             $this->statsTemplate->data = $data;
@@ -278,14 +278,14 @@ class ContentSimpletippStatistics extends SimpletippModule
         });
 
         $data->table = $memberArray;
-        $this->cache(static::$cache_key_points, $data, true);
+        $this->cache(__METHOD__, $data, true);
 
         $this->statsTemplate->data = $data;
     }
 
     protected function statSpecialMember()
     {
-        $table = $this->cache(static::$cache_key_special);
+        $table = $this->cache(__METHOD__);
         if ($table != null) {
             $this->statsTemplate->table = $table;
             return true;
@@ -376,7 +376,7 @@ class ContentSimpletippStatistics extends SimpletippModule
         usort($memberArray, function ($a, $b) {return ($b->two_one - $a->two_one);});
         $table['two_one']['member'] = array_slice($memberArray, 0, 3);
 
-        $this->cache(static::$cache_key_special, $table);
+        $this->cache(__METHOD__, $table);
         $this->statsTemplate->table = $table;
 
     }
