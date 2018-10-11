@@ -2,7 +2,7 @@
 
 $GLOBALS['TL_CRON']['hourly'][] = ['\Simpletipp\SimpletippEmailReminder', 'tippReminder'];
 $GLOBALS['TL_CRON']['hourly'][] = ['\Simpletipp\SimpletippMatchUpdater', 'updateMatches'];
-$GLOBALS['TL_CRON']['minutely'][] = ['\Simpletipp\SimpletippTelegramBroadcaster', 'broadcastMessages'];
+$GLOBALS['TL_CRON']['hourly'][] = ['\Simpletipp\SimpletippTelegramBroadcaster', 'broadcastMessages'];
 
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = ['\Simpletipp\SimpletippCallbacks', 'addCustomRegexp'];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['\Simpletipp\SimpletippCallbacks', 'randomLine'];
