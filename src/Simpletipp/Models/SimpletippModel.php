@@ -25,10 +25,10 @@ class SimpletippModel extends \Model
     public function getGroupMember($chatMember = false)
     {
         $groupId = $this->participant_group;
-        $participantStr = '%s:' . strlen($groupId) . ':"' . $groupId . '"%';
 
         $where = ['tl_member.groups LIKE ?'];
-        $params = [$this->getParticipantString()];
+        $params = ['%s:' . strlen($groupId) . ':"' . $groupId . '"%'];
+
         if ($chatMember === true) {
             $where[] = 'tl_member.telegram_chat_id <> ?';
             $params[] = '';
