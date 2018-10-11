@@ -3,6 +3,7 @@
 namespace Simpletipp;
 
 use Contao\Backend;
+use Contao\ModuleModel;
 use Contao\System;
 use Simpletipp\Models\SimpletippMatchModel;
 use Simpletipp\Models\SimpletippModel;
@@ -22,7 +23,7 @@ class SimpletippTelegramBroadcaster extends Backend
 
     public function __construct()
     {
-        $module = SimpletippModel::findOneBy(['tl_module.simpletipp_telegram_bot_key <> ?'], '');
+        $module = ModuleModel::findOneBy(['tl_module.simpletipp_telegram_bot_key <> ?'], '');
         if ($module !== null) {
             $this->botKey = $module->simpletipp_telegram_bot_key;
             $this->match = SimpletippMatchModel::getNextMatch();
