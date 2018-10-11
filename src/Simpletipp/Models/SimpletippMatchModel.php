@@ -57,11 +57,11 @@ class SimpletippMatchModel extends \Model
         return self::findOneBy($arrWhere, $arrValues);
     }
 
-    public static function getNextMatch($leagueID)
+    public static function getNextMatch($leagueID = null)
     {
         return self::findOneBy(
-            ['leagueID = ?', 'deadline > ?'],
-            [$leagueID, time()],
+            ($leagueID != null) ? ['leagueID = ?', 'deadline > ?'] : ['deadline > ?'],
+            ($leagueID != null) ? [$leagueID, time()] : [time()],
             ['order' => 'deadline ASC, id ASC']
         );
     }
