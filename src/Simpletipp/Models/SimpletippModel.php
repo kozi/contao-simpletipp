@@ -22,20 +22,18 @@ class SimpletippModel extends \Model
         return $pointFactors;
     }
 
-    /**
-     * @param $groupID
-     * @param string $order
-     * @return \MemberModel|\Model\Collection
-     */
-    public function getGroupMember($order = 'tl_member.lastname ASC, tl_member.firstname ASC')
+    public function getGroupMember($chatMember = false)
     {
         $groupId = $this->participant_group;
         $participantStr = '%s:' . strlen($groupId) . ':"' . $groupId . '"%';
-        $objMembers = \MemberModel::findBy(
-            ['tl_member.groups LIKE ?'],
-            $participantStr,
-            ['order' => $order]
-        );
+
+        $where = ['tl_member.groups LIKE ?'];
+        $params = [$this->getParticipantString()];
+        if ($chatMember === true) {
+            $where[] = 'tl_member.telegram_chat_id <> ?';
+            $params[] = '';
+        }
+        $objMembers = \MemberModel::findBy($where, $params, ['order' => 'tl_member.lastname ASC, tl_member.firstname ASC']);
         return $objMembers;
     }
 
