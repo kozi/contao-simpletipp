@@ -30,8 +30,8 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_calendar'] = [
     'eval' => [],
 ];
 
-$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_bot_secret'] = ['sql' => "varchar(255) NOT NULL default '1'"];
-$GLOBALS['TL_DCA']['tl_member']['fields']['telegram_chat_id'] = ['sql' => "varchar(255) NOT NULL default '1'"];
+$GLOBALS['TL_DCA']['tl_member']['fields']['simpletipp_bot_secret'] = ['sql' => "varchar(255) NOT NULL default ''"];
+$GLOBALS['TL_DCA']['tl_member']['fields']['telegram_chat_id'] = ['sql' => "varchar(255) NOT NULL default ''"];
 
 class tl_member_simpletipp
 {
