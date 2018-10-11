@@ -42,7 +42,7 @@ class SimpletippTelegramBroadcaster extends Backend
         }
 
         $hours = 3;
-        if (false && $this->match->deadline > (($hours * 3600) + time())) {
+        if ($this->match->deadline > (($hours * 3600) + time())) {
             // match starts in more than $hours
             return;
         }
@@ -61,20 +61,15 @@ class SimpletippTelegramBroadcaster extends Backend
         }
     }
 
-    private function broadcastToUser($member)
+    private function broadcastToUser($mem)
     {
-        if ($member->username !== 'kozi') {
-            return;
-        }
-        $tipp = SimpletippTippModel::findOneBy(['member_id = ?', 'match_id = ?'], [$member->id, $this->match->id]);
-        if (false && $tipp !== null) {
+        $tipp = SimpletippTippModel::findOneBy(['member_id = ?', 'match_id = ?'], [$mem->id, $this->match->id]);
+        if ($tipp !== null) {
             // already tipped
             return;
         }
-        $chatId = $member->telegram_chat_id;
         $text = "Das Spiel " . $this->match->title . " startet bald! /t";
-        $response = $this->telegram->sendMessage(['chat_id' => $chatId, 'text' => $text]);
-        System::log("Broadcast to " . $member->username, 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_INFO');
-
+        $this->telegram->sendMessage(['chat_id' => $mem->telegram_chat_id, 'text' => $text]);
+        System::log("Broadcast to " . $mem->username . ' [' . $text . ']', 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_INFO');
     }
 }
