@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
             'eval' => ['fieldType' => 'radio', 'tl_class' => 'long'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'telegram_bot_key'] = [
+        'telegram_bot_key' => [
             'label' => &$GLOBALS['TL_LANG']['tl_simpletipp']['telegram_bot_key'],
             'exclude' => true,
             'inputType' => 'text',
@@ -252,6 +252,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
         'pokal_4' => ['sql' => "blob NULL"],
         'pokal_2' => ['sql' => "blob NULL"],
         'pokal_finale' => ['sql' => "blob NULL"],
+    ],
 ];
 
 use Simpletipp\Models\SimpletippModel;
