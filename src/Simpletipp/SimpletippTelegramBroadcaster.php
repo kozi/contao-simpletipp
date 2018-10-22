@@ -38,25 +38,33 @@ class SimpletippTelegramBroadcaster extends Backend
     {
         if ($this->telegram === null || $this->match === null) {
             // No bot key found or no match found
+            System::log('No bot key found or no match found', 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_ERROR');
             return;
         }
 
         $hours = 3;
         if ($this->match->deadline > (($hours * 3600) + time())) {
             // match starts in more than $hours
+            System::log("Match '" . $this->match->title . "' starts in more than $hours hours", 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_ERROR');
             return;
         }
 
         $simpletippEntries = SimpletippModel::findBy(['tl_simpletipp.leagueID = ?'], $this->match->leagueID);
         if ($simpletippEntries === null) {
             // match does not belong to a simpletipp entry
+            System::log("Match '" . $this->match->title . "' does not belong to a simpletipp entry", 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_ERROR');
             return;
         }
 
         foreach ($simpletippEntries as $simpletipp) {
             $chatMember = $simpletipp->getGroupMember(true);
-            foreach ($chatMember as $m) {
-                $this->broadcastToUser($m);
+            if ($chatMember != null) {
+                $broadcastResult = [];
+                foreach ($chatMember as $m) {
+                    $result = $this->broadcastToUser($m);
+                    $broadcastResult[] = $m->username . (($result === true) ? "[1]" : "[0]");
+                }
+                System::log("Broadcast result: " . implode(", ", $broadcastResult), 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_INFO');
             }
         }
     }
@@ -66,10 +74,11 @@ class SimpletippTelegramBroadcaster extends Backend
         $tipp = SimpletippTippModel::findOneBy(['member_id = ?', 'match_id = ?'], [$mem->id, $this->match->id]);
         if ($tipp !== null) {
             // already tipped
-            return;
+            return false;
         }
         $text = "Das Spiel " . $this->match->title . " startet bald! /t";
         $this->telegram->sendMessage(['chat_id' => $mem->telegram_chat_id, 'text' => $text]);
         System::log("Broadcast to " . $mem->username . ' [' . $text . ']', 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_INFO');
+        return true;
     }
 }
