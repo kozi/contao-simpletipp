@@ -31,8 +31,7 @@ class SimpletippTelegram extends SimpletippModule
             $this->Template->wildcard = '### SimpletippTelegram ###';
             return $this->Template->parse();
         }
-
-        if ($this->simpletipp_telegram_url_token !== Input::get('token')) {
+        if ($this->simpletipp->telegram_url_token !== Input::get('token')) {
             die('Missing token');
         }
         $this->strTemplate = $this->simpletipp_template;
@@ -41,7 +40,7 @@ class SimpletippTelegram extends SimpletippModule
 
     protected function compile()
     {
-        $telegram = new Api($this->simpletipp_telegram_bot_key);
+        $telegram = new Api($this->simpletipp->telegram_bot_key);
         $update = ($telegram !== null) ? $telegram->getWebhookUpdates() : null;
         $message = ($update !== null) ? $update->getMessage() : null;
         $text = ($message !== null) ? strtolower($message->getText()) : null;

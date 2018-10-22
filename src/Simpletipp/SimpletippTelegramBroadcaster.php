@@ -3,7 +3,6 @@
 namespace Simpletipp;
 
 use Contao\Backend;
-use Contao\ModuleModel;
 use Contao\System;
 use Simpletipp\Models\SimpletippMatchModel;
 use Simpletipp\Models\SimpletippModel;
@@ -25,10 +24,10 @@ class SimpletippTelegramBroadcaster extends Backend
 
     public function __construct()
     {
-        $moduleModel = ModuleModel::findOneBy(['tl_module.simpletipp_telegram_bot_key <> ?'], '');
-        $matchModel = SimpletippMatchModel::getNextMatch();
-        if ($moduleModel !== null && $matchModel !== null) {
-            $this->telegram = new Api($moduleModel->simpletipp_telegram_bot_key);
+        $simpletippModel = SimpletippModel::findBy(['tl_simpletipp.telegram_bot_key <> ?'], '');
+        $matchModel = ($simpletippModel != null) ? SimpletippMatchModel::getNextMatch($simpletippModel->leagueID) : null;
+        if ($matchModel !== null) {
+            $this->telegram = new Api($simpletippModel->telegram_bot_key);
             $this->match = $matchModel;
         }
         parent::__construct();
@@ -46,13 +45,6 @@ class SimpletippTelegramBroadcaster extends Backend
         if ($this->match->deadline > (($hours * 3600) + time())) {
             // match starts in more than $hours
             System::log("Match '" . $this->match->title . "' starts in more than $hours hours", 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_ERROR');
-            return;
-        }
-
-        $simpletippEntries = SimpletippModel::findBy(['tl_simpletipp.leagueID = ?'], $this->match->leagueID);
-        if ($simpletippEntries === null) {
-            // match does not belong to a simpletipp entry
-            System::log("Match '" . $this->match->title . "' does not belong to a simpletipp entry", 'SimpletippTelegramBroadcaster broadcastToUser()', 'TL_ERROR');
             return;
         }
 

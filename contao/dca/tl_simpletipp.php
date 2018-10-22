@@ -83,14 +83,14 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
         ],
     ],
 
-// icon: WRENCH system/themes/flexible/icons/modules.svg
+    // icon: WRENCH system/themes/flexible/icons/modules.svg
     // icon: (i)
     // icon: SYNC system/themes/flexible/icons/sync.svg
     // icon: send email bundles/contaonewsletter/send.svg
 
     // Palettes
     'palettes' => [
-        'default' => '{simpletipp_legend}, title, leagueShortcut, leagueSaison, factor, matchLength, resultTypeIdFirst, resultTypeIdFinal, quizDeadline, adminName, adminEmail, teaser, participant_group;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
+        'default' => '{simpletipp_legend}, title, leagueShortcut, leagueSaison, factor, matchLength, resultTypeIdFirst, resultTypeIdFinal, quizDeadline, adminName, adminEmail, teaser, participant_group, telegram_bot_key, telegram_url_token;{simpletipp_reminder_legend}, matches_page;{simpletipp_pokal_legend}, pokal_ranges',
     ],
 
     // Fields
@@ -212,6 +212,20 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
             'eval' => ['fieldType' => 'radio', 'tl_class' => 'long'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
+        'telegram_bot_key'] = [
+            'label' => &$GLOBALS['TL_LANG']['tl_simpletipp']['telegram_bot_key'],
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'telegram_url_token' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_simpletipp']['telegram_url_token'],
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
         'lastChanged' => [
             'label' => ['lastChanged', 'lastChanged'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -238,7 +252,6 @@ $GLOBALS['TL_DCA']['tl_simpletipp'] = [
         'pokal_4' => ['sql' => "blob NULL"],
         'pokal_2' => ['sql' => "blob NULL"],
         'pokal_finale' => ['sql' => "blob NULL"],
-    ],
 ];
 
 use Simpletipp\Models\SimpletippModel;

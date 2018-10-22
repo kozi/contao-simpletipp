@@ -22,6 +22,9 @@ $GLOBALS['TL_LANG']['tl_simpletipp']['resultTypeIdFinal'] = ['Endergebnis', 'Erg
 $GLOBALS['TL_LANG']['tl_simpletipp']['teaser'] = ['Info', 'Info'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['matches_page'] = ['Seitenauswahl Spiele', 'Wähle eine Seite, die das Modul <strong>Simpletipp - Spiele</strong> enthält. In den Emails wird dann ein Link zu der Seite generiert.'];
 
+$GLOBALS['TL_LANG']['tl_simpletipp']['telegram_bot_key'] = ['Telegram Bot-Key', 'Telegram Bot-Key'];
+$GLOBALS['TL_LANG']['tl_simpletipp']['telegram_url_token'] = ['Telegram URL-Token', 'Telegram URL-Token'];
+
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_ranges'] = ['Pokal Spieltage', 'Es müssen 6 sich nicht überschneidende Abschnitte gewählt werden.'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_group'] = ['Gruppenphase', 'Spieltage festlegen.'];
 $GLOBALS['TL_LANG']['tl_simpletipp']['pokal_16'] = ['1. Runde', 'Spieltage festlegen.'];
