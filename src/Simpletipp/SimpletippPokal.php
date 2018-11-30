@@ -168,7 +168,7 @@ class SimpletippPokal extends \Backend
             $arrUserIds = [];
             foreach ($highscores as $highscore) {
                 // Nur die memberIDs speichern
-                $highscore = array_map(function ($row) {return $row->id;}, $highscore);
+                $highscore = array_map(function ($row) {return $row->member_id;}, $highscore);
                 $arrUserIds = array_merge($arrUserIds, array_slice($highscore, 0, $winRanks));
             }
             shuffle($arrUserIds);
