@@ -49,6 +49,10 @@ class SimpletippEmailReminder extends \Backend
                     if ($u['simpletipp_email_reminder'] == '1') {
                         $email = $this->generateEmailObject($simpletippObj, $emailSubject, $emailText);
                         $email->sendTo($u['email']);
+
+                        $logMessage = "TO: " . $u['email'] . " SUBJECT: " . $emailSubject . " TEXT: " . $emailText;
+                        \System::log($logMessage, 'SimpletippCallbacks generateEmailObject()', 'TL_INFO');
+
                         $emailSent = '@ ';
                         $emailCount++;
                     }
