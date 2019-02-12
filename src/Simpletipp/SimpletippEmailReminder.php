@@ -42,15 +42,26 @@ class SimpletippEmailReminder extends \Backend
 
                 $userNamesArr = [];
                 $emailSubject = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'],
-                    $match->title);
+                    $match->title_short);
                 $emailText = sprintf($GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'],
                     $hours, $match->title, \Date::parse('d.m.Y H:i', $match->deadline), $matchesPageUrl);
 
+                $htmlLogos = '<img style="height:100px;" src="/' . $match->getRelated('team_h')->logoPath() . '"> '
+                . '<img style="height:100px;" src="/' . $match->getRelated('team_a')->logoPath() . '">';
+
+                $emailHtml = $this->textToHtml($emailText);
+                $emailText . replace("##LOGOS##", "");
+                $emailHtml . replace("##LOGOS##", $htmlLogos);
                 if ($this->isDebug) {
-                    echo "<pre>emailSubject\n\n";
-                    var_dump($emailSubject);
-                    echo "\n\n\n</pre><pre>emailSubject\n\n";
-                    var_dump($emailText);
+                    echo "<pre>match\n\n";
+                    var_dump($match->getRelated('team_h')->logoPath());
+                    var_dump($match->getRelated('team_a')->logoPath());
+                    echo "</pre><pre>emailSubject\n\n";
+                    echo $emailSubject;
+                    echo "\n\n\n</pre><pre>this->textToHtml(emailText)\n\n</pre><div style='border:1px solid #333;width:480px;padding:10px;'>";
+                    echo $emailHtml;
+                    echo "</div><pre>emailText\n\n";
+                    echo $emailText;
                     echo "\n\n\n</pre>";
                 }
 
@@ -58,7 +69,7 @@ class SimpletippEmailReminder extends \Backend
                 foreach (static::getNotTippedUser($simpletippObj->participant_group, $match->id) as $u) {
                     $emailSent = '';
                     if ($u['simpletipp_email_reminder'] == '1') {
-                        $email = $this->generateEmailObject($simpletippObj, $emailSubject, $emailText);
+                        $email = $this->generateEmailObject($simpletippObj, $emailSubject, $emailText, $emailHtml);
 
                         if ($this->isDebug) {
                             $arrMessages[] = "EMAIL to: " . $u['email'] . " SUBJECT: " . $emailSubject;
@@ -102,16 +113,14 @@ class SimpletippEmailReminder extends \Backend
         }
     }
 
-    private function generateEmailObject($simpletippRes, $subject, $text = null)
+    private function generateEmailObject($simpletippRes, $subject, $text = null, $html = null)
     {
         $email = new Email();
         $email->from = $simpletippRes->adminEmail;
         $email->fromName = $simpletippRes->adminName;
         $email->subject = $subject;
-        if ($text != null) {
-            $email->text = $text;
-            $email->html = $this->textToHtml($text);
-        }
+        ($text != null) && ($email->text = $text);
+        ($html != null) && ($email->html = $html);
         return $email;
     }
 

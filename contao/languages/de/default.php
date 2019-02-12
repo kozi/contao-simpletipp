@@ -7,8 +7,8 @@ $GLOBALS['TL_LANG']['simpletipp']['deadline'] = ['Datum', 'Datum'];
 $GLOBALS['TL_LANG']['simpletipp']['point'] = ['Punkt', 'Punkt'];
 $GLOBALS['TL_LANG']['simpletipp']['points'] = ['Punkte', 'Punkte'];
 
-$GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'] = 'Tipperinnerung für das Spiel %s';
-$GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'] = "Noch nicht getippt!\nDas folgende Spiel startet innerhalb der nächsten %s Stunden.\n\n%s (%s)\n%s\n\nViel Erfolg beim Tippen!\n\n";
+$GLOBALS['TL_LANG']['simpletipp']['email_reminder_subject'] = 'Tipperinnerung für das Spiel: %s';
+$GLOBALS['TL_LANG']['simpletipp']['email_reminder_text'] = "Noch nicht getippt!\nDas folgende Spiel startet innerhalb der nächsten %s Stunden.\n##LOGOS##\n%s (%s)\n%s\n\nViel Erfolg beim Tippen!\n\n";
 
 $GLOBALS['TL_LANG']['simpletipp']['message_inserted'] = 'Die Tipps wurden eingetragen.';
 $GLOBALS['TL_LANG']['simpletipp']['message_inserted_email'] = 'Die Tipps wurden eingetragen und eine Bestätigung<br> an %s gesandt.';
