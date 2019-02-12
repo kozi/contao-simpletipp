@@ -8,7 +8,7 @@ use Contao\MemberModel;
  * Class SimpletippCallbacks
  *
  * Provide some methods
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */

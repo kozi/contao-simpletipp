@@ -10,7 +10,7 @@ use Simpletipp\SimpletippModule;
  * Class SimpletippStatistics
  *
  * Front end content element "SimpletippStatistics".
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    simpletipp
  */

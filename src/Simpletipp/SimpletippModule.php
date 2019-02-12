@@ -6,12 +6,10 @@ use Simpletipp\Models\SimpletippModel;
 
 /**
  * Class Simpletipp
- *
- * @package   Controller
- * @author    Martin Kozianka <martin@kozianka.de>
- * @copyright 2014-2018 Martin Kozianka <http://kozianka.de/>
+ * @copyright  Martin Kozianka 2014-2019
+ * @author     Martin Kozianka <http://kozianka.de/>
+ * @package    Controller
  */
-
 abstract class SimpletippModule extends \Module
 {
     const SIMPLETIPP_USER_ID = 'SIMPLETIPP_USER_ID';

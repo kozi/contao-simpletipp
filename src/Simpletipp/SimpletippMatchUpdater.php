@@ -15,7 +15,7 @@ use Simpletipp\Models\SimpletippTippModel;
  * Class SimpletippMatchUpdater
  *
  * Provide methods to import matches
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */

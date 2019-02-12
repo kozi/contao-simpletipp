@@ -11,7 +11,7 @@ use Simpletipp\SimpletippModule;
 /**
  * Class SimpletippMatches
  *
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */

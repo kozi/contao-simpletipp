@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_simpletipp_team'] = [
  * Class tl_simpletipp_team
  *
  * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    simpletipp
  */

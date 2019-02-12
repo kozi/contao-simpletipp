@@ -13,7 +13,7 @@ use Telegram\Bot\Api;
  * Class SimpletippTelegramBroadcaster
  *
  * Broadcast messages to registered telegram user
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */

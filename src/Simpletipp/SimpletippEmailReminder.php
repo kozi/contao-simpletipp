@@ -2,6 +2,7 @@
 
 namespace Simpletipp;
 
+use Contao\Email;
 use Simpletipp\Models\SimpletippMatchModel;
 use Simpletipp\Models\SimpletippModel;
 
@@ -9,7 +10,7 @@ use Simpletipp\Models\SimpletippModel;
  * Class SimpletippEmailReminder
  *
  * Provide methods to for email reminder
- * @copyright  Martin Kozianka 2014-2018
+ * @copyright  Martin Kozianka 2014-2019
  * @author     Martin Kozianka <http://kozianka.de/>
  * @package    Controller
  */
@@ -49,10 +50,6 @@ class SimpletippEmailReminder extends \Backend
                     if ($u['simpletipp_email_reminder'] == '1') {
                         $email = $this->generateEmailObject($simpletippObj, $emailSubject, $emailText);
                         $email->sendTo($u['email']);
-
-                        $logMessage = "TO: " . $u['email'] . " SUBJECT: " . $emailSubject . " TEXT: " . $emailText;
-                        \System::log($logMessage, 'SimpletippCallbacks generateEmailObject()', 'TL_INFO');
-
                         $emailSent = '@ ';
                         $emailCount++;
                     }
@@ -85,7 +82,7 @@ class SimpletippEmailReminder extends \Backend
 
     private function generateEmailObject($simpletippRes, $subject, $text = null)
     {
-        $email = new \Email();
+        $email = new Email();
         $email->from = $simpletippRes->adminEmail;
         $email->fromName = $simpletippRes->adminName;
         $email->subject = $subject;
