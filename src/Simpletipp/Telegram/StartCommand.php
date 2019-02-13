@@ -3,7 +3,6 @@
 namespace Simpletipp\Telegram;
 
 use Contao\MemberModel;
-use Simpletipp\Telegram\HelpCommand;
 
 class StartCommand extends TelegramCommand
 {

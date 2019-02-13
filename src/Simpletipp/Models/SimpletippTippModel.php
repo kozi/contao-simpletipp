@@ -2,8 +2,6 @@
 
 namespace Simpletipp\Models;
 
-use Simpletipp\Models\SimpletippPoints;
-
 class SimpletippTippModel extends \Model
 {
     const TIPP_DIVIDER = ':';

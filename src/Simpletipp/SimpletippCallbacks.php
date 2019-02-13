@@ -52,7 +52,7 @@ class SimpletippCallbacks extends \Backend
 
             $emails = [];
             $groupID = $simpletipp['participant_group'];
-            $objMembers = \MemberModel::findBy(['tl_member.groups LIKE ?'], '%s:' . strlen($groupID) . ':"' . $groupID . '"%');
+            $objMembers = MemberModel::findBy(['tl_member.groups LIKE ?'], '%s:' . strlen($groupID) . ':"' . $groupID . '"%');
             if ($objMembers !== null) {
                 foreach ($objMembers as $objMember) {
                     $emails[] = $objMember->email;

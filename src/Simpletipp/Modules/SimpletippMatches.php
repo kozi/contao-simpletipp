@@ -2,10 +2,9 @@
 
 namespace Simpletipp\Modules;
 
-use Simpletipp\Models\SimpletippMatchModel;
+use Simpletipp\Models\SimpletippPoints;
 use Simpletipp\Models\SimpletippTeamModel;
 use Simpletipp\Models\SimpletippTippModel;
-use Simpletipp\Models\SimpletippPoints;
 use Simpletipp\SimpletippModule;
 
 /**
