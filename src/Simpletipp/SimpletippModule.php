@@ -124,7 +124,7 @@ abstract class SimpletippModule extends \Module
                 . $restrictToMember
                 . " GROUP BY tl_member.id"
                 // Erst PUNKTE dann TENDENZEN dann DIFFERENZEN dann RICHTIGE
-                 . " ORDER BY points DESC, sum_tendency DESC, sum_difference DESC, sum_perfect DESC");
+                . " ORDER BY points DESC, sum_tendency DESC, sum_difference DESC, sum_perfect DESC");
 
             while ($result->next()) {
                 $table[$result->member_id] = $this->getHighscoreRow($result->row());

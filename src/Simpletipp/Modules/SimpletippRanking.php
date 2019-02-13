@@ -12,7 +12,6 @@ use Simpletipp\SimpletippModule;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
 class SimpletippRanking extends SimpletippModule
 {
     protected $strTemplate = 'simpletipp_ranking_default';
@@ -76,7 +75,8 @@ class SimpletippRanking extends SimpletippModule
 
         // Sortieren
         usort($ranking, function ($team_a, $team_b) {
-            $a = $team_a->getPoints(); $b = $team_b->getPoints();
+            $a = $team_a->getPoints();
+            $b = $team_b->getPoints();
             if ($a > $b) {
                 return -1;
             }
@@ -85,7 +85,8 @@ class SimpletippRanking extends SimpletippModule
                 return 1;
             }
 
-            $a = $team_a->goalDiff(); $b = $team_b->goalDiff();
+            $a = $team_a->goalDiff();
+            $b = $team_b->goalDiff();
             if ($a > $b) {
                 return -1;
             }
@@ -94,7 +95,8 @@ class SimpletippRanking extends SimpletippModule
                 return 1;
             }
 
-            $a = $team_a->goalsPlus; $b = $team_b->goalsPlus;
+            $a = $team_a->goalsPlus;
+            $b = $team_b->goalsPlus;
             if ($a > $b) {
                 return -1;
             }

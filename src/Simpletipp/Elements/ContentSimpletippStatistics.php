@@ -355,20 +355,30 @@ class ContentSimpletippStatistics extends SimpletippModule
 
         // TODO Den link zu dem Benutzer
 
-        usort($memberArray, function ($a, $b) {return ($b->tore - $a->tore);});
+        usort($memberArray, function ($a, $b) {
+            return ($b->tore - $a->tore);
+        });
         $table->maxTore->member = array_slice($memberArray, 0, 3);
         $table->minTore->member = array_reverse(array_slice($memberArray, count($memberArray) - 3, 3));
 
-        usort($memberArray, function ($a, $b) {return ($b->home - $a->home);});
+        usort($memberArray, function ($a, $b) {
+            return ($b->home - $a->home);
+        });
         $table->home->member = array_slice($memberArray, 0, 3);
 
-        usort($memberArray, function ($a, $b) {return ($b->away - $a->away);});
+        usort($memberArray, function ($a, $b) {
+            return ($b->away - $a->away);
+        });
         $table->away->member = array_slice($memberArray, 0, 3);
 
-        usort($memberArray, function ($a, $b) {return ($b->draw - $a->draw);});
+        usort($memberArray, function ($a, $b) {
+            return ($b->draw - $a->draw);
+        });
         $table->draw->member = array_slice($memberArray, 0, 3);
 
-        usort($memberArray, function ($a, $b) {return ($b->two_one - $a->two_one);});
+        usort($memberArray, function ($a, $b) {
+            return ($b->two_one - $a->two_one);
+        });
         $table->two_one->member = array_slice($memberArray, 0, 3);
 
         $this->cache(__METHOD__, $table);

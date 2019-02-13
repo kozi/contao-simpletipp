@@ -11,7 +11,6 @@ use Simpletipp\SimpletippModule;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
 class SimpletippQuestions extends SimpletippModule
 {
     private $questions = null;

@@ -21,7 +21,6 @@ use Telegram\Bot\Api;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
 class SimpletippTelegram extends SimpletippModule
 {
     public function generate()

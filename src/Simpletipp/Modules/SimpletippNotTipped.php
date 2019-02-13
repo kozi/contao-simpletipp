@@ -14,7 +14,6 @@ use Simpletipp\SimpletippModule;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
 class SimpletippNotTipped extends SimpletippModule
 {
     protected $strTemplate = 'simpletipp_nottipped_default';

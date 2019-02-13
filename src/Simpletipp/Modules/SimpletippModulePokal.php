@@ -11,7 +11,6 @@ use Simpletipp\SimpletippModule;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
 class SimpletippModulePokal extends SimpletippModule
 {
     protected $strTemplate = 'simpletipp_pokal_default';

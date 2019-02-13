@@ -22,8 +22,8 @@ class SimpletippPoints
 
         if ($pointFactors !== null) {
             $this->points = ($this->perfect * $pointFactors->perfect)
-                 + ($this->difference * $pointFactors->difference)
-                 + ($this->tendency * $pointFactors->tendency);
+                + ($this->difference * $pointFactors->difference)
+                + ($this->tendency * $pointFactors->tendency);
         }
     }
 

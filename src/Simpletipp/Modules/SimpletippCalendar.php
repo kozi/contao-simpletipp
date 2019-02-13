@@ -15,7 +15,6 @@ use Simpletipp\SimpletippModule;
  * @author     Martin Kozianka <martin@kozianka.de>
  * @package    Controller
  */
-
 class SimpletippCalendar extends SimpletippModule
 {
     private $title = 'Tippspiel';
@@ -132,7 +131,7 @@ class SimpletippCalendar extends SimpletippModule
 
         if ($this->matchesPage !== null) {
             $url = \Environment::get('base') . \Controller::generateFrontendUrl($this->matchesPage,
-                "/group/" . urlencode($matches[0]->groupName));
+                    "/group/" . urlencode($matches[0]->groupName));
         }
 
         $title = $matches[0]->groupName . ' (' . sizeof($matches) . ' ' . $GLOBALS['TL_LANG']['simpletipp']['matches'] . ')';
