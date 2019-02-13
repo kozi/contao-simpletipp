@@ -159,6 +159,7 @@ class SimpletippEmailReminder extends \Backend
         $html = preg_replace($pattern, '<a href="http$2://$3">$0</a>', $text);
         return nl2br($html);
     }
+
     public static function getNotTippedUser($groupID, $match_id)
     {
         $participantStr = '%s:' . strlen($groupID) . ':"' . $groupID . '"%';
