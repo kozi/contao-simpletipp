@@ -60,8 +60,8 @@ class SimpletippEmailReminder extends \Backend
 
                 $teamH = $match->getRelated('team_h');
                 $teamA = $match->getRelated('team_a');
-                $htmlLogos .= \Image::getHtml(\Image::get($teamH->logoPath(), 100, 100, 'box'), $teamH->name, 'style="margin:20px 10px 20px 0;"');
-                $htmlLogos .= \Image::getHtml(\Image::get($teamA->logoPath(), 100, 100, 'box'), $teamA->name, 'style="margin:20px 0 20px 10px;"');
+                $htmlLogos .= \Image::getHtml(\Image::get($teamH->logoPath(), 200, 200, 'box'), $teamH->name, 'style="height:100px;margin:20px 10px 20px 0;"');
+                $htmlLogos .= \Image::getHtml(\Image::get($teamA->logoPath(), 200, 200, 'box'), $teamA->name, 'style="height:100px;margin:20px 0 20px 10px;"');
 
                 $emailHtml = '<div style="' . $commonStyle . '">' . str_replace("##LOGOS##", $htmlLogos, $this->textToHtml($emailText)) . '</div>';
                 $emailText = str_replace("##LOGOS##", "", $emailText);
