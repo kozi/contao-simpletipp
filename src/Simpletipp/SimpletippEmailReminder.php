@@ -98,30 +98,30 @@ class SimpletippEmailReminder extends \Backend
                         $emailSent = '@ ';
                         $emailCount++;
                     }
-                    if ($telegram != null && $telegramId && strlen($telegramId) > 0 && "martin@kozianka.de" == $u['email']) {
-                        // var_dump([$u['email'], $telegramId]);
-
+                    if ($telegram != null && $telegramId && strlen($telegramId) > 0) {
                         $response = $telegram->sendMessage([
                             "chat_id" => $telegramId,
                             "text" => $telegramText,
                         ]);
                     }
-
                     $userNamesArr[] = $emailSent . $u['firstname'] . ' ' . $u['lastname'] . ' (' . $u['username'] . ')';
                 }
-
-                $email = $this->generateEmailObject($simpletippObj, 'Tipperinnerung verschickt!');
-                $email->text = "Tipperinnerung an folgende Tipper verschickt:\n\n" . implode("\n", $userNamesArr) . "\n\n";
-                (!$this->isDebug) && $email->sendTo($simpletippObj->adminEmail);
-
-                // Update lastRemindedMatch witch current match_id
-                $simpletippObj->lastRemindedMatch = $match->id;
-                $simpletippObj->save();
 
                 $message = sprintf('Sent %s reminder Emails for %s (%s)', $emailCount,
                     $match->title, \Date::parse('d.m.Y H:i', $match->deadline));
                 $arrMessages[] = $message;
-                \System::log($message, 'SimpletippCallbacks tippReminder()', 'TL_INFO');
+
+                if (!$this->isDebug) {
+
+                    $email = $this->generateEmailObject($simpletippObj, 'Tipperinnerung verschickt!');
+                    $email->text = "Tipperinnerung an folgende Tipper verschickt:\n\n" . implode("\n", $userNamesArr) . "\n\n";
+                    $email->sendTo($simpletippObj->adminEmail);
+
+                    // Update lastRemindedMatch witch current match_id
+                    $simpletippObj->lastRemindedMatch = $match->id;
+                    $simpletippObj->save();
+                    \System::log($message, 'SimpletippCallbacks tippReminder()', 'TL_INFO');
+                }
             } // END else
         } // END foreach
 
