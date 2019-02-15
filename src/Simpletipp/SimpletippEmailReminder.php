@@ -19,6 +19,12 @@ class SimpletippEmailReminder extends \Backend
 {
     public function tippReminder()
     {
+        if (!defined('TL_ROOT')) {
+            // TODO Sprache irgendwo festlegen. Z.B. für jedes Tippspiel?!
+            // oder sogar benutzerspezifisch
+            $GLOBALS['TL_LANGUAGE'] = 'de';
+        }
+
         \System::loadLanguageFile('default');
 
         $this->isDebug = isset($_GET["debug"]);
