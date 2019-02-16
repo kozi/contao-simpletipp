@@ -19,13 +19,13 @@ class SimpletippEmailReminder extends \Backend
 {
     public function tippReminder()
     {
-        if (!defined('TL_ROOT')) {
-            // TODO Sprache irgendwo festlegen. Z.B. für jedes Tippspiel?!
-            // oder sogar benutzerspezifisch
-            $GLOBALS['TL_LANGUAGE'] = 'de';
-        }
+        // TODO Sprache irgendwo festlegen. Z.B. für jedes Tippspiel?!
+        // oder sogar benutzerspezifisch
+        $GLOBALS['TL_LANG']['simpletipp']['reminder_email_subject'] = 'Tipperinnerung für das Spiel: %s';
+        $GLOBALS['TL_LANG']['simpletipp']['reminder_email_text'] = "Noch nicht getippt!\nDas folgende Spiel startet innerhalb der nächsten %s Stunden.\n##LOGOS##\n%s (%s)\n%s\n\nViel Erfolg beim Tippen!\n\n";
+        $GLOBALS['TL_LANG']['simpletipp']['reminder_telegram_text'] = "Noch nicht getippt!\nDas folgende Spiel startet innerhalb der nächsten %s Stunden.\n%s (%s)\n\nJetzt direkt tippen: /T";
 
-        \System::loadLanguageFile('default');
+         // \System::loadLanguageFile('default');
 
         $this->isDebug = isset($_GET["debug"]);
         $telegram = null;
