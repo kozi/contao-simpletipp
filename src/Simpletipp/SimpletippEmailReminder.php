@@ -25,7 +25,7 @@ class SimpletippEmailReminder extends \Backend
         $GLOBALS['TL_LANG']['simpletipp']['reminder_email_text'] = "Noch nicht getippt!\nDas folgende Spiel startet innerhalb der nächsten %s Stunden.\n##LOGOS##\n%s (%s)\n%s\n\nViel Erfolg beim Tippen!\n\n";
         $GLOBALS['TL_LANG']['simpletipp']['reminder_telegram_text'] = "Noch nicht getippt!\nDas folgende Spiel startet innerhalb der nächsten %s Stunden.\n%s (%s)\n\nJetzt direkt tippen: /T";
 
-         // \System::loadLanguageFile('default');
+        // \System::loadLanguageFile('default');
 
         $this->isDebug = isset($_GET["debug"]);
         $telegram = null;
@@ -105,10 +105,12 @@ class SimpletippEmailReminder extends \Backend
                         $emailCount++;
                     }
                     if ($telegram != null && $telegramId && strlen($telegramId) > 0) {
-                        $response = $telegram->sendMessage([
-                            "chat_id" => $telegramId,
-                            "text" => $telegramText,
-                        ]);
+
+                        try {
+                            $response = $telegram->sendMessage(["chat_id" => $telegramId, "text" => $telegramText]);
+                        } catch (Exception $e) {
+                            \System::log("Telegram sendMessageFailed for sending message to: " . $u['username'] . ' (' . $telegramId . ') Excaption: ' . $e->getMessage(), 'SimpletippCallbacks tippReminder()', 'TL_INFO');
+                        }
                     }
                     $userNamesArr[] = $emailSent . $u['firstname'] . ' ' . $u['lastname'] . ' (' . $u['username'] . ')';
                 }
