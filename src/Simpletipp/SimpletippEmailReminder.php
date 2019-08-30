@@ -108,7 +108,7 @@ class SimpletippEmailReminder extends \Backend
 
                         try {
                             $response = $telegram->sendMessage(["chat_id" => $telegramId, "text" => $telegramText]);
-                        } catch (Exception $e) {
+                        } catch (\Throwable $e) {
                             \System::log("Telegram sendMessage(' . $telegramId . ', ...) failed for sending message to: " . $u['username'] . '. Exception: ' . $e->getMessage(), 'SimpletippCallbacks tippReminder()', 'TL_ERROR');
                         }
                     }
